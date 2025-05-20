@@ -26,6 +26,10 @@ import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
+import LogoutIcon from '@mui/icons-material/Logout';
+import LoginModal from './LoginModal';
+import SignupModal from './SignupModal';
+import SignOutModal from './SignOutModal';
 
 const ACCENT_COLOR = '#00ffc6';
 
@@ -83,6 +87,9 @@ const moreMenuItems = [
 export default function NavBar() {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
+  const [loginOpen, setLoginOpen] = React.useState(false);
+  const [signupOpen, setSignupOpen] = React.useState(false);
+  const [signoutOpen, setSignoutOpen] = React.useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
@@ -181,6 +188,23 @@ export default function NavBar() {
       transform: 'scale(1.03)',
     },
   };
+
+  const signoutButtonStyles = {
+    ...buttonBaseStyles,
+    fontSize: { xs: '0.85rem', sm: '0.9rem' },
+    fontWeight: 500,
+    px: { xs: 1.2, sm: 1.5 },
+    py: 0.5,
+    ml: { xs: 0.5, sm: 1 },
+    borderRadius: '16px',
+    color: '#fff',
+    border: '1px solid rgba(255,255,255,0.7)',
+    background: 'rgba(255,90,90,0.12)',
+    '&:hover': {
+      background: 'rgba(255,90,90,0.2)',
+      borderColor: '#ff5a5a',
+    },
+  };
   
   // Mobile drawer content
   const drawerContent = (
@@ -247,8 +271,6 @@ export default function NavBar() {
             </ListItemButton>
           </ListItem>
         ))}
-      </List>
-      
       <Divider sx={{ bgcolor: 'rgba(255,255,255,0.1)', my: 2 }} />
       
       {/* More Menu Items */}
@@ -271,15 +293,19 @@ export default function NavBar() {
         ))}
         
 
+        <ListItem disablePadding sx={{ mt: 1 }}>
+          <ListItemButton onClick={() => setSignoutOpen(true)} sx={{ py: 0.75, px: 2, borderRadius: '8px', fontSize: '0.9rem' }}>
+            <LogoutIcon fontSize="small" sx={{ mr: 1 }} /> Sign Out
+          </ListItemButton>
+        </ListItem>
       </List>
       
       {/* Auth Buttons */}
       <Box sx={{ mt: 4, px: 1 }}>
-        <Button 
-          fullWidth 
-          component="a" 
-          href="/login.html"
+        <Button
+          fullWidth
           variant="outlined"
+          onClick={() => setLoginOpen(true)}
           sx={{
             ...loginButtonStyles,
             mb: 2,
@@ -288,12 +314,11 @@ export default function NavBar() {
         >
           Log In
         </Button>
-        
-        <Button 
-          fullWidth 
-          component="a" 
-          href="/signup.html"
+
+        <Button
+          fullWidth
           variant="contained"
+          onClick={() => setSignupOpen(true)}
           sx={{
             ...signupButtonStyles,
             ml: 0,
@@ -302,11 +327,25 @@ export default function NavBar() {
         >
           Sign Up
         </Button>
+
+        <Button
+          fullWidth
+          variant="outlined"
+          onClick={() => setSignoutOpen(true)}
+          sx={{
+            ...signoutButtonStyles,
+            mt: 2,
+            justifyContent: 'center',
+          }}
+        >
+          Sign Out
+        </Button>
       </Box>
     </Box>
   );
 
   return (
+    <>
     <AppBar position="sticky" elevation={0} sx={{
       background: 'rgba(24,24,43,0.52)',
       backdropFilter: 'blur(10px)',
@@ -444,21 +483,27 @@ export default function NavBar() {
             alignItems: 'center',
           }}>
             <Button
-              component="a"
-              href="/login.html"
               variant="outlined"
+              onClick={() => setLoginOpen(true)}
               sx={loginButtonStyles}
             >
               Log In
             </Button>
-            
+
             <Button
-              component="a"
-              href="/signup.html"
               variant="contained"
+              onClick={() => setSignupOpen(true)}
               sx={signupButtonStyles}
             >
               Sign Up
+            </Button>
+
+            <Button
+              variant="outlined"
+              onClick={() => setSignoutOpen(true)}
+              sx={signoutButtonStyles}
+            >
+              Sign Out
             </Button>
           </Box>
 
@@ -522,8 +567,8 @@ export default function NavBar() {
 
             {/* More Menu Items */}
             {moreMenuItems.map((item, index) => (
-              <MenuItem 
-                key={index} 
+              <MenuItem
+                key={index}
                 component="a"
                 href={item.href}
                 onClick={handleMenuClose}
@@ -532,6 +577,16 @@ export default function NavBar() {
                 {item.label}
               </MenuItem>
             ))}
+
+            <MenuItem
+              onClick={() => {
+                setSignoutOpen(true);
+                handleMenuClose();
+              }}
+              sx={{ color: '#fff', mt: 0.5 }}
+            >
+              <LogoutIcon fontSize="small" sx={{ mr: 1 }} /> Sign Out
+            </MenuItem>
           </Menu>
         </Box>
 
@@ -545,5 +600,9 @@ export default function NavBar() {
         </Drawer>
       </Toolbar>
     </AppBar>
+    <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
+    <SignupModal open={signupOpen} onClose={() => setSignupOpen(false)} />
+    <SignOutModal open={signoutOpen} onClose={() => setSignoutOpen(false)} />
+    </>
   );
 }
