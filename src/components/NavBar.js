@@ -26,6 +26,8 @@ import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
+import InfoModal from './InfoModal';
 
 const ACCENT_COLOR = '#00ffc6';
 
@@ -72,17 +74,18 @@ const getNavLinks = (currentUrl) => {
   return links;
 };
 
-// More menu items
+// More menu items for additional information
 const moreMenuItems = [
-  { label: 'About RepSpheres', href: 'https://repspheres.com/about' },
-  { label: 'Contact', href: 'https://repspheres.com/contact' },
-  { label: 'Careers', href: 'https://repspheres.com/careers' },
-  { label: 'Legal', href: 'https://repspheres.com/legal' }
+  { key: 'about', label: 'About RepSpheres' },
+  { key: 'contact', label: 'Contact' },
+  { key: 'careers', label: 'Careers' },
+  { key: 'legal', label: 'Legal' }
 ];
 
 export default function NavBar() {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
+  const [openInfo, setOpenInfo] = React.useState(null); // which info modal is open
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
@@ -125,6 +128,16 @@ export default function NavBar() {
 
   const handleMenuClose = () => {
     setMenuAnchorEl(null);
+  };
+
+  // Open information modal from more menu or drawer
+  const handleInfoOpen = (key) => {
+    handleMenuClose();
+    setOpenInfo(key);
+  };
+
+  const handleInfoClose = () => {
+    setOpenInfo(null);
   };
   
   // Styles for different button types
@@ -256,9 +269,8 @@ export default function NavBar() {
         {moreMenuItems.map((item, index) => (
           <ListItem key={index} disablePadding sx={{ mb: 0.5 }}>
             <ListItemButton
-              component="a"
-              href={item.href}
-              sx={{ 
+              onClick={() => handleInfoOpen(item.key)}
+              sx={{
                 py: 0.75,
                 px: 2,
                 borderRadius: '8px',
@@ -269,8 +281,6 @@ export default function NavBar() {
             </ListItemButton>
           </ListItem>
         ))}
-        
-
       </List>
       
       {/* Auth Buttons */}
@@ -522,11 +532,9 @@ export default function NavBar() {
 
             {/* More Menu Items */}
             {moreMenuItems.map((item, index) => (
-              <MenuItem 
-                key={index} 
-                component="a"
-                href={item.href}
-                onClick={handleMenuClose}
+              <MenuItem
+                key={index}
+                onClick={() => handleInfoOpen(item.key)}
                 sx={{ color: '#fff' }}
               >
                 {item.label}
@@ -545,5 +553,52 @@ export default function NavBar() {
         </Drawer>
       </Toolbar>
     </AppBar>
+
+    {/* Information Modals */}
+    <InfoModal
+      open={openInfo === 'about'}
+      onClose={handleInfoClose}
+      title="About RepSpheres"
+    >
+      <Typography variant="body1" sx={{ mb: 1 }}>
+        RepSpheres empowers elite sales teams with unified workflows and
+        actionable market intelligence.
+      </Typography>
+    </InfoModal>
+
+    <InfoModal
+      open={openInfo === 'contact'}
+      onClose={handleInfoClose}
+      title="Contact"
+    >
+      <Typography variant="body1" sx={{ mb: 1 }}>
+        Reach us at <a href="mailto:contact@repspheres.com">contact@repspheres.com</a>
+        {' '}to learn more or schedule a call.
+      </Typography>
+    </InfoModal>
+
+    <InfoModal
+      open={openInfo === 'careers'}
+      onClose={handleInfoClose}
+      title="Careers"
+    >
+      <Typography variant="body1" sx={{ mb: 1 }}>
+        We're always looking for talent passionate about sales technology.
+        Send your resume to{' '}
+        <a href="mailto:careers@repspheres.com">careers@repspheres.com</a>.
+      </Typography>
+    </InfoModal>
+
+    <InfoModal
+      open={openInfo === 'legal'}
+      onClose={handleInfoClose}
+      title="Legal"
+    >
+      <Typography variant="body1">
+        Use of RepSpheres is subject to our{' '}
+        <a href="/terms.html">Terms of Service</a> and{' '}
+        <a href="/privacy.html">Privacy Policy</a>.
+      </Typography>
+    </InfoModal>
   );
 }
