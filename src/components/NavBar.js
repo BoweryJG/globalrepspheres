@@ -15,19 +15,15 @@ import { useTheme } from '@mui/material/styles';
 import InsightsIcon from '@mui/icons-material/Insights';
 import PodcastsIcon from '@mui/icons-material/Podcasts';
 import LanguageIcon from '@mui/icons-material/Language';
-import LoginIcon from '@mui/icons-material/Login';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import MemoryIcon from '@mui/icons-material/Memory';
 import { useOrbContext } from './OrbContextProvider';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import InfoModal from './InfoModal';
-import AuthModal from './AuthModal';
 
 const ACCENT_COLOR = '#00ffc6';
 
@@ -91,7 +87,6 @@ export default function NavBar() {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
   const [openInfo, setOpenInfo] = React.useState(null); // which info modal is open
-  const [openAuth, setOpenAuth] = React.useState(null); // 'login' or 'signup'
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
@@ -146,27 +141,16 @@ export default function NavBar() {
     setOpenInfo(null);
   };
 
-  // Open and close auth modals
-  const handleAuthOpen = (mode) => {
-    setOpenAuth(mode);
-  };
-
-  const handleAuthClose = () => {
-    setOpenAuth(null);
-  };
-
-  // Sign out handler
-  const handleSignOut = async () => {
+  // Sign in with Google
+  const handleGoogleSignIn = async () => {
     try {
       if (typeof supabase !== 'undefined' && supabase.auth) {
-        await supabase.auth.signOut();
+        await supabase.auth.signInWithOAuth({ provider: 'google' });
+      } else {
+        console.warn('Supabase not configured');
       }
     } catch (err) {
-      console.error('Error signing out', err);
-    } finally {
-      if (typeof window !== 'undefined') {
-        window.location.href = '/login.html';
-      }
+      console.error('Error signing in with Google', err);
     }
   };
   
@@ -209,21 +193,6 @@ export default function NavBar() {
     },
   };
   
-  const signupButtonStyles = {
-    ...buttonBaseStyles,
-    fontSize: { xs: '0.85rem', sm: '0.9rem' },
-    fontWeight: 600,
-    px: { xs: 1.2, sm: 1.5 },
-    py: 0.5,
-    ml: { xs: 0.5, sm: 1 },
-    borderRadius: '16px',
-    color: '#fff',
-    background: 'linear-gradient(90deg, #00ffc6 0%, #7B42F6 100%)',
-    '&:hover': {
-      background: 'linear-gradient(90deg, #5B3CFF 0%, #00ffc6 100%)',
-      transform: 'scale(1.03)',
-    },
-  };
   
   // Mobile drawer content
   const drawerContent = (
@@ -313,45 +282,18 @@ export default function NavBar() {
         ))}
       </List>
       
-      {/* Auth Buttons */}
+      {/* Google Auth Button */}
       <Box sx={{ mt: 4, px: 1 }}>
         <Button
           fullWidth
-          onClick={() => handleAuthOpen('login')}
+          onClick={handleGoogleSignIn}
           variant="outlined"
           sx={{
             ...loginButtonStyles,
-            mb: 2,
             justifyContent: 'center',
           }}
         >
-          Log In
-        </Button>
-        
-        <Button
-          fullWidth
-          onClick={() => handleAuthOpen('signup')}
-          variant="contained"
-          sx={{
-            ...signupButtonStyles,
-            ml: 0,
-            justifyContent: 'center',
-          }}
-        >
-          Sign Up
-        </Button>
-
-        <Button
-          fullWidth
-          onClick={handleSignOut}
-          variant="outlined"
-          sx={{
-            ...loginButtonStyles,
-            mt: 2,
-            justifyContent: 'center',
-          }}
-        >
-          Log Out
+          Sign In with Google
         </Button>
       </Box>
     </Box>
@@ -486,27 +428,11 @@ export default function NavBar() {
             alignItems: 'center',
           }}>
             <Button
-              onClick={() => handleAuthOpen('login')}
+              onClick={handleGoogleSignIn}
               variant="outlined"
               sx={loginButtonStyles}
             >
-              Log In
-            </Button>
-            
-            <Button
-              onClick={() => handleAuthOpen('signup')}
-              variant="contained"
-              sx={signupButtonStyles}
-            >
-              Sign Up
-            </Button>
-
-            <Button
-              onClick={handleSignOut}
-              variant="outlined"
-              sx={{ ...loginButtonStyles, ml: { xs: 0.5, sm: 1 } }}
-            >
-              Log Out
+              Sign In with Google
             </Button>
           </Box>
 
@@ -592,17 +518,7 @@ export default function NavBar() {
       </Toolbar>
     </AppBar>
 
-    {/* Auth Modals */}
-    <AuthModal
-      open={openAuth === 'login'}
-      onClose={handleAuthClose}
-      mode="login"
-    />
-    <AuthModal
-      open={openAuth === 'signup'}
-      onClose={handleAuthClose}
-      mode="signup"
-    />
+
 
     {/* Information Modals */}
     <InfoModal
