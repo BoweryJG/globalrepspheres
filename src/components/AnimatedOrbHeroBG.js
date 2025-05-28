@@ -380,42 +380,44 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
       // Position between navbar (height ~80px) and title (starts around 15% of viewport)
       const navbarHeight = 80; // Approximate navbar height
       const titleStartY = vh * 0.15; // Where title starts (from HeroSection pt values)
-      
+
       // Calculate max orbital extent (largest orbit + child radius)
       const maxOrbitalRadius = 95; // Largest orbit from orbital variations
       const totalMaxRadius = maxOrbitalRadius + childRadius + 10; // Add buffer
-      
+
       // Ensure parent is positioned so orbits don't go above navbar
       const minY = navbarHeight + totalMaxRadius + 20; // Add extra buffer to ensure no navbar overlap
       const maxY = titleStartY + 50; // Can go slightly behind title
-      const centerY = Math.max(minY, navbarHeight + (titleStartY - navbarHeight) * 0.7); // Move orb lower
+
+      // Center the orbs vertically between the bottom of the navbar and the top of the title
+      let centerY = navbarHeight + (titleStartY - navbarHeight) / 2;
+      centerY = Math.max(minY, Math.min(centerY, maxY));
       
       // Dynamic positioning based on screen size
       const isMobile = vw < 768;
       const isTablet = vw >= 768 && vw < 1024;
       
-      let rightOffset;
       let dynamicScale;
-      
+
       if (isMobile) {
-        rightOffset = 0; // Center on mobile
         // Ensure orbs fit within viewport minus navbar
         const availableHeight = vh - navbarHeight - 40; // 40px bottom buffer
         const availableWidth = vw - 40; // 20px margins
         const maxDimension = Math.min(availableWidth, availableHeight);
         dynamicScale = Math.min(0.7, maxDimension / (totalMaxRadius * 2.2));
       } else if (isTablet) {
-        rightOffset = vw * 0.1;
         dynamicScale = 0.85;
       } else {
-        rightOffset = Math.min(200, vw * 0.15);
         dynamicScale = 1;
       }
-      
+
       const finalScale = scale * dynamicScale;
-      
-      parentCenterBaseRef.current = { x: vw * 0.5 + rightOffset, y: centerY };
-      parentCenterRef.current = { x: vw * 0.5 + rightOffset, y: centerY };
+
+      // Align the orbs toward the right edge while keeping them in view
+      const rightMargin = 20;
+      const rightX = vw - maxReach * finalScale - rightMargin;
+      parentCenterBaseRef.current = { x: rightX, y: centerY };
+      parentCenterRef.current = { x: rightX, y: centerY };
       orbScaleRef.current = finalScale;
     };
 
