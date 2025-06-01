@@ -522,7 +522,7 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
       const dt = now - lastScrollTimeRef.current;
       
       if (dt > 0) {
-        scrollVelocityRef.current = (scrollY - scrollPositionRef.current) / dt * 120;
+        scrollVelocityRef.current = (scrollY - scrollPositionRef.current) / dt * 10; // Much reduced from 120
       }
       
       scrollPositionRef.current = scrollY;
@@ -536,11 +536,11 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
         animationFrameIdRef.current = requestAnimationFrame(animate);
       }
       
-      // Only parent orb responds to scroll - MUCH MORE GENTLE
+      // Only parent orb responds to scroll - MINIMAL EFFECT
       const parentState = orbStatesRef.current[0];
       if (parentState) {
-        parentState.dragTarget += scrollVelocityRef.current * 0.05; // Reduced from 0.3
-        parentVelocityRef.current.y = scrollVelocityRef.current * 0.02; // Reduced from 0.15
+        parentState.dragTarget += scrollVelocityRef.current * 0.01; // Further reduced from 0.05
+        parentVelocityRef.current.y = scrollVelocityRef.current * 0.005; // Further reduced from 0.02
       }
     };
 
@@ -550,13 +550,13 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
       const now = performance.now();
       const dt = Math.max(1, now - lastWheelTimeRef.current);
       lastWheelTimeRef.current = now;
-      const velocity = Math.max(-80, Math.min(80, e.deltaY / dt * 120));
+      const velocity = Math.max(-20, Math.min(20, e.deltaY / dt * 10)); // Much reduced
       
-      // Only affect parent orb with wheel
+      // Only affect parent orb with wheel - MINIMAL EFFECT
       const parentState = orbStatesRef.current[0];
       if (parentState && orbMorphDirections[0] !== undefined) {
         const angle = orbMorphDirections[0];
-        parentState.dragTarget += (Math.sin(angle) * velocity * 1.8 + Math.cos(angle) * velocity * 0.7);
+        parentState.dragTarget += (Math.sin(angle) * velocity * 0.1 + Math.cos(angle) * velocity * 0.05); // Much reduced
       }
       e.preventDefault();
     };
@@ -643,12 +643,12 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
         const maxMouseEffect = 8; // Reduced from 20
         const mouseEffect = Math.max(0, 1 - mouseDistance / 600) * maxMouseEffect; // Increased distance
         
-        // Smoother velocity damping
-        parentVelocityRef.current.x *= 0.97;
-        parentVelocityRef.current.y *= 0.96;
+        // Smoother velocity damping - more aggressive
+        parentVelocityRef.current.x *= 0.92; // More damping
+        parentVelocityRef.current.y *= 0.90; // More damping
         
-        // MUCH gentler scroll response 
-        const scrollOffset = Math.max(-10, Math.min(10, scrollPositionRef.current * -0.02)); // Reduced effect
+        // DISABLE scroll offset - too jarring
+        const scrollOffset = 0; // Disabled scroll position effect
         
         // Subtle floating motion
         const floatX = Math.sin(now * 0.0001) * 15 + Math.cos(now * 0.00015) * 10;
