@@ -33,6 +33,7 @@ export default function ThemeToggle() {
       onClick={handleToggle}
       color="inherit"
       aria-label="Toggle color theme"
+      className="theme-toggle-button"
       sx={{
         position: 'fixed',
         bottom: 16,
