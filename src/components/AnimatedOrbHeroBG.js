@@ -467,10 +467,10 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
       const maxOrbitalRadius = 95; // Largest orbit from orbital variations
       const totalMaxRadius = maxOrbitalRadius + childRadius + 10; // Add buffer
       
-      // Start orbs at navbar level (right side)
-      const minY = navbarHeight - 20; // Can overlap with navbar bottom
-      const maxY = navbarHeight + 80; // Keep orbs very high up
-      const centerY = navbarHeight; // Start position at navbar level
+      // Start orbs closer to navbar (right side)
+      const minY = navbarHeight - 30; // Closer overlap with navbar
+      const maxY = navbarHeight + 60; // Keep orbs very high up
+      const centerY = navbarHeight - 10; // Start position closer to navbar
       
       // Dynamic positioning based on screen size
       const isMobile = vw < 768;
@@ -480,17 +480,17 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
       let dynamicScale;
       
       if (isMobile) {
-        rightOffset = 20; // Slight right offset on mobile
+        rightOffset = 60; // More right offset on mobile
         // Ensure orbs fit within viewport minus navbar
         const availableHeight = vh - navbarHeight - 40; // 40px bottom buffer
         const availableWidth = vw - 40; // 20px margins
         const maxDimension = Math.min(availableWidth, availableHeight);
         dynamicScale = Math.min(0.85, maxDimension / (totalMaxRadius * 2.2));
       } else if (isTablet) {
-        rightOffset = vw * 0.1;
+        rightOffset = vw * 0.15; // More to the right on tablet
         dynamicScale = 0.95;
       } else {
-        rightOffset = Math.min(100, vw * 0.08); // Position further right, under nav buttons
+        rightOffset = Math.min(150, vw * 0.12); // Position much further right, closer to nav buttons
         dynamicScale = 1;
       }
       
@@ -666,9 +666,9 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
                          parentVelocityRef.current.y +
                          scrollOffset;
         
-        // Keep orb at navbar level
-        const safeMinY = navbarHeight - 30; // Allow overlap with navbar
-        const safeMaxY = navbarHeight + 60; // Very constrained to top
+        // Keep orb closer to navbar level
+        const safeMinY = navbarHeight - 40; // Allow more overlap with navbar
+        const safeMaxY = navbarHeight + 50; // Very constrained to top
         const py = Math.min(safeMaxY, Math.max(safeMinY, proposedY));
         
         parentCenterRef.current = { x: px, y: py };
