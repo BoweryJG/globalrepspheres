@@ -439,7 +439,7 @@ export default function HeroSection() {
                     lineHeight: 1.6,
                   }}
                 >
-                  From pioneering topical anesthetics at Zeltiq to revolutionizing aesthetics with Coolsculpting, our journey has been about one thing: transforming data into breakthrough results. Today, RepSpheres connects you to the most comprehensive dataset ever assembled for dental and aesthetic industries—putting 15 years of pivotal market insights directly in your hands.
+                  Born from pioneering work with groundbreaking technologies like CoolSculpting, our AI leverages the nation's largest dataset in medical aesthetics to deliver unmatched insights. Today, RepSpheres connects you to the most comprehensive dataset ever assembled for dental and aesthetic industries—putting 15 years of pivotal market insights directly in your hands.
                 </Typography>
               </Box>
             </Grid>
@@ -696,7 +696,7 @@ export default function HeroSection() {
                       lineHeight: 1.6,
                     }}
                   >
-                    Being part of the original Coolsculpting team when it was called Zeltiq, we pioneered the use of the device for topical anesthetics, gathering unprecedented data on patient outcomes and market adoption.
+                    Being part of the original Coolsculpting team when it was called Zeltiq, we pioneered non-invasive body contouring technologies, gathering unprecedented data on patient outcomes and building the largest dataset in medical aesthetics.
                   </Typography>
                 </Box>
               </Grid>
