@@ -5,9 +5,9 @@ import { useOrbContext } from './OrbContextProvider';
 // Cache trig tables and blob paths for performance
 const trigTableCache = new Map();
 const blobCache = new Map();
-const BLOB_CACHE_INTERVAL = 16; // Cache for ~16ms
+const BLOB_CACHE_INTERVAL = 8; // Cache for ~8ms for smoother motion
 let lastGradientUpdate = 0;
-const GRADIENT_UPDATE_INTERVAL = 100; // Update gradients every 100ms
+const GRADIENT_UPDATE_INTERVAL = 50; // Update gradients every 50ms
 
 const getTrigTables = (points) => {
   const cached = trigTableCache.get(points);
@@ -103,8 +103,8 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
   };
 
   const generateSuperSmoothBlob = (cx, cy, r, points, t, amp = 1, phase = 0) => {
-    // Cache blob calculations for performance
-    const cacheKey = `${cx.toFixed(0)}_${cy.toFixed(0)}_${r.toFixed(0)}_${points}_${Math.floor(t/BLOB_CACHE_INTERVAL)}_${amp.toFixed(1)}_${phase.toFixed(1)}`;
+    // Cache blob calculations for performance - but allow for more frequent updates
+    const cacheKey = `${cx.toFixed(1)}_${cy.toFixed(1)}_${r.toFixed(1)}_${points}_${Math.floor(t/BLOB_CACHE_INTERVAL)}_${amp.toFixed(2)}_${phase.toFixed(1)}`;
     if (blobCache.has(cacheKey)) {
       return blobCache.get(cacheKey);
     }
@@ -315,19 +315,25 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
       return;
     }
 
-    // Set up visibility observer for performance
-    const heroElement = document.querySelector('[data-testid="hero-section"]') || document.querySelector('.hero-section') || document.body;
+    // Set up visibility observer for performance - fallback to always animate if no hero found
+    const heroElement = document.querySelector('[data-testid="hero-section"]') || document.querySelector('.hero-section');
     heroElementRef.current = heroElement;
     
-    const visibilityObserver = new IntersectionObserver(
+    // Default to animating if no specific hero element found
+    if (!heroElement) {
+      shouldAnimateRef.current = true;
+      isHeroVisibleRef.current = true;
+    }
+    
+    const visibilityObserver = heroElement ? new IntersectionObserver(
       ([entry]) => {
         shouldAnimateRef.current = entry.isIntersecting;
         isHeroVisibleRef.current = entry.isIntersecting;
       },
       { threshold: 0.1 }
-    );
+    ) : null;
     
-    if (heroElement) {
+    if (visibilityObserver && heroElement) {
       visibilityObserver.observe(heroElement);
     }
 
