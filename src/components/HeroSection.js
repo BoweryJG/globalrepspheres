@@ -500,46 +500,158 @@ export default function HeroSection() {
                     alignItems: 'center',
                     position: 'relative',
                     zIndex: 2,
-                    background: 'rgba(24,24,43,0.4)',
-                    backdropFilter: 'blur(8px)',
-                    WebkitBackdropFilter: 'blur(8px)',
-                    borderRadius: '12px',
-                    padding: 2.5,
-                    boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
+                    background: 'linear-gradient(135deg, rgba(24,24,43,0.8) 0%, rgba(40,20,70,0.6) 100%)',
+                    backdropFilter: 'blur(12px)',
+                    WebkitBackdropFilter: 'blur(12px)',
+                    borderRadius: '16px',
+                    padding: 3,
+                    border: '1px solid rgba(0,255,198,0.2)',
+                    boxShadow: '0 12px 48px rgba(0,0,0,0.3), 0 4px 16px rgba(0,255,198,0.1)',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      transform: 'translateY(-5px)',
+                      boxShadow: '0 16px 64px rgba(0,0,0,0.4), 0 8px 24px rgba(0,255,198,0.15)',
+                      border: '1px solid rgba(0,255,198,0.4)',
+                    }
                   }}>
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        color: '#fff',
-                        fontFamily: "'DM Sans', Arial, sans-serif",
-                        fontWeight: 500,
-                        textAlign: 'center',
-                        fontSize: { xs: '0.9rem', md: '1rem' },
-                        mb: 1.5,
-                      }}
-                    >
-                      Available Data
-                    </Typography>
+                    {/* Dashboard Header */}
+                    <Box sx={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: 1.5, 
+                      mb: 2.5,
+                      width: '100%',
+                      justifyContent: 'center'
+                    }}>
+                      <Box sx={{
+                        width: 8,
+                        height: 8,
+                        borderRadius: '50%',
+                        background: '#00ffc6',
+                        animation: 'pulse 2s ease-in-out infinite',
+                        '@keyframes pulse': {
+                          '0%, 100%': { opacity: 0.5, transform: 'scale(1)' },
+                          '50%': { opacity: 1, transform: 'scale(1.2)' }
+                        }
+                      }} />
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          color: '#fff',
+                          fontFamily: "'Space Grotesk', Arial, sans-serif",
+                          fontWeight: 600,
+                          textAlign: 'center',
+                          fontSize: { xs: '1rem', md: '1.1rem' },
+                          background: 'linear-gradient(90deg, #00ffc6 0%, #3a86ff 100%)',
+                          WebkitBackgroundClip: 'text',
+                          WebkitTextFillColor: 'transparent',
+                          backgroundClip: 'text',
+                        }}
+                      >
+                        Live Intelligence Dashboard
+                      </Typography>
+                      <Box sx={{
+                        width: 8,
+                        height: 8,
+                        borderRadius: '50%',
+                        background: '#3a86ff',
+                        animation: 'pulse 2s ease-in-out infinite 0.5s',
+                      }} />
+                    </Box>
                     
+                    {/* Data Metrics Grid */}
+                    <Box sx={{ 
+                      display: 'grid', 
+                      gridTemplateColumns: 'repeat(2, 1fr)',
+                      gap: 1.5,
+                      width: '100%',
+                      mb: 2
+                    }}>
+                      {[
+                        { label: 'Practice Insights', value: '847K+', icon: '🏥', color: '#00ffc6' },
+                        { label: 'Physician Data', value: '52K+', icon: '👨‍⚕️', color: '#3a86ff' },
+                        { label: 'Treatment Trends', value: '1.2M+', icon: '📈', color: '#7B42F6' },
+                        { label: 'Sales Metrics', value: '940K+', icon: '💰', color: '#ff006e' },
+                      ].map((metric, i) => (
+                        <Box key={i} sx={{ 
+                          background: 'rgba(24,24,43,0.7)',
+                          borderRadius: '12px',
+                          p: 1.5,
+                          border: '1px solid',
+                          borderColor: `${metric.color}40`,
+                          transition: 'all 0.3s ease',
+                          cursor: 'pointer',
+                          '&:hover': {
+                            borderColor: metric.color,
+                            transform: 'scale(1.05)',
+                            boxShadow: `0 4px 16px ${metric.color}30`,
+                          }
+                        }}>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
+                            <Typography sx={{ fontSize: '1.2rem' }}>{metric.icon}</Typography>
+                            <Typography
+                              variant="caption"
+                              sx={{
+                                color: 'rgba(255,255,255,0.7)',
+                                fontFamily: "'DM Sans', Arial, sans-serif",
+                                fontSize: '0.7rem',
+                                fontWeight: 500,
+                                lineHeight: 1.2,
+                              }}
+                            >
+                              {metric.label}
+                            </Typography>
+                          </Box>
+                          <Typography
+                            sx={{
+                              color: metric.color,
+                              fontFamily: "'Space Grotesk', Arial, sans-serif",
+                              fontSize: '1.1rem',
+                              fontWeight: 700,
+                              textShadow: `0 0 10px ${metric.color}60`,
+                            }}
+                          >
+                            {metric.value}
+                          </Typography>
+                        </Box>
+                      ))}
+                    </Box>
+                    
+                    {/* Additional Data Categories */}
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 1 }}>
-                      {['Practice Insights', 'Physician Data', 'Treatment Trends', 'Sales Metrics', 'Competitive Intelligence', 'Market Evolution'].map((feature, i) => (
+                      {['Competitive Intel', 'Market Evolution'].map((feature, i) => (
                         <Box key={i} sx={{ 
                           display: 'flex', 
                           alignItems: 'center',
-                          backgroundColor: 'rgba(24,24,43,0.6)',
-                          borderRadius: '12px',
-                          px: 1.5,
-                          py: 0.7,
-                          border: '1px solid',
-                          borderColor: i % 2 === 0 ? 'rgba(0,255,198,0.3)' : 'rgba(58,134,255,0.3)',
+                          gap: 0.5,
+                          background: 'linear-gradient(90deg, rgba(0,255,198,0.1) 0%, rgba(58,134,255,0.1) 100%)',
+                          borderRadius: '20px',
+                          px: 2,
+                          py: 0.8,
+                          border: '1px solid rgba(0,255,198,0.3)',
+                          transition: 'all 0.3s ease',
+                          cursor: 'pointer',
+                          '&:hover': {
+                            background: 'linear-gradient(90deg, rgba(0,255,198,0.2) 0%, rgba(58,134,255,0.2) 100%)',
+                            transform: 'translateY(-2px)',
+                            boxShadow: '0 4px 12px rgba(0,255,198,0.3)',
+                          }
                         }}>
+                          <Box sx={{
+                            width: 4,
+                            height: 4,
+                            borderRadius: '50%',
+                            background: i === 0 ? '#00ffc6' : '#3a86ff',
+                            animation: 'pulse 1.5s ease-in-out infinite',
+                            animationDelay: `${i * 0.3}s`,
+                          }} />
                           <Typography
                             variant="body2"
                             sx={{
                               color: 'rgba(255,255,255,0.9)',
                               fontFamily: "'DM Sans', Arial, sans-serif",
-                              fontSize: '0.8rem',
-                              fontWeight: 500,
+                              fontSize: '0.75rem',
+                              fontWeight: 600,
                             }}
                           >
                             {feature}
