@@ -480,17 +480,17 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
       let dynamicScale;
       
       if (isMobile) {
-        rightOffset = 60; // More right offset on mobile
+        rightOffset = 120; // Much more right offset on mobile
         // Ensure orbs fit within viewport minus navbar
         const availableHeight = vh - navbarHeight - 40; // 40px bottom buffer
         const availableWidth = vw - 40; // 20px margins
         const maxDimension = Math.min(availableWidth, availableHeight);
         dynamicScale = Math.min(0.85, maxDimension / (totalMaxRadius * 2.2));
       } else if (isTablet) {
-        rightOffset = vw * 0.15; // More to the right on tablet
+        rightOffset = vw * 0.25; // Much more to the right on tablet
         dynamicScale = 0.95;
       } else {
-        rightOffset = Math.min(150, vw * 0.12); // Position much further right, closer to nav buttons
+        rightOffset = Math.min(250, vw * 0.2); // MUCH further right, by nav buttons
         dynamicScale = 1;
       }
       
