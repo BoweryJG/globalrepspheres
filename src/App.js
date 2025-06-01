@@ -5,7 +5,6 @@ import AnimatedOrbHeroBG from './components/AnimatedOrbHeroBG';
 import HeroSection from './components/HeroSection';
 import PhilosophicalOpenerSection from './components/PhilosophicalOpenerSection';
 import CrossroadsSection from './components/CrossroadsSection';
-import DataRichnessSection from './components/DataRichnessSection';
 import SystemArchitectsSection from './components/SystemArchitectsSection';
 import SocraticMethodSection from './components/SocraticMethodSection';
 import ModulesSection from './components/ModulesSection';
@@ -28,7 +27,6 @@ function App() {
         <HeroSection />
         <PhilosophicalOpenerSection />
         <CrossroadsSection />
-        <DataRichnessSection />
         <SystemArchitectsSection />
         <SocraticMethodSection />
         <ModulesSection />
