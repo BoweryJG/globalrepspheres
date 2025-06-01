@@ -1,0 +1,124 @@
+redirectsOrigin = "config"
+plugins = []
+headers = []
+
+[functions]
+
+[functions."*"]
+
+[build]
+publish = "/Users/jasonsmacbookpro2022/Documents/RepSpheres-Platform/repspheres-homepage-main/build"
+publishOrigin = "config"
+commandOrigin = "config"
+command = "npm run build:netlify"
+
+[build.environment]
+SECRETS_SCAN_OMIT_KEYS = "REACT_APP_API_BASE_URL,REACT_APP_GOOGLE_CLIENT_ID,REACT_APP_GA_ID"
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
+
+[[redirects]]
+from = "/conversation-analysis/*"
+to = "https://linguisticsjg.netlify.app/:splat"
+status = 200.0
+force = true
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/market/*"
+to = "https://whimsical-cheesecake-4e6ab9.netlify.app/:splat"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/workspace/*"
+to = "https://workspace-jg.netlify.app/:splat"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/crm/*"
+to = "https://sphereoscrm.netlify.app/:splat"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/treatment-simulator/*"
+to = "https://aime-jg.netlify.app/:splat"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/podcast/*"
+to = "/podcast.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/podcast.html"
+to = "/"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]

@@ -1,0 +1,22 @@
+# RepSpheres Sales Intelligence Platform - Unified App Routing
+
+# Conversation Analysis (Sales call analysis and personality insights) - PRIORITY RULE
+/conversation-analysis/*  https://linguisticsjg.netlify.app/:splat  200!
+
+# Market Insights (Market data, growth rates, automation workflows)
+/market/*  https://whimsical-cheesecake-4e6ab9.netlify.app/:splat  200
+
+# Workspace (Research reports, document generation, outreach campaigns)
+/workspace/*  https://workspace-jg.netlify.app/:splat  200
+
+# CRM Hub (Central command center for all data and automations)
+/crm/*  https://sphereoscrm.netlify.app/:splat  200
+
+# Treatment Simulator (Separate tool for dental/aesthetic practices)
+/treatment-simulator/*  https://aime-jg.netlify.app/:splat  200
+
+# Podcast (RepSpheres content)
+/podcast/*  /podcast.html  200
+
+# Handle client-side routing for the main React app
+/*  /index.html  200
