@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Box, Typography, Container, Button, Grid } from '@mui/material';
-import AnimatedOrbHeroBG from './AnimatedOrbHeroBG';
 
 export default function HeroSection() {
   const heroRef = useRef();
@@ -37,29 +36,6 @@ export default function HeroSection() {
           overflow: 'hidden',
         }}
       >
-      <AnimatedOrbHeroBG
-        width={480}
-        height={480}
-        zIndex={0} // Behind everything except background
-        visible={showOrb}
-        // When hero is not visible, trigger dispersal (handled in AnimatedOrbHeroBG)
-        disperse={!showOrb}
-        style={{
-          opacity: 0.85,
-          position: 'absolute',
-          pointerEvents: 'none',
-          left: 0,
-          top: 0,
-          width: '100%',
-          height: '100%',
-        }}
-        sx={{
-          right: 0,
-          top: 0,
-          left: 0,
-          bottom: 0,
-        }}
-      />
       <Container maxWidth="md" sx={{ mt: { xs: 20, md: 24 } }}>
   <Typography
     variant="h1"

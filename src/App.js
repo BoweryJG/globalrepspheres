@@ -1,6 +1,7 @@
 import React from 'react';
 import NavBar from './components/NavBar';
 import StarryBackground from './components/StarryBackground';
+import AnimatedOrbHeroBG from './components/AnimatedOrbHeroBG';
 import HeroSection from './components/HeroSection';
 import PhilosophicalOpenerSection from './components/PhilosophicalOpenerSection';
 import CrossroadsSection from './components/CrossroadsSection';
@@ -23,6 +24,7 @@ function App() {
       <AuthProvider>
         <StarryBackground />
         <NavBar />
+        <AnimatedOrbHeroBG zIndex={5} />
         <HeroSection />
         <PhilosophicalOpenerSection />
         <CrossroadsSection />
