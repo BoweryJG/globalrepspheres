@@ -37,8 +37,8 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
   const childOrbsRef = useRef([]);
   const particlesRef = useRef([]);
   const viewportSizeRef = useRef({ vw: 800, vh: 800 });
-  const parentCenterBaseRef = useRef({ x: 400, y: 150 });
-  const parentCenterRef = useRef({ x: 400, y: 150 });
+  const parentCenterBaseRef = useRef({ x: 400, y: 190 });
+  const parentCenterRef = useRef({ x: 400, y: 190 });
   const orbScaleRef = useRef(1);
   const lastWheelTimeRef = useRef(0);
   const animationFrameIdRef = useRef(null);
@@ -467,10 +467,10 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
       const maxOrbitalRadius = 80; // Reduced from 95 to keep orbs visible
       const totalMaxRadius = maxOrbitalRadius + childRadius + 10; // Add buffer
       
-      // Position orbs by login/signup buttons
-      const minY = 120; // Lower down
-      const maxY = 180; // More room  
-      const centerY = 150; // BY LOGIN/SIGNUP BUTTONS
+      // Position orbs further down 
+      const minY = 160; // Further down
+      const maxY = 220; // More room  
+      const centerY = 190; // FURTHER DOWN
       
       // Dynamic positioning based on screen size
       const isMobile = vw < 768;
@@ -496,8 +496,8 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
       
       const finalScale = scale * dynamicScale;
       
-      parentCenterBaseRef.current = { x: vw * 0.5 + rightOffset, y: 150 };
-      parentCenterRef.current = { x: vw * 0.5 + rightOffset, y: 150 };
+      parentCenterBaseRef.current = { x: vw * 0.5 + rightOffset, y: 190 };
+      parentCenterRef.current = { x: vw * 0.5 + rightOffset, y: 190 };
       orbScaleRef.current = finalScale;
     };
 
@@ -658,13 +658,13 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
                    floatX +
                    (mouseDx / mouseDistance || 0) * mouseEffect +
                    parentVelocityRef.current.x;
-        // Keep orbs by login/signup area with some movement
-        const baseY = 150;
+        // Keep orbs further down with some movement
+        const baseY = 190;
         const proposedY = baseY + 
                          floatY * 0.5 +
                          (mouseDy / mouseDistance || 0) * mouseEffect * 0.3 +
                          parentVelocityRef.current.y * 0.5;
-        const py = Math.min(180, Math.max(120, proposedY));
+        const py = Math.min(220, Math.max(160, proposedY));
         
         parentCenterRef.current = { x: px, y: py };
 
