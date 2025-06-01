@@ -650,21 +650,20 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
         // DISABLE scroll offset - too jarring
         const scrollOffset = 0; // Disabled scroll position effect
         
-        // Subtle floating motion
-        const floatX = Math.sin(now * 0.0001) * 15 + Math.cos(now * 0.00015) * 10;
-        const floatY = Math.cos(now * 0.00012) * 10 + Math.sin(now * 0.00008) * 8;
+        // More pronounced floating motion 
+        const floatX = Math.sin(now * 0.0001) * 25 + Math.cos(now * 0.00015) * 18;
+        const floatY = Math.cos(now * 0.00012) * 20 + Math.sin(now * 0.00008) * 15;
         
         const px = parentCenterBaseRef.current.x + 
-                   floatX +
+                   floatX * 2 +  // Increased horizontal floating too
                    (mouseDx / mouseDistance || 0) * mouseEffect +
                    parentVelocityRef.current.x;
-        // Keep orbs further down with some movement
-        const baseY = 190;
-        const proposedY = baseY + 
-                         floatY * 0.5 +
-                         (mouseDy / mouseDistance || 0) * mouseEffect * 0.3 +
-                         parentVelocityRef.current.y * 0.5;
-        const py = Math.min(220, Math.max(160, proposedY));
+        // Allow parent orb to float more freely from starting position
+        const proposedY = parentCenterBaseRef.current.y + 
+                         floatY * 2 +  // Increased floating motion
+                         (mouseDy / mouseDistance || 0) * mouseEffect +
+                         parentVelocityRef.current.y;
+        const py = Math.min(300, Math.max(100, proposedY)); // Much wider movement range
         
         parentCenterRef.current = { x: px, y: py };
 
