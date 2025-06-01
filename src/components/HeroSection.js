@@ -729,7 +729,7 @@ export default function HeroSection() {
                 lineHeight: 1.6,
               }}
             >
-              The pivotal question isn't whether you're with the machines or against them—it's whether you have access to the data that powers them. RepSpheres puts you on the right side of that equation.
+              The pivotal question isn't whether you embrace technology or resist it—it's whether you have access to the data that powers exceptional results. RepSpheres puts you on the winning side of that equation.
             </Typography>
           </Box>
           
@@ -808,7 +808,7 @@ export default function HeroSection() {
                       lineHeight: 1.6,
                     }}
                   >
-                    Being part of the original Coolsculpting team when it was called Zeltiq, we pioneered non-invasive body contouring technologies, gathering unprecedented data on patient outcomes and building the largest dataset in medical aesthetics.
+                    As part of the original CoolSculpting team at Zeltiq, we pioneered revolutionary fat reduction procedures that transformed aesthetic medicine. Our work gathering comprehensive data on CoolSculpting outcomes and patient inquiries became the foundation for building the nation's largest dataset in medical aesthetics.
                   </Typography>
                 </Box>
               </Grid>
