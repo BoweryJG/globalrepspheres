@@ -37,8 +37,8 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
   const childOrbsRef = useRef([]);
   const particlesRef = useRef([]);
   const viewportSizeRef = useRef({ vw: 800, vh: 800 });
-  const parentCenterBaseRef = useRef({ x: 400, y: 400 });
-  const parentCenterRef = useRef({ x: 400, y: 400 });
+  const parentCenterBaseRef = useRef({ x: 400, y: 40 });
+  const parentCenterRef = useRef({ x: 400, y: 40 });
   const orbScaleRef = useRef(1);
   const lastWheelTimeRef = useRef(0);
   const animationFrameIdRef = useRef(null);
@@ -496,8 +496,8 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
       
       const finalScale = scale * dynamicScale;
       
-      parentCenterBaseRef.current = { x: vw * 0.5 + rightOffset, y: centerY };
-      parentCenterRef.current = { x: vw * 0.5 + rightOffset, y: centerY };
+      parentCenterBaseRef.current = { x: vw * 0.5 + rightOffset, y: 40 };
+      parentCenterRef.current = { x: vw * 0.5 + rightOffset, y: 40 };
       orbScaleRef.current = finalScale;
     };
 
@@ -658,20 +658,10 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
                    floatX +
                    (mouseDx / mouseDistance || 0) * mouseEffect +
                    parentVelocityRef.current.x;
-        // Calculate parent Y with bounds to prevent navbar overlap
-        const baseY = parentCenterBaseRef.current.y;
-        const proposedY = baseY + 
-                         floatY +
-                         (mouseDy / mouseDistance || 0) * mouseEffect +
-                         parentVelocityRef.current.y +
-                         scrollOffset;
+        // FORCE orbs to stay in navbar - NO EXCEPTIONS
+        const py = 40; // LOCKED AT NAVBAR CENTER
         
-        // LOCK orbs IN NAVBAR AREA ONLY
-        const safeMinY = 5; // Top of screen
-        const safeMaxY = 75; // Bottom of navbar area
-        const py = Math.min(safeMaxY, Math.max(safeMinY, proposedY));
-        
-        parentCenterRef.current = { x: px, y: py };
+        parentCenterRef.current = { x: px, y: 40 }; // FORCE NAVBAR POSITION
 
         // Scale parent based on scroll - enlarges when scrolling
         const scrollScale = 1 + Math.abs(scrollVelocityRef.current) * 0.0002;
