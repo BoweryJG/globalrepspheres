@@ -7,7 +7,7 @@ const trigTableCache = new Map();
 const blobCache = new Map();
 const BLOB_CACHE_INTERVAL = 8; // Cache for ~8ms for smoother motion
 let lastGradientUpdate = 0;
-const GRADIENT_UPDATE_INTERVAL = 50; // Update gradients every 50ms
+const GRADIENT_UPDATE_INTERVAL = 100; // Update gradients every 100ms for better performance
 
 const getTrigTables = (points) => {
   const cached = trigTableCache.get(points);
@@ -42,6 +42,7 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
   const orbScaleRef = useRef(1);
   const lastWheelTimeRef = useRef(0);
   const animationFrameIdRef = useRef(null);
+  const lastAnimationTimeRef = useRef(0);
   
   // New refs for enhanced features
   const scrollPositionRef = useRef(0);
@@ -143,9 +144,9 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
     
     // Cache the result and clean old entries if cache gets too large
     blobCache.set(cacheKey, d);
-    if (blobCache.size > 100) {
-      const firstKey = blobCache.keys().next().value;
-      blobCache.delete(firstKey);
+    if (blobCache.size > 50) { // Reduced cache size for better memory usage
+      const keysToDelete = Array.from(blobCache.keys()).slice(0, 10);
+      keysToDelete.forEach(key => blobCache.delete(key));
     }
     
     return d;
@@ -221,6 +222,10 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
     // Update and filter active transmissions
     dataTransmissionsRef.current = dataTransmissionsRef.current.filter(t => t.progress < 1);
     
+    // Throttle transmission updates to every 3rd frame for better performance
+    const frameThrottle = Math.floor(performance.now() / 16.67) % 3;
+    if (frameThrottle !== 0) return;
+    
     // Use DocumentFragment for batch DOM operations
     const fragment = document.createDocumentFragment();
     
@@ -251,7 +256,7 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
         
         fragment.appendChild(packet);
         
-        // Trail effect
+        // Trail effect - only for main particle to reduce DOM load
         if (transmission.particleIndex === 0) {
           const trail = document.createElementNS("http://www.w3.org/2000/svg", "line");
           const trailLength = 0.15;
@@ -515,14 +520,14 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
 
     window.addEventListener('mousemove', handleMouseMove);
 
-    // Enhanced scroll handling - only affects parent orb
+    // Enhanced scroll handling with proper parallax
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const now = performance.now();
       const dt = now - lastScrollTimeRef.current;
       
       if (dt > 0) {
-        scrollVelocityRef.current = (scrollY - scrollPositionRef.current) / dt * 10; // Much reduced from 120
+        scrollVelocityRef.current = (scrollY - scrollPositionRef.current) / dt * 10;
       }
       
       scrollPositionRef.current = scrollY;
@@ -536,11 +541,26 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
         animationFrameIdRef.current = requestAnimationFrame(animate);
       }
       
-      // Only parent orb responds to scroll - MINIMAL EFFECT
+      // Smooth parallax effect for all orbs - different layers move at different speeds
       const parentState = orbStatesRef.current[0];
       if (parentState) {
-        parentState.dragTarget += scrollVelocityRef.current * 0.01; // Further reduced from 0.05
-        parentVelocityRef.current.y = scrollVelocityRef.current * 0.005; // Further reduced from 0.02
+        // Parent orb: subtle upward parallax movement (slowest layer)
+        parentState.parallaxOffset.y = scrollY * 0.15; // Gentle upward movement
+        
+        // Add subtle scroll-based morphing
+        parentState.dragTarget += scrollVelocityRef.current * 0.008;
+        parentVelocityRef.current.y = scrollVelocityRef.current * 0.003;
+      }
+      
+      // Child orbs: faster parallax movement (multiple layers)
+      for (let i = 1; i < orbStatesRef.current.length; i++) {
+        const childState = orbStatesRef.current[i];
+        if (childState) {
+          // Each child has different parallax speed based on its orbital distance
+          const depthFactor = 0.2 + (i - 1) * 0.05; // 0.2, 0.25, 0.3, 0.35, 0.4
+          childState.parallaxOffset.y = scrollY * depthFactor;
+          childState.parallaxOffset.x = scrollY * depthFactor * 0.1; // Slight horizontal drift
+        }
       }
     };
 
@@ -577,6 +597,14 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
       }
 
       const now = performance.now();
+      
+      // Throttle animation to 60fps max for performance
+      const deltaTime = now - (lastAnimationTimeRef.current || 0);
+      if (deltaTime < 16.67) { // ~60fps
+        animationFrameIdRef.current = requestAnimationFrame(animate);
+        return;
+      }
+      lastAnimationTimeRef.current = now;
       
       // Optimize gradient updates - only update every 100ms
       if (now - lastGradientUpdate > GRADIENT_UPDATE_INTERVAL) {
@@ -657,12 +685,14 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
         const px = parentCenterBaseRef.current.x + 
                    floatX * 2 +  // Increased horizontal floating too
                    (mouseDx / mouseDistance || 0) * mouseEffect +
-                   parentVelocityRef.current.x;
+                   parentVelocityRef.current.x +
+                   (parentState.parallaxOffset.x || 0); // Apply parallax X offset
         // Allow parent orb to float more freely from starting position
         const proposedY = parentCenterBaseRef.current.y + 
                          floatY * 2 +  // Increased floating motion
                          (mouseDy / mouseDistance || 0) * mouseEffect +
-                         parentVelocityRef.current.y;
+                         parentVelocityRef.current.y -
+                         (parentState.parallaxOffset.y || 0); // Apply parallax Y offset (negative for upward movement)
         const py = Math.min(300, Math.max(100, proposedY)); // Much wider movement range
         
         parentCenterRef.current = { x: px, y: py };
@@ -704,13 +734,17 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
           state.drag *= 0.95; // Simple damping
           state.dragTarget = 0;
 
-          const fam = getDynamicColorFamily(i, now);
-          const tcol = 0.5 + 0.5 * Math.sin(now * 0.0005 + i);
-          const childColor = lerpColor(fam[0], fam[1], tcol);
-          const childGradStop0 = svgRef.current.querySelector(`#c${i}s0`);
-          const childGradStop1 = svgRef.current.querySelector(`#c${i}s1`);
-          if (childGradStop0) childGradStop0.setAttribute("stop-color", childColor);
-          if (childGradStop1) childGradStop1.setAttribute("stop-color", lerpColor(fam[1], fam[0], tcol));
+          // Throttle color updates to every 5th frame for performance
+          const colorFrameThrottle = Math.floor(now / 16.67) % 5;
+          if (colorFrameThrottle === i % 5) { // Stagger updates across children
+            const fam = getDynamicColorFamily(i, now);
+            const tcol = 0.5 + 0.5 * Math.sin(now * 0.0005 + i);
+            const childColor = lerpColor(fam[0], fam[1], tcol);
+            const childGradStop0 = svgRef.current.querySelector(`#c${i}s0`);
+            const childGradStop1 = svgRef.current.querySelector(`#c${i}s1`);
+            if (childGradStop0) childGradStop0.setAttribute("stop-color", childColor);
+            if (childGradStop1) childGradStop1.setAttribute("stop-color", lerpColor(fam[1], fam[0], tcol));
+          }
           
           // Independent orbital motion for each child
           if (state.orbitalAngle === undefined || isNaN(state.orbitalAngle)) {
@@ -777,8 +811,8 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
           const parentY = parentCenterRef.current.y + parentDy * scale;
           
           // Position child relative to parent's actual position using orbital calculations
-          const childX = parentX + finalX * scale3D * scale;
-          const childY = parentY + finalY * scale3D * scale;
+          const childX = parentX + finalX * scale3D * scale + (state.parallaxOffset.x || 0);
+          const childY = parentY + finalY * scale3D * scale - (state.parallaxOffset.y || 0);
           
           // Store 3D position
           state.position.z = finalZ;
