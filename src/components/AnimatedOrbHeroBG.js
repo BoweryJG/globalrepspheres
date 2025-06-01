@@ -37,8 +37,8 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
   const childOrbsRef = useRef([]);
   const particlesRef = useRef([]);
   const viewportSizeRef = useRef({ vw: 800, vh: 800 });
-  const parentCenterBaseRef = useRef({ x: 400, y: 40 });
-  const parentCenterRef = useRef({ x: 400, y: 40 });
+  const parentCenterBaseRef = useRef({ x: 400, y: 120 });
+  const parentCenterRef = useRef({ x: 400, y: 120 });
   const orbScaleRef = useRef(1);
   const lastWheelTimeRef = useRef(0);
   const animationFrameIdRef = useRef(null);
@@ -409,8 +409,8 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
             childState.orbitalAngle = Math.random() * 2 * Math.PI; // Random starting position
             childState.initialAngle = childState.orbitalAngle; // Store initial angle
             
-            // Create completely unique orbital parameters for each child
-            const uniqueRadius = 80 + Math.random() * 80; // Radius between 80-160 for more space
+            // Create completely unique orbital parameters for each child - SMALLER orbits
+            const uniqueRadius = 40 + Math.random() * 40; // Radius between 40-80 to stay on screen
             const uniqueInclination = (Math.random() - 0.5) * Math.PI / 3; // Random tilt
             const uniqueEccentricity = 0.1 + Math.random() * 0.7; // From nearly circular to very elliptical
             const uniqueSpeed = 0.5 + Math.random() * 1.0; // Speed varies from 0.5x to 1.5x
@@ -463,14 +463,14 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
       const navbarHeight = 80; // Navbar height
       const titleStartY = vh * 0.15; // Where title starts (from HeroSection pt values)
       
-      // Calculate max orbital extent (largest orbit + child radius)
-      const maxOrbitalRadius = 95; // Largest orbit from orbital variations
+      // Calculate max orbital extent (largest orbit + child radius) - REDUCED
+      const maxOrbitalRadius = 80; // Reduced from 95 to keep orbs visible
       const totalMaxRadius = maxOrbitalRadius + childRadius + 10; // Add buffer
       
-      // Position orbs DIRECTLY IN NAVBAR AREA - top of screen
-      const minY = 10; // Near top of screen
-      const maxY = 60; // Still in navbar area  
-      const centerY = 40; // CENTER OF NAVBAR AREA
+      // Position orbs BENEATH navbar
+      const minY = 90; // Below navbar
+      const maxY = 150; // Still visible area  
+      const centerY = 120; // BENEATH NAVBAR
       
       // Dynamic positioning based on screen size
       const isMobile = vw < 768;
@@ -496,8 +496,8 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
       
       const finalScale = scale * dynamicScale;
       
-      parentCenterBaseRef.current = { x: vw * 0.5 + rightOffset, y: 40 };
-      parentCenterRef.current = { x: vw * 0.5 + rightOffset, y: 40 };
+      parentCenterBaseRef.current = { x: vw * 0.5 + rightOffset, y: 120 };
+      parentCenterRef.current = { x: vw * 0.5 + rightOffset, y: 120 };
       orbScaleRef.current = finalScale;
     };
 
@@ -536,11 +536,11 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
         animationFrameIdRef.current = requestAnimationFrame(animate);
       }
       
-      // Only parent orb responds to scroll - much gentler
+      // Only parent orb responds to scroll - MUCH MORE GENTLE
       const parentState = orbStatesRef.current[0];
       if (parentState) {
-        parentState.dragTarget += scrollVelocityRef.current * 0.3;
-        parentVelocityRef.current.y = scrollVelocityRef.current * 0.15;
+        parentState.dragTarget += scrollVelocityRef.current * 0.05; // Reduced from 0.3
+        parentVelocityRef.current.y = scrollVelocityRef.current * 0.02; // Reduced from 0.15
       }
     };
 
@@ -634,21 +634,21 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
         const maxOrbitalRadius = 95;
         const totalMaxRadius = maxOrbitalRadius + childRadius + 10;
         
-        // Gentler cursor effect
+        // MUCH gentler cursor effect
         const mouseX = mousePositionRef.current.x;
         const mouseY = mousePositionRef.current.y;
         const mouseDx = mouseX - parentCenterBaseRef.current.x;
         const mouseDy = mouseY - parentCenterBaseRef.current.y;
         const mouseDistance = Math.sqrt(mouseDx * mouseDx + mouseDy * mouseDy);
-        const maxMouseEffect = 20;
-        const mouseEffect = Math.max(0, 1 - mouseDistance / 400) * maxMouseEffect;
+        const maxMouseEffect = 8; // Reduced from 20
+        const mouseEffect = Math.max(0, 1 - mouseDistance / 600) * maxMouseEffect; // Increased distance
         
         // Smoother velocity damping
         parentVelocityRef.current.x *= 0.97;
         parentVelocityRef.current.y *= 0.96;
         
-        // Gentler scroll response with bounds checking
-        const scrollOffset = Math.max(-50, Math.min(50, scrollPositionRef.current * -0.08));
+        // MUCH gentler scroll response 
+        const scrollOffset = Math.max(-10, Math.min(10, scrollPositionRef.current * -0.02)); // Reduced effect
         
         // Subtle floating motion
         const floatX = Math.sin(now * 0.0001) * 15 + Math.cos(now * 0.00015) * 10;
@@ -658,10 +658,15 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
                    floatX +
                    (mouseDx / mouseDistance || 0) * mouseEffect +
                    parentVelocityRef.current.x;
-        // FORCE orbs to stay in navbar - NO EXCEPTIONS
-        const py = 40; // LOCKED AT NAVBAR CENTER
+        // Keep orbs beneath navbar with some movement
+        const baseY = 120;
+        const proposedY = baseY + 
+                         floatY * 0.5 +
+                         (mouseDy / mouseDistance || 0) * mouseEffect * 0.3 +
+                         parentVelocityRef.current.y * 0.5;
+        const py = Math.min(150, Math.max(90, proposedY));
         
-        parentCenterRef.current = { x: px, y: 40 }; // FORCE NAVBAR POSITION
+        parentCenterRef.current = { x: px, y: py };
 
         // Scale parent based on scroll - enlarges when scrolling
         const scrollScale = 1 + Math.abs(scrollVelocityRef.current) * 0.0002;
