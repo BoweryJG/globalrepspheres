@@ -222,10 +222,6 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
     // Update and filter active transmissions
     dataTransmissionsRef.current = dataTransmissionsRef.current.filter(t => t.progress < 1);
     
-    // Throttle transmission updates to every 3rd frame for better performance
-    const frameThrottle = Math.floor(performance.now() / 16.67) % 3;
-    if (frameThrottle !== 0) return;
-    
     // Use DocumentFragment for batch DOM operations
     const fragment = document.createDocumentFragment();
     
@@ -598,13 +594,6 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
 
       const now = performance.now();
       
-      // Throttle animation to 60fps max for performance
-      const deltaTime = now - (lastAnimationTimeRef.current || 0);
-      if (deltaTime < 16.67) { // ~60fps
-        animationFrameIdRef.current = requestAnimationFrame(animate);
-        return;
-      }
-      lastAnimationTimeRef.current = now;
       
       // Optimize gradient updates - only update every 100ms
       if (now - lastGradientUpdate > GRADIENT_UPDATE_INTERVAL) {
@@ -734,17 +723,13 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
           state.drag *= 0.95; // Simple damping
           state.dragTarget = 0;
 
-          // Throttle color updates to every 5th frame for performance
-          const colorFrameThrottle = Math.floor(now / 16.67) % 5;
-          if (colorFrameThrottle === i % 5) { // Stagger updates across children
-            const fam = getDynamicColorFamily(i, now);
-            const tcol = 0.5 + 0.5 * Math.sin(now * 0.0005 + i);
-            const childColor = lerpColor(fam[0], fam[1], tcol);
-            const childGradStop0 = svgRef.current.querySelector(`#c${i}s0`);
-            const childGradStop1 = svgRef.current.querySelector(`#c${i}s1`);
-            if (childGradStop0) childGradStop0.setAttribute("stop-color", childColor);
-            if (childGradStop1) childGradStop1.setAttribute("stop-color", lerpColor(fam[1], fam[0], tcol));
-          }
+          const fam = getDynamicColorFamily(i, now);
+          const tcol = 0.5 + 0.5 * Math.sin(now * 0.0005 + i);
+          const childColor = lerpColor(fam[0], fam[1], tcol);
+          const childGradStop0 = svgRef.current.querySelector(`#c${i}s0`);
+          const childGradStop1 = svgRef.current.querySelector(`#c${i}s1`);
+          if (childGradStop0) childGradStop0.setAttribute("stop-color", childColor);
+          if (childGradStop1) childGradStop1.setAttribute("stop-color", lerpColor(fam[1], fam[0], tcol));
           
           // Independent orbital motion for each child
           if (state.orbitalAngle === undefined || isNaN(state.orbitalAngle)) {
