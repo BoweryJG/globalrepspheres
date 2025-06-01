@@ -37,8 +37,8 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
   const childOrbsRef = useRef([]);
   const particlesRef = useRef([]);
   const viewportSizeRef = useRef({ vw: 800, vh: 800 });
-  const parentCenterBaseRef = useRef({ x: 400, y: 120 });
-  const parentCenterRef = useRef({ x: 400, y: 120 });
+  const parentCenterBaseRef = useRef({ x: 400, y: 150 });
+  const parentCenterRef = useRef({ x: 400, y: 150 });
   const orbScaleRef = useRef(1);
   const lastWheelTimeRef = useRef(0);
   const animationFrameIdRef = useRef(null);
@@ -406,11 +406,11 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
             childOrbsRef.current.push(path);
             const childState = makeOrbState();
             // Initialize 3D orbital parameters - each child gets unique orbit
-            childState.orbitalAngle = Math.random() * 2 * Math.PI; // Random starting position
+            childState.orbitalAngle = (i * 2 * Math.PI / childCount) + Math.random() * 0.5; // Even distribution with slight randomness
             childState.initialAngle = childState.orbitalAngle; // Store initial angle
             
-            // Create completely unique orbital parameters for each child - SMALLER orbits
-            const uniqueRadius = 40 + Math.random() * 40; // Radius between 40-80 to stay on screen
+            // Create proper orbital spacing for visible orbits
+            const uniqueRadius = 60 + i * 15; // Even spacing: 60, 75, 90, 105, 120
             const uniqueInclination = (Math.random() - 0.5) * Math.PI / 3; // Random tilt
             const uniqueEccentricity = 0.1 + Math.random() * 0.7; // From nearly circular to very elliptical
             const uniqueSpeed = 0.5 + Math.random() * 1.0; // Speed varies from 0.5x to 1.5x
@@ -467,10 +467,10 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
       const maxOrbitalRadius = 80; // Reduced from 95 to keep orbs visible
       const totalMaxRadius = maxOrbitalRadius + childRadius + 10; // Add buffer
       
-      // Position orbs BENEATH navbar
-      const minY = 90; // Below navbar
-      const maxY = 150; // Still visible area  
-      const centerY = 120; // BENEATH NAVBAR
+      // Position orbs by login/signup buttons
+      const minY = 120; // Lower down
+      const maxY = 180; // More room  
+      const centerY = 150; // BY LOGIN/SIGNUP BUTTONS
       
       // Dynamic positioning based on screen size
       const isMobile = vw < 768;
@@ -496,8 +496,8 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
       
       const finalScale = scale * dynamicScale;
       
-      parentCenterBaseRef.current = { x: vw * 0.5 + rightOffset, y: 120 };
-      parentCenterRef.current = { x: vw * 0.5 + rightOffset, y: 120 };
+      parentCenterBaseRef.current = { x: vw * 0.5 + rightOffset, y: 150 };
+      parentCenterRef.current = { x: vw * 0.5 + rightOffset, y: 150 };
       orbScaleRef.current = finalScale;
     };
 
@@ -658,13 +658,13 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
                    floatX +
                    (mouseDx / mouseDistance || 0) * mouseEffect +
                    parentVelocityRef.current.x;
-        // Keep orbs beneath navbar with some movement
-        const baseY = 120;
+        // Keep orbs by login/signup area with some movement
+        const baseY = 150;
         const proposedY = baseY + 
                          floatY * 0.5 +
                          (mouseDy / mouseDistance || 0) * mouseEffect * 0.3 +
                          parentVelocityRef.current.y * 0.5;
-        const py = Math.min(150, Math.max(90, proposedY));
+        const py = Math.min(180, Math.max(120, proposedY));
         
         parentCenterRef.current = { x: px, y: py };
 
@@ -674,7 +674,12 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
         const parentR = (parentRadius + parentDrag * 0.15) * scale * scrollScale * dispersalScale;
         const parentAmp = (1 + Math.abs(parentDrag) * 0.008) * scale;
         const parentPath = generateSuperSmoothBlob(px + parentDx * scale, py + parentDy * scale, parentR, parentPoints, parentMorphT, parentAmp);
-        if (parentOrbRef.current) parentOrbRef.current.setAttribute('d', parentPath);
+        if (parentOrbRef.current) {
+          parentOrbRef.current.setAttribute('d', parentPath);
+          // Add scroll-based fading to parent orb too
+          const scrollFade = Math.max(0, 1 - scrollPositionRef.current / (window.innerHeight * 0.3));
+          parentOrbRef.current.setAttribute('opacity', (0.95 * scrollFade).toFixed(2));
+        }
       }
 
       // Update child orbs
@@ -867,8 +872,10 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
               path.setAttribute("opacity", (fade * 0.95).toFixed(2));
               state.wasVisible = true;
             } else {
-              // Apply depth-based opacity
-              path.setAttribute("opacity", (0.95 * depthOpacity).toFixed(2));
+              // Apply depth-based opacity AND scroll-based fading
+              const scrollFade = Math.max(0, 1 - scrollPositionRef.current / (window.innerHeight * 0.3)); // Fade out after 30% scroll
+              const finalOpacity = 0.95 * depthOpacity * scrollFade;
+              path.setAttribute("opacity", finalOpacity.toFixed(2));
             }
             
             // Store position (for future use)
