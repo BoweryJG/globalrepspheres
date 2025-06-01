@@ -459,18 +459,18 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
       svg.setAttribute('height', vh.toString());
       svg.setAttribute('viewBox', `0 0 ${vw} ${vh}`);
       
-      // Position between navbar (height ~80px) and title (starts around 15% of viewport)
-      const navbarHeight = 80; // Approximate navbar height
+      // Position IN the navbar area - navbar is at the very top
+      const navbarHeight = 80; // Navbar height
       const titleStartY = vh * 0.15; // Where title starts (from HeroSection pt values)
       
       // Calculate max orbital extent (largest orbit + child radius)
       const maxOrbitalRadius = 95; // Largest orbit from orbital variations
       const totalMaxRadius = maxOrbitalRadius + childRadius + 10; // Add buffer
       
-      // Start orbs MUCH closer to navbar (right side)
-      const minY = navbarHeight - 60; // Much closer overlap with navbar
-      const maxY = navbarHeight + 20; // Keep orbs very high up, closer to nav
-      const centerY = navbarHeight - 30; // Start position MUCH closer to navbar
+      // Position orbs DIRECTLY IN NAVBAR AREA - top of screen
+      const minY = 10; // Near top of screen
+      const maxY = 60; // Still in navbar area  
+      const centerY = 40; // CENTER OF NAVBAR AREA
       
       // Dynamic positioning based on screen size
       const isMobile = vw < 768;
@@ -666,9 +666,9 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
                          parentVelocityRef.current.y +
                          scrollOffset;
         
-        // Keep orbs MUCH MUCH closer to navbar level
-        const safeMinY = navbarHeight - 70; // Allow major overlap with navbar
-        const safeMaxY = navbarHeight + 10; // Very tightly constrained to navbar area
+        // LOCK orbs IN NAVBAR AREA ONLY
+        const safeMinY = 5; // Top of screen
+        const safeMaxY = 75; // Bottom of navbar area
         const py = Math.min(safeMaxY, Math.max(safeMinY, proposedY));
         
         parentCenterRef.current = { x: px, y: py };
