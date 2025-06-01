@@ -2,8 +2,12 @@ import React, { useEffect, useRef } from 'react';
 import Box from '@mui/material/Box';
 import { useOrbContext } from './OrbContextProvider';
 
-// Cache trig tables so we don't recalc sines/cosines each frame
+// Cache trig tables and blob paths for performance
 const trigTableCache = new Map();
+const blobCache = new Map();
+const BLOB_CACHE_INTERVAL = 16; // Cache for ~16ms
+let lastGradientUpdate = 0;
+const GRADIENT_UPDATE_INTERVAL = 100; // Update gradients every 100ms
 
 const getTrigTables = (points) => {
   const cached = trigTableCache.get(points);
@@ -46,6 +50,8 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
   const orbReturnAnimationsRef = useRef([]);
   const mousePositionRef = useRef({ x: 0, y: 0 });
   const isHeroVisibleRef = useRef(true);
+  const shouldAnimateRef = useRef(true);
+  const heroElementRef = useRef(null);
   const childPositionsRef = useRef([]);
   const parentVelocityRef = useRef({ x: 0, y: 0 });
   const dataTransmissionsRef = useRef([]);
@@ -57,8 +63,8 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
   const childCount = 5;
   const parentRadius = 36; // 20% smaller than 45
   const childRadius = 14; // 20% smaller than 18
-  const parentPoints = 64; // Balanced for performance
-  const childPoints = 32; // Optimized for smooth performance
+  const parentPoints = 32; // Optimized for performance
+  const childPoints = 16; // Optimized for smooth performance
   const childAmp = 0.3; // Reduced amplitude for smoother shapes
   const orbMorphDirections = [];
   const orbMorphSpeeds = [];
@@ -97,6 +103,12 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
   };
 
   const generateSuperSmoothBlob = (cx, cy, r, points, t, amp = 1, phase = 0) => {
+    // Cache blob calculations for performance
+    const cacheKey = `${cx.toFixed(0)}_${cy.toFixed(0)}_${r.toFixed(0)}_${points}_${Math.floor(t/BLOB_CACHE_INTERVAL)}_${amp.toFixed(1)}_${phase.toFixed(1)}`;
+    if (blobCache.has(cacheKey)) {
+      return blobCache.get(cacheKey);
+    }
+    
     const { angles, sin, cos } = getTrigTables(points);
     const pts = [];
     for (let i = 0; i < points; i++) {
@@ -128,6 +140,14 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
       d += ` C${c1x.toFixed(2)},${c1y.toFixed(2)} ${c2x.toFixed(2)},${c2y.toFixed(2)} ${p2.x.toFixed(2)},${p2.y.toFixed(2)}`;
     }
     d += "Z";
+    
+    // Cache the result and clean old entries if cache gets too large
+    blobCache.set(cacheKey, d);
+    if (blobCache.size > 100) {
+      const firstKey = blobCache.keys().next().value;
+      blobCache.delete(firstKey);
+    }
+    
     return d;
   };
 
@@ -198,11 +218,11 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
     const transmissionsGroup = svgRef.current?.querySelector('#dataTransmissions');
     if (!transmissionsGroup) return;
     
-    // Clear previous transmissions
-    transmissionsGroup.innerHTML = '';
-    
     // Update and filter active transmissions
     dataTransmissionsRef.current = dataTransmissionsRef.current.filter(t => t.progress < 1);
+    
+    // Use DocumentFragment for batch DOM operations
+    const fragment = document.createDocumentFragment();
     
     for (const transmission of dataTransmissionsRef.current) {
       transmission.progress += 0.025; // Moderate transmission speed
@@ -229,7 +249,7 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
         packet.setAttribute("opacity", (transmission.opacity * (1 - t * 0.2) * (1 - transmission.particleIndex * 0.2)).toFixed(2));
         packet.setAttribute("filter", "url(#dataGlow)");
         
-        transmissionsGroup.appendChild(packet);
+        fragment.appendChild(packet);
         
         // Trail effect
         if (transmission.particleIndex === 0) {
@@ -248,10 +268,14 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
           trail.setAttribute("opacity", (transmission.opacity * 0.3 * (1 - t)).toFixed(2));
           trail.setAttribute("stroke-linecap", "round");
           
-          transmissionsGroup.appendChild(trail);
+          fragment.appendChild(trail);
         }
       }
     }
+    
+    // Clear and append all at once
+    transmissionsGroup.innerHTML = '';
+    transmissionsGroup.appendChild(fragment);
   };
 
   // Canvas-based particle rendering for performance
@@ -289,6 +313,22 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
     if (!svg || !canvas) {
       console.error('SVG or Canvas not initialized');
       return;
+    }
+
+    // Set up visibility observer for performance
+    const heroElement = document.querySelector('[data-testid="hero-section"]') || document.querySelector('.hero-section') || document.body;
+    heroElementRef.current = heroElement;
+    
+    const visibilityObserver = new IntersectionObserver(
+      ([entry]) => {
+        shouldAnimateRef.current = entry.isIntersecting;
+        isHeroVisibleRef.current = entry.isIntersecting;
+      },
+      { threshold: 0.1 }
+    );
+    
+    if (heroElement) {
+      visibilityObserver.observe(heroElement);
     }
 
     // Set canvas size
@@ -524,29 +564,37 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
         return;
       }
 
-      // Always continue animation - never stop
+      // Pause animation when not visible for performance
+      if (!shouldAnimateRef.current) {
+        animationFrameIdRef.current = requestAnimationFrame(animate);
+        return;
+      }
 
       const now = performance.now();
       
-      // Update gradient colors in context for navbar orb
-      const baseHue = (now * 0.01) % 360;
-      const startHue = baseHue;
-      const endHue = (baseHue + 60 * Math.sin(now * 0.00015 + Math.PI * 0.5)) % 360;
-      const startColor = hslToHex(startHue, 80, 60);
-      const endColor = hslToHex(endHue, 80, 60);
-      updateGradientColors({ start: startColor, end: endColor });
-      
-      const parentStops = [
-        { id: "p0", phase: 0 }, { id: "p1", phase: Math.PI * 0.5 },
-        { id: "p2", phase: Math.PI }, { id: "p3", phase: Math.PI * 1.5 }
-      ];
-      for (let i = 0; i < parentStops.length; i++) {
-        const stop = parentStops[i];
-        const hue = (baseHue + 60 * Math.sin(now * 0.00015 + stop.phase)) % 360;
-        const sat = 80 + 10 * Math.sin(now * 0.0002 + stop.phase);
-        const light = 60 + 10 * Math.cos(now * 0.00018 + stop.phase);
-        const stopEl = svgRef.current.querySelector(`#${stop.id}`);
-        if (stopEl) stopEl.setAttribute("stop-color", hslToHex(hue, sat, light));
+      // Optimize gradient updates - only update every 100ms
+      if (now - lastGradientUpdate > GRADIENT_UPDATE_INTERVAL) {
+        // Update gradient colors in context for navbar orb
+        const baseHue = (now * 0.01) % 360;
+        const startHue = baseHue;
+        const endHue = (baseHue + 60 * Math.sin(now * 0.00015 + Math.PI * 0.5)) % 360;
+        const startColor = hslToHex(startHue, 80, 60);
+        const endColor = hslToHex(endHue, 80, 60);
+        updateGradientColors({ start: startColor, end: endColor });
+        
+        const parentStops = [
+          { id: "p0", phase: 0 }, { id: "p1", phase: Math.PI * 0.5 },
+          { id: "p2", phase: Math.PI }, { id: "p3", phase: Math.PI * 1.5 }
+        ];
+        for (let i = 0; i < parentStops.length; i++) {
+          const stop = parentStops[i];
+          const hue = (baseHue + 60 * Math.sin(now * 0.00015 + stop.phase)) % 360;
+          const sat = 80 + 10 * Math.sin(now * 0.0002 + stop.phase);
+          const light = 60 + 10 * Math.cos(now * 0.00018 + stop.phase);
+          const stopEl = svgRef.current.querySelector(`#${stop.id}`);
+          if (stopEl) stopEl.setAttribute("stop-color", hslToHex(hue, sat, light));
+        }
+        lastGradientUpdate = now;
       }
 
       // Update parent orb physics
@@ -870,6 +918,9 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
       }
       if (animationFrameIdRef.current) {
         cancelAnimationFrame(animationFrameIdRef.current);
+      }
+      if (visibilityObserver) {
+        visibilityObserver.disconnect();
       }
     };
   }, []); // Empty dependency array - only run once on mount
