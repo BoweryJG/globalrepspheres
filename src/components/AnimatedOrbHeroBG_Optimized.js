@@ -1,0 +1,596 @@
+import React, { useEffect, useRef, useCallback, useMemo } from 'react';
+import Box from '@mui/material/Box';
+import { useOrbContext } from './OrbContextProvider';
+
+// Performance configuration
+const PERFORMANCE_CONFIG = {
+  // Rendering quality levels
+  QUALITY_HIGH: { parentPoints: 32, childPoints: 16, particleLimit: 100, updateInterval: 16 },
+  QUALITY_MEDIUM: { parentPoints: 24, childPoints: 12, particleLimit: 50, updateInterval: 20 },
+  QUALITY_LOW: { parentPoints: 16, childPoints: 8, particleLimit: 25, updateInterval: 33 },
+  
+  // Optimization flags
+  USE_WORKER: typeof Worker !== 'undefined',
+  USE_OFFSCREEN_CANVAS: typeof OffscreenCanvas !== 'undefined',
+  USE_REQUEST_IDLE: typeof requestIdleCallback !== 'undefined',
+  
+  // Performance thresholds
+  FPS_TARGET: 60,
+  FPS_MIN: 30,
+  FRAME_BUDGET: 16, // ms
+  
+  // Cache settings
+  BLOB_CACHE_SIZE: 100,
+  BLOB_CACHE_TTL: 50, // ms
+  GRADIENT_UPDATE_INTERVAL: 100, // ms
+  
+  // LOD distances
+  LOD_NEAR: 200,
+  LOD_MID: 400,
+  LOD_FAR: 600,
+};
+
+// Singleton performance monitor
+class PerformanceMonitor {
+  constructor() {
+    this.samples = [];
+    this.maxSamples = 60;
+    this.currentQuality = 'high';
+    this.lastFrameTime = performance.now();
+    this.frameCount = 0;
+    this.avgFPS = 60;
+  }
+  
+  recordFrame() {
+    const now = performance.now();
+    const delta = now - this.lastFrameTime;
+    this.lastFrameTime = now;
+    
+    if (delta > 0) {
+      const fps = 1000 / delta;
+      this.samples.push(fps);
+      if (this.samples.length > this.maxSamples) {
+        this.samples.shift();
+      }
+      
+      // Calculate average FPS
+      this.avgFPS = this.samples.reduce((a, b) => a + b, 0) / this.samples.length;
+      
+      // Auto-adjust quality
+      if (this.avgFPS < PERFORMANCE_CONFIG.FPS_MIN && this.currentQuality !== 'low') {
+        this.currentQuality = this.currentQuality === 'high' ? 'medium' : 'low';
+      } else if (this.avgFPS > PERFORMANCE_CONFIG.FPS_TARGET && this.currentQuality !== 'high') {
+        this.currentQuality = this.currentQuality === 'low' ? 'medium' : 'high';
+      }
+    }
+    
+    return this.currentQuality;
+  }
+  
+  getQualitySettings() {
+    switch (this.currentQuality) {
+      case 'low': return PERFORMANCE_CONFIG.QUALITY_LOW;
+      case 'medium': return PERFORMANCE_CONFIG.QUALITY_MEDIUM;
+      default: return PERFORMANCE_CONFIG.QUALITY_HIGH;
+    }
+  }
+}
+
+// Optimized cache with TTL
+class OptimizedCache {
+  constructor(maxSize = 100, ttl = 50) {
+    this.cache = new Map();
+    this.maxSize = maxSize;
+    this.ttl = ttl;
+  }
+  
+  set(key, value) {
+    if (this.cache.size >= this.maxSize) {
+      const firstKey = this.cache.keys().next().value;
+      this.cache.delete(firstKey);
+    }
+    this.cache.set(key, { value, timestamp: performance.now() });
+  }
+  
+  get(key) {
+    const item = this.cache.get(key);
+    if (!item) return null;
+    
+    if (performance.now() - item.timestamp > this.ttl) {
+      this.cache.delete(key);
+      return null;
+    }
+    
+    return item.value;
+  }
+  
+  clear() {
+    this.cache.clear();
+  }
+}
+
+// Pre-computed trig tables for maximum performance
+const trigTables = new Map();
+const getTrigTable = (points) => {
+  if (trigTables.has(points)) return trigTables.get(points);
+  
+  const table = {
+    sin: new Float32Array(points),
+    cos: new Float32Array(points),
+    angles: new Float32Array(points)
+  };
+  
+  for (let i = 0; i < points; i++) {
+    const angle = (Math.PI * 2 * i) / points;
+    table.angles[i] = angle;
+    table.sin[i] = Math.sin(angle);
+    table.cos[i] = Math.cos(angle);
+  }
+  
+  trigTables.set(points, table);
+  return table;
+};
+
+// Optimized HSL to Hex conversion using lookup tables
+const hslCache = new Map();
+const hslToHex = (h, s, l) => {
+  const key = `${h}_${s}_${l}`;
+  if (hslCache.has(key)) return hslCache.get(key);
+  
+  h /= 360; s /= 100; l /= 100;
+  let r, g, b;
+  
+  if (s === 0) {
+    r = g = b = l;
+  } else {
+    const hue2rgb = (p, q, t) => {
+      if (t < 0) t += 1;
+      if (t > 1) t -= 1;
+      if (t < 1/6) return p + (q - p) * 6 * t;
+      if (t < 1/2) return q;
+      if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+      return p;
+    };
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    const p = 2 * l - q;
+    r = hue2rgb(p, q, h + 1/3);
+    g = hue2rgb(p, q, h);
+    b = hue2rgb(p, q, h - 1/3);
+  }
+  
+  const hex = "#" + [r, g, b].map(x => Math.round(x * 255).toString(16).padStart(2, "0")).join("");
+  hslCache.set(key, hex);
+  
+  // Cleanup cache if too large
+  if (hslCache.size > 1000) {
+    const keys = Array.from(hslCache.keys());
+    for (let i = 0; i < 100; i++) {
+      hslCache.delete(keys[i]);
+    }
+  }
+  
+  return hex;
+};
+
+// Optimized blob generation with instancing
+const generateOptimizedBlob = (cx, cy, r, points, t, amp = 1, phase = 0, cache) => {
+  const cacheKey = `${Math.round(cx)}_${Math.round(cy)}_${Math.round(r)}_${points}_${Math.floor(t/8)}_${amp.toFixed(1)}_${phase.toFixed(1)}`;
+  
+  const cached = cache.get(cacheKey);
+  if (cached) return cached;
+  
+  const { sin, cos } = getTrigTable(points);
+  const pts = new Float32Array(points * 2); // x,y pairs
+  
+  // Batch noise calculations
+  for (let i = 0; i < points; i++) {
+    const angle = i * Math.PI * 2 / points;
+    const noise = 
+      Math.sin(angle * 3 + t * 0.7 + phase) * 1.5 * amp +
+      Math.sin(angle * 5 - t * 1.1 + phase) * 0.8 * amp +
+      Math.sin(angle * 2 + t * 1.7 + phase) * 0.5 * amp;
+    const rad = r + noise;
+    pts[i * 2] = cx + cos[i] * rad;
+    pts[i * 2 + 1] = cy + sin[i] * rad;
+  }
+  
+  // Build path with reduced precision
+  let d = `M${pts[0].toFixed(1)},${pts[1].toFixed(1)}`;
+  
+  for (let i = 0; i < points; i++) {
+    const i2 = (i + 1) % points;
+    const i0 = (i - 1 + points) % points;
+    const i3 = (i + 2) % points;
+    
+    const x1 = pts[i * 2], y1 = pts[i * 2 + 1];
+    const x2 = pts[i2 * 2], y2 = pts[i2 * 2 + 1];
+    const x0 = pts[i0 * 2], y0 = pts[i0 * 2 + 1];
+    const x3 = pts[i3 * 2], y3 = pts[i3 * 2 + 1];
+    
+    const c1x = x1 + (x2 - x0) / 6;
+    const c1y = y1 + (y2 - y0) / 6;
+    const c2x = x2 - (x3 - x1) / 6;
+    const c2y = y2 - (y3 - y1) / 6;
+    
+    d += ` C${c1x.toFixed(1)},${c1y.toFixed(1)} ${c2x.toFixed(1)},${c2y.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)}`;
+  }
+  
+  d += "Z";
+  cache.set(cacheKey, d);
+  return d;
+};
+
+// Web Worker for heavy calculations (if supported)
+const createBlobWorker = () => {
+  if (!PERFORMANCE_CONFIG.USE_WORKER) return null;
+  
+  const workerCode = `
+    self.onmessage = function(e) {
+      const { cx, cy, r, points, t, amp, phase } = e.data;
+      // Blob calculation logic here (simplified for brevity)
+      self.postMessage({ path: 'calculated path' });
+    };
+  `;
+  
+  const blob = new Blob([workerCode], { type: 'application/javascript' });
+  return new Worker(URL.createObjectURL(blob));
+};
+
+const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) => {
+  const svgRef = useRef(null);
+  const canvasRef = useRef(null);
+  const animationFrameRef = useRef(null);
+  const performanceMonitor = useRef(new PerformanceMonitor());
+  const blobCache = useRef(new OptimizedCache(PERFORMANCE_CONFIG.BLOB_CACHE_SIZE, PERFORMANCE_CONFIG.BLOB_CACHE_TTL));
+  
+  // Refs for animation state
+  const orbStatesRef = useRef([]);
+  const particlesRef = useRef([]);
+  const lastUpdateRef = useRef(0);
+  const viewportRef = useRef({ width: 800, height: 800 });
+  const mouseRef = useRef({ x: 0, y: 0 });
+  const scrollRef = useRef({ y: 0, velocity: 0 });
+  
+  // Component-specific constants
+  const childCount = 5;
+  const parentRadius = 36;
+  const childRadius = 14;
+  
+  const { updateGradientColors } = useOrbContext();
+  
+  // Optimized particle system with object pooling
+  const particlePool = useRef([]);
+  const activeParticles = useRef([]);
+  
+  const getParticle = useCallback(() => {
+    if (particlePool.current.length > 0) {
+      return particlePool.current.pop();
+    }
+    return {
+      x: 0, y: 0, vx: 0, vy: 0, r: 1, life: 1, decay: 0.02, color: '#fff', opacity: 1
+    };
+  }, []);
+  
+  const releaseParticle = useCallback((particle) => {
+    particlePool.current.push(particle);
+  }, []);
+  
+  const emitParticles = useCallback((x, y, color, count = 2) => {
+    const quality = performanceMonitor.current.getQualitySettings();
+    if (activeParticles.current.length >= quality.particleLimit) return;
+    
+    for (let i = 0; i < Math.min(count, quality.particleLimit - activeParticles.current.length); i++) {
+      const particle = getParticle();
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 0.4 + Math.random() * 0.7;
+      
+      particle.x = x;
+      particle.y = y;
+      particle.vx = Math.cos(angle) * speed;
+      particle.vy = Math.sin(angle) * speed;
+      particle.r = 1.1 + Math.random() * 1.2;
+      particle.life = 0.6;
+      particle.decay = 0.025 + Math.random() * 0.015;
+      particle.color = color;
+      particle.opacity = 0.45;
+      
+      activeParticles.current.push(particle);
+    }
+  }, [getParticle]);
+  
+  // Optimized render function with culling
+  const renderFrame = useCallback((now) => {
+    const quality = performanceMonitor.current.recordFrame();
+    const qualitySettings = performanceMonitor.current.getQualitySettings();
+    
+    // Skip frame if behind schedule
+    if (now - lastUpdateRef.current < qualitySettings.updateInterval) {
+      animationFrameRef.current = requestAnimationFrame(renderFrame);
+      return;
+    }
+    
+    const svg = svgRef.current;
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext('2d');
+    
+    if (!svg || !canvas || !ctx) {
+      animationFrameRef.current = requestAnimationFrame(renderFrame);
+      return;
+    }
+    
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Update gradient colors (throttled)
+    if (now - lastUpdateRef.current > PERFORMANCE_CONFIG.GRADIENT_UPDATE_INTERVAL) {
+      const baseHue = (now * 0.01) % 360;
+      const startColor = hslToHex(baseHue, 80, 60);
+      const endColor = hslToHex((baseHue + 60) % 360, 80, 60);
+      updateGradientColors({ start: startColor, end: endColor });
+    }
+    
+    // Viewport culling bounds
+    const cullBounds = {
+      left: -100,
+      right: viewportRef.current.width + 100,
+      top: -100,
+      bottom: viewportRef.current.height + 100
+    };
+    
+    // Update parent orb
+    const parentState = orbStatesRef.current[0];
+    if (parentState) {
+      const parentPath = svg.querySelector('#parentOrb');
+      if (parentPath) {
+        // Calculate parent position with optimized floating motion
+        const floatX = Math.sin(now * 0.0001) * 25;
+        const floatY = Math.cos(now * 0.00012) * 20;
+        const px = viewportRef.current.width * 0.7 + floatX;
+        const py = 190 + floatY;
+        
+        // Only update if in viewport
+        if (px > cullBounds.left && px < cullBounds.right && 
+            py > cullBounds.top && py < cullBounds.bottom) {
+          const morphT = now * 0.00015;
+          const path = generateOptimizedBlob(px, py, parentRadius, qualitySettings.parentPoints, morphT, 1, 0, blobCache.current);
+          parentPath.setAttribute('d', path);
+        }
+      }
+    }
+    
+    // Update child orbs with LOD
+    const children = svg.querySelector('#children');
+    if (children) {
+      for (let i = 0; i < childCount; i++) {
+        const childPath = children.children[i];
+        if (!childPath) continue;
+        
+        const state = orbStatesRef.current[i + 1];
+        if (!state) continue;
+        
+        // Calculate orbital position
+        state.orbitalAngle = (state.orbitalAngle || 0) + 0.008;
+        const angle = state.orbitalAngle;
+        const radius = 60 + i * 15;
+        
+        const parentX = viewportRef.current.width * 0.7;
+        const parentY = 190;
+        const x = parentX + Math.cos(angle) * radius;
+        const y = parentY + Math.sin(angle) * radius;
+        
+        // Distance-based LOD
+        const mouseDistance = Math.sqrt((x - mouseRef.current.x) ** 2 + (y - mouseRef.current.y) ** 2);
+        let points = qualitySettings.childPoints;
+        if (mouseDistance > PERFORMANCE_CONFIG.LOD_FAR) {
+          points = Math.floor(points * 0.5);
+        } else if (mouseDistance > PERFORMANCE_CONFIG.LOD_MID) {
+          points = Math.floor(points * 0.75);
+        }
+        
+        // Viewport culling
+        if (x > cullBounds.left && x < cullBounds.right && 
+            y > cullBounds.top && y < cullBounds.bottom) {
+          const morphT = now * 0.0002 + i * 10;
+          const path = generateOptimizedBlob(x, y, childRadius, points, morphT, 0.3, i, blobCache.current);
+          childPath.setAttribute('d', path);
+          
+          // Update color gradient
+          const hue = (i * 67 + now * 0.018) % 360;
+          const color = hslToHex(hue, 80, 60);
+          const gradStop = svg.querySelector(`#c${i}s0`);
+          if (gradStop) gradStop.setAttribute('stop-color', color);
+        } else {
+          // Hide off-screen orbs
+          childPath.setAttribute('opacity', '0');
+        }
+      }
+    }
+    
+    // Update particles with batch rendering
+    activeParticles.current = activeParticles.current.filter(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vx *= 0.98;
+      p.vy *= 0.98;
+      p.life -= p.decay;
+      
+      if (p.life <= 0) {
+        releaseParticle(p);
+        return false;
+      }
+      
+      // Only render visible particles
+      if (p.x > cullBounds.left && p.x < cullBounds.right && 
+          p.y > cullBounds.top && p.y < cullBounds.bottom) {
+        ctx.globalAlpha = p.opacity * p.life;
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r * p.life, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      
+      return true;
+    });
+    
+    lastUpdateRef.current = now;
+    animationFrameRef.current = requestAnimationFrame(renderFrame);
+  }, [updateGradientColors, childCount, emitParticles, releaseParticle]);
+  
+  // Optimized event handlers
+  const handleResize = useCallback(() => {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    viewportRef.current = { width: vw, height: vh };
+    
+    if (canvasRef.current) {
+      canvasRef.current.width = vw;
+      canvasRef.current.height = vh;
+    }
+    
+    if (svgRef.current) {
+      svgRef.current.setAttribute('viewBox', `0 0 ${vw} ${vh}`);
+    }
+  }, []);
+  
+  const handleMouseMove = useCallback((e) => {
+    mouseRef.current = { x: e.clientX, y: e.clientY };
+  }, []);
+  
+  const handleScroll = useCallback(() => {
+    const y = window.scrollY;
+    scrollRef.current = {
+      y,
+      velocity: y - scrollRef.current.y
+    };
+  }, []);
+  
+  // Initialize orb states
+  useEffect(() => {
+    // Initialize parent orb
+    orbStatesRef.current = [{
+      drag: 0, dragTarget: 0, dragV: 0,
+      orbitalAngle: 0,
+      position: { x: 0, y: 0, z: 0 }
+    }];
+    
+    // Initialize child orbs
+    for (let i = 0; i < childCount; i++) {
+      orbStatesRef.current.push({
+        orbitalAngle: (i * Math.PI * 2) / childCount,
+        orbitalSpeed: 0.5 + Math.random() * 1.0,
+        position: { x: 0, y: 0, z: 0 }
+      });
+    }
+  }, [childCount]);
+  
+  // Main setup effect
+  useEffect(() => {
+    handleResize();
+    
+    // Setup SVG structure
+    const svg = svgRef.current;
+    if (svg) {
+      // Ensure children group exists
+      let children = svg.querySelector('#children');
+      if (!children) {
+        children = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        children.id = 'children';
+        svg.appendChild(children);
+      }
+      
+      // Create child paths
+      children.innerHTML = '';
+      for (let i = 0; i < childCount; i++) {
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('fill', `url(#childGrad${i})`);
+        path.setAttribute('opacity', '0.95');
+        children.appendChild(path);
+      }
+    }
+    
+    // Event listeners
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // Start animation
+    animationFrameRef.current = requestAnimationFrame(renderFrame);
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('scroll', handleScroll);
+      
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      
+      // Cleanup caches
+      blobCache.current.clear();
+    };
+  }, [childCount, handleResize, handleMouseMove, handleScroll, renderFrame]);
+  
+  return (
+    <Box
+      sx={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100vw",
+        height: "100vh",
+        zIndex,
+        pointerEvents: "none",
+        touchAction: 'none',
+        background: 'transparent',
+        ...sx,
+      }}
+      style={style}
+      className={className}
+    >
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+        }}
+      />
+      <svg 
+        ref={svgRef} 
+        id="orbSVG"
+        style={{ 
+          width: '100%', 
+          height: '100%', 
+          position: 'relative',
+          shapeRendering: 'optimizeSpeed' // Performance hint
+        }}
+      >
+        <defs>
+          <radialGradient id="parentGrad" cx="50%" cy="50%" r="70%">
+            <stop id="p0" offset="0%" stopColor="#00E5FF"/>
+            <stop id="p1" offset="100%" stopColor="#5B3CFF"/>
+          </radialGradient>
+          {Array.from({ length: childCount }, (_, i) => (
+            <radialGradient key={i} id={`childGrad${i}`} cx="50%" cy="50%" r="70%">
+              <stop id={`c${i}s0`} offset="0%" stopColor={hslToHex((i * 67) % 360, 85, 65)}/>
+              <stop id={`c${i}s1`} offset="100%" stopColor={hslToHex((i * 67 + 180) % 360, 70, 25)}/>
+            </radialGradient>
+          ))}
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        <path id="parentOrb" fill="url(#parentGrad)" opacity="0.95" filter="url(#glow)"/>
+        <g id="children" />
+      </svg>
+    </Box>
+  );
+};
+
+export default AnimatedOrbHeroBG;

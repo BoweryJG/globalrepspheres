@@ -5,9 +5,9 @@ import { useOrbContext } from './OrbContextProvider';
 // Cache trig tables and blob paths for performance
 const trigTableCache = new Map();
 const blobCache = new Map();
-const BLOB_CACHE_INTERVAL = 8; // Cache for ~8ms for smoother motion
+const BLOB_CACHE_INTERVAL = 16; // Cache for ~16ms (60fps) for better performance
 let lastGradientUpdate = 0;
-const GRADIENT_UPDATE_INTERVAL = 100; // Update gradients every 100ms for better performance
+const GRADIENT_UPDATE_INTERVAL = 150; // Update gradients every 150ms for better performance
 
 const getTrigTables = (points) => {
   const cached = trigTableCache.get(points);
@@ -144,8 +144,8 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
     
     // Cache the result and clean old entries if cache gets too large
     blobCache.set(cacheKey, d);
-    if (blobCache.size > 50) { // Reduced cache size for better memory usage
-      const keysToDelete = Array.from(blobCache.keys()).slice(0, 10);
+    if (blobCache.size > 100) { // Increased cache size for better performance
+      const keysToDelete = Array.from(blobCache.keys()).slice(0, 20);
       keysToDelete.forEach(key => blobCache.delete(key));
     }
     

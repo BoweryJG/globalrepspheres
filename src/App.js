@@ -1,6 +1,6 @@
 import React from 'react';
 import NavBar from './components/NavBar';
-import StarryBackground from './components/StarryBackground';
+import StarryBackground from './components/StarryBackground_Ultra';
 import AnimatedOrbHeroBG from './components/AnimatedOrbHeroBG';
 import HeroSection from './components/HeroSection';
 import PhilosophicalOpenerSection from './components/PhilosophicalOpenerSection';
