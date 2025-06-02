@@ -64,8 +64,8 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
   const childCount = 5;
   const parentRadius = 36; // 20% smaller than 45
   const childRadius = 14; // 20% smaller than 18
-  const parentPoints = 32; // Optimized for performance
-  const childPoints = 16; // Optimized for smooth performance
+  const parentPoints = 64; // Increased for smoother curves
+  const childPoints = 32; // Increased for smoother curves
   const childAmp = 0.3; // Reduced amplitude for smoother shapes
   const orbMorphDirections = [];
   const orbMorphSpeeds = [];
@@ -105,7 +105,7 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
 
   const generateSuperSmoothBlob = (cx, cy, r, points, t, amp = 1, phase = 0) => {
     // Cache blob calculations for performance - but allow for more frequent updates
-    const cacheKey = `${cx.toFixed(1)}_${cy.toFixed(1)}_${r.toFixed(1)}_${points}_${Math.floor(t/BLOB_CACHE_INTERVAL)}_${amp.toFixed(2)}_${phase.toFixed(1)}`;
+    const cacheKey = `${cx.toFixed(0)}_${cy.toFixed(0)}_${r.toFixed(0)}_${points}_${Math.floor(t/BLOB_CACHE_INTERVAL)}_${amp.toFixed(1)}_${phase.toFixed(0)}`;
     if (blobCache.has(cacheKey)) {
       return blobCache.get(cacheKey);
     }
@@ -132,13 +132,13 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
       const p2 = pts[(i + 1) % points];
       const p3 = pts[(i + 2) % points];
       if (i === 0) {
-        d += `M${p1.x.toFixed(2)},${p1.y.toFixed(2)}`;
+        d += `M${p1.x.toFixed(3)},${p1.y.toFixed(3)}`;
       }
       const c1x = p1.x + (p2.x - p0.x) / 6;
       const c1y = p1.y + (p2.y - p0.y) / 6;
       const c2x = p2.x - (p3.x - p1.x) / 6;
       const c2y = p2.y - (p3.y - p1.y) / 6;
-      d += ` C${c1x.toFixed(2)},${c1y.toFixed(2)} ${c2x.toFixed(2)},${c2y.toFixed(2)} ${p2.x.toFixed(2)},${p2.y.toFixed(2)}`;
+      d += ` C${c1x.toFixed(3)},${c1y.toFixed(3)} ${c2x.toFixed(3)},${c2y.toFixed(3)} ${p2.x.toFixed(3)},${p2.y.toFixed(3)}`;
     }
     d += "Z";
     
@@ -403,6 +403,7 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
             const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
             path.setAttribute("fill", `url(#childGrad${i})`); 
             path.setAttribute("opacity", "0.95");
+            path.setAttribute("filter", "url(#smoothing)");
             childrenGroupRef.current.appendChild(path);
             childOrbsRef.current.push(path);
             const childState = makeOrbState();
@@ -981,7 +982,12 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
       <svg 
         ref={svgRef} 
         id="orbSVG"
-        style={{ width: '100%', height: '100%', position: 'relative' }}
+        style={{ 
+          width: '100%', 
+          height: '100%', 
+          position: 'relative',
+          shapeRendering: 'geometricPrecision' // Better anti-aliasing
+        }}
       >
         <defs>
           <radialGradient id="parentGrad" cx="50%" cy="50%" r="70%">
@@ -1017,6 +1023,10 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
               <feMergeNode in="SourceGraphic"/>
             </feMerge>
           </filter>
+          <filter id="smoothing">
+            <feGaussianBlur stdDeviation="0.5" result="smoothed"/>
+            <feComposite in="smoothed" in2="SourceGraphic" operator="over"/>
+          </filter>
           <filter id="dataGlow">
             <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
             <feColorMatrix in="coloredBlur" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 2 0"/>
@@ -1026,7 +1036,7 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
             </feMerge>
           </filter>
         </defs>
-        <path id="parentOrb" fill="url(#parentGrad)" opacity="0.95"/>
+        <path id="parentOrb" fill="url(#parentGrad)" opacity="0.95" filter="url(#smoothing)"/>
         <g id="dataTransmissions"></g>
         <g id="children"></g>
       </svg>
