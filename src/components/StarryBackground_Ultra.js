@@ -39,13 +39,13 @@ class UltraStarField {
     this.properties = new Float32Array(count * 4); // size, brightness, phase, speed
     this.states = new Uint8Array(count); // 0 = static, 1 = twinkling
     
-    this.initStars();
-    
     // Create spatial hash grid for optimization
     if (ULTRA_CONFIG.SPATIAL_HASH) {
       this.gridSize = 100;
       this.grid = new Map();
     }
+    
+    this.initStars();
     
     // Performance monitoring
     this.frameCount = 0;
@@ -76,7 +76,7 @@ class UltraStarField {
   }
   
   updateGrid() {
-    if (!ULTRA_CONFIG.SPATIAL_HASH) return;
+    if (!ULTRA_CONFIG.SPATIAL_HASH || !this.grid) return;
     
     this.grid.clear();
     const count = this.settings.stars;
@@ -267,11 +267,8 @@ export default function StarryBackground() {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
     
-    // Use OffscreenCanvas if available
-    if (ULTRA_CONFIG.USE_OFFSCREEN) {
-      const offscreen = canvas.transferControlToOffscreen();
-      // Worker rendering could be implemented here
-    }
+    // OffscreenCanvas would be implemented differently
+    // For now, we'll use regular canvas rendering
     
     // Start animation
     animationRef.current = requestAnimationFrame(render);
