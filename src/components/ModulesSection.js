@@ -42,21 +42,7 @@ const modules = [
     ],
     gradient: 'linear-gradient(135deg, #3a86ff 0%, #2968db 100%)',
   },
-  {
-    id: 'linguistics',
-    title: 'Linguistics Analyzer',
-    subtitle: 'Professional Conversation Intelligence',
-    description: 'Upload, transcribe, and analyze sales conversations with professional-grade insights. Features Harvey Specter mode for elite closing strategies.',
-    icon: RecordVoiceOver,
-    color: '#7B42F6',
-    features: [
-      'Instant transcription',
-      'Conversation analysis',
-      'Harvey Specter mode',
-      'Cloud storage'
-    ],
-    gradient: 'linear-gradient(135deg, #7B42F6 0%, #5B32D6 100%)',
-  },
+  // Linguistics Analyzer is now integrated into RepSphere OS (CRM)
   {
     id: 'crm',
     title: 'RepSphere OS',
@@ -68,6 +54,7 @@ const modules = [
       '150+ indicators',
       'Twilio integration',
       'Custom automations',
+      'Linguistics Analyzer',
       'Instagram posting'
     ],
     gradient: 'linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%)',

@@ -96,16 +96,7 @@ const getNavLinks = (currentUrl, isAdmin) => {
     });
   }
 
-  // Show Linguistics link only if not on the linguistics page
-  if (!currentUrl.includes('/linguistics')) {
-    links.splice(2, 0, {
-      key: 'linguistics',
-      label: 'Linguistics',
-      href: 'https://linguistics.repspheres.com/',
-      icon: <LanguageIcon fontSize="small" sx={{ color: ACCENT_COLOR }} />,
-      description: 'Communication optimization'
-    });
-  }
+  // Linguistics is now part of CRM module
 
   // Hide podcast link when already on the podcast page
   if (currentUrl.includes('/podcast.html') || currentUrl.includes('page=podcast')) {
@@ -148,12 +139,12 @@ export default function NavBar() {
   // Breakpoints for progressive collapsing of nav links
   const hidePodcast = useMediaQuery('(max-width:1200px)');
   const hideSphereOS = useMediaQuery('(max-width:1100px)');
-  const hideLinguistics = useMediaQuery('(max-width:1000px)');
+  // const hideLinguistics = useMediaQuery('(max-width:1000px)'); // Removed - linguistics is in CRM now
   const hideCanvas = useMediaQuery('(max-width:900px)');
   const hideInsights = useMediaQuery('(max-width:800px)');
   const isMobile = hideInsights; // all nav links collapsed below 800px
   // Show hamburger menu whenever any link is hidden
-  const showMenu = hidePodcast || hideSphereOS || hideLinguistics || hideCanvas || isMobile;
+  const showMenu = hidePodcast || hideSphereOS || hideCanvas || isMobile;
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
   // Extra small breakpoints for very narrow screens
   const isXS = useMediaQuery('(max-width:400px)');
@@ -179,9 +170,7 @@ export default function NavBar() {
     if (key === 'sphereos') {
       return { '@media (max-width:1100px)': { display: 'none' } };
     }
-    if (key === 'linguistics') {
-      return { '@media (max-width:1000px)': { display: 'none' } };
-    }
+    // Linguistics removed - now part of CRM module
     if (key === 'canvas') {
       return { '@media (max-width:900px)': { display: 'none' } };
     }
