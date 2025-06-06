@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { IconButton, Menu, MenuItem, ListItemIcon, ListItemText, Divider, Typography } from '@mui/material';
+import { IconButton, Menu, MenuItem, ListItemIcon, ListItemText, Divider, Typography, Switch } from '@mui/material';
 import TuneIcon from '@mui/icons-material/Tune';
 import SpeedIcon from '@mui/icons-material/Speed';
 import BoltIcon from '@mui/icons-material/Bolt';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import StarIcon from '@mui/icons-material/Star';
 import BlurCircularIcon from '@mui/icons-material/BlurCircular';
+import MonitorIcon from '@mui/icons-material/Monitor';
 
 const PERFORMANCE_MODES = {
   ultra: {
@@ -43,7 +44,7 @@ const PERFORMANCE_MODES = {
   }
 };
 
-export default function PerformanceToggle() {
+export default function PerformanceToggle({ performanceMode, setPerformanceMode, showMonitor, setShowMonitor }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [mode, setMode] = useState('balanced');
   const [showStars, setShowStars] = useState(true);
@@ -212,6 +213,30 @@ export default function PerformanceToggle() {
             primary="Animated Orbs"
             secondary={showOrbs ? 'Enabled' : 'Disabled'}
           />
+        </MenuItem>
+        
+        <Divider sx={{ my: 1, borderColor: 'rgba(255, 255, 255, 0.1)' }} />
+        
+        <MenuItem onClick={() => setPerformanceMode(!performanceMode)}>
+          <ListItemIcon>
+            <BoltIcon />
+          </ListItemIcon>
+          <ListItemText 
+            primary="Performance Mode"
+            secondary={performanceMode ? 'Optimized' : 'Standard'}
+          />
+          <Switch checked={performanceMode} />
+        </MenuItem>
+        
+        <MenuItem onClick={() => setShowMonitor(!showMonitor)}>
+          <ListItemIcon>
+            <MonitorIcon />
+          </ListItemIcon>
+          <ListItemText 
+            primary="Performance Monitor"
+            secondary={showMonitor ? 'Visible' : 'Hidden'}
+          />
+          <Switch checked={showMonitor} />
         </MenuItem>
       </Menu>
     </>
