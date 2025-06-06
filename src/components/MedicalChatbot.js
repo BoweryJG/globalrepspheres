@@ -22,7 +22,7 @@ import {
 } from '@mui/icons-material';
 import MedicalSalesChatbot from '../services/chatbotService';
 
-const MedicalChatbot = () => {
+const MedicalChatbot = ({ isEmbedded = false, onNewMessage }) => {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -110,6 +110,11 @@ const MedicalChatbot = () => {
 
       setMessages(prev => [...prev, botMessage]);
       setUserType(response.userType);
+      
+      // Notify parent about new message
+      if (onNewMessage) {
+        onNewMessage();
+      }
     } catch (error) {
       const errorMessage = {
         id: Date.now() + 1,
@@ -145,19 +150,21 @@ const MedicalChatbot = () => {
   };
 
   return (
-    <Container maxWidth="md" sx={{ height: '100vh', display: 'flex', flexDirection: 'column', py: 2 }}>
-      <Paper elevation={3} sx={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-        <Box sx={{ p: 2, backgroundColor: 'primary.main', color: 'white' }}>
+    <Container maxWidth={isEmbedded ? false : "md"} sx={{ height: '100%', display: 'flex', flexDirection: 'column', py: isEmbedded ? 0 : 2, px: isEmbedded ? 0 : 2 }}>
+      <Paper elevation={isEmbedded ? 0 : 3} sx={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <Box sx={{ p: isEmbedded ? 1.5 : 2, background: isEmbedded ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : 'primary.main', color: 'white' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <BotIcon sx={{ fontSize: 32 }} />
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: isEmbedded ? 1 : 2 }}>
+              <BotIcon sx={{ fontSize: isEmbedded ? 24 : 32 }} />
               <Box>
-                <Typography variant="h6" fontWeight="bold">
+                <Typography variant={isEmbedded ? "body1" : "h6"} fontWeight="bold">
                   Elite Medical Consultant
                 </Typography>
-                <Typography variant="caption" sx={{ opacity: 0.9 }}>
-                  Harvey Specter meets Warren Buffett
-                </Typography>
+                {!isEmbedded && (
+                  <Typography variant="caption" sx={{ opacity: 0.9 }}>
+                    Harvey Specter meets Warren Buffett
+                  </Typography>
+                )}
               </Box>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -169,9 +176,11 @@ const MedicalChatbot = () => {
                   sx={{ color: 'white' }}
                 />
               )}
-              <IconButton onClick={handleClearChat} sx={{ color: 'white' }}>
-                <ClearIcon />
-              </IconButton>
+              {!isEmbedded && (
+                <IconButton onClick={handleClearChat} sx={{ color: 'white' }}>
+                  <ClearIcon />
+                </IconButton>
+              )}
             </Box>
           </Box>
         </Box>

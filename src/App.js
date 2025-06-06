@@ -20,6 +20,7 @@ import Footer from './components/Footer';
 import ThemeToggle from './components/ThemeToggle';
 import PerformanceMonitor from './components/PerformanceMonitor';
 import PerformanceToggle from './components/PerformanceToggle';
+import ChatbotLauncher from './components/ChatbotLauncher';
 
 function App() {
   const [performanceMode, setPerformanceMode] = useState(() => {
@@ -64,6 +65,7 @@ function App() {
           setShowMonitor={setShowPerformanceMonitor}
         />
         {showPerformanceMonitor && <PerformanceMonitor />}
+        <ChatbotLauncher />
       </AuthProvider>
     </OrbContextProvider>
   );
