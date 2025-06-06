@@ -96,35 +96,36 @@ const ChatbotLauncher = () => {
             position: 'fixed',
             bottom: isMobile ? 0 : 90,
             right: isMobile ? 0 : 20,
-            width: isMobile ? '100vw' : 400,
-            height: isMobile ? '100vh' : 600,
-            zIndex: 1300,
+            width: isMobile ? '100%' : 380,
+            height: isMobile ? '70vh' : 500,
+            maxHeight: isMobile ? '70vh' : 500,
+            zIndex: 1100, // Lower than navbar (1200)
             boxShadow: '0 0 20px rgba(0,0,0,0.2)',
-            borderRadius: isMobile ? 0 : 2,
+            borderRadius: isMobile ? '16px 16px 0 0' : '16px',
             overflow: 'hidden',
             display: 'flex',
             flexDirection: 'column',
             backgroundColor: 'background.paper'
           }}
         >
-          {/* Close button for mobile */}
-          {isMobile && (
-            <IconButton
-              onClick={handleToggle}
-              sx={{
-                position: 'absolute',
-                right: 8,
-                top: 8,
-                zIndex: 1301,
-                backgroundColor: 'rgba(255,255,255,0.9)',
-                '&:hover': {
-                  backgroundColor: 'rgba(255,255,255,1)'
-                }
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
-          )}
+          {/* Close/Minimize button - always visible */}
+          <IconButton
+            onClick={handleToggle}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              zIndex: 1301,
+              backgroundColor: 'rgba(255,255,255,0.9)',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+              '&:hover': {
+                backgroundColor: 'rgba(255,255,255,1)',
+                transform: 'scale(1.1)'
+              }
+            }}
+          >
+            <CloseIcon sx={{ fontSize: 20 }} />
+          </IconButton>
           
           <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
             <MedicalChatbot isEmbedded={true} onNewMessage={() => !isOpen && setHasNewMessage(true)} />
