@@ -86,12 +86,12 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
       return [hslToHex(baseHue, sat, light1), hslToHex(hue2, sat, light2)];
     }
     
-    // Detect mobile for scaling
-    const isMobile = window.innerWidth <= 768;
-    const mobileScale = isMobile ? 0.5 : 1;
+    // Detect mobile for scaling - needs to be dynamic
+    let isMobile = window.innerWidth <= 768;
+    let mobileScale = isMobile ? 0.5 : 1;
     
-    const parentRadius = 50 * mobileScale;  // Half size, further reduced on mobile
-    const childRadius = 18 * mobileScale;   // Half size, further reduced on mobile
+    let parentRadius = 50;  // Base size
+    let childRadius = 18;   // Base size
     const childPoints = 32;  // Reduced for performance
     const childAmp = 0.15;   // Much smaller amplitude for more spherical shape
     const childGradIds = [
@@ -107,10 +107,20 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
       svg.setAttribute('width', vw);
       svg.setAttribute('height', vh);
       svg.setAttribute('viewBox', `0 0 ${vw} ${vh}`);
+      
+      // Update mobile detection
+      isMobile = vw <= 768;
+      mobileScale = isMobile ? 0.5 : 1;
+      
+      // Update sizes based on mobile
+      parentRadius = 50 * mobileScale;
+      childRadius = 18 * mobileScale;
+      
       // Position to the right of center, below navbar with more clearance
-      // Navbar ~80px + max orbit radius ~150px + parent movement ~15px
-      window.parentCenterBase = window.parentCenter = {x: vw * 0.7, y: 250};
-      window.orbScale = 1; // No scaling needed since we already halved the sizes
+      // Adjust position for mobile too
+      const yPos = isMobile ? 180 : 250;
+      window.parentCenterBase = window.parentCenter = {x: vw * 0.7, y: yPos};
+      window.orbScale = 1; // Scaling handled by mobileScale
     }
     adjustSVGSize();
     window.addEventListener('resize', adjustSVGSize);
@@ -170,6 +180,7 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
     
     // Track electrical connections
     const connections = [];
+    const childPositions = []; // Track current positions
     let lastConnectionTime = 0;
     const connectionCooldown = 15000 + Math.random() * 30000; // 15-45 seconds between connections
     
@@ -204,16 +215,23 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
         const opacity = progress < 0.2 ? progress * 5 : 
                        progress > 0.8 ? (1 - progress) * 5 : 1;
         
+        // Get current child position
+        const childPos = childPositions[conn.childIndex] || conn;
+        const x1 = conn.parentX;
+        const y1 = conn.parentY;
+        const x2 = childPos.x;
+        const y2 = childPos.y;
+        
         // Create lightning-like path with subtle animation
         const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        const midX = (conn.x1 + conn.x2) / 2 + Math.sin(now * 0.01 + conn.seed) * 10;
-        const midY = (conn.y1 + conn.y2) / 2 + Math.cos(now * 0.01 + conn.seed * 2) * 10;
+        const midX = (x1 + x2) / 2 + Math.sin(now * 0.01 + conn.seed) * 10;
+        const midY = (y1 + y2) / 2 + Math.cos(now * 0.01 + conn.seed * 2) * 10;
         
         // Create bezier curve with slight jitter
         const jitter = 2;
-        const d = `M ${conn.x1} ${conn.y1} 
+        const d = `M ${x1} ${y1} 
                    Q ${midX + Math.random() * jitter - jitter/2} ${midY + Math.random() * jitter - jitter/2}, 
-                     ${conn.x2} ${conn.y2}`;
+                     ${x2} ${y2}`;
         
         path.setAttribute("d", d);
         path.setAttribute("stroke", conn.color);
@@ -227,8 +245,8 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
         // Add energy particles along the path
         if (Math.random() < 0.3) {
           const t = (progress * 2) % 1;
-          const px = conn.x1 * (1-t) + conn.x2 * t;
-          const py = conn.y1 * (1-t) + conn.y2 * t;
+          const px = x1 * (1-t) + x2 * t;
+          const py = y1 * (1-t) + y2 * t;
           
           const particle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
           particle.setAttribute("cx", px);
@@ -405,6 +423,9 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
         const x = baseX + Math.cos(childSpiralAngle) * childSpiralRadius;
         const y = baseY + Math.sin(childSpiralAngle) * childSpiralRadius;
         
+        // Store child position for connections
+        childPositions[i] = { x, y };
+        
         const cR = childRadius;
         const morphT = now * 0.0005 + i * 10;
         const childPath = generateSuperSmoothBlob(x, y, cR, childPoints, morphT, childAmp, i);
@@ -422,10 +443,11 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
         // Create connection if pending
         if (state.pendingConnection && childOpacity > 0) {
           connections.push({
-            x1: spiralX,
-            y1: spiralY,
-            x2: x,
-            y2: y,
+            parentX: spiralX,
+            parentY: spiralY,
+            childIndex: i,
+            x: x, // Initial child position
+            y: y,
             color: state.pendingConnection.color,
             startTime: now,
             duration: 2000 + Math.random() * 1000, // 2-3 seconds
