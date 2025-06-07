@@ -2,10 +2,7 @@ import React, { useState, useEffect } from 'react';
 import NavBar from './components/NavBar';
 import StarryBackground from './components/StarryBackground_Ultra';
 import StarryBackground_Enhanced from './components/StarryBackground_Enhanced';
-import AnimatedOrbHeroBG from './components/AnimatedOrbHeroBG_Optimized';
-import AnimatedOrbCanvas from './components/AnimatedOrbCanvas';
 import AnimatedOrbExact from './components/AnimatedOrbExact';
-import AnimatedOrbHeroBG_FullOptimized from './components/AnimatedOrbHeroBG_FullOptimized';
 import HeroSection from './components/HeroSection';
 import PhilosophicalOpenerSection from './components/PhilosophicalOpenerSection';
 import CrossroadsSection from './components/CrossroadsSection';
@@ -19,9 +16,7 @@ import CTASection from './components/CTASection';
 import OrbContextProvider from './components/OrbContextProvider';
 import { AuthProvider } from './contexts/AuthContext';
 import Footer from './components/Footer';
-import ThemeToggle from './components/ThemeToggle';
 import PerformanceMonitor from './components/PerformanceMonitor';
-import PerformanceToggle from './components/PerformanceToggle';
 import ChatbotLauncher from './components/ChatbotLauncher';
 
 function App() {
@@ -31,12 +26,20 @@ function App() {
     return saved === 'true';
   });
   
-  const [showPerformanceMonitor, setShowPerformanceMonitor] = useState(false);
+  const [showPerformanceMonitor] = useState(false);
 
   useEffect(() => {
-    // Save preference
-    localStorage.setItem('performanceMode', performanceMode);
-  }, [performanceMode]);
+    // Listen for performance mode changes from navbar
+    const handlePerformanceModeChange = (event) => {
+      setPerformanceMode(event.detail);
+    };
+    
+    window.addEventListener('performanceModeChanged', handlePerformanceModeChange);
+    
+    return () => {
+      window.removeEventListener('performanceModeChanged', handlePerformanceModeChange);
+    };
+  }, []);
 
   // Choose the appropriate components based on performance mode
   // Use exact SVG version that matches header_orb copy.html
@@ -60,13 +63,6 @@ function App() {
         <CTASection />
         <PricingSection />
         <Footer />
-        <ThemeToggle />
-        <PerformanceToggle 
-          performanceMode={performanceMode}
-          setPerformanceMode={setPerformanceMode}
-          showMonitor={showPerformanceMonitor}
-          setShowMonitor={setShowPerformanceMonitor}
-        />
         {showPerformanceMonitor && <PerformanceMonitor />}
         <ChatbotLauncher />
       </AuthProvider>
