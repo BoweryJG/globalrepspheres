@@ -108,23 +108,25 @@ const ChatbotLauncher = () => {
             backgroundColor: 'background.paper'
           }}
         >
-          {/* Close/Minimize button - always visible */}
+          {/* Close/Minimize button - FIXED */}
           <IconButton
             onClick={handleToggle}
+            size="small"
             sx={{
               position: 'absolute',
-              right: 8,
-              top: 8,
-              zIndex: 1301,
-              backgroundColor: 'rgba(255,255,255,0.9)',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+              right: 12,
+              top: 12,
+              zIndex: 9999,
+              backgroundColor: '#f44336',
+              color: 'white',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
               '&:hover': {
-                backgroundColor: 'rgba(255,255,255,1)',
+                backgroundColor: '#d32f2f',
                 transform: 'scale(1.1)'
               }
             }}
           >
-            <CloseIcon sx={{ fontSize: 20 }} />
+            <CloseIcon />
           </IconButton>
           
           <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>

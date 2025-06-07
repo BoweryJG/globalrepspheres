@@ -152,7 +152,7 @@ const MedicalChatbot = ({ isEmbedded = false, onNewMessage }) => {
   return (
     <Container maxWidth={isEmbedded ? false : "md"} sx={{ height: '100%', display: 'flex', flexDirection: 'column', py: isEmbedded ? 0 : 2, px: isEmbedded ? 0 : 2 }}>
       <Paper elevation={isEmbedded ? 0 : 3} sx={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-        <Box sx={{ p: isEmbedded ? 1.5 : 2, background: isEmbedded ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : 'primary.main', color: 'white' }}>
+        <Box sx={{ p: isEmbedded ? 1.5 : 2, pr: isEmbedded ? 6 : 2, background: isEmbedded ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : 'primary.main', color: 'white' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: isEmbedded ? 1 : 2 }}>
               <BotIcon sx={{ fontSize: isEmbedded ? 24 : 32 }} />
