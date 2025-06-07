@@ -1,9 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import Box from '@mui/material/Box';
+import { useOrbContext } from './OrbContextProvider';
 
 const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) => {
   const svgRef = useRef(null);
   const animationFrameRef = useRef(null);
+  const { updateGradientColors } = useOrbContext();
   
   useEffect(() => {
     if (!svgRef.current) return;
@@ -230,13 +232,22 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
       ];
       const now = performance.now();
       const baseHue = (now * 0.01) % 360;
+      let startColor, endColor;
       for (let i = 0; i < parentStops.length; i++) {
         const stop = parentStops[i];
         const hue = (baseHue + 60 * Math.sin(now * 0.00015 + stop.phase)) % 360;
         const sat = 80 + 10 * Math.sin(now * 0.0002 + stop.phase);
         const light = 60 + 10 * Math.cos(now * 0.00018 + stop.phase);
-        svgRef.current.querySelector(`#${stop.id}`).setAttribute("stop-color", hslToHex(hue, sat, light));
+        const color = hslToHex(hue, sat, light);
+        svgRef.current.querySelector(`#${stop.id}`).setAttribute("stop-color", color);
+        
+        // Capture colors for NavBar orb
+        if (i === 0) startColor = color;
+        if (i === 1) endColor = color; // Use second stop as end color
       }
+      
+      // Update NavBar orb colors to match parent orb
+      updateGradientColors({ start: startColor, end: endColor });
       
       // Very aggressive fade - starts fading at 100px, fully faded at 300px
       const globalFade = Math.max(0, Math.min(1, 1 - ((scrollY - 100) / 200)));
