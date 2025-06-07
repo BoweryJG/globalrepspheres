@@ -3,12 +3,12 @@ import Box from '@mui/material/Box';
 
 // Ultra-optimized configuration
 const ULTRA_CONFIG = {
-  // Quality levels - REDUCED STAR COUNT
+  // Quality levels - RESTORED STAR COUNT
   QUALITY: {
-    ultra: { stars: 80, twinkleRatio: 0.4, fps: 60 },
-    high: { stars: 60, twinkleRatio: 0.3, fps: 60 },
-    medium: { stars: 40, twinkleRatio: 0.2, fps: 30 },
-    low: { stars: 20, twinkleRatio: 0.1, fps: 24 },
+    ultra: { stars: 300, twinkleRatio: 0.4, fps: 60 },
+    high: { stars: 200, twinkleRatio: 0.3, fps: 60 },
+    medium: { stars: 120, twinkleRatio: 0.2, fps: 30 },
+    low: { stars: 60, twinkleRatio: 0.1, fps: 24 },
   },
   
   // Performance features
