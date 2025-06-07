@@ -324,6 +324,33 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
     // Update gradient colors (throttled)
     if (now - lastUpdateRef.current > PERFORMANCE_CONFIG.GRADIENT_UPDATE_INTERVAL) {
       const baseHue = (now * 0.01) % 360;
+      
+      // Update parent orb gradient stops with dynamic color animation
+      const gradientStops = [
+        { id: 'p0', phase: 0 },
+        { id: 'p1', phase: Math.PI * 0.5 },
+        { id: 'p2', phase: Math.PI },
+        { id: 'p3', phase: Math.PI * 1.5 },
+        { id: 'p4', phase: Math.PI * 2 }
+      ];
+      
+      gradientStops.forEach((stop, index) => {
+        const element = svg.querySelector(`#${stop.id}`);
+        if (element) {
+          // Calculate hue with phase offset for each stop
+          const hueOffset = 60 * Math.sin(now * 0.00015 + stop.phase);
+          let hue = (baseHue + hueOffset) % 360;
+          if (hue < 0) hue += 360; // Ensure positive hue values
+          
+          // Animate saturation and lightness with different phases
+          const sat = 75 + 25 * Math.sin(now * 0.0002 + stop.phase);
+          const light = 50 + 15 * Math.sin(now * 0.00025 + stop.phase * 0.5);
+          
+          element.setAttribute('stop-color', hslToHex(hue, sat, light));
+        }
+      });
+      
+      // Update context gradient colors for other uses
       const startColor = hslToHex(baseHue, 80, 60);
       const endColor = hslToHex((baseHue + 60) % 360, 80, 60);
       updateGradientColors({ start: startColor, end: endColor });
@@ -570,7 +597,10 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
         <defs>
           <radialGradient id="parentGrad" cx="50%" cy="50%" r="70%">
             <stop id="p0" offset="0%" stopColor="#00E5FF"/>
-            <stop id="p1" offset="100%" stopColor="#5B3CFF"/>
+            <stop id="p1" offset="25%" stopColor="#00E5FF"/>
+            <stop id="p2" offset="50%" stopColor="#5B3CFF"/>
+            <stop id="p3" offset="75%" stopColor="#5B3CFF"/>
+            <stop id="p4" offset="100%" stopColor="#00E5FF"/>
           </radialGradient>
           {Array.from({ length: childCount }, (_, i) => (
             <radialGradient key={i} id={`childGrad${i}`} cx="50%" cy="50%" r="70%">
