@@ -238,13 +238,18 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
         svgRef.current.querySelector(`#${stop.id}`).setAttribute("stop-color", hslToHex(hue, sat, light));
       }
       
-      // More aggressive fade - starts fading at 150px, fully faded at 450px
-      const globalFade = Math.max(0, Math.min(1, 1 - ((scrollY - 150) / 300)));
+      // Very aggressive fade - starts fading at 100px, fully faded at 300px
+      const globalFade = Math.max(0, Math.min(1, 1 - ((scrollY - 100) / 200)));
       
       // Skip rendering if completely faded
-      if (globalFade <= 0) {
+      if (globalFade <= 0 || scrollY > 300) {
+        // Hide entire SVG when scrolled
+        svgRef.current.style.display = 'none';
         animationFrameRef.current = requestAnimationFrame(animate);
         return;
+      } else {
+        // Show SVG when in view
+        svgRef.current.style.display = 'block';
       }
       
       // Parent orb - no drag, just morphing
