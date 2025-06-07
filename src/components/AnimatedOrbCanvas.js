@@ -151,23 +151,24 @@ const AnimatedOrbCanvas = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
     const parentMorphT = now * 0.0004;
     const { path: parentPath } = generateSuperSmoothBlob(px, py, parentRadius, 64, parentMorphT, 1);
     
-    // Parent gradient - matching header_orb copy.html exactly
+    // Parent gradient - exact match to header_orb copy.html
     const baseHue = (now * 0.01) % 360;
-    const parentGradient = ctx.createRadialGradient(px, py, 0, px, py, parentRadius);
+    const parentGradient = ctx.createRadialGradient(px, py, 0, px, py, parentRadius * 0.7);
     
-    // Multiple color stops with phase offsets for fluid spectrum effect
-    const stops = [
+    // Parent gradient stops exactly as in original
+    const parentStops = [
       { offset: 0, phase: 0 },
       { offset: 0.5, phase: Math.PI },
       { offset: 0.75, phase: Math.PI * 1.5 },
       { offset: 1, phase: Math.PI * 0.5 }
     ];
     
-    stops.forEach(stop => {
+    parentStops.forEach((stop, i) => {
       const hue = (baseHue + 60 * Math.sin(now * 0.00015 + stop.phase)) % 360;
       const sat = 80 + 10 * Math.sin(now * 0.0002 + stop.phase);
       const light = 60 + 10 * Math.cos(now * 0.00018 + stop.phase);
-      parentGradient.addColorStop(stop.offset, hslToHex(hue < 0 ? hue + 360 : hue, sat, light));
+      const color = hslToHex(hue < 0 ? hue + 360 : hue, sat, light);
+      parentGradient.addColorStop(stop.offset, color);
     });
     
     ctx.fillStyle = parentGradient;
