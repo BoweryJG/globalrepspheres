@@ -4,7 +4,6 @@ import StarryBackground from './components/StarryBackground_Ultra';
 import StarryBackground_Enhanced from './components/StarryBackground_Enhanced';
 import AnimatedOrbHeroBG from './components/AnimatedOrbHeroBG';
 import AnimatedOrbHeroBG_FullOptimized from './components/AnimatedOrbHeroBG_FullOptimized';
-import SimpleOrb from './components/SimpleOrb';
 import HeroSection from './components/HeroSection';
 import PhilosophicalOpenerSection from './components/PhilosophicalOpenerSection';
 import CrossroadsSection from './components/CrossroadsSection';
@@ -38,18 +37,15 @@ function App() {
   }, [performanceMode]);
 
   // Choose the appropriate components based on performance mode
-  const OrbComponent = SimpleOrb; // Use simple orb for now
+  const OrbComponent = performanceMode ? AnimatedOrbHeroBG_FullOptimized : AnimatedOrbHeroBG;
   const StarComponent = performanceMode ? StarryBackground_Enhanced : StarryBackground;
-  
-  // Option to disable orbs completely
-  const disableOrbs = false;
 
   return (
     <OrbContextProvider>
       <AuthProvider>
         <StarComponent />
         <NavBar />
-        {!disableOrbs && <OrbComponent zIndex={5} />}
+        <OrbComponent zIndex={5} />
         <HeroSection />
         <PhilosophicalOpenerSection />
         <CrossroadsSection />
