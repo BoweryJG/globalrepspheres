@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import NavBar from './components/NavBar';
 import StarryBackground from './components/StarryBackground_Ultra';
 import StarryBackground_Enhanced from './components/StarryBackground_Enhanced';
-import AnimatedOrbHeroBG from './components/AnimatedOrbHeroBG';
+import AnimatedOrbHeroBG from './components/AnimatedOrbHeroBG_Optimized';
 import AnimatedOrbHeroBG_FullOptimized from './components/AnimatedOrbHeroBG_FullOptimized';
 import HeroSection from './components/HeroSection';
 import PhilosophicalOpenerSection from './components/PhilosophicalOpenerSection';

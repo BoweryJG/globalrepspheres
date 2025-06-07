@@ -20,7 +20,6 @@ const WaveformVisualizer = ({
 }) => {
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
-  const [duration, setDuration] = useState(0);
 
   // Initialize WaveSurfer
   useEffect(() => {
@@ -38,7 +37,6 @@ const WaveformVisualizer = ({
       });
 
       wavesurfer.current.on('ready', () => {
-        setDuration(wavesurfer.current.getDuration());
         if (onReady) onReady(wavesurfer.current);
       });
 

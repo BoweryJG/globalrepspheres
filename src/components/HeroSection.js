@@ -1,18 +1,9 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef } from 'react';
 import { Box, Typography, Container, Button, Grid } from '@mui/material';
 
 export default function HeroSection() {
   const heroRef = useRef();
-  const [showOrb, setShowOrb] = useState(true);
 
-  useEffect(() => {
-    const obs = new window.IntersectionObserver(
-      ([entry]) => setShowOrb(entry.isIntersecting),
-      { threshold: 0.1 }
-    );
-    if (heroRef.current) obs.observe(heroRef.current);
-    return () => obs.disconnect();
-  }, []);
 
   // Removed useEffect for letter explosion visibility
 

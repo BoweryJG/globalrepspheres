@@ -12,16 +12,13 @@ import {
   Skeleton,
   Button,
   Divider,
-  Stack,
   IconButton,
   Tooltip
 } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import PodcastsIcon from '@mui/icons-material/Podcasts';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import NewReleasesIcon from '@mui/icons-material/NewReleases';
 import LiveTvIcon from '@mui/icons-material/LiveTv';
-import axios from 'axios';
 
 // Mock data for development - in production, this would come from the Listen Notes API
 const MOCK_LIVE_FEEDS = [

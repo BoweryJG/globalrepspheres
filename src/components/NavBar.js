@@ -18,14 +18,12 @@ import LanguageIcon from '@mui/icons-material/Language';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import MemoryIcon from '@mui/icons-material/Memory';
 import LogoutIcon from '@mui/icons-material/Logout';
-import GoogleIcon from '@mui/icons-material/Google';
 import PersonIcon from '@mui/icons-material/Person';
 import { useOrbContext } from './OrbContextProvider';
 import { useAuth } from '../contexts/AuthContext';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Avatar from '@mui/material/Avatar';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -40,11 +38,6 @@ import { keyframes } from '@mui/system';
 const ACCENT_COLOR = '#00ffc6';
 
 // Animation keyframes
-const glowPulse = keyframes`
-  0% { box-shadow: 0 0 5px rgba(123, 66, 246, 0.5); }
-  50% { box-shadow: 0 0 20px rgba(123, 66, 246, 0.8), 0 0 30px rgba(0, 255, 198, 0.4); }
-  100% { box-shadow: 0 0 5px rgba(123, 66, 246, 0.5); }
-`;
 
 const borderGradient = keyframes`
   0% { background-position: 0% 50%; }
@@ -145,13 +138,12 @@ export default function NavBar() {
   const isMobile = hideInsights; // all nav links collapsed below 800px
   // Show hamburger menu whenever any link is hidden
   const showMenu = hidePodcast || hideSphereOS || hideCanvas || isMobile;
-  const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
   // Extra small breakpoints for very narrow screens
   const isXS = useMediaQuery('(max-width:400px)');
   const isXXS = useMediaQuery('(max-width:320px)');
   
   // Get authentication context
-  const { user, loading, signInWithGoogle, signInWithFacebook, signOut, isAdmin } = useAuth();
+  const { user, loading, signInWithFacebook, signOut, isAdmin } = useAuth();
   
   // Get current URL to determine which page we're on
   const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
