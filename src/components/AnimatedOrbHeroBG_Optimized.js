@@ -172,9 +172,9 @@ const hslToHex = (h, s, l) => {
   return hex;
 };
 
-// Optimized blob generation with instancing
-const generateOptimizedBlob = (cx, cy, r, points, t, amp = 1, phase = 0, cache) => {
-  const cacheKey = `${Math.round(cx)}_${Math.round(cy)}_${Math.round(r)}_${points}_${Math.floor(t/8)}_${amp.toFixed(1)}_${phase.toFixed(1)}`;
+// Optimized blob generation with more spherical shapes
+const generateOptimizedBlob = (cx, cy, r, points, t, amp = 1, phase = 0, cache, uniqueShape = 1) => {
+  const cacheKey = `${Math.round(cx)}_${Math.round(cy)}_${Math.round(r)}_${points}_${Math.floor(t/8)}_${amp.toFixed(1)}_${phase.toFixed(1)}_${uniqueShape}`;
   
   const cached = cache.get(cacheKey);
   if (cached) return cached;
@@ -182,13 +182,17 @@ const generateOptimizedBlob = (cx, cy, r, points, t, amp = 1, phase = 0, cache) 
   const { sin, cos } = getTrigTable(points);
   const pts = new Float32Array(points * 2); // x,y pairs
   
-  // Batch noise calculations
+  // More spherical with subtle morphing - matching header_orb copy.html
+  // Reduced amplitude for more perfect spheres
+  const sphericalAmp = amp * 0.3; // Make shapes more spherical
+  
   for (let i = 0; i < points; i++) {
     const angle = i * Math.PI * 2 / points;
+    // Three sine waves with unique shape multiplier for each orb
     const noise = 
-      Math.sin(angle * 3 + t * 0.7 + phase) * 1.5 * amp +
-      Math.sin(angle * 5 - t * 1.1 + phase) * 0.8 * amp +
-      Math.sin(angle * 2 + t * 1.7 + phase) * 0.5 * amp;
+      Math.sin(angle * 3 + t * 0.7 + phase) * 4 * sphericalAmp * uniqueShape +
+      Math.sin(angle * 5 - t * 1.1 + phase) * 2 * sphericalAmp * uniqueShape +
+      Math.sin(angle * 2 + t * 1.7 + phase) * 1.2 * sphericalAmp * uniqueShape;
     const rad = r + noise;
     pts[i * 2] = cx + cos[i] * rad;
     pts[i * 2 + 1] = cy + sin[i] * rad;
@@ -251,14 +255,14 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
   const mouseRef = useRef({ x: 0, y: 0 });
   const scrollRef = useRef({ y: 0, velocity: 0 });
   
-  // Component-specific constants
+  // Component-specific constants - matching header_orb copy.html
   const childCount = 5;
-  const parentRadius = 36;
-  const childRadius = 14;
+  const parentRadius = 100; // Larger parent orb
+  const childRadius = 36;    // Larger child orbs
   
   const { updateGradientColors } = useOrbContext();
   
-  // Optimized particle system with object pooling
+  // Enhanced particle system with unique effects per orb
   const particlePool = useRef([]);
   const activeParticles = useRef([]);
   
@@ -267,7 +271,7 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
       return particlePool.current.pop();
     }
     return {
-      x: 0, y: 0, vx: 0, vy: 0, r: 1, life: 1, decay: 0.02, color: '#fff', opacity: 1
+      x: 0, y: 0, vx: 0, vy: 0, vr: 0, r: 1, life: 1, decay: 0.02, color: '#fff', opacity: 1, rotation: 0
     };
   }, []);
   
@@ -275,24 +279,66 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
     particlePool.current.push(particle);
   }, []);
   
-  const emitParticles = useCallback((x, y, color, count = 2) => {
+  const emitParticles = useCallback((x, y, color, count = 2, effectType = 'evaporate', intensity = 1) => {
     const quality = performanceMonitor.current.getQualitySettings();
     if (activeParticles.current.length >= quality.particleLimit) return;
     
     for (let i = 0; i < Math.min(count, quality.particleLimit - activeParticles.current.length); i++) {
       const particle = getParticle();
-      const angle = Math.random() * Math.PI * 2;
-      const speed = 0.4 + Math.random() * 0.7;
+      
+      // Different particle behaviors based on effect type
+      switch(effectType) {
+        case 'evaporate':
+          // Particles float upward and fade
+          particle.vx = (Math.random() - 0.5) * 0.5;
+          particle.vy = -Math.random() * 1.5 - 0.5;
+          particle.decay = 0.015;
+          particle.r = 0.8 + Math.random() * 0.4;
+          break;
+          
+        case 'spiral':
+          // Particles spiral outward
+          const spiralAngle = (i / count) * Math.PI * 2 + Math.random();
+          particle.vx = Math.cos(spiralAngle) * (1 + Math.random());
+          particle.vy = Math.sin(spiralAngle) * (1 + Math.random());
+          particle.vr = 0.1; // Rotation velocity
+          particle.decay = 0.02;
+          break;
+          
+        case 'shatter':
+          // Particles explode in sharp directions
+          const shatterAngle = Math.random() * Math.PI * 2;
+          const speed = 2 + Math.random() * 2;
+          particle.vx = Math.cos(shatterAngle) * speed;
+          particle.vy = Math.sin(shatterAngle) * speed;
+          particle.r = 0.5 + Math.random() * 1.5;
+          particle.decay = 0.04;
+          break;
+          
+        case 'fade':
+          // Particles barely move, just fade
+          particle.vx = (Math.random() - 0.5) * 0.1;
+          particle.vy = (Math.random() - 0.5) * 0.1;
+          particle.decay = 0.05;
+          particle.r = 1.5 + Math.random() * 0.5;
+          break;
+          
+        case 'implode':
+          // Particles move inward then explode
+          const implodeAngle = Math.random() * Math.PI * 2;
+          particle.vx = -Math.cos(implodeAngle) * 0.5;
+          particle.vy = -Math.sin(implodeAngle) * 0.5;
+          particle.life = 1.2; // Longer life for implosion effect
+          particle.decay = 0.03;
+          break;
+      }
       
       particle.x = x;
       particle.y = y;
-      particle.vx = Math.cos(angle) * speed;
-      particle.vy = Math.sin(angle) * speed;
-      particle.r = 1.1 + Math.random() * 1.2;
-      particle.life = 0.6;
-      particle.decay = 0.025 + Math.random() * 0.015;
+      particle.life *= intensity;
       particle.color = color;
-      particle.opacity = 0.45;
+      particle.opacity = 0.6 * intensity;
+      particle.rotation = Math.random() * Math.PI * 2;
       
       activeParticles.current.push(particle);
     }
@@ -364,22 +410,44 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
       bottom: viewportRef.current.height + 100
     };
     
-    // Update parent orb
+    // Update parent orb with drag physics
     const parentState = orbStatesRef.current[0];
     if (parentState) {
+      // Update drag physics
+      [parentState.drag, parentState.dragV] = dampedSpring(
+        parentState.drag, parentState.dragTarget, parentState.dragV, 0.045, 0.9
+      );
+      
+      // Wobble on release
+      if (Math.abs(parentState.dragTarget) < 0.1 && Math.abs(parentState.drag) > 0.1) {
+        parentState.wobble += 0.04;
+        parentState.drag += Math.sin(parentState.wobble) * Math.abs(parentState.drag) * 0.13;
+      } else if (Math.abs(parentState.dragTarget) < 0.1) {
+        parentState.wobble = 0;
+      }
+      
+      // Decay drag slowly
+      parentState.dragTarget *= 0.95;
+      
       const parentPath = svg.querySelector('#parentOrb');
       if (parentPath) {
-        // Calculate parent position with optimized floating motion
-        const floatX = Math.sin(now * 0.0001) * 25;
-        const floatY = Math.cos(now * 0.00012) * 20;
-        const px = viewportRef.current.width * 0.7 + floatX;
-        const py = 190 + floatY;
+        // Parent drift within 20% of screen center
+        const driftX = Math.sin(now * 0.00011) * viewportRef.current.width * 0.09;
+        const driftY = Math.cos(now * 0.00009) * viewportRef.current.height * 0.08;
+        const px = viewportRef.current.width * 0.5 + driftX;
+        const py = viewportRef.current.height * 0.5 + driftY + parentState.drag * 0.3;
+        
+        // Parent starts to fade when drag is extreme
+        const parentFade = Math.max(0.3, Math.min(1, 1 - Math.abs(parentState.drag) / 500));
+        parentPath.setAttribute('opacity', parentFade);
         
         // Only update if in viewport
         if (px > cullBounds.left && px < cullBounds.right && 
             py > cullBounds.top && py < cullBounds.bottom) {
-          const morphT = now * 0.00015;
-          const path = generateOptimizedBlob(px, py, parentRadius, qualitySettings.parentPoints, morphT, 1, 0, blobCache.current);
+          const morphT = now * 0.0002;
+          const dragAmp = 1 + Math.abs(parentState.drag) * 0.008;
+          const path = generateOptimizedBlob(px, py, parentRadius + parentState.drag * 0.15, 
+            qualitySettings.parentPoints, morphT, dragAmp, 0, blobCache.current, 1);
           parentPath.setAttribute('d', path);
         }
       }
@@ -395,10 +463,12 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
         const state = orbStatesRef.current[i + 1];
         if (!state) continue;
         
-        // Calculate orbital position
-        state.orbitalAngle = (state.orbitalAngle || 0) + 0.008;
+        // Calculate orbital position with safe distance from parent
+        state.orbitalAngle = (state.orbitalAngle || 0) + 0.00022 * (state.orbitalSpeed || 1);
         const angle = state.orbitalAngle;
-        const radius = 60 + i * 15;
+        // Ensure children never overlap with parent (parent radius + child radius + buffer)
+        const safeDistance = parentRadius + childRadius + 50; // 50px buffer
+        const radius = safeDistance + i * 40; // Spread children out more
         
         const parentX = viewportRef.current.width * 0.7;
         const parentY = 190;
@@ -418,7 +488,7 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
         if (x > cullBounds.left && x < cullBounds.right && 
             y > cullBounds.top && y < cullBounds.bottom) {
           const morphT = now * 0.0002 + i * 10;
-          const path = generateOptimizedBlob(x, y, childRadius, points, morphT, 0.3, i, blobCache.current);
+          const path = generateOptimizedBlob(x, y, childRadius, points, morphT, 0.5, i, blobCache.current, state.uniqueShape || 1);
           childPath.setAttribute('d', path);
           
           // Update color gradient
@@ -483,29 +553,49 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
     mouseRef.current = { x: e.clientX, y: e.clientY };
   }, []);
   
-  const handleScroll = useCallback(() => {
-    const y = window.scrollY;
+  const handleScroll = useCallback((e) => {
+    const deltaY = e.deltaY || (window.scrollY - scrollRef.current.y);
+    const velocity = Math.max(-80, Math.min(80, deltaY * 0.5));
+    
+    // Apply drag to parent orb
+    orbStatesRef.current[0].dragTarget += velocity * 1.8;
+    
+    // Apply drag to each child with different sensitivities
+    orbStatesRef.current.slice(1).forEach((state, i) => {
+      state.dragTarget += velocity * (0.5 + i * 0.2);
+    });
+    
     scrollRef.current = {
-      y,
-      velocity: y - scrollRef.current.y
+      y: window.scrollY,
+      velocity: deltaY
     };
   }, []);
   
   // Initialize orb states
   useEffect(() => {
-    // Initialize parent orb
+    // Initialize parent orb with drag physics
     orbStatesRef.current = [{
       drag: 0, dragTarget: 0, dragV: 0,
+      wobble: 0,
       orbitalAngle: 0,
-      position: { x: 0, y: 0, z: 0 }
+      position: { x: 0, y: 0, z: 0 },
+      dissolveType: 'parent' // Parent has unique effect
     }];
     
-    // Initialize child orbs
+    // Initialize child orbs with unique characteristics
     for (let i = 0; i < childCount; i++) {
       orbStatesRef.current.push({
         orbitalAngle: (i * Math.PI * 2) / childCount,
-        orbitalSpeed: 0.5 + Math.random() * 1.0,
-        position: { x: 0, y: 0, z: 0 }
+        orbitalSpeed: 0.22 + i * 0.1, // Unique speed per child
+        uniqueShape: 0.7 + i * 0.06, // Each orb has slightly different morphing
+        position: { x: 0, y: 0, z: 0 },
+        // Unique disappearance effects
+        dissolveType: ['evaporate', 'spiral', 'shatter', 'fade', 'implode'][i],
+        drag: 0,
+        dragTarget: 0,
+        dragV: 0,
+        wobble: 0,
+        wasVisible: true
       });
     }
   }, [childCount]);
@@ -538,7 +628,7 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
     // Event listeners
     window.addEventListener('resize', handleResize);
     window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('wheel', handleScroll, { passive: false });
     
     // Start animation
     animationFrameRef.current = requestAnimationFrame(renderFrame);
@@ -556,6 +646,15 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
       blobCache.current.clear();
     };
   }, [childCount, handleResize, handleMouseMove, handleScroll, renderFrame]);
+  
+  // Helper function for spring physics
+  const dampedSpring = useCallback((current, target, velocity, stiffness, damping) => {
+    const force = (target - current) * stiffness;
+    velocity += force;
+    velocity *= damping;
+    current += velocity;
+    return [current, velocity];
+  }, []);
   
   return (
     <Box
