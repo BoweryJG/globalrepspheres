@@ -10,6 +10,14 @@ class MedicalSalesChatbot {
     this.conversationHistory = [];
     this.userProfile = null;
     this.systemPrompt = this.buildSystemPrompt();
+    
+    // Check for missing API keys
+    if (!this.apiKey || this.apiKey === 'your_openrouter_api_key_here') {
+      console.warn('OpenRouter API key is missing. Please add REACT_APP_OPENROUTER_API_KEY to your .env file');
+    }
+    if (!this.braveApiKey || this.braveApiKey === 'your_brave_api_key_here') {
+      console.warn('Brave Search API key is missing. Please add REACT_APP_BRAVE_API_KEY to your .env file');
+    }
   }
 
   buildSystemPrompt() {
@@ -66,6 +74,12 @@ Respond with only one of: SALES_REP, PHYSICIAN, PATIENT`;
   }
 
   async searchMedicalInformation(query) {
+    // Check if Brave API key is missing
+    if (!this.braveApiKey || this.braveApiKey === 'your_brave_api_key_here') {
+      console.warn('Brave Search API key is not configured. Skipping search functionality.');
+      return [];
+    }
+
     try {
       const response = await axios.get(BRAVE_SEARCH_API_ENDPOINT, {
         headers: {
@@ -91,6 +105,11 @@ Respond with only one of: SALES_REP, PHYSICIAN, PATIENT`;
   }
 
   async callClaudeAPI(userMessage, conversationHistory = [], isSystemMessage = false) {
+    // Check if API key is missing
+    if (!this.apiKey || this.apiKey === 'your_openrouter_api_key_here') {
+      throw new Error('OpenRouter API key is not configured. Please add your API key to the .env file.');
+    }
+
     const messages = [
       {
         role: 'system',
@@ -121,6 +140,9 @@ Respond with only one of: SALES_REP, PHYSICIAN, PATIENT`;
       return response.data.choices[0].message.content;
     } catch (error) {
       console.error('Error calling Claude API:', error);
+      if (error.response?.status === 401) {
+        throw new Error('Invalid API key. Please check your OpenRouter API key.');
+      }
       throw error;
     }
   }
@@ -166,8 +188,19 @@ Respond with only one of: SALES_REP, PHYSICIAN, PATIENT`;
       };
     } catch (error) {
       console.error('Error processing message:', error);
+      
+      let errorMessage = "I apologize, but I'm experiencing technical difficulties.";
+      
+      if (error.message?.includes('API key')) {
+        errorMessage = "The chatbot is not properly configured. Please ensure the OpenRouter API key is set in the .env file. You need to:\n\n1. Get an API key from https://openrouter.ai/\n2. Add it to your .env file as REACT_APP_OPENROUTER_API_KEY\n3. Restart the development server";
+      } else if (error.response?.status === 429) {
+        errorMessage = "API rate limit exceeded. Please try again in a few moments.";
+      } else if (error.response?.status === 500) {
+        errorMessage = "The AI service is temporarily unavailable. Please try again later.";
+      }
+      
       return {
-        response: "I apologize, but I'm experiencing technical difficulties. Let me try to help you another way. What specific information are you looking for?",
+        response: errorMessage,
         userType: this.userProfile?.type || 'UNKNOWN',
         error: true
       };
