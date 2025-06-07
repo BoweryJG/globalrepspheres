@@ -86,8 +86,12 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
       return [hslToHex(baseHue, sat, light1), hslToHex(hue2, sat, light2)];
     }
     
-    const parentRadius = 50;  // Half size
-    const childRadius = 18;   // Half size
+    // Detect mobile for scaling
+    const isMobile = window.innerWidth <= 768;
+    const mobileScale = isMobile ? 0.5 : 1;
+    
+    const parentRadius = 50 * mobileScale;  // Half size, further reduced on mobile
+    const childRadius = 18 * mobileScale;   // Half size, further reduced on mobile
     const childPoints = 32;  // Reduced for performance
     const childAmp = 0.15;   // Much smaller amplitude for more spherical shape
     const childGradIds = [
@@ -164,6 +168,11 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     
+    // Track electrical connections
+    const connections = [];
+    let lastConnectionTime = 0;
+    const connectionCooldown = 15000 + Math.random() * 30000; // 15-45 seconds between connections
+    
     // Animation Interpolation Helpers
     function approach(current, target, speed) {
       return current + (target - current) * speed;
@@ -179,6 +188,64 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
     // Particle system
     const particlesGroup = svgRef.current.querySelector('#particles');
     let particles = [];
+    
+    // Electrical connection rendering
+    function renderConnections(now) {
+      const connectionsGroup = svgRef.current.querySelector('#connections');
+      connectionsGroup.innerHTML = '';
+      
+      const activeConnections = connections.filter(conn => {
+        const age = now - conn.startTime;
+        const progress = age / conn.duration;
+        
+        if (progress > 1) return false;
+        
+        // Fade in and out
+        const opacity = progress < 0.2 ? progress * 5 : 
+                       progress > 0.8 ? (1 - progress) * 5 : 1;
+        
+        // Create lightning-like path with subtle animation
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        const midX = (conn.x1 + conn.x2) / 2 + Math.sin(now * 0.01 + conn.seed) * 10;
+        const midY = (conn.y1 + conn.y2) / 2 + Math.cos(now * 0.01 + conn.seed * 2) * 10;
+        
+        // Create bezier curve with slight jitter
+        const jitter = 2;
+        const d = `M ${conn.x1} ${conn.y1} 
+                   Q ${midX + Math.random() * jitter - jitter/2} ${midY + Math.random() * jitter - jitter/2}, 
+                     ${conn.x2} ${conn.y2}`;
+        
+        path.setAttribute("d", d);
+        path.setAttribute("stroke", conn.color);
+        path.setAttribute("stroke-width", "0.5");
+        path.setAttribute("fill", "none");
+        path.setAttribute("opacity", opacity * 0.4);
+        path.setAttribute("filter", "url(#glow)");
+        
+        connectionsGroup.appendChild(path);
+        
+        // Add energy particles along the path
+        if (Math.random() < 0.3) {
+          const t = (progress * 2) % 1;
+          const px = conn.x1 * (1-t) + conn.x2 * t;
+          const py = conn.y1 * (1-t) + conn.y2 * t;
+          
+          const particle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          particle.setAttribute("cx", px);
+          particle.setAttribute("cy", py);
+          particle.setAttribute("r", 1);
+          particle.setAttribute("fill", conn.color);
+          particle.setAttribute("opacity", opacity * 0.6);
+          connectionsGroup.appendChild(particle);
+        }
+        
+        return true;
+      });
+      
+      // Update connections array
+      connections.length = 0;
+      connections.push(...activeConnections);
+    }
     
     function animateParticles() {
       particles = particles.filter(p => p.life > 0);
@@ -293,8 +360,28 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
         const state = orbStates[i + 1];
         const fam = getDynamicColorFamily(i, now);
         const tcol = 0.5 + 0.5 * Math.sin(now * 0.0005 + i);
-        svgRef.current.querySelector(`#c${i}s0`).setAttribute("stop-color", lerpColor(fam[0], fam[1], tcol));
-        svgRef.current.querySelector(`#c${i}s1`).setAttribute("stop-color", lerpColor(fam[1], fam[0], tcol));
+        const childColor1 = lerpColor(fam[0], fam[1], tcol);
+        const childColor2 = lerpColor(fam[1], fam[0], tcol);
+        svgRef.current.querySelector(`#c${i}s0`).setAttribute("stop-color", childColor1);
+        svgRef.current.querySelector(`#c${i}s1`).setAttribute("stop-color", childColor2);
+        
+        // Check for color sync (when child color is close to parent color)
+        const colorDistance = Math.abs(parseInt(childColor1.slice(1), 16) - parseInt(startColor.slice(1), 16));
+        const isColorSynced = colorDistance < 0x200000; // Threshold for "close" colors
+        
+        // Create connection when colors sync (rarely)
+        if (isColorSynced && 
+            now - lastConnectionTime > connectionCooldown &&
+            Math.random() < 0.02 && // 2% chance when synced
+            globalFade > 0.5) { // Only when visible
+          
+          // Will calculate positions after we know where the child is
+          state.pendingConnection = {
+            color: childColor1,
+            targetIndex: i
+          };
+          lastConnectionTime = now;
+        }
         
         // Simple orbit for children - ensure no overlap with parent
         const baseAngle = (now * 0.00022 + i * (2 * Math.PI / childCount));
@@ -331,8 +418,27 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
         
         // Skip rendering if invisible
         if (childOpacity === 0) continue;
+        
+        // Create connection if pending
+        if (state.pendingConnection && childOpacity > 0) {
+          connections.push({
+            x1: spiralX,
+            y1: spiralY,
+            x2: x,
+            y2: y,
+            color: state.pendingConnection.color,
+            startTime: now,
+            duration: 2000 + Math.random() * 1000, // 2-3 seconds
+            seed: Math.random() * Math.PI * 2
+          });
+          delete state.pendingConnection;
+        }
+        
         childrenGroup.appendChild(path);
       }
+      
+      // Render electrical connections
+      renderConnections(now);
       // No particles needed
       animationFrameRef.current = requestAnimationFrame(animate);
     }
@@ -378,7 +484,15 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
         }}
       >
         <g id="particles"></g>
+        <g id="connections"></g>
         <defs>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
           <radialGradient id="parentGrad" cx="50%" cy="50%" r="70%">
             <stop id="p0" offset="0%" stopColor="#00E5FF"/>
             <stop id="p1" offset="100%" stopColor="#5B3CFF"/>
