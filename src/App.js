@@ -4,6 +4,7 @@ import StarryBackground from './components/StarryBackground_Ultra';
 import StarryBackground_Enhanced from './components/StarryBackground_Enhanced';
 import AnimatedOrbHeroBG from './components/AnimatedOrbHeroBG_Optimized';
 import AnimatedOrbCanvas from './components/AnimatedOrbCanvas';
+import AnimatedOrbExact from './components/AnimatedOrbExact';
 import AnimatedOrbHeroBG_FullOptimized from './components/AnimatedOrbHeroBG_FullOptimized';
 import HeroSection from './components/HeroSection';
 import PhilosophicalOpenerSection from './components/PhilosophicalOpenerSection';
@@ -38,8 +39,8 @@ function App() {
   }, [performanceMode]);
 
   // Choose the appropriate components based on performance mode
-  // Use Canvas version for exact header_orb copy.html behavior
-  const OrbComponent = AnimatedOrbCanvas;
+  // Use exact SVG version that matches header_orb copy.html
+  const OrbComponent = AnimatedOrbExact;
   const StarComponent = performanceMode ? StarryBackground_Enhanced : StarryBackground;
 
   return (
