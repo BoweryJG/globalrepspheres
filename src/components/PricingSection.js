@@ -106,7 +106,7 @@ export default function PricingSection() {
         <Box sx={{ textAlign: 'center', mb: 8 }}>
           <Chip
             icon={<Bolt sx={{ fontSize: 16 }} />}
-            label="NEW PRICING: More Options, Better Value"
+            label="UPDATED PRICING: 5 Tiers Available"
             sx={{
               mb: 3,
               backgroundColor: 'rgba(0,255,198,0.1)',
