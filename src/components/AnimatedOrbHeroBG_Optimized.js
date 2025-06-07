@@ -255,10 +255,10 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
   const mouseRef = useRef({ x: 0, y: 0 });
   const scrollRef = useRef({ y: 0, velocity: 0 });
   
-  // Component-specific constants - matching header_orb copy.html
+  // Component-specific constants
   const childCount = 5;
-  const parentRadius = 100; // Larger parent orb
-  const childRadius = 36;    // Larger child orbs
+  const parentRadius = 36;  // Original size
+  const childRadius = 14;   // Original size
   
   const { updateGradientColors } = useOrbContext();
   
@@ -467,8 +467,8 @@ const AnimatedOrbHeroBG = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
         state.orbitalAngle = (state.orbitalAngle || 0) + 0.00022 * (state.orbitalSpeed || 1);
         const angle = state.orbitalAngle;
         // Ensure children never overlap with parent (parent radius + child radius + buffer)
-        const safeDistance = parentRadius + childRadius + 50; // 50px buffer
-        const radius = safeDistance + i * 40; // Spread children out more
+        const safeDistance = parentRadius + childRadius + 30; // 30px buffer
+        const radius = safeDistance + i * 20; // Original spacing
         
         const parentX = viewportRef.current.width * 0.7;
         const parentY = 190;
