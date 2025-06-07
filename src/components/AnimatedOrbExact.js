@@ -101,8 +101,9 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
       svg.setAttribute('width', vw);
       svg.setAttribute('height', vh);
       svg.setAttribute('viewBox', `0 0 ${vw} ${vh}`);
-      // Position to the right of center, below navbar
-      window.parentCenterBase = window.parentCenter = {x: vw * 0.7, y: 150};
+      // Position to the right of center, below navbar with more clearance
+      // Navbar ~80px + max orbit radius ~150px + parent movement ~15px
+      window.parentCenterBase = window.parentCenter = {x: vw * 0.7, y: 250};
       window.orbScale = 1; // No scaling needed since we already halved the sizes
     }
     adjustSVGSize();
@@ -253,7 +254,7 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
       // Animate parent orb's position - smaller movement area
       const {vw, vh} = window.viewportSize || {vw: 800, vh: 800};
       const px = window.parentCenterBase.x + Math.sin(now * 0.00011) * 30; // Smaller movement
-      const py = window.parentCenterBase.y + Math.cos(now * 0.00009) * 20; // Smaller movement
+      const py = window.parentCenterBase.y + Math.cos(now * 0.00009) * 15; // Only move down, not up
       window.parentCenter = {x: px, y: py};
       
       // Much subtler spiral effect
