@@ -84,8 +84,8 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
       return [hslToHex(baseHue, sat, light1), hslToHex(hue2, sat, light2)];
     }
     
-    const parentRadius = 100;
-    const childRadius = 36;
+    const parentRadius = 50;  // Half size
+    const childRadius = 18;   // Half size
     const childPoints = 48;
     const childAmp = 0.5;
     const childGradIds = [
@@ -107,7 +107,8 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
       svg.setAttribute('width', vw);
       svg.setAttribute('height', vh);
       svg.setAttribute('viewBox', `0 0 ${vw} ${vh}`);
-      window.parentCenterBase = window.parentCenter = {x: vw/2, y: vh/2};
+      // Position to the right of center, below navbar (assuming 80px navbar)
+      window.parentCenterBase = window.parentCenter = {x: vw * 0.7, y: 150};
       window.orbScale = scale;
     }
     adjustSVGSize();
@@ -159,20 +160,12 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
       orbStates.push(makeOrbState());
     }
     
-    // Scroll/Drag Gravity Effect
-    let lastWheelTime = 0;
-    const handleWheel = (e) => {
-      const now = performance.now();
-      const dt = Math.max(1, now - lastWheelTime);
-      lastWheelTime = now;
-      const velocity = Math.max(-80, Math.min(80, e.deltaY / dt * 120));
-      orbStates.forEach((state, i) => {
-        const angle = orbMorphDirections[i];
-        state.dragTarget += Math.sin(angle) * velocity * 1.8 + Math.cos(angle) * velocity * 0.7;
-      });
-      e.preventDefault();
+    // Track scroll position for spiral effect
+    let scrollY = 0;
+    const handleScroll = () => {
+      scrollY = window.scrollY;
     };
-    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('scroll', handleScroll, { passive: true });
     
     // Animation Interpolation Helpers
     function approach(current, target, speed) {
@@ -250,40 +243,30 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
         svgRef.current.querySelector(`#${stop.id}`).setAttribute("stop-color", hslToHex(hue, sat, light));
       }
       
-      // Animate orb morph states
-      for (let i = 0; i < orbStates.length; i++) {
-        const state = orbStates[i];
-        const spring = 0.045 * (1 + orbMorphSpeeds[i]);
-        const damping = 0.90 - orbMorphSpeeds[i] * 0.33;
-        [state.drag, state.dragV] = dampedSpring(state.drag, state.dragTarget, state.dragV, spring, damping);
-        if (Math.abs(state.dragTarget) < 0.1 && Math.abs(state.drag) > 0.1) {
-          state.wobble += 0.04 + orbMorphSpeeds[i] * 0.9;
-          state.drag += Math.sin(state.wobble) * Math.max(0, Math.abs(state.drag) * 0.13 * (1 + orbMorphSpeeds[i]));
-        } else if (Math.abs(state.dragTarget) < 0.1) {
-          state.wobble = 0;
-        }
-        state.dragTarget = approach(state.dragTarget, 0, 0.018 + orbMorphSpeeds[i] * 0.6);
-      }
+      // Calculate global fade based on scroll
+      const globalFade = Math.max(0, Math.min(1, 1 - (scrollY / 400)));
       
-      // Parent orb
-      const parentState = orbStates[0];
+      // Parent orb - no drag, just morphing
       const parentMorphT = now * 0.0004;
-      const parentDrag = parentState.drag;
-      const parentAngle = orbMorphDirections[0];
-      const parentDx = Math.cos(parentAngle) * parentDrag;
-      const parentDy = Math.sin(parentAngle) * parentDrag;
       const scale = window.orbScale || 1;
       
-      // Animate parent orb's position
+      // Animate parent orb's position - float between navbar and title
       const {vw, vh} = window.viewportSize || {vw: 800, vh: 800};
-      const px = window.parentCenterBase.x + Math.sin(now * 0.00011) * vw * 0.09 + Math.cos(now * 0.00007) * vw * 0.07;
-      const py = window.parentCenterBase.y + Math.cos(now * 0.00009) * vh * 0.08 + Math.sin(now * 0.00016) * vh * 0.06;
+      // Constrain floating to upper right area (between navbar ~80px and title ~300px)
+      const px = window.parentCenterBase.x + Math.sin(now * 0.00011) * 100;
+      const py = window.parentCenterBase.y + Math.cos(now * 0.00009) * 50;
       window.parentCenter = {x: px, y: py};
       
-      const parentR = (parentRadius + parentDrag * 0.15) * scale;
-      const parentAmp = (1 + Math.abs(parentDrag) * 0.008) * scale;
-      const parentPath = generateSuperSmoothBlob(px + parentDx * scale, py + parentDy * scale, parentR, 64, parentMorphT, parentAmp);
+      // Apply spiral effect based on scroll
+      const spiralAngle = (scrollY / 100) * Math.PI;
+      const spiralRadius = scrollY * 0.5;
+      const spiralX = px + Math.cos(spiralAngle) * spiralRadius;
+      const spiralY = py + Math.sin(spiralAngle) * spiralRadius;
+      
+      const parentR = parentRadius * scale;
+      const parentPath = generateSuperSmoothBlob(spiralX, spiralY, parentR, 64, parentMorphT, 1);
       parentOrb.setAttribute('d', parentPath);
+      parentOrb.setAttribute('opacity', 0.95 * globalFade);
       
       // Children
       childrenGroup.innerHTML = '';
@@ -294,69 +277,40 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
         svgRef.current.querySelector(`#c${i}s0`).setAttribute("stop-color", lerpColor(fam[0], fam[1], tcol));
         svgRef.current.querySelector(`#c${i}s1`).setAttribute("stop-color", lerpColor(fam[1], fam[0], tcol));
         
+        // Simple orbit for children
         const baseAngle = (now * 0.00022 + i * (2 * Math.PI / childCount));
-        const parentR = (parentRadius + state.drag * 0.15) * (window.orbScale || 1);
-        const minEdge = Math.min(
-          window.parentCenter.x,
-          vw - window.parentCenter.x,
-          window.parentCenter.y,
-          vh - window.parentCenter.y
-        );
-        const maxChildOrbit = Math.max(40, minEdge - parentR - childRadius * (window.orbScale || 1) - 16);
-        const orbitPhase = now * (0.00012 + 0.00007 * i) + i * 1.13;
-        const orbitWobble = Math.sin(orbitPhase) * 0.18 + Math.cos(orbitPhase * 0.7) * 0.09;
-        const minOrbit = parentR + childRadius * (window.orbScale || 1) + 12;
-        let rawOrbit = (parentR + 60 + (i * 0.71 + 1.4) * maxChildOrbit / childCount) * (0.7 + 0.23 * orbitWobble);
-        const orbitRadius = Math.max(rawOrbit, minOrbit);
-        const ellipseA = orbitRadius * 1.3 * (0.97 + 0.07 * Math.sin(now * 0.00013 + i));
-        const ellipseB = orbitRadius * 1.1 * (0.97 + 0.07 * Math.cos(now * 0.00016 + i * 2));
-        const angle = baseAngle + Math.sin(now * 0.00009 + i * 1.7) * 0.22;
-        const dragAngle = orbMorphDirections[i + 1];
-        const dx = Math.cos(dragAngle) * state.drag;
-        const dy = Math.sin(dragAngle) * state.drag;
-        const x = window.parentCenter.x + Math.cos(angle) * ellipseA + dx;
-        const y = window.parentCenter.y + Math.sin(angle) * ellipseB + dy;
-        const cR = (childRadius + state.drag * 0.08) * scale;
-        const cAmp = (childAmp + Math.abs(state.drag) * 0.006) * scale;
+        const orbitRadius = 80 + i * 20; // Smaller orbits
+        
+        // Base position
+        const baseX = window.parentCenter.x + Math.cos(baseAngle) * orbitRadius;
+        const baseY = window.parentCenter.y + Math.sin(baseAngle) * orbitRadius;
+        
+        // Each child has unique spiral path when scrolling
+        const childSpiralAngle = (scrollY / 80) * Math.PI + i * Math.PI / 3;
+        const childSpiralRadius = scrollY * (0.8 + i * 0.2);
+        const x = baseX + Math.cos(childSpiralAngle) * childSpiralRadius;
+        const y = baseY + Math.sin(childSpiralAngle) * childSpiralRadius;
+        
+        const cR = childRadius * scale;
+        const cAmp = childAmp * scale;
         const morphT = now * 0.0005 + i * 10;
         const childPath = generateSuperSmoothBlob(x * scale + (1 - scale) * window.parentCenter.x, y * scale + (1 - scale) * window.parentCenter.y, cR, childPoints, morphT, cAmp, i);
         const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
         path.setAttribute("d", childPath);
         path.setAttribute("fill", `url(#${childGradIds[i]})`);
         
-        const fadeStart = 40, fadeEnd = 340;
-        const fade = Math.min(1, Math.max(0, (fadeEnd - Math.abs(state.dragTarget)) / (fadeEnd - fadeStart)));
-        if (state.wasVisible === undefined) state.wasVisible = fade > 0.5;
-        if (fade < 0.5 && fade > 0.05) {
-          const color = lerpColor(fam[0], fam[1], tcol);
-          const emission = Math.ceil((0.5 - fade) * 12);
-          emitParticles(x, y, color, emission, i, now);
-          path.setAttribute("opacity", fade * 0.95);
-        }
-        else if (state.wasVisible && fade <= 0.05) {
-          const color = lerpColor(fam[0], fam[1], tcol);
-          emitParticles(x, y, color, 12, i, now);
-          path.setAttribute("opacity", 0);
-          state.wasVisible = false;
-        }
-        else if (!state.wasVisible && fade > 0.05) {
-          const color = lerpColor(fam[0], fam[1], tcol);
-          emitParticles(x, y, color, 9, i, now);
-          path.setAttribute("opacity", fade * 0.95);
-          state.wasVisible = true;
-        } else {
-          path.setAttribute("opacity", fade * 0.95);
-        }
+        // Simple fade with scroll
+        path.setAttribute("opacity", 0.95 * globalFade);
         childrenGroup.appendChild(path);
       }
-      animateParticles();
+      // No particles needed
       animationFrameRef.current = requestAnimationFrame(animate);
     }
     animate();
     
     return () => {
       window.removeEventListener('resize', adjustSVGSize);
-      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('scroll', handleScroll);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
