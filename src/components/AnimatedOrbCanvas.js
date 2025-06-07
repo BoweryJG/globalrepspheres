@@ -151,16 +151,24 @@ const AnimatedOrbCanvas = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
     const parentMorphT = now * 0.0004;
     const { path: parentPath } = generateSuperSmoothBlob(px, py, parentRadius, 64, parentMorphT, 1);
     
-    // Parent gradient
+    // Parent gradient - matching header_orb copy.html exactly
     const baseHue = (now * 0.01) % 360;
-    const parentGradient = ctx.createRadialGradient(px, py, 0, px, py, parentRadius * 0.7);
-    for (let i = 0; i < 4; i++) {
-      const phase = i * Math.PI * 0.5;
-      const hue = (baseHue + 60 * Math.sin(now * 0.00015 + phase)) % 360;
-      const sat = 80 + 10 * Math.sin(now * 0.0002 + phase);
-      const light = 60 + 10 * Math.cos(now * 0.00018 + phase);
-      parentGradient.addColorStop(i / 3, hslToHex(hue < 0 ? hue + 360 : hue, sat, light));
-    }
+    const parentGradient = ctx.createRadialGradient(px, py, 0, px, py, parentRadius);
+    
+    // Multiple color stops with phase offsets for fluid spectrum effect
+    const stops = [
+      { offset: 0, phase: 0 },
+      { offset: 0.5, phase: Math.PI },
+      { offset: 0.75, phase: Math.PI * 1.5 },
+      { offset: 1, phase: Math.PI * 0.5 }
+    ];
+    
+    stops.forEach(stop => {
+      const hue = (baseHue + 60 * Math.sin(now * 0.00015 + stop.phase)) % 360;
+      const sat = 80 + 10 * Math.sin(now * 0.0002 + stop.phase);
+      const light = 60 + 10 * Math.cos(now * 0.00018 + stop.phase);
+      parentGradient.addColorStop(stop.offset, hslToHex(hue < 0 ? hue + 360 : hue, sat, light));
+    });
     
     ctx.fillStyle = parentGradient;
     ctx.globalAlpha = 0.95 * globalFade;
@@ -183,9 +191,10 @@ const AnimatedOrbCanvas = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
       const morphT = now * 0.0005 + i * 10;
       const { path: childPath } = generateSuperSmoothBlob(x, y, childRadius, childPoints, morphT, childAmp, i);
       
-      // Draw child orb
-      const childGradient = ctx.createRadialGradient(x, y, 0, x, y, childRadius * 0.7);
+      // Draw child orb with richer gradient
+      const childGradient = ctx.createRadialGradient(x, y, 0, x, y, childRadius);
       childGradient.addColorStop(0, lerpColor(fam[0], fam[1], tcol));
+      childGradient.addColorStop(0.7, lerpColor(fam[1], fam[0], tcol * 0.5));
       childGradient.addColorStop(1, lerpColor(fam[1], fam[0], tcol));
       
       ctx.fillStyle = childGradient;
