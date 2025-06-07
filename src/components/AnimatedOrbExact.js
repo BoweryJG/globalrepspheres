@@ -86,30 +86,24 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
     
     const parentRadius = 50;  // Half size
     const childRadius = 18;   // Half size
-    const childPoints = 48;
-    const childAmp = 0.5;
+    const childPoints = 32;  // Reduced for performance
+    const childAmp = 0.15;   // Much smaller amplitude for more spherical shape
     const childGradIds = [
       "childGrad0", "childGrad1", "childGrad2", "childGrad3", "childGrad4"
     ];
     
-    // Dynamically resize SVG to fit all orbs
+    // Simple resize handler
     function adjustSVGSize() {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
       window.viewportSize = {vw, vh};
-      const maxChildIndex = childCount - 1;
-      const maxOrbit = parentRadius + 120 + maxChildIndex * 40;
-      const maxReach = maxOrbit + childRadius + 8;
-      const minDim = Math.min(vw, vh);
-      const scale = minDim / (maxReach * 2);
-      const size = maxReach * 2 * scale;
       const svg = svgRef.current;
       svg.setAttribute('width', vw);
       svg.setAttribute('height', vh);
       svg.setAttribute('viewBox', `0 0 ${vw} ${vh}`);
-      // Position to the right of center, below navbar (assuming 80px navbar)
+      // Position to the right of center, below navbar
       window.parentCenterBase = window.parentCenter = {x: vw * 0.7, y: 150};
-      window.orbScale = scale;
+      window.orbScale = 1; // No scaling needed since we already halved the sizes
     }
     adjustSVGSize();
     window.addEventListener('resize', adjustSVGSize);
@@ -243,28 +237,33 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
         svgRef.current.querySelector(`#${stop.id}`).setAttribute("stop-color", hslToHex(hue, sat, light));
       }
       
-      // Calculate global fade based on scroll
-      const globalFade = Math.max(0, Math.min(1, 1 - (scrollY / 400)));
+      // More subtle fade - starts fading at 200px, fully faded at 600px
+      const globalFade = Math.max(0, Math.min(1, 1 - ((scrollY - 200) / 400)));
+      
+      // Skip rendering if completely faded
+      if (globalFade <= 0) {
+        animationFrameRef.current = requestAnimationFrame(animate);
+        return;
+      }
       
       // Parent orb - no drag, just morphing
       const parentMorphT = now * 0.0004;
       const scale = window.orbScale || 1;
       
-      // Animate parent orb's position - float between navbar and title
+      // Animate parent orb's position - smaller movement area
       const {vw, vh} = window.viewportSize || {vw: 800, vh: 800};
-      // Constrain floating to upper right area (between navbar ~80px and title ~300px)
-      const px = window.parentCenterBase.x + Math.sin(now * 0.00011) * 100;
-      const py = window.parentCenterBase.y + Math.cos(now * 0.00009) * 50;
+      const px = window.parentCenterBase.x + Math.sin(now * 0.00011) * 30; // Smaller movement
+      const py = window.parentCenterBase.y + Math.cos(now * 0.00009) * 20; // Smaller movement
       window.parentCenter = {x: px, y: py};
       
-      // Apply spiral effect based on scroll
-      const spiralAngle = (scrollY / 100) * Math.PI;
-      const spiralRadius = scrollY * 0.5;
+      // Much subtler spiral effect
+      const spiralAngle = (scrollY / 300) * Math.PI;
+      const spiralRadius = Math.min(scrollY * 0.1, 50); // Cap the spiral radius
       const spiralX = px + Math.cos(spiralAngle) * spiralRadius;
       const spiralY = py + Math.sin(spiralAngle) * spiralRadius;
       
       const parentR = parentRadius * scale;
-      const parentPath = generateSuperSmoothBlob(spiralX, spiralY, parentR, 64, parentMorphT, 1);
+      const parentPath = generateSuperSmoothBlob(spiralX, spiralY, parentR, 48, parentMorphT, 0.2); // Less points, smaller amplitude
       parentOrb.setAttribute('d', parentPath);
       parentOrb.setAttribute('opacity', 0.95 * globalFade);
       
@@ -279,22 +278,21 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
         
         // Simple orbit for children
         const baseAngle = (now * 0.00022 + i * (2 * Math.PI / childCount));
-        const orbitRadius = 80 + i * 20; // Smaller orbits
+        const orbitRadius = 60 + i * 15; // Tighter orbits
         
         // Base position
         const baseX = window.parentCenter.x + Math.cos(baseAngle) * orbitRadius;
         const baseY = window.parentCenter.y + Math.sin(baseAngle) * orbitRadius;
         
-        // Each child has unique spiral path when scrolling
-        const childSpiralAngle = (scrollY / 80) * Math.PI + i * Math.PI / 3;
-        const childSpiralRadius = scrollY * (0.8 + i * 0.2);
+        // Subtler spiral effect for children
+        const childSpiralAngle = (scrollY / 200) * Math.PI + i * Math.PI / 4;
+        const childSpiralRadius = Math.min(scrollY * 0.15, 40); // Cap movement
         const x = baseX + Math.cos(childSpiralAngle) * childSpiralRadius;
         const y = baseY + Math.sin(childSpiralAngle) * childSpiralRadius;
         
-        const cR = childRadius * scale;
-        const cAmp = childAmp * scale;
+        const cR = childRadius;
         const morphT = now * 0.0005 + i * 10;
-        const childPath = generateSuperSmoothBlob(x * scale + (1 - scale) * window.parentCenter.x, y * scale + (1 - scale) * window.parentCenter.y, cR, childPoints, morphT, cAmp, i);
+        const childPath = generateSuperSmoothBlob(x, y, cR, childPoints, morphT, childAmp, i);
         const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
         path.setAttribute("d", childPath);
         path.setAttribute("fill", `url(#${childGradIds[i]})`);
