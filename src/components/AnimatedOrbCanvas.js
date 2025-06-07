@@ -5,12 +5,11 @@ const AnimatedOrbCanvas = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
   const canvasRef = useRef(null);
   const animationFrameRef = useRef(null);
   const viewportRef = useRef({ width: 800, height: 800 });
+  const scrollYRef = useRef(0);
   
-  // Orb states matching header_orb copy.html exactly
+  // Orb states
   const orbStatesRef = useRef([]);
   const particlesRef = useRef([]);
-  const lastWheelTimeRef = useRef(0);
-  const parentCenterBaseRef = useRef({ x: 400, y: 400 });
   const parentCenterRef = useRef({ x: 400, y: 400 });
   
   // Constants from header_orb copy.html
@@ -103,93 +102,19 @@ const AnimatedOrbCanvas = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
   };
 
   // Initialize orb states
-  const makeOrbState = () => ({
-    drag: 0,
-    dragTarget: 0,
-    dragV: 0,
-    squash: 0,
-    squashTarget: 0,
-    squashV: 0,
-    mouseDir: 0,
-    mouseDirTarget: 0,
-    mouseDirV: 0,
-    wobble: 0,
-    lastUpdate: performance.now(),
-  });
-
-  // Orb morph directions and speeds
-  const orbMorphDirections = useRef([]);
-  const orbMorphSpeeds = useRef([]);
-
-  // Initialize states
   useEffect(() => {
-    // Parent orb: slowest, morphs mostly vertical
-    orbMorphDirections.current[0] = Math.PI / 2;
-    orbMorphSpeeds.current[0] = 0.012;
-
-    // Children: varied directions and speeds
-    for (let i = 0; i < childCount; i++) {
-      const angle = Math.PI / 2 + (i - (childCount - 1) / 2) * (Math.PI / 8) + (Math.random() - 0.5) * (Math.PI / 12);
-      orbMorphDirections.current[i + 1] = angle;
-      orbMorphSpeeds.current[i + 1] = 0.014 + i * 0.004 + Math.random() * 0.003;
-    }
-
-    // Create orb states
     orbStatesRef.current = [];
     for (let i = 0; i <= childCount; i++) {
-      orbStatesRef.current.push(makeOrbState());
-    }
-  }, []);
-
-  // Handle scroll/wheel
-  const handleWheel = useCallback((e) => {
-    const now = performance.now();
-    const dt = Math.max(1, now - lastWheelTimeRef.current);
-    lastWheelTimeRef.current = now;
-    
-    const velocity = Math.max(-80, Math.min(80, e.deltaY / dt * 120));
-    
-    // Set dragTarget for all orbs
-    orbStatesRef.current.forEach((state, i) => {
-      const angle = orbMorphDirections.current[i];
-      state.dragTarget += Math.sin(angle) * velocity * 1.8 + Math.cos(angle) * velocity * 0.7;
-    });
-    
-    e.preventDefault();
-  }, []);
-
-  // Spring physics
-  const approach = (current, target, speed) => current + (target - current) * speed;
-  
-  const dampedSpring = (current, target, velocity, stiffness, damping) => {
-    const force = (target - current) * stiffness;
-    velocity += force;
-    velocity *= damping;
-    current += velocity;
-    return [current, velocity];
-  };
-
-  // Particle system
-  const emitParticles = useCallback((x, y, color, count = 3, i = 0, now = 0) => {
-    for (let j = 0; j < count; j++) {
-      let h = (i * 67 + now * 0.018) % 360 + (Math.random() - 0.5) * 24;
-      let s = 85 + Math.random() * 10;
-      let l = 55 + Math.random() * 20;
-      const particleColor = hslToHex(h, s, l);
-      const angle = Math.random() * 2 * Math.PI;
-      const speed = 0.4 + Math.random() * 0.7;
-      const vx = Math.cos(angle) * speed;
-      const vy = Math.sin(angle) * speed;
-      
-      particlesRef.current.push({
-        x, y, vx, vy,
-        r: 1.1 + Math.random() * 1.2,
-        life: 0.6,
-        decay: 0.025 + Math.random() * 0.015,
-        color: particleColor,
-        opacity: 0.45
+      orbStatesRef.current.push({
+        orbitalSpeed: 0.22 + i * 0.1,
+        orbitalAngle: (i * Math.PI * 2) / childCount
       });
     }
+  }, []);
+
+  // Handle scroll for gentle fade
+  const handleScroll = useCallback(() => {
+    scrollYRef.current = window.scrollY;
   }, []);
 
   // Main animation loop
@@ -208,47 +133,27 @@ const AnimatedOrbCanvas = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
     // Clear canvas
     ctx.clearRect(0, 0, vw, vh);
     
-    // Animate parent gradient
-    const baseHue = (now * 0.01) % 360;
+    // Calculate global fade based on scroll
+    const globalFade = Math.max(0, Math.min(1, 1 - (scrollYRef.current / 400)));
     
-    // Update orb physics
-    for (let i = 0; i < orbStatesRef.current.length; i++) {
-      const state = orbStatesRef.current[i];
-      const spring = 0.045 * (1 + orbMorphSpeeds.current[i]);
-      const damping = 0.90 - orbMorphSpeeds.current[i] * 0.33;
-      
-      [state.drag, state.dragV] = dampedSpring(state.drag, state.dragTarget, state.dragV, spring, damping);
-      
-      // Wobble
-      if (Math.abs(state.dragTarget) < 0.1 && Math.abs(state.drag) > 0.1) {
-        state.wobble += 0.04 + orbMorphSpeeds.current[i] * 0.9;
-        state.drag += Math.sin(state.wobble) * Math.max(0, Math.abs(state.drag) * 0.13 * (1 + orbMorphSpeeds.current[i]));
-      } else if (Math.abs(state.dragTarget) < 0.1) {
-        state.wobble = 0;
-      }
-      
-      state.dragTarget = approach(state.dragTarget, 0, 0.018 + orbMorphSpeeds.current[i] * 0.6);
+    // Skip rendering if completely faded
+    if (globalFade <= 0) {
+      animationFrameRef.current = requestAnimationFrame(animate);
+      return;
     }
     
-    // Parent orb
-    const parentState = orbStatesRef.current[0];
-    const parentMorphT = now * 0.0004;
-    const parentDrag = parentState.drag;
-    const parentAngle = orbMorphDirections.current[0];
-    const parentDx = Math.cos(parentAngle) * parentDrag;
-    const parentDy = Math.sin(parentAngle) * parentDrag;
-    
-    // Parent position with drift
-    const px = vw/2 + Math.sin(now * 0.00011) * vw * 0.09 + Math.cos(now * 0.00007) * vw * 0.07;
-    const py = vh/2 + Math.cos(now * 0.00009) * vh * 0.08 + Math.sin(now * 0.00016) * vh * 0.06;
+    // Parent position in upper right with subtle drift
+    const px = vw * 0.7 + Math.sin(now * 0.00011) * 25;
+    const py = 190 + Math.cos(now * 0.00012) * 20;
     parentCenterRef.current = { x: px, y: py };
     
-    const parentR = parentRadius + parentDrag * 0.15;
-    const parentAmp = 1 + Math.abs(parentDrag) * 0.008;
-    const { path: parentPath } = generateSuperSmoothBlob(px + parentDx, py + parentDy, parentR, 64, parentMorphT, parentAmp);
+    // Parent orb
+    const parentMorphT = now * 0.0004;
+    const { path: parentPath } = generateSuperSmoothBlob(px, py, parentRadius, 64, parentMorphT, 1);
     
     // Parent gradient
-    const parentGradient = ctx.createRadialGradient(px, py, 0, px, py, parentR * 0.7);
+    const baseHue = (now * 0.01) % 360;
+    const parentGradient = ctx.createRadialGradient(px, py, 0, px, py, parentRadius * 0.7);
     for (let i = 0; i < 4; i++) {
       const phase = i * Math.PI * 0.5;
       const hue = (baseHue + 60 * Math.sin(now * 0.00015 + phase)) % 360;
@@ -258,7 +163,7 @@ const AnimatedOrbCanvas = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
     }
     
     ctx.fillStyle = parentGradient;
-    ctx.globalAlpha = 0.95;
+    ctx.globalAlpha = 0.95 * globalFade;
     ctx.fill(parentPath);
     
     // Children
@@ -267,81 +172,29 @@ const AnimatedOrbCanvas = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
       const fam = getDynamicColorFamily(i, now);
       const tcol = 0.5 + 0.5 * Math.sin(now * 0.0005 + i);
       
-      const baseAngle = (now * 0.00022 + i * (2 * Math.PI / childCount));
-      const orbitPhase = now * (0.00012 + 0.00007 * i) + i * 1.13;
-      const orbitWobble = Math.sin(orbitPhase) * 0.18 + Math.cos(orbitPhase * 0.7) * 0.09;
+      // Update orbital angle
+      state.orbitalAngle += 0.00022 * state.orbitalSpeed;
       
-      const minEdge = Math.min(px, vw - px, py, vh - py);
-      const maxChildOrbit = Math.max(40, minEdge - parentR - childRadius - 16);
-      const minOrbit = parentR + childRadius + 12;
-      let rawOrbit = (parentR + 60 + (i * 0.71 + 1.4) * maxChildOrbit / childCount) * (0.7 + 0.23 * orbitWobble);
-      const orbitRadius = Math.max(rawOrbit, minOrbit);
+      // Calculate position
+      const radius = 160 + i * 25;
+      const x = px + Math.cos(state.orbitalAngle) * radius;
+      const y = py + Math.sin(state.orbitalAngle) * radius;
       
-      const ellipseA = orbitRadius * 1.3 * (0.97 + 0.07 * Math.sin(now * 0.00013 + i));
-      const ellipseB = orbitRadius * 1.1 * (0.97 + 0.07 * Math.cos(now * 0.00016 + i * 2));
-      const angle = baseAngle + Math.sin(now * 0.00009 + i * 1.7) * 0.22;
-      
-      const dragAngle = orbMorphDirections.current[i + 1];
-      const dx = Math.cos(dragAngle) * state.drag;
-      const dy = Math.sin(dragAngle) * state.drag;
-      const x = px + Math.cos(angle) * ellipseA + dx;
-      const y = py + Math.sin(angle) * ellipseB + dy;
-      
-      const cR = childRadius + state.drag * 0.08;
-      const cAmp = childAmp + Math.abs(state.drag) * 0.006;
       const morphT = now * 0.0005 + i * 10;
-      const { path: childPath } = generateSuperSmoothBlob(x, y, cR, childPoints, morphT, cAmp, i);
-      
-      // Fade based on drag
-      const fadeStart = 40, fadeEnd = 340;
-      const fade = Math.min(1, Math.max(0, (fadeEnd - Math.abs(state.dragTarget)) / (fadeEnd - fadeStart)));
-      
-      // Track visibility
-      if (state.wasVisible === undefined) state.wasVisible = fade > 0.5;
-      
-      // Emit particles on state change
-      if (fade < 0.5 && fade > 0.05) {
-        const emission = Math.ceil((0.5 - fade) * 12);
-        emitParticles(x, y, lerpColor(fam[0], fam[1], tcol), emission, i, now);
-      } else if (state.wasVisible && fade <= 0.05) {
-        emitParticles(x, y, lerpColor(fam[0], fam[1], tcol), 12, i, now);
-        state.wasVisible = false;
-      } else if (!state.wasVisible && fade > 0.05) {
-        emitParticles(x, y, lerpColor(fam[0], fam[1], tcol), 9, i, now);
-        state.wasVisible = true;
-      }
+      const { path: childPath } = generateSuperSmoothBlob(x, y, childRadius, childPoints, morphT, childAmp, i);
       
       // Draw child orb
-      const childGradient = ctx.createRadialGradient(x, y, 0, x, y, cR * 0.7);
+      const childGradient = ctx.createRadialGradient(x, y, 0, x, y, childRadius * 0.7);
       childGradient.addColorStop(0, lerpColor(fam[0], fam[1], tcol));
       childGradient.addColorStop(1, lerpColor(fam[1], fam[0], tcol));
       
       ctx.fillStyle = childGradient;
-      ctx.globalAlpha = fade * 0.95;
+      ctx.globalAlpha = globalFade * 0.95;
       ctx.fill(childPath);
     }
     
-    // Update particles
-    particlesRef.current = particlesRef.current.filter(p => {
-      p.x += p.vx;
-      p.y += p.vy;
-      p.vx *= 0.98;
-      p.vy *= 0.98;
-      p.life -= p.decay;
-      
-      if (p.life <= 0) return false;
-      
-      ctx.globalAlpha = p.opacity * p.life;
-      ctx.fillStyle = p.color;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r * p.life, 0, Math.PI * 2);
-      ctx.fill();
-      
-      return true;
-    });
-    
     animationFrameRef.current = requestAnimationFrame(animate);
-  }, [emitParticles]);
+  }, []);
 
   // Handle resize
   const handleResize = useCallback(() => {
@@ -354,25 +207,24 @@ const AnimatedOrbCanvas = ({ zIndex = 0, sx = {}, style = {}, className = "" }) 
     canvas.width = vw;
     canvas.height = vh;
     viewportRef.current = { width: vw, height: vh };
-    parentCenterBaseRef.current = { x: vw / 2, y: vh / 2 };
   }, []);
 
   // Setup
   useEffect(() => {
     handleResize();
     window.addEventListener('resize', handleResize);
-    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('scroll', handleScroll, { passive: true });
     
     animationFrameRef.current = requestAnimationFrame(animate);
     
     return () => {
       window.removeEventListener('resize', handleResize);
-      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('scroll', handleScroll);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [handleResize, handleWheel, animate]);
+  }, [handleResize, handleScroll, animate]);
 
   return (
     <Box
