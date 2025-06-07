@@ -276,17 +276,25 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
         svgRef.current.querySelector(`#c${i}s0`).setAttribute("stop-color", lerpColor(fam[0], fam[1], tcol));
         svgRef.current.querySelector(`#c${i}s1`).setAttribute("stop-color", lerpColor(fam[1], fam[0], tcol));
         
-        // Simple orbit for children
+        // Simple orbit for children - ensure no overlap with parent
         const baseAngle = (now * 0.00022 + i * (2 * Math.PI / childCount));
-        const orbitRadius = 60 + i * 15; // Tighter orbits
+        // Start orbit outside parent orb (parentRadius + childRadius + buffer)
+        const minOrbitRadius = parentRadius + childRadius + 20; // 20px buffer
+        const orbitRadius = minOrbitRadius + i * 15;
+        
+        // Calculate child fade first
+        const childFadeStart = 100 + i * 20;
+        const childFadeRange = 200;
+        const childFade = Math.max(0, Math.min(1, 1 - ((scrollY - childFadeStart) / childFadeRange)));
         
         // Base position
         const baseX = window.parentCenter.x + Math.cos(baseAngle) * orbitRadius;
         const baseY = window.parentCenter.y + Math.sin(baseAngle) * orbitRadius;
         
-        // Subtler spiral effect for children
-        const childSpiralAngle = (scrollY / 200) * Math.PI + i * Math.PI / 4;
-        const childSpiralRadius = Math.min(scrollY * 0.15, 40); // Cap movement
+        // Children spiral away as they fade
+        const fadeProgress = 1 - childFade; // 0 when visible, 1 when faded
+        const childSpiralAngle = (fadeProgress * Math.PI * 2) + i * Math.PI / 3;
+        const childSpiralRadius = fadeProgress * 100; // Move away as they fade
         const x = baseX + Math.cos(childSpiralAngle) * childSpiralRadius;
         const y = baseY + Math.sin(childSpiralAngle) * childSpiralRadius;
         
@@ -297,8 +305,8 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
         path.setAttribute("d", childPath);
         path.setAttribute("fill", `url(#${childGradIds[i]})`);
         
-        // Simple fade with scroll
-        path.setAttribute("opacity", 0.95 * globalFade);
+        // Set opacity based on fade
+        path.setAttribute("opacity", 0.95 * childFade);
         childrenGroup.appendChild(path);
       }
       // No particles needed
