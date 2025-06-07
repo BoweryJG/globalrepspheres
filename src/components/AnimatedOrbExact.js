@@ -238,8 +238,8 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
         svgRef.current.querySelector(`#${stop.id}`).setAttribute("stop-color", hslToHex(hue, sat, light));
       }
       
-      // More subtle fade - starts fading at 200px, fully faded at 600px
-      const globalFade = Math.max(0, Math.min(1, 1 - ((scrollY - 200) / 400)));
+      // More aggressive fade - starts fading at 150px, fully faded at 450px
+      const globalFade = Math.max(0, Math.min(1, 1 - ((scrollY - 150) / 300)));
       
       // Skip rendering if completely faded
       if (globalFade <= 0) {
@@ -266,7 +266,10 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
       const parentR = parentRadius * scale;
       const parentPath = generateSuperSmoothBlob(spiralX, spiralY, parentR, 48, parentMorphT, 0.2); // Less points, smaller amplitude
       parentOrb.setAttribute('d', parentPath);
-      parentOrb.setAttribute('opacity', 0.95 * globalFade);
+      
+      // Ensure parent completely disappears
+      const parentOpacity = globalFade < 0.01 ? 0 : 0.95 * globalFade;
+      parentOrb.setAttribute('opacity', parentOpacity);
       
       // Children
       childrenGroup.innerHTML = '';
@@ -283,9 +286,9 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
         const minOrbitRadius = parentRadius + childRadius + 20; // 20px buffer
         const orbitRadius = minOrbitRadius + i * 15;
         
-        // Calculate child fade first
-        const childFadeStart = 100 + i * 20;
-        const childFadeRange = 200;
+        // Calculate child fade first - more aggressive
+        const childFadeStart = 50 + i * 15; // Start earlier
+        const childFadeRange = 150; // Fade faster
         const childFade = Math.max(0, Math.min(1, 1 - ((scrollY - childFadeStart) / childFadeRange)));
         
         // Base position
@@ -306,8 +309,12 @@ const AnimatedOrbExact = ({ zIndex = 0, sx = {}, style = {}, className = "" }) =
         path.setAttribute("d", childPath);
         path.setAttribute("fill", `url(#${childGradIds[i]})`);
         
-        // Set opacity based on fade
-        path.setAttribute("opacity", 0.95 * childFade);
+        // Set opacity based on fade - ensure complete disappearance
+        const childOpacity = childFade < 0.01 ? 0 : 0.95 * childFade;
+        path.setAttribute("opacity", childOpacity);
+        
+        // Skip rendering if invisible
+        if (childOpacity === 0) continue;
         childrenGroup.appendChild(path);
       }
       // No particles needed
