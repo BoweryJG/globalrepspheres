@@ -6,13 +6,8 @@ const BRAVE_SEARCH_API_ENDPOINT = 'https://api.search.brave.com/res/v1/web/searc
 class MedicalSalesChatbot {
   constructor() {
     // In React, environment variables are injected at build time
-    // Hardcode the keys temporarily if env vars aren't loading
-    this.apiKey = process.env.REACT_APP_OPENROUTER_API_KEY || 
-                  window.REACT_APP_OPENROUTER_API_KEY || 
-                  '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';
-    this.braveApiKey = process.env.REACT_APP_BRAVE_API_KEY || 
-                       window.REACT_APP_BRAVE_API_KEY || 
-                       'BSA7nbO164XhYNs4OQp3ta5S8QisG3N';
+    this.apiKey = process.env.REACT_APP_OPENROUTER_API_KEY || window.REACT_APP_OPENROUTER_API_KEY;
+    this.braveApiKey = process.env.REACT_APP_BRAVE_API_KEY || window.REACT_APP_BRAVE_API_KEY;
     this.conversationHistory = [];
     this.userProfile = null;
     this.systemPrompt = this.buildSystemPrompt();
@@ -197,8 +192,8 @@ Respond with only one of: SALES_REP, PHYSICIAN, PATIENT`;
       
       let errorMessage = "I apologize, but I'm experiencing technical difficulties.";
       
-      if (error.message?.includes('API key')) {
-        errorMessage = "The chatbot is not properly configured. Please ensure the OpenRouter API key is set in the .env file. You need to:\n\n1. Get an API key from https://openrouter.ai/\n2. Add it to your .env file as REACT_APP_OPENROUTER_API_KEY\n3. Restart the development server";
+      if (error.message?.includes('API key') || error.response?.status === 401) {
+        errorMessage = "The OpenRouter API key is invalid or expired. To fix this:\n\n1. Go to https://openrouter.ai/ and sign in\n2. Go to your API Keys section\n3. Create a new API key\n4. Replace the old key in your .env file:\n   REACT_APP_OPENROUTER_API_KEY=your_new_key_here\n5. Stop the server (Ctrl+C) and restart with 'npm start'\n\nNote: The current API key in your .env appears to be invalid.";
       } else if (error.response?.status === 429) {
         errorMessage = "API rate limit exceeded. Please try again in a few moments.";
       } else if (error.response?.status === 500) {
