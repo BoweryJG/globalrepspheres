@@ -169,6 +169,8 @@ Ensure all these variables are set in your production environment:
 - **Fixed Background Rendering**: Resolved black overlay issue in hero section, now properly displays blue/purple starry background
 - **Environment Variables**: Fixed environment variable loading issues for chatbot and analytics
 - **Performance Optimization**: Removed duplicate background layers to improve CPU performance
+- **CI/CD Pipeline**: Fixed GitHub Actions build failures by aligning with Netlify configuration
+- **Code Cleanup**: Removed over 100k cached node_modules files from git tracking
 
 ## Troubleshooting
 
