@@ -5,8 +5,9 @@ const BRAVE_SEARCH_API_ENDPOINT = 'https://api.search.brave.com/res/v1/web/searc
 
 class MedicalSalesChatbot {
   constructor() {
-    this.apiKey = process.env.REACT_APP_OPENROUTER_API_KEY;
-    this.braveApiKey = process.env.REACT_APP_BRAVE_API_KEY;
+    // In React, environment variables are injected at build time
+    this.apiKey = process.env.REACT_APP_OPENROUTER_API_KEY || window.REACT_APP_OPENROUTER_API_KEY;
+    this.braveApiKey = process.env.REACT_APP_BRAVE_API_KEY || window.REACT_APP_BRAVE_API_KEY;
     this.conversationHistory = [];
     this.userProfile = null;
     this.systemPrompt = this.buildSystemPrompt();
