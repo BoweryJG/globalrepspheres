@@ -18,6 +18,7 @@ import OrbContextProvider from './components/OrbContextProvider';
 import { AuthProvider } from './contexts/AuthContext';
 import Footer from './components/Footer';
 import PerformanceMonitor from './components/PerformanceMonitor';
+import HarveyChatLauncher from './components/HarveyChatLauncher';
 function App() {
   const [performanceMode, setPerformanceMode] = useState(() => {
     // Check localStorage for saved preference
@@ -63,6 +64,7 @@ function App() {
         <PricingSection />
         <Footer />
         {showPerformanceMonitor && <PerformanceMonitor />}
+        <HarveyChatLauncher />
       </AuthProvider>
     </OrbContextProvider>
   );
