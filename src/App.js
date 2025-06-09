@@ -51,7 +51,6 @@ function App() {
       <AuthProvider>
         <StarComponent />
         <NavBar />
-        <EnvTest />
         <OrbComponent zIndex={5} />
         <HeroSectionEnhanced />
         <PhilosophicalOpenerSection />
