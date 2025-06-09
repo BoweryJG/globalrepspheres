@@ -1,0 +1,623 @@
+
+> freshcleanrepspheres@0.1.0 start
+> react-app-rewired start
+
+(node:93324) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:93324) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+Starting the development server...
+
+Compiled with warnings.
+
+[eslint] 
+src/App.js
+  Line 6:8:  'HeroSection' is defined but never used  no-unused-vars
+
+src/components/AnimatedOrbExact.js
+  Line 14:14:   'lerp' is defined but never used                                                                                         no-unused-vars
+  Line 188:14:  'approach' is defined but never used                                                                                     no-unused-vars
+  Line 191:14:  'dampedSpring' is defined but never used                                                                                 no-unused-vars
+  Line 268:14:  'animateParticles' is defined but never used                                                                             no-unused-vars
+  Line 288:14:  'emitParticles' is defined but never used                                                                                no-unused-vars
+  Line 356:14:  'vw' is assigned a value but never used                                                                                  no-unused-vars
+  Line 356:18:  'vh' is assigned a value but never used                                                                                  no-unused-vars
+  Line 476:6:   React Hook useEffect has a missing dependency: 'updateGradientColors'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/components/AudioPlayer.js
+  Line 153:6:  React Hook useEffect has a missing dependency: 'handleTimeUpdate'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/components/ChatbotLauncher.js
+  Line 14:15:  'BotIcon' is defined but never used      no-unused-vars
+  Line 16:14:  'MessageIcon' is defined but never used  no-unused-vars
+
+src/components/HeroSectionEnhanced.js
+  Line 7:10:  'showOrb' is assigned a value but never used  no-unused-vars
+
+src/components/MedicalChatbot.js
+  Line 12:3:  'Button' is defined but never used  no-unused-vars
+
+src/components/ModulesSection.js
+  Line 6:3:  'RecordVoiceOver' is defined but never used  no-unused-vars
+
+src/components/NavBar.js
+  Line 1:17:   'useRef' is defined but never used                 no-unused-vars
+  Line 1:25:   'useEffect' is defined but never used              no-unused-vars
+  Line 44:7:   'CANVAS_COLOR' is assigned a value but never used  no-unused-vars
+  Line 47:7:   'glowPulse' is assigned a value but never used     no-unused-vars
+  Line 156:9:  'theme' is assigned a value but never used         no-unused-vars
+
+src/components/NavBarCanvas.js
+  Line 2:10:  'Box' is defined but never used  no-unused-vars
+
+src/components/OrbContextProvider.js
+  Line 1:54:  'useEffect' is defined but never used  no-unused-vars
+
+src/components/PodcastHero.js
+  Line 263:9:  'isMobile' is assigned a value but never used  no-unused-vars
+
+src/components/Podcasts.js
+  Line 15:3:  'Collapse' is defined but never used   no-unused-vars
+  Line 21:8:  'PauseIcon' is defined but never used  no-unused-vars
+
+src/components/PricingSection.js
+  Line 76:10:  'billingPeriod' is assigned a value but never used     no-unused-vars
+  Line 76:25:  'setBillingPeriod' is assigned a value but never used  no-unused-vars
+
+src/components/StarryBackground_Enhanced.js
+  Line 76:13:   'starCount' is assigned a value but never used  no-unused-vars
+  Line 184:11:  'ctx' is assigned a value but never used        no-unused-vars
+
+src/components/WaveformVisualizer.js
+  Line 1:36:  'useState' is defined but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/App.js
+  Line 6:8:  'HeroSection' is defined but never used  no-unused-vars
+
+src/components/AnimatedOrbExact.js
+  Line 14:14:   'lerp' is defined but never used                                                                                         no-unused-vars
+  Line 188:14:  'approach' is defined but never used                                                                                     no-unused-vars
+  Line 191:14:  'dampedSpring' is defined but never used                                                                                 no-unused-vars
+  Line 268:14:  'animateParticles' is defined but never used                                                                             no-unused-vars
+  Line 288:14:  'emitParticles' is defined but never used                                                                                no-unused-vars
+  Line 356:14:  'vw' is assigned a value but never used                                                                                  no-unused-vars
+  Line 356:18:  'vh' is assigned a value but never used                                                                                  no-unused-vars
+  Line 476:6:   React Hook useEffect has a missing dependency: 'updateGradientColors'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/components/AudioPlayer.js
+  Line 153:6:  React Hook useEffect has a missing dependency: 'handleTimeUpdate'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/components/ChatbotLauncher.js
+  Line 14:15:  'BotIcon' is defined but never used      no-unused-vars
+  Line 16:14:  'MessageIcon' is defined but never used  no-unused-vars
+
+src/components/HeroSectionEnhanced.js
+  Line 7:10:  'showOrb' is assigned a value but never used  no-unused-vars
+
+src/components/MedicalChatbot.js
+  Line 12:3:  'Button' is defined but never used  no-unused-vars
+
+src/components/ModulesSection.js
+  Line 6:3:  'RecordVoiceOver' is defined but never used  no-unused-vars
+
+src/components/NavBar.js
+  Line 1:17:   'useRef' is defined but never used                 no-unused-vars
+  Line 1:25:   'useEffect' is defined but never used              no-unused-vars
+  Line 44:7:   'CANVAS_COLOR' is assigned a value but never used  no-unused-vars
+  Line 47:7:   'glowPulse' is assigned a value but never used     no-unused-vars
+  Line 156:9:  'theme' is assigned a value but never used         no-unused-vars
+
+src/components/NavBarCanvas.js
+  Line 2:10:  'Box' is defined but never used  no-unused-vars
+
+src/components/OrbContextProvider.js
+  Line 1:54:  'useEffect' is defined but never used  no-unused-vars
+
+src/components/PodcastHero.js
+  Line 263:9:  'isMobile' is assigned a value but never used  no-unused-vars
+
+src/components/Podcasts.js
+  Line 15:3:  'Collapse' is defined but never used   no-unused-vars
+  Line 21:8:  'PauseIcon' is defined but never used  no-unused-vars
+
+src/components/PricingSection.js
+  Line 76:10:  'billingPeriod' is assigned a value but never used     no-unused-vars
+  Line 76:25:  'setBillingPeriod' is assigned a value but never used  no-unused-vars
+
+src/components/StarryBackground_Enhanced.js
+  Line 76:13:   'starCount' is assigned a value but never used  no-unused-vars
+  Line 184:11:  'ctx' is assigned a value but never used        no-unused-vars
+
+src/components/WaveformVisualizer.js
+  Line 1:36:  'useState' is defined but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/App.js
+  Line 6:8:   'HeroSection' is defined but never used       no-unused-vars
+  Line 22:8:  'TestVerification' is defined but never used  no-unused-vars
+
+src/components/AnimatedOrbExact.js
+  Line 14:14:   'lerp' is defined but never used                                                                                         no-unused-vars
+  Line 188:14:  'approach' is defined but never used                                                                                     no-unused-vars
+  Line 191:14:  'dampedSpring' is defined but never used                                                                                 no-unused-vars
+  Line 268:14:  'animateParticles' is defined but never used                                                                             no-unused-vars
+  Line 288:14:  'emitParticles' is defined but never used                                                                                no-unused-vars
+  Line 356:14:  'vw' is assigned a value but never used                                                                                  no-unused-vars
+  Line 356:18:  'vh' is assigned a value but never used                                                                                  no-unused-vars
+  Line 476:6:   React Hook useEffect has a missing dependency: 'updateGradientColors'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/components/AudioPlayer.js
+  Line 153:6:  React Hook useEffect has a missing dependency: 'handleTimeUpdate'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/components/ChatbotLauncher.js
+  Line 14:15:  'BotIcon' is defined but never used      no-unused-vars
+  Line 16:14:  'MessageIcon' is defined but never used  no-unused-vars
+
+src/components/HeroSectionEnhanced.js
+  Line 7:10:  'showOrb' is assigned a value but never used  no-unused-vars
+
+src/components/MedicalChatbot.js
+  Line 12:3:  'Button' is defined but never used  no-unused-vars
+
+src/components/ModulesSection.js
+  Line 6:3:  'RecordVoiceOver' is defined but never used  no-unused-vars
+
+src/components/NavBar.js
+  Line 1:17:   'useRef' is defined but never used                 no-unused-vars
+  Line 1:25:   'useEffect' is defined but never used              no-unused-vars
+  Line 44:7:   'CANVAS_COLOR' is assigned a value but never used  no-unused-vars
+  Line 47:7:   'glowPulse' is assigned a value but never used     no-unused-vars
+  Line 156:9:  'theme' is assigned a value but never used         no-unused-vars
+
+src/components/NavBarCanvas.js
+  Line 2:10:  'Box' is defined but never used  no-unused-vars
+
+src/components/OrbContextProvider.js
+  Line 1:54:  'useEffect' is defined but never used  no-unused-vars
+
+src/components/PodcastHero.js
+  Line 263:9:  'isMobile' is assigned a value but never used  no-unused-vars
+
+src/components/Podcasts.js
+  Line 15:3:  'Collapse' is defined but never used   no-unused-vars
+  Line 21:8:  'PauseIcon' is defined but never used  no-unused-vars
+
+src/components/PricingSection.js
+  Line 76:10:  'billingPeriod' is assigned a value but never used     no-unused-vars
+  Line 76:25:  'setBillingPeriod' is assigned a value but never used  no-unused-vars
+
+src/components/StarryBackground_Enhanced.js
+  Line 76:13:   'starCount' is assigned a value but never used  no-unused-vars
+  Line 184:11:  'ctx' is assigned a value but never used        no-unused-vars
+
+src/components/TestVerification.js
+  Line 1:8:  'React' is defined but never used  no-unused-vars
+
+src/components/WaveformVisualizer.js
+  Line 1:36:  'useState' is defined but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/App.js
+  Line 6:8:   'HeroSection' is defined but never used       no-unused-vars
+  Line 22:8:  'TestVerification' is defined but never used  no-unused-vars
+
+src/components/AnimatedOrbExact.js
+  Line 14:14:   'lerp' is defined but never used                                                                                         no-unused-vars
+  Line 188:14:  'approach' is defined but never used                                                                                     no-unused-vars
+  Line 191:14:  'dampedSpring' is defined but never used                                                                                 no-unused-vars
+  Line 268:14:  'animateParticles' is defined but never used                                                                             no-unused-vars
+  Line 288:14:  'emitParticles' is defined but never used                                                                                no-unused-vars
+  Line 356:14:  'vw' is assigned a value but never used                                                                                  no-unused-vars
+  Line 356:18:  'vh' is assigned a value but never used                                                                                  no-unused-vars
+  Line 476:6:   React Hook useEffect has a missing dependency: 'updateGradientColors'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/components/AudioPlayer.js
+  Line 153:6:  React Hook useEffect has a missing dependency: 'handleTimeUpdate'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/components/ChatbotLauncher.js
+  Line 14:15:  'BotIcon' is defined but never used      no-unused-vars
+  Line 16:14:  'MessageIcon' is defined but never used  no-unused-vars
+
+src/components/HeroSectionEnhanced.js
+  Line 7:10:  'showOrb' is assigned a value but never used  no-unused-vars
+
+src/components/MedicalChatbot.js
+  Line 12:3:  'Button' is defined but never used  no-unused-vars
+
+src/components/ModulesSection.js
+  Line 6:3:  'RecordVoiceOver' is defined but never used  no-unused-vars
+
+src/components/NavBar.js
+  Line 1:17:   'useRef' is defined but never used                 no-unused-vars
+  Line 1:25:   'useEffect' is defined but never used              no-unused-vars
+  Line 44:7:   'CANVAS_COLOR' is assigned a value but never used  no-unused-vars
+  Line 47:7:   'glowPulse' is assigned a value but never used     no-unused-vars
+  Line 156:9:  'theme' is assigned a value but never used         no-unused-vars
+
+src/components/NavBarCanvas.js
+  Line 2:10:  'Box' is defined but never used  no-unused-vars
+
+src/components/OrbContextProvider.js
+  Line 1:54:  'useEffect' is defined but never used  no-unused-vars
+
+src/components/PodcastHero.js
+  Line 263:9:  'isMobile' is assigned a value but never used  no-unused-vars
+
+src/components/Podcasts.js
+  Line 15:3:  'Collapse' is defined but never used   no-unused-vars
+  Line 21:8:  'PauseIcon' is defined but never used  no-unused-vars
+
+src/components/PricingSection.js
+  Line 76:10:  'billingPeriod' is assigned a value but never used     no-unused-vars
+  Line 76:25:  'setBillingPeriod' is assigned a value but never used  no-unused-vars
+
+src/components/StarryBackground_Enhanced.js
+  Line 76:13:   'starCount' is assigned a value but never used  no-unused-vars
+  Line 184:11:  'ctx' is assigned a value but never used        no-unused-vars
+
+src/components/TestVerification.js
+  Line 1:8:  'React' is defined but never used  no-unused-vars
+
+src/components/WaveformVisualizer.js
+  Line 1:36:  'useState' is defined but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/App.js
+  Line 6:8:  'HeroSection' is defined but never used  no-unused-vars
+
+src/components/AnimatedOrbExact.js
+  Line 14:14:   'lerp' is defined but never used                                                                                         no-unused-vars
+  Line 188:14:  'approach' is defined but never used                                                                                     no-unused-vars
+  Line 191:14:  'dampedSpring' is defined but never used                                                                                 no-unused-vars
+  Line 268:14:  'animateParticles' is defined but never used                                                                             no-unused-vars
+  Line 288:14:  'emitParticles' is defined but never used                                                                                no-unused-vars
+  Line 356:14:  'vw' is assigned a value but never used                                                                                  no-unused-vars
+  Line 356:18:  'vh' is assigned a value but never used                                                                                  no-unused-vars
+  Line 476:6:   React Hook useEffect has a missing dependency: 'updateGradientColors'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/components/AudioPlayer.js
+  Line 153:6:  React Hook useEffect has a missing dependency: 'handleTimeUpdate'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/components/ChatbotLauncher.js
+  Line 14:15:  'BotIcon' is defined but never used      no-unused-vars
+  Line 16:14:  'MessageIcon' is defined but never used  no-unused-vars
+
+src/components/HeroSectionEnhanced.js
+  Line 7:10:  'showOrb' is assigned a value but never used  no-unused-vars
+
+src/components/MedicalChatbot.js
+  Line 12:3:  'Button' is defined but never used  no-unused-vars
+
+src/components/ModulesSection.js
+  Line 6:3:  'RecordVoiceOver' is defined but never used  no-unused-vars
+
+src/components/NavBar.js
+  Line 1:17:   'useRef' is defined but never used                 no-unused-vars
+  Line 1:25:   'useEffect' is defined but never used              no-unused-vars
+  Line 44:7:   'CANVAS_COLOR' is assigned a value but never used  no-unused-vars
+  Line 47:7:   'glowPulse' is assigned a value but never used     no-unused-vars
+  Line 156:9:  'theme' is assigned a value but never used         no-unused-vars
+
+src/components/NavBarCanvas.js
+  Line 2:10:  'Box' is defined but never used  no-unused-vars
+
+src/components/OrbContextProvider.js
+  Line 1:54:  'useEffect' is defined but never used  no-unused-vars
+
+src/components/PodcastHero.js
+  Line 263:9:  'isMobile' is assigned a value but never used  no-unused-vars
+
+src/components/Podcasts.js
+  Line 15:3:  'Collapse' is defined but never used   no-unused-vars
+  Line 21:8:  'PauseIcon' is defined but never used  no-unused-vars
+
+src/components/PricingSection.js
+  Line 76:10:  'billingPeriod' is assigned a value but never used     no-unused-vars
+  Line 76:25:  'setBillingPeriod' is assigned a value but never used  no-unused-vars
+
+src/components/StarryBackground_Enhanced.js
+  Line 76:13:   'starCount' is assigned a value but never used  no-unused-vars
+  Line 184:11:  'ctx' is assigned a value but never used        no-unused-vars
+
+src/components/TestVerification.js
+  Line 1:8:  'React' is defined but never used  no-unused-vars
+
+src/components/WaveformVisualizer.js
+  Line 1:36:  'useState' is defined but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/App.js
+  Line 6:8:  'HeroSection' is defined but never used  no-unused-vars
+
+src/components/AnimatedOrbExact.js
+  Line 14:14:   'lerp' is defined but never used                                                                                         no-unused-vars
+  Line 188:14:  'approach' is defined but never used                                                                                     no-unused-vars
+  Line 191:14:  'dampedSpring' is defined but never used                                                                                 no-unused-vars
+  Line 268:14:  'animateParticles' is defined but never used                                                                             no-unused-vars
+  Line 288:14:  'emitParticles' is defined but never used                                                                                no-unused-vars
+  Line 356:14:  'vw' is assigned a value but never used                                                                                  no-unused-vars
+  Line 356:18:  'vh' is assigned a value but never used                                                                                  no-unused-vars
+  Line 476:6:   React Hook useEffect has a missing dependency: 'updateGradientColors'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/components/AudioPlayer.js
+  Line 153:6:  React Hook useEffect has a missing dependency: 'handleTimeUpdate'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/components/ChatbotLauncher.js
+  Line 14:15:  'BotIcon' is defined but never used      no-unused-vars
+  Line 16:14:  'MessageIcon' is defined but never used  no-unused-vars
+
+src/components/HeroSectionEnhanced.js
+  Line 7:10:  'showOrb' is assigned a value but never used  no-unused-vars
+
+src/components/MedicalChatbot.js
+  Line 12:3:  'Button' is defined but never used  no-unused-vars
+
+src/components/ModulesSection.js
+  Line 6:3:  'RecordVoiceOver' is defined but never used  no-unused-vars
+
+src/components/NavBar.js
+  Line 1:17:   'useRef' is defined but never used                 no-unused-vars
+  Line 1:25:   'useEffect' is defined but never used              no-unused-vars
+  Line 44:7:   'CANVAS_COLOR' is assigned a value but never used  no-unused-vars
+  Line 47:7:   'glowPulse' is assigned a value but never used     no-unused-vars
+  Line 156:9:  'theme' is assigned a value but never used         no-unused-vars
+
+src/components/NavBarCanvas.js
+  Line 2:10:  'Box' is defined but never used  no-unused-vars
+
+src/components/OrbContextProvider.js
+  Line 1:54:  'useEffect' is defined but never used  no-unused-vars
+
+src/components/PodcastHero.js
+  Line 263:9:  'isMobile' is assigned a value but never used  no-unused-vars
+
+src/components/Podcasts.js
+  Line 15:3:  'Collapse' is defined but never used   no-unused-vars
+  Line 21:8:  'PauseIcon' is defined but never used  no-unused-vars
+
+src/components/PricingSection.js
+  Line 76:10:  'billingPeriod' is assigned a value but never used     no-unused-vars
+  Line 76:25:  'setBillingPeriod' is assigned a value but never used  no-unused-vars
+
+src/components/StarryBackground_Enhanced.js
+  Line 76:13:   'starCount' is assigned a value but never used  no-unused-vars
+  Line 184:11:  'ctx' is assigned a value but never used        no-unused-vars
+
+src/components/TestVerification.js
+  Line 1:8:  'React' is defined but never used  no-unused-vars
+
+src/components/WaveformVisualizer.js
+  Line 1:36:  'useState' is defined but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Failed to compile.
+
+[eslint] 
+src/App.js
+  Line 69:10:  'TestVerification' is not defined  react/jsx-no-undef
+
+Search for the keywords to learn more about each error.
+WARNING in [eslint] 
+src/App.js
+  Line 6:8:  'HeroSection' is defined but never used  no-unused-vars
+
+src/components/AnimatedOrbExact.js
+  Line 14:14:   'lerp' is defined but never used                                                                                         no-unused-vars
+  Line 188:14:  'approach' is defined but never used                                                                                     no-unused-vars
+  Line 191:14:  'dampedSpring' is defined but never used                                                                                 no-unused-vars
+  Line 268:14:  'animateParticles' is defined but never used                                                                             no-unused-vars
+  Line 288:14:  'emitParticles' is defined but never used                                                                                no-unused-vars
+  Line 356:14:  'vw' is assigned a value but never used                                                                                  no-unused-vars
+  Line 356:18:  'vh' is assigned a value but never used                                                                                  no-unused-vars
+  Line 476:6:   React Hook useEffect has a missing dependency: 'updateGradientColors'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/components/AudioPlayer.js
+  Line 153:6:  React Hook useEffect has a missing dependency: 'handleTimeUpdate'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/components/ChatbotLauncher.js
+  Line 14:15:  'BotIcon' is defined but never used      no-unused-vars
+  Line 16:14:  'MessageIcon' is defined but never used  no-unused-vars
+
+src/components/HeroSectionEnhanced.js
+  Line 7:10:  'showOrb' is assigned a value but never used  no-unused-vars
+
+src/components/MedicalChatbot.js
+  Line 12:3:  'Button' is defined but never used  no-unused-vars
+
+src/components/ModulesSection.js
+  Line 6:3:  'RecordVoiceOver' is defined but never used  no-unused-vars
+
+src/components/NavBar.js
+  Line 1:17:   'useRef' is defined but never used                 no-unused-vars
+  Line 1:25:   'useEffect' is defined but never used              no-unused-vars
+  Line 44:7:   'CANVAS_COLOR' is assigned a value but never used  no-unused-vars
+  Line 47:7:   'glowPulse' is assigned a value but never used     no-unused-vars
+  Line 156:9:  'theme' is assigned a value but never used         no-unused-vars
+
+src/components/NavBarCanvas.js
+  Line 2:10:  'Box' is defined but never used  no-unused-vars
+
+src/components/OrbContextProvider.js
+  Line 1:54:  'useEffect' is defined but never used  no-unused-vars
+
+src/components/PodcastHero.js
+  Line 263:9:  'isMobile' is assigned a value but never used  no-unused-vars
+
+src/components/Podcasts.js
+  Line 15:3:  'Collapse' is defined but never used   no-unused-vars
+  Line 21:8:  'PauseIcon' is defined but never used  no-unused-vars
+
+src/components/PricingSection.js
+  Line 76:10:  'billingPeriod' is assigned a value but never used     no-unused-vars
+  Line 76:25:  'setBillingPeriod' is assigned a value but never used  no-unused-vars
+
+src/components/StarryBackground_Enhanced.js
+  Line 76:13:   'starCount' is assigned a value but never used  no-unused-vars
+  Line 184:11:  'ctx' is assigned a value but never used        no-unused-vars
+
+src/components/TestVerification.js
+  Line 1:8:  'React' is defined but never used  no-unused-vars
+
+src/components/WaveformVisualizer.js
+  Line 1:36:  'useState' is defined but never used  no-unused-vars
+
+ERROR in [eslint] 
+src/App.js
+  Line 69:10:  'TestVerification' is not defined  react/jsx-no-undef
+
+Search for the keywords to learn more about each error.
+
+webpack compiled with 1 error and 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/App.js
+  Line 6:8:  'HeroSection' is defined but never used  no-unused-vars
+
+src/components/AnimatedOrbExact.js
+  Line 14:14:   'lerp' is defined but never used                                                                                         no-unused-vars
+  Line 188:14:  'approach' is defined but never used                                                                                     no-unused-vars
+  Line 191:14:  'dampedSpring' is defined but never used                                                                                 no-unused-vars
+  Line 268:14:  'animateParticles' is defined but never used                                                                             no-unused-vars
+  Line 288:14:  'emitParticles' is defined but never used                                                                                no-unused-vars
+  Line 356:14:  'vw' is assigned a value but never used                                                                                  no-unused-vars
+  Line 356:18:  'vh' is assigned a value but never used                                                                                  no-unused-vars
+  Line 476:6:   React Hook useEffect has a missing dependency: 'updateGradientColors'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/components/AudioPlayer.js
+  Line 153:6:  React Hook useEffect has a missing dependency: 'handleTimeUpdate'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/components/ChatbotLauncher.js
+  Line 14:15:  'BotIcon' is defined but never used      no-unused-vars
+  Line 16:14:  'MessageIcon' is defined but never used  no-unused-vars
+
+src/components/HeroSectionEnhanced.js
+  Line 7:10:  'showOrb' is assigned a value but never used  no-unused-vars
+
+src/components/MedicalChatbot.js
+  Line 12:3:  'Button' is defined but never used  no-unused-vars
+
+src/components/ModulesSection.js
+  Line 6:3:  'RecordVoiceOver' is defined but never used  no-unused-vars
+
+src/components/NavBar.js
+  Line 1:17:   'useRef' is defined but never used                 no-unused-vars
+  Line 1:25:   'useEffect' is defined but never used              no-unused-vars
+  Line 44:7:   'CANVAS_COLOR' is assigned a value but never used  no-unused-vars
+  Line 47:7:   'glowPulse' is assigned a value but never used     no-unused-vars
+  Line 156:9:  'theme' is assigned a value but never used         no-unused-vars
+
+src/components/NavBarCanvas.js
+  Line 2:10:  'Box' is defined but never used  no-unused-vars
+
+src/components/OrbContextProvider.js
+  Line 1:54:  'useEffect' is defined but never used  no-unused-vars
+
+src/components/PodcastHero.js
+  Line 263:9:  'isMobile' is assigned a value but never used  no-unused-vars
+
+src/components/Podcasts.js
+  Line 15:3:  'Collapse' is defined but never used   no-unused-vars
+  Line 21:8:  'PauseIcon' is defined but never used  no-unused-vars
+
+src/components/PricingSection.js
+  Line 76:10:  'billingPeriod' is assigned a value but never used     no-unused-vars
+  Line 76:25:  'setBillingPeriod' is assigned a value but never used  no-unused-vars
+
+src/components/StarryBackground_Enhanced.js
+  Line 76:13:   'starCount' is assigned a value but never used  no-unused-vars
+  Line 184:11:  'ctx' is assigned a value but never used        no-unused-vars
+
+src/components/TestVerification.js
+  Line 1:8:  'React' is defined but never used  no-unused-vars
+
+src/components/WaveformVisualizer.js
+  Line 1:36:  'useState' is defined but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/App.js
+  Line 6:8:  'HeroSection' is defined but never used  no-unused-vars
+
+src/components/AnimatedOrbExact.js
+  Line 14:14:   'lerp' is defined but never used                                                                                         no-unused-vars
+  Line 188:14:  'approach' is defined but never used                                                                                     no-unused-vars
+  Line 191:14:  'dampedSpring' is defined but never used                                                                                 no-unused-vars
+  Line 268:14:  'animateParticles' is defined but never used                                                                             no-unused-vars
+  Line 288:14:  'emitParticles' is defined but never used                                                                                no-unused-vars
+  Line 356:14:  'vw' is assigned a value but never used                                                                                  no-unused-vars
+  Line 356:18:  'vh' is assigned a value but never used                                                                                  no-unused-vars
+  Line 476:6:   React Hook useEffect has a missing dependency: 'updateGradientColors'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/components/AudioPlayer.js
+  Line 153:6:  React Hook useEffect has a missing dependency: 'handleTimeUpdate'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/components/ChatbotLauncher.js
+  Line 14:15:  'BotIcon' is defined but never used      no-unused-vars
+  Line 16:14:  'MessageIcon' is defined but never used  no-unused-vars
+
+src/components/HeroSectionEnhanced.js
+  Line 7:10:  'showOrb' is assigned a value but never used  no-unused-vars
+
+src/components/MedicalChatbot.js
+  Line 12:3:  'Button' is defined but never used  no-unused-vars
+
+src/components/ModulesSection.js
+  Line 6:3:  'RecordVoiceOver' is defined but never used  no-unused-vars
+
+src/components/NavBar.js
+  Line 1:17:   'useRef' is defined but never used                 no-unused-vars
+  Line 1:25:   'useEffect' is defined but never used              no-unused-vars
+  Line 44:7:   'CANVAS_COLOR' is assigned a value but never used  no-unused-vars
+  Line 47:7:   'glowPulse' is assigned a value but never used     no-unused-vars
+  Line 156:9:  'theme' is assigned a value but never used         no-unused-vars
+
+src/components/NavBarCanvas.js
+  Line 2:10:  'Box' is defined but never used  no-unused-vars
+
+src/components/OrbContextProvider.js
+  Line 1:54:  'useEffect' is defined but never used  no-unused-vars
+
+src/components/PodcastHero.js
+  Line 263:9:  'isMobile' is assigned a value but never used  no-unused-vars
+
+src/components/Podcasts.js
+  Line 15:3:  'Collapse' is defined but never used   no-unused-vars
+  Line 21:8:  'PauseIcon' is defined but never used  no-unused-vars
+
+src/components/PricingSection.js
+  Line 76:10:  'billingPeriod' is assigned a value but never used     no-unused-vars
+  Line 76:25:  'setBillingPeriod' is assigned a value but never used  no-unused-vars
+
+src/components/StarryBackground_Enhanced.js
+  Line 76:13:   'starCount' is assigned a value but never used  no-unused-vars
+  Line 184:11:  'ctx' is assigned a value but never used        no-unused-vars
+
+src/components/TestVerification.js
+  Line 1:8:  'React' is defined but never used  no-unused-vars
+
+src/components/WaveformVisualizer.js
+  Line 1:36:  'useState' is defined but never used  no-unused-vars
+
+webpack compiled with 1 warning

@@ -19,6 +19,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import Footer from './components/Footer';
 import PerformanceMonitor from './components/PerformanceMonitor';
 import ChatbotLauncher from './components/ChatbotLauncher';
+import EnvTest from './components/EnvTest';
 
 function App() {
   const [performanceMode, setPerformanceMode] = useState(() => {
@@ -52,6 +53,7 @@ function App() {
       <AuthProvider>
         <StarComponent />
         <NavBar />
+        <EnvTest />
         <OrbComponent zIndex={5} />
         <HeroSectionEnhanced />
         <PhilosophicalOpenerSection />

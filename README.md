@@ -1,20 +1,30 @@
-# Global RepSpheres
+# RepSpheres
 
-A futuristic React application featuring advanced canvas animations, particle effects, and a cutting-edge UI inspired by modern design principles. This project showcases the intersection of AI and pharmaceutical sales with stunning visual effects and seamless user experience.
+A cutting-edge AI-powered platform revolutionizing medical and dental sales intelligence. Built with React and featuring advanced canvas animations, real-time data visualization, and an intelligent chatbot powered by over 300 AI models and 15 years of pivotal industry data.
 
 ## Features
 
+### Core Intelligence
+- **300+ AI Models**: Access to the most comprehensive AI model suite in the industry
+- **15 Years of Industry Data**: The largest dataset ever assembled for dental and aesthetic industries
+- **Elite Medical Sales Chatbot**: AI assistant with deep medical knowledge and Socratic conversation approach
+- **Real-time Market Insights**: Live competitive intelligence and market evolution tracking
+
+### Technical Features
+- **Animated Orb Background**: Stunning blue/purple starry background with optimized particle effects
 - **Canvas Animations**: Dynamic particle systems with WebGL-accelerated rendering
 - **Curved Navigation Bar**: Modern navbar with animated canvas background and curved bottom edge
 - **Glassmorphism Effects**: Cutting-edge glass-like UI elements with backdrop filters
 - **Performance Optimization**: Toggle between full visual effects and optimized performance mode
 - **Responsive Design**: Seamless experience across all device sizes
-- **AI-Powered Chatbot**: Integrated medical knowledge assistant powered by Claude Opus 4
+
+### Platform Capabilities
 - **Web Search Integration**: Real-time web search capabilities via Brave Search API
-- **Real-time Analytics**: Live tracking and visualization of user interactions
+- **Real-time Analytics**: Google Analytics 4 integration for comprehensive tracking
 - **Authentication**: Secure user authentication with Supabase
 - **Podcast Integration**: Built-in podcast player with waveform visualization
 - **Payment Processing**: Stripe Checkout integration for subscriptions
+- **Multi-tenant Architecture**: Support for sales reps, physicians, and patients
 
 ## Tech Stack
 
@@ -36,7 +46,7 @@ A futuristic React application featuring advanced canvas animations, particle ef
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/globalrepspheres.git
+   git clone https://github.com/BoweryJG/globalrepspheres.git
    cd globalrepspheres
    ```
 
@@ -77,6 +87,8 @@ REACT_APP_SUPABASE_ANON_KEY=<your-supabase-anon-key>
 REACT_APP_BACKEND_URL=<your-render-backend-url>
 REACT_APP_GA_ID=<your-google-analytics-id>
 ```
+
+**Important**: After creating or modifying the `.env` file, you must restart the development server for the changes to take effect.
 
 ### API Keys Setup
 
@@ -151,12 +163,48 @@ Ensure all these variables are set in your production environment:
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+## Recent Updates
+
+### January 2025
+- **Fixed Background Rendering**: Resolved black overlay issue in hero section, now properly displays blue/purple starry background
+- **Environment Variables**: Fixed environment variable loading issues for chatbot and analytics
+- **Performance Optimization**: Removed duplicate background layers to improve CPU performance
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Environment Variables Not Loading**
+   - Ensure `.env` file is in the root directory
+   - Restart the development server after making changes to `.env`
+   - Check that all variable names start with `REACT_APP_`
+
+2. **Chatbot Not Working**
+   - Verify `REACT_APP_OPENROUTER_API_KEY` is set correctly
+   - Ensure you have credits in your OpenRouter account
+   - Check browser console for specific error messages
+
+3. **Background Not Displaying Correctly**
+   - Clear browser cache and reload
+   - Check that no browser extensions are interfering with CSS
+   - Verify WebGL is enabled in your browser
+
+## Project Heritage
+
+RepSpheres is built on 15 years of pioneering work in medical aesthetics, including:
+- Original CoolSculpting team at Zeltiq
+- Revolutionary fat reduction procedures that transformed aesthetic medicine
+- Advanced robotics work with Neocis (funded by NVIDIA)
+- The largest dataset ever assembled for dental and aesthetic industries
+
 ## License
 
 This project is proprietary software. All rights reserved.
 
 ## Acknowledgments
 
+- Powered by Bowery Creative Agency - Empowering physician campaigns for over 15 years
 - Canvas animations inspired by modern WebGL techniques
 - UI design influenced by contemporary glassmorphism trends
 - Built with React and Material-UI
+- AI powered by Claude Opus 4 through OpenRouter
