@@ -18,7 +18,6 @@ import OrbContextProvider from './components/OrbContextProvider';
 import { AuthProvider } from './contexts/AuthContext';
 import Footer from './components/Footer';
 import PerformanceMonitor from './components/PerformanceMonitor';
-import ChatbotLauncher from './components/ChatbotLauncher';
 function App() {
   const [performanceMode, setPerformanceMode] = useState(() => {
     // Check localStorage for saved preference
@@ -64,7 +63,6 @@ function App() {
         <PricingSection />
         <Footer />
         {showPerformanceMonitor && <PerformanceMonitor />}
-        <ChatbotLauncher />
       </AuthProvider>
     </OrbContextProvider>
   );

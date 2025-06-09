@@ -32,16 +32,28 @@ const MedicalChatbot = ({ isEmbedded = false, onNewMessage }) => {
   const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
-    const bot = new MedicalSalesChatbot();
-    setChatbot(bot);
-    
-    const welcomeMessage = {
-      id: Date.now(),
-      text: "Hello! I'm your elite medical industry consultant. I combine Harvey Specter's strategic brilliance with Warren Buffett's principled wisdom to help you succeed. Whether you're a sales rep looking to close deals, a physician seeking insights, or a patient with questions, I'm here to help. What brings you here today?",
-      sender: 'bot',
-      timestamp: new Date()
-    };
-    setMessages([welcomeMessage]);
+    try {
+      const bot = new MedicalSalesChatbot();
+      setChatbot(bot);
+      
+      const welcomeMessage = {
+        id: Date.now(),
+        text: "Hello! I'm your elite medical industry consultant. I combine Harvey Specter's strategic brilliance with Warren Buffett's principled wisdom to help you succeed. Whether you're a sales rep looking to close deals, a physician seeking insights, or a patient with questions, I'm here to help. What brings you here today?",
+        sender: 'bot',
+        timestamp: new Date()
+      };
+      setMessages([welcomeMessage]);
+    } catch (error) {
+      console.error('Failed to initialize chatbot:', error);
+      const errorMessage = {
+        id: Date.now(),
+        text: `⚠️ The chatbot is not properly configured. Please ensure the OpenRouter API key is set in the .env file.\n\nTo fix this:\n1. Check that your .env file contains: REACT_APP_OPENROUTER_API_KEY=your_key_here\n2. Stop the server (Ctrl+C)\n3. Run 'npm start' again\n\nCurrent API key status: ${process.env.REACT_APP_OPENROUTER_API_KEY ? 'Key is present but may be invalid' : 'Key is missing'}`,
+        sender: 'bot',
+        timestamp: new Date(),
+        isError: true
+      };
+      setMessages([errorMessage]);
+    }
   }, []);
 
   useEffect(() => {

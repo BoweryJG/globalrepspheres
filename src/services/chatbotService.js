@@ -12,12 +12,18 @@ class MedicalSalesChatbot {
     this.userProfile = null;
     this.systemPrompt = this.buildSystemPrompt();
     
+    // Log the API key status for debugging
+    console.log('ChatbotService initialized');
+    console.log('API Key present:', !!this.apiKey);
+    console.log('API Key length:', this.apiKey ? this.apiKey.length : 0);
+    
     // Check for missing API keys
     if (!this.apiKey || this.apiKey === 'your_openrouter_api_key_here') {
-      console.warn('OpenRouter API key is missing. Using fallback configuration.');
+      console.error('OpenRouter API key is missing! Check your .env file and ensure the server was restarted.');
+      throw new Error('OpenRouter API key is not configured. Please check your .env file.');
     }
     if (!this.braveApiKey || this.braveApiKey === 'your_brave_api_key_here') {
-      console.warn('Brave Search API key is missing. Using fallback configuration.');
+      console.warn('Brave Search API key is missing. Search functionality will be disabled.');
     }
   }
 
