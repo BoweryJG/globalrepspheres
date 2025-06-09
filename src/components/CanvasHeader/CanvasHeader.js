@@ -110,7 +110,7 @@ const CanvasHeader = ({ children, height = '400px' }) => {
         position: 'relative',
         width: '100%',
         height,
-        background: 'radial-gradient(circle at 50% 50%, rgba(0, 212, 255, 0.1) 0%, #0a0a0a 50%)',
+        background: 'radial-gradient(circle at 50% 50%, rgba(0, 212, 255, 0.1) 0%, rgba(11, 11, 32, 0.5) 50%)',
         overflow: 'hidden'
       }}
     >
