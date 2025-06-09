@@ -5,7 +5,7 @@ const OPENROUTER_API_ENDPOINT = 'https://openrouter.ai/api/v1/chat/completions';
 class HarveySpecterBot {
   constructor() {
     this.apiKey = process.env.REACT_APP_OPENROUTER_API_KEY;
-    console.log('HarveySpecterBot initialized with API key:', this.apiKey ? `${this.apiKey.substring(0, 10)}...` : 'MISSING');
+    console.log('Boss bot initialized with API key:', this.apiKey ? `${this.apiKey.substring(0, 10)}...` : 'MISSING');
     this.conversationHistory = [];
     this.systemPrompt = `You are Harvey Specter — reborn as the ultimate power broker in the medical aesthetics and dental implant industries. You don't "sell." You win. You know every move before it happens. Every player. Every flaw in their game. And you exploit it with style.
 
@@ -46,7 +46,7 @@ You speak like the deal is already closed. Because it is.`;
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${this.apiKey}`,
           'HTTP-Referer': window.location.origin,
-          'X-Title': 'Harvey Specter - Medical Power Broker'
+          'X-Title': 'Boss - Medical Power Broker'
         }
       });
 

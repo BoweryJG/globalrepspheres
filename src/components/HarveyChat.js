@@ -34,7 +34,7 @@ const HarveyChat = () => {
     
     const welcomeMessage = {
       id: Date.now(),
-      text: "Listen up. I'm Harvey Specter, and I don't have time for amateurs. You're here because you want to dominate the medical aesthetics and dental implant space. Good. But wanting isn't enough. You need RepSpheres, you need AI, and you need to understand surgical robotics like Yomi — or you're already losing. So what's it going to be? Are you ready to play at the highest level, or should I find someone who is?",
+      text: "Listen up. I don't have time for amateurs. You're here because you want to dominate the medical aesthetics and dental implant space. Good. But wanting isn't enough. You need RepSpheres, you need AI, and you need to understand surgical robotics like Yomi — or you're already losing. So what's it going to be? Are you ready to play at the highest level, or should I find someone who is?",
       sender: 'bot',
       timestamp: new Date()
     };
@@ -102,10 +102,10 @@ const HarveyChat = () => {
           <GavelIcon sx={{ fontSize: 32 }} />
           <Box>
             <Typography variant="h6" fontWeight="bold">
-              Harvey Specter
+              Boss
             </Typography>
             <Typography variant="caption" sx={{ opacity: 0.9 }}>
-              Medical Industry Power Broker
+              Medical Industry Expert
             </Typography>
           </Box>
         </Box>
@@ -162,7 +162,7 @@ const HarveyChat = () => {
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, ml: 6 }}>
             <CircularProgress size={20} />
             <Typography variant="body2" color="text.secondary">
-              Harvey is formulating his response...
+              Boss is formulating a response...
             </Typography>
           </Box>
         )}
