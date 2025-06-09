@@ -5,6 +5,7 @@ import StarryBackground_Enhanced from './components/StarryBackground_Enhanced';
 import AnimatedOrbHeroBG from './components/AnimatedOrbHeroBG';
 import AnimatedOrbHeroBG_FullOptimized from './components/AnimatedOrbHeroBG_FullOptimized';
 import HeroSection from './components/HeroSection';
+import HeroSectionEnhanced from './components/HeroSectionEnhanced';
 import PhilosophicalOpenerSection from './components/PhilosophicalOpenerSection';
 import CrossroadsSection from './components/CrossroadsSection';
 import SystemArchitectsSection from './components/SystemArchitectsSection';
@@ -46,7 +47,7 @@ function App() {
         <StarComponent />
         <NavBar />
         <OrbComponent zIndex={5} />
-        <HeroSection />
+        <HeroSectionEnhanced />
         <PhilosophicalOpenerSection />
         <CrossroadsSection />
         <SystemArchitectsSection />

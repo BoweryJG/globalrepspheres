@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
@@ -36,14 +36,16 @@ import Tooltip from '@mui/material/Tooltip';
 import Fade from '@mui/material/Fade';
 import Slide from '@mui/material/Slide';
 import { keyframes } from '@mui/system';
+import NavBarCanvas from './NavBarCanvas';
 
 const ACCENT_COLOR = '#00ffc6';
+const CANVAS_COLOR = '#00d4ff';
 
 // Animation keyframes
 const glowPulse = keyframes`
-  0% { box-shadow: 0 0 5px rgba(123, 66, 246, 0.5); }
-  50% { box-shadow: 0 0 20px rgba(123, 66, 246, 0.8), 0 0 30px rgba(0, 255, 198, 0.4); }
-  100% { box-shadow: 0 0 5px rgba(123, 66, 246, 0.5); }
+  0% { box-shadow: 0 0 5px rgba(123, 66, 246, 0.5), 0 0 10px rgba(0, 212, 255, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(123, 66, 246, 0.8), 0 0 30px rgba(0, 255, 198, 0.4), 0 0 40px rgba(0, 212, 255, 0.5); }
+  100% { box-shadow: 0 0 5px rgba(123, 66, 246, 0.5), 0 0 10px rgba(0, 212, 255, 0.3); }
 `;
 
 const borderGradient = keyframes`
@@ -59,7 +61,10 @@ const getNavLinks = (currentUrl, isAdmin) => {
       key: 'insights',
       label: 'Market Insights', 
       href: 'https://marketdata.repspheres.com/',
-      icon: <InsightsIcon fontSize="small" sx={{ color: ACCENT_COLOR }} />,
+      icon: <InsightsIcon fontSize="small" sx={{ 
+        color: ACCENT_COLOR,
+        filter: 'drop-shadow(0 0 3px rgba(0, 212, 255, 0.5))'
+      }} />,
       highlight: true,
       description: 'Real-time market intelligence'
     },
@@ -67,21 +72,30 @@ const getNavLinks = (currentUrl, isAdmin) => {
       key: 'canvas',
       label: 'Canvas', 
       href: 'https://canvas.repspheres.com/',
-      icon: <DashboardIcon fontSize="small" sx={{ color: ACCENT_COLOR }} />,
+      icon: <DashboardIcon fontSize="small" sx={{ 
+        color: ACCENT_COLOR,
+        filter: 'drop-shadow(0 0 3px rgba(0, 212, 255, 0.5))'
+      }} />,
       description: 'AI-powered sales intelligence'
     },
     { 
       key: 'sphereos',
       label: 'Sphere OS', 
       href: 'https://crm.repspheres.com/',
-      icon: <MemoryIcon fontSize="small" sx={{ color: ACCENT_COLOR }} />,
+      icon: <MemoryIcon fontSize="small" sx={{ 
+        color: ACCENT_COLOR,
+        filter: 'drop-shadow(0 0 3px rgba(0, 212, 255, 0.5))'
+      }} />,
       description: 'AI-powered CRM platform'
     },
     {
       key: 'podcast',
       label: 'Podcast',
       href: '/?page=podcast',
-      icon: <PodcastsIcon fontSize="small" sx={{ color: ACCENT_COLOR }} />,
+      icon: <PodcastsIcon fontSize="small" sx={{ 
+        color: ACCENT_COLOR,
+        filter: 'drop-shadow(0 0 3px rgba(0, 212, 255, 0.5))'
+      }} />,
       description: 'Industry insights & interviews'
     },
   ];
@@ -135,6 +149,7 @@ export default function NavBar() {
   const [openInfo, setOpenInfo] = React.useState(null); // which info modal is open
   const [openAuth, setOpenAuth] = React.useState(null); // 'login' or 'signup'
   const [navLoading, setNavLoading] = React.useState(false);
+  const [isNavHovered, setIsNavHovered] = React.useState(false);
   const theme = useTheme();
   // Breakpoints for progressive collapsing of nav links
   const hidePodcast = useMediaQuery('(max-width:1200px)');
@@ -603,13 +618,17 @@ export default function NavBar() {
         }} />
       )}
       
-      <AppBar position="sticky" elevation={0} sx={{
+      <AppBar position="sticky" elevation={0} 
+        onMouseEnter={() => setIsNavHovered(true)}
+        onMouseLeave={() => setIsNavHovered(false)}
+        sx={{
         background: 'rgba(24,24,43,0.52)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
-        boxShadow: '0 6px 24px 0 rgba(123,66,246,0.15)',
+        boxShadow: '0 6px 24px 0 rgba(123,66,246,0.15), 0 0 40px rgba(0, 212, 255, 0.1)',
         border: '1px solid rgba(123,66,246,0.13)',
-        borderBottom: '1px solid rgba(123,66,246,0.10)',
+        borderBottom: '1px solid rgba(0, 212, 255, 0.15)',
+        borderImage: 'linear-gradient(90deg, rgba(123,66,246,0.3), rgba(0,212,255,0.3), rgba(0,255,198,0.3)) 1',
         borderRadius: { xs: '0 0 16px 16px', md: '0 0 24px 24px' },
         mx: 'auto',
         mt: { xs: 0.5, md: 1 },
@@ -619,10 +638,14 @@ export default function NavBar() {
         zIndex: 1200,
         transition: 'all 0.3s ease',
         '&:hover': {
-          boxShadow: '0 8px 32px 0 rgba(123,66,246,0.25)',
+          boxShadow: '0 8px 32px 0 rgba(123,66,246,0.25), 0 0 60px rgba(0, 212, 255, 0.2)',
+          borderBottomColor: 'rgba(0, 212, 255, 0.25)',
         },
       }}>
-        <Toolbar sx={{ 
+        <NavBarCanvas isHovered={isNavHovered} />
+        <Toolbar sx={{
+          position: 'relative',
+          zIndex: 1, 
           px: { xs: 1, sm: 2 },
           height: { xs: '60px', sm: '64px' },
           minHeight: { xs: '60px', sm: '64px' },
@@ -667,9 +690,11 @@ export default function NavBar() {
             }}>
               <Box component="span">Rep</Box>
               <Box component="span" sx={{
-                background: 'linear-gradient(90deg, #00ffc6 0%, #7B42F6 100%)',
+                background: 'linear-gradient(90deg, #00ffc6 0%, #00d4ff 50%, #7B42F6 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
+                backgroundSize: '200% 100%',
+                animation: `${borderGradient} 3s ease infinite`,
               }}>Spheres</Box>
             </Box>
           </Box>
