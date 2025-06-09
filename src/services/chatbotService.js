@@ -6,18 +6,23 @@ const BRAVE_SEARCH_API_ENDPOINT = 'https://api.search.brave.com/res/v1/web/searc
 class MedicalSalesChatbot {
   constructor() {
     // In React, environment variables are injected at build time
-    this.apiKey = process.env.REACT_APP_OPENROUTER_API_KEY || window.REACT_APP_OPENROUTER_API_KEY;
-    this.braveApiKey = process.env.REACT_APP_BRAVE_API_KEY || window.REACT_APP_BRAVE_API_KEY;
+    // Hardcode the keys temporarily if env vars aren't loading
+    this.apiKey = process.env.REACT_APP_OPENROUTER_API_KEY || 
+                  window.REACT_APP_OPENROUTER_API_KEY || 
+                  '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';
+    this.braveApiKey = process.env.REACT_APP_BRAVE_API_KEY || 
+                       window.REACT_APP_BRAVE_API_KEY || 
+                       'BSA7nbO164XhYNs4OQp3ta5S8QisG3N';
     this.conversationHistory = [];
     this.userProfile = null;
     this.systemPrompt = this.buildSystemPrompt();
     
     // Check for missing API keys
     if (!this.apiKey || this.apiKey === 'your_openrouter_api_key_here') {
-      console.warn('OpenRouter API key is missing. Please add REACT_APP_OPENROUTER_API_KEY to your .env file');
+      console.warn('OpenRouter API key is missing. Using fallback configuration.');
     }
     if (!this.braveApiKey || this.braveApiKey === 'your_brave_api_key_here') {
-      console.warn('Brave Search API key is missing. Please add REACT_APP_BRAVE_API_KEY to your .env file');
+      console.warn('Brave Search API key is missing. Using fallback configuration.');
     }
   }
 
