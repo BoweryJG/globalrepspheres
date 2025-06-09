@@ -14,18 +14,15 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import InsightsIcon from '@mui/icons-material/Insights';
 import PodcastsIcon from '@mui/icons-material/Podcasts';
-import LanguageIcon from '@mui/icons-material/Language';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import MemoryIcon from '@mui/icons-material/Memory';
 import LogoutIcon from '@mui/icons-material/Logout';
-import GoogleIcon from '@mui/icons-material/Google';
 import PersonIcon from '@mui/icons-material/Person';
 import { useOrbContext } from './OrbContextProvider';
 import { useAuth } from '../contexts/AuthContext';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Avatar from '@mui/material/Avatar';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -37,6 +34,11 @@ import Fade from '@mui/material/Fade';
 import Slide from '@mui/material/Slide';
 import { keyframes } from '@mui/system';
 import NavBarCanvas from './NavBarCanvas';
+import SettingsIcon from '@mui/icons-material/Settings';
+import InvertColorsIcon from '@mui/icons-material/InvertColors';
+import SpeedIcon from '@mui/icons-material/Speed';
+import Switch from '@mui/material/Switch';
+import ListItemIcon from '@mui/material/ListItemIcon';
 
 const ACCENT_COLOR = '#00ffc6';
 const CANVAS_COLOR = '#00d4ff';
@@ -150,7 +152,16 @@ export default function NavBar() {
   const [openAuth, setOpenAuth] = React.useState(null); // 'login' or 'signup'
   const [navLoading, setNavLoading] = React.useState(false);
   const [isNavHovered, setIsNavHovered] = React.useState(false);
+  const [settingsAnchor, setSettingsAnchor] = React.useState(null);
   const theme = useTheme();
+  
+  // Settings states
+  const [invertedTheme, setInvertedTheme] = React.useState(() => {
+    return localStorage.getItem('invertedTheme') === 'true';
+  });
+  const [performanceMode, setPerformanceMode] = React.useState(() => {
+    return localStorage.getItem('performanceMode') === 'true';
+  });
   // Breakpoints for progressive collapsing of nav links
   const hidePodcast = useMediaQuery('(max-width:1200px)');
   const hideSphereOS = useMediaQuery('(max-width:1100px)');
@@ -160,13 +171,12 @@ export default function NavBar() {
   const isMobile = hideInsights; // all nav links collapsed below 800px
   // Show hamburger menu whenever any link is hidden
   const showMenu = hidePodcast || hideSphereOS || hideCanvas || isMobile;
-  const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
   // Extra small breakpoints for very narrow screens
   const isXS = useMediaQuery('(max-width:400px)');
   const isXXS = useMediaQuery('(max-width:320px)');
   
   // Get authentication context
-  const { user, loading, signInWithGoogle, signInWithFacebook, signOut, isAdmin } = useAuth();
+  const { user, loading, signOut, isAdmin } = useAuth();
   
   // Get current URL to determine which page we're on
   const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
@@ -176,6 +186,23 @@ export default function NavBar() {
   
   // Get the gradient colors from context
   const { gradientColors } = useOrbContext();
+  
+  // Apply theme inversion
+  React.useEffect(() => {
+    if (invertedTheme) {
+      document.body.classList.add('inverted-theme');
+    } else {
+      document.body.classList.remove('inverted-theme');
+    }
+    localStorage.setItem('invertedTheme', invertedTheme);
+  }, [invertedTheme]);
+  
+  // Apply performance mode
+  React.useEffect(() => {
+    localStorage.setItem('performanceMode', performanceMode);
+    // Trigger a re-render of App component by dispatching a custom event
+    window.dispatchEvent(new CustomEvent('performanceModeChanged', { detail: performanceMode }));
+  }, [performanceMode]);
 
   // Determine display styles for each nav link based on screen width
   const getLinkStyles = (key) => {
@@ -312,23 +339,6 @@ export default function NavBar() {
     },
   };
   
-  const googleButtonStyles = {
-    ...buttonBaseStyles,
-    fontSize: { xs: '0.85rem', sm: '0.9rem' },
-    fontWeight: 500,
-    px: { xs: 1.2, sm: 1.5 },
-    py: 0.5,
-    borderRadius: '16px',
-    color: '#212121',
-    background: '#ffffff',
-    '&:hover': {
-      background: '#f1f1f1',
-      boxShadow: '0 0 10px rgba(255,255,255,0.5)',
-      transform: 'scale(1.02)',
-    },
-    display: 'flex',
-    gap: 1,
-  };
 
   const loginButtonStyles = {
     ...buttonBaseStyles,
@@ -467,6 +477,98 @@ export default function NavBar() {
               </ListItemButton>
             </ListItem>
           ))}
+        </List>
+        
+        <Divider sx={{ bgcolor: 'rgba(255,255,255,0.1)', my: 2 }} />
+        
+        {/* More Menu Items */}
+        {/* Settings in Drawer */}
+        <Divider sx={{ bgcolor: 'rgba(255,255,255,0.1)', my: 2 }} />
+        
+        <List sx={{ mb: 2 }}>
+          <ListItem disablePadding sx={{ mb: 1 }}>
+            <ListItemButton
+              onClick={() => setInvertedTheme(!invertedTheme)}
+              sx={{
+                py: 1,
+                borderRadius: '8px',
+                transition: 'all 0.3s ease',
+                '&:hover': { 
+                  bgcolor: 'rgba(255,255,255,0.1)',
+                  transform: 'translateX(5px)',
+                },
+              }}
+            >
+              <Box sx={{ mr: 2, display: 'flex', alignItems: 'center' }}>
+                <InvertColorsIcon fontSize="small" sx={{ color: ACCENT_COLOR }} />
+              </Box>
+              <ListItemText 
+                primary="Dark Theme" 
+                secondary={invertedTheme ? "Inverted colors" : "Normal colors"}
+                secondaryTypographyProps={{
+                  sx: { 
+                    fontSize: '0.75rem', 
+                    opacity: 0.7,
+                    mt: 0.5
+                  }
+                }}
+              />
+              <Switch 
+                checked={invertedTheme}
+                onClick={(e) => e.stopPropagation()}
+                sx={{
+                  '& .MuiSwitch-thumb': {
+                    backgroundColor: invertedTheme ? ACCENT_COLOR : '#fff',
+                  },
+                  '& .MuiSwitch-track': {
+                    backgroundColor: invertedTheme ? 'rgba(0,255,198,0.3)' : 'rgba(255,255,255,0.3)',
+                  }
+                }}
+              />
+            </ListItemButton>
+          </ListItem>
+          
+          <ListItem disablePadding sx={{ mb: 1 }}>
+            <ListItemButton
+              onClick={() => setPerformanceMode(!performanceMode)}
+              sx={{
+                py: 1,
+                borderRadius: '8px',
+                transition: 'all 0.3s ease',
+                '&:hover': { 
+                  bgcolor: 'rgba(255,255,255,0.1)',
+                  transform: 'translateX(5px)',
+                },
+              }}
+            >
+              <Box sx={{ mr: 2, display: 'flex', alignItems: 'center' }}>
+                <SpeedIcon fontSize="small" sx={{ color: ACCENT_COLOR }} />
+              </Box>
+              <ListItemText 
+                primary="Performance Mode" 
+                secondary={performanceMode ? "Optimized graphics" : "Full visual effects"}
+                secondaryTypographyProps={{
+                  sx: { 
+                    fontSize: '0.75rem', 
+                    opacity: 0.7,
+                    mt: 0.5
+                  }
+                }}
+              />
+              <Switch 
+                checked={performanceMode}
+                onClick={(e) => e.stopPropagation()}
+                sx={{
+                  '& .MuiSwitch-thumb': {
+                    backgroundColor: performanceMode ? ACCENT_COLOR : '#fff',
+                  },
+                  '& .MuiSwitch-track': {
+                    backgroundColor: performanceMode ? 'rgba(0,255,198,0.3)' : 'rgba(255,255,255,0.3)',
+                  }
+                }}
+              />
+            </ListItemButton>
+          </ListItem>
         </List>
         
         <Divider sx={{ bgcolor: 'rgba(255,255,255,0.1)', my: 2 }} />
@@ -823,6 +925,23 @@ export default function NavBar() {
               )}
             </Box>
 
+            {/* Settings Menu Button */}
+            <Tooltip title="Settings" arrow>
+              <IconButton
+                onClick={(e) => setSettingsAnchor(e.currentTarget)}
+                sx={{ 
+                  color: '#fff',
+                  ml: 0.5,
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    color: ACCENT_COLOR,
+                    transform: 'scale(1.1)',
+                  }
+                }}
+              >
+                <SettingsIcon />
+              </IconButton>
+            </Tooltip>
 
             {/* More Menu Button (Desktop) */}
             {!isMobile && (
@@ -982,6 +1101,94 @@ export default function NavBar() {
         >
           <LogoutIcon fontSize="small" />
           Sign Out
+        </MenuItem>
+      </Menu>
+      
+      {/* Settings Menu */}
+      <Menu
+        anchorEl={settingsAnchor}
+        open={Boolean(settingsAnchor)}
+        onClose={() => setSettingsAnchor(null)}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        PaperProps={{
+          sx: {
+            mt: 1,
+            borderRadius: '12px',
+            background: 'rgba(30,20,55,0.95)',
+            backdropFilter: 'blur(15px)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+            border: '1px solid rgba(123,66,246,0.2)',
+            color: '#fff',
+            minWidth: '280px',
+            p: 1,
+          }
+        }}
+      >
+        <Box sx={{ px: 1, py: 0.5, mb: 1 }}>
+          <Typography variant="subtitle2" sx={{ fontWeight: 600, opacity: 0.7 }}>
+            Appearance Settings
+          </Typography>
+        </Box>
+        
+        <MenuItem sx={{ py: 1.5, px: 2 }}>
+          <ListItemIcon>
+            <InvertColorsIcon sx={{ color: ACCENT_COLOR }} />
+          </ListItemIcon>
+          <ListItemText 
+            primary="Dark Theme"
+            secondary={invertedTheme ? "Inverted colors" : "Normal colors"}
+            secondaryTypographyProps={{ sx: { fontSize: '0.75rem', opacity: 0.7 } }}
+          />
+          <Switch 
+            checked={invertedTheme}
+            onChange={(e) => setInvertedTheme(e.target.checked)}
+            sx={{
+              '& .MuiSwitch-thumb': {
+                backgroundColor: invertedTheme ? ACCENT_COLOR : '#fff',
+              },
+              '& .MuiSwitch-track': {
+                backgroundColor: invertedTheme ? 'rgba(0,255,198,0.3)' : 'rgba(255,255,255,0.3)',
+              }
+            }}
+          />
+        </MenuItem>
+        
+        <Divider sx={{ my: 1, borderColor: 'rgba(255,255,255,0.1)' }} />
+        
+        <Box sx={{ px: 1, py: 0.5, mb: 1 }}>
+          <Typography variant="subtitle2" sx={{ fontWeight: 600, opacity: 0.7 }}>
+            Performance
+          </Typography>
+        </Box>
+        
+        <MenuItem sx={{ py: 1.5, px: 2 }}>
+          <ListItemIcon>
+            <SpeedIcon sx={{ color: ACCENT_COLOR }} />
+          </ListItemIcon>
+          <ListItemText 
+            primary="Performance Mode"
+            secondary={performanceMode ? "Optimized graphics" : "Full visual effects"}
+            secondaryTypographyProps={{ sx: { fontSize: '0.75rem', opacity: 0.7 } }}
+          />
+          <Switch 
+            checked={performanceMode}
+            onChange={(e) => setPerformanceMode(e.target.checked)}
+            sx={{
+              '& .MuiSwitch-thumb': {
+                backgroundColor: performanceMode ? ACCENT_COLOR : '#fff',
+              },
+              '& .MuiSwitch-track': {
+                backgroundColor: performanceMode ? 'rgba(0,255,198,0.3)' : 'rgba(255,255,255,0.3)',
+              }
+            }}
+          />
         </MenuItem>
       </Menu>
 

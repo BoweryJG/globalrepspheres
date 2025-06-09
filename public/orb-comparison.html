@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SVG vs Canvas Orb Comparison - Identical Smoothness</title>
+  <style>
+    body {
+      background: #0B0B20;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: white;
+      overflow-x: hidden;
+    }
+    .container {
+      display: flex;
+      height: 100vh;
+      position: relative;
+    }
+    .side {
+      width: 50%;
+      height: 100%;
+      position: relative;
+      border-right: 1px solid rgba(255,255,255,0.1);
+    }
+    .label {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 18px;
+      font-weight: bold;
+      z-index: 10;
+      background: rgba(0,0,0,0.5);
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+    svg, canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .controls {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      background: rgba(0,0,0,0.8);
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    button {
+      margin: 0 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background: #00E5FF;
+      border: none;
+      border-radius: 5px;
+      color: #0B0B20;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #5B3CFF;
+      color: white;
+    }
+    .fps {
+      position: absolute;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 14px;
+      z-index: 10;
+      background: rgba(0,0,0,0.5);
+      padding: 5px 10px;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="side">
+    <div class="label">SVG (Original)</div>
+    <div class="fps" id="svgFps">0 FPS</div>
+    <svg id="svgOrbs"></svg>
+  </div>
+  <div class="side">
+    <div class="label">Canvas 2D (Optimized)</div>
+    <div class="fps" id="canvasFps">0 FPS</div>
+    <canvas id="canvasOrbs"></canvas>
+  </div>
+</div>
+<div class="controls">
+  <button onclick="toggleAnimation('svg')">Toggle SVG</button>
+  <button onclick="toggleAnimation('canvas')">Toggle Canvas</button>
+  <button onclick="toggleAnimation('both')">Toggle Both</button>
+  <button onclick="addDragForce()">Add Drag Force</button>
+</div>
+
+<script>
+// Shared animation state
+const sharedState = {
+  time: 0,
+  dragTarget: 0,
+  drag: 0,
+  dragV: 0,
+  parentCenter: { x: 0, y: 0 },
+  childStates: []
+};
+
+// Initialize child states
+const childCount = 5;
+for (let i = 0; i < childCount; i++) {
+  sharedState.childStates.push({
+    orbitalAngle: (i * Math.PI * 2) / childCount,
+    drag: 0,
+    dragTarget: 0,
+    dragV: 0
+  });
+}
+
+// Animation control
+let svgActive = true;
+let canvasActive = true;
+
+function toggleAnimation(which) {
+  if (which === 'svg') svgActive = !svgActive;
+  else if (which === 'canvas') canvasActive = !canvasActive;
+  else { svgActive = !svgActive; canvasActive = !canvasActive; }
+}
+
+function addDragForce() {
+  sharedState.dragTarget += 50;
+  sharedState.childStates.forEach(s => s.dragTarget += 30);
+}
+
+// Shared utility functions
+function hslToHex(h, s, l) {
+  h /= 360; s /= 100; l /= 100;
+  let r, g, b;
+  if (s === 0) { r = g = b = l; }
+  else {
+    const hue2rgb = (p, q, t) => {
+      if (t < 0) t += 1;
+      if (t > 1) t -= 1;
+      if (t < 1/6) return p + (q - p) * 6 * t;
+      if (t < 1/2) return q;
+      if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+      return p;
+    };
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    const p = 2 * l - q;
+    r = hue2rgb(p, q, h + 1/3);
+    g = hue2rgb(p, q, h);
+    b = hue2rgb(p, q, h - 1/3);
+  }
+  return "#" + [r, g, b].map(x => Math.round(x * 255).toString(16).padStart(2, "0")).join("");
+}
+
+function generateSuperSmoothBlob(cx, cy, r, points, t, amp=1, phase=0) {
+  const pts = [];
+  for (let i = 0; i < points; i++) {
+    const angle = (Math.PI * 2 * i) / points;
+    const noise =
+      Math.sin(angle * 3 + t * 0.7 + phase) * 4 * amp +
+      Math.sin(angle * 5 - t * 1.1 + phase) * 2 * amp +
+      Math.sin(angle * 2 + t * 1.7 + phase) * 1.2 * amp;
+    const rad = r + noise;
+    pts.push({
+      x: cx + Math.cos(angle) * rad,
+      y: cy + Math.sin(angle) * rad
+    });
+  }
+  
+  let d = "";
+  for (let i = 0; i < points; i++) {
+    const p0 = pts[(i - 1 + points) % points];
+    const p1 = pts[i];
+    const p2 = pts[(i + 1) % points];
+    const p3 = pts[(i + 2) % points];
+    
+    if (i === 0) {
+      d += `M${p1.x.toFixed(2)},${p1.y.toFixed(2)}`;
+    }
+    
+    const c1x = p1.x + (p2.x - p0.x) / 6;
+    const c1y = p1.y + (p2.y - p0.y) / 6;
+    const c2x = p2.x - (p3.x - p1.x) / 6;
+    const c2y = p2.y - (p3.y - p1.y) / 6;
+    
+    d += ` C${c1x.toFixed(2)},${c1y.toFixed(2)} ${c2x.toFixed(2)},${c2y.toFixed(2)} ${p2.x.toFixed(2)},${p2.y.toFixed(2)}`;
+  }
+  d += "Z";
+  return { path: d, points: pts };
+}
+
+function dampedSpring(current, target, velocity, stiffness, damping) {
+  const force = (target - current) * stiffness;
+  velocity += force;
+  velocity *= damping;
+  current += velocity;
+  return [current, velocity];
+}
+
+// Setup SVG
+const svg = document.getElementById('svgOrbs');
+svg.innerHTML = `
+  <defs>
+    <radialGradient id="parentGrad" cx="50%" cy="50%" r="70%">
+      <stop id="p0" offset="0%" stop-color="#00E5FF"/>
+      <stop id="p1" offset="25%" stop-color="#00E5FF"/>
+      <stop id="p2" offset="50%" stop-color="#5B3CFF"/>
+      <stop id="p3" offset="75%" stop-color="#5B3CFF"/>
+      <stop id="p4" offset="100%" stop-color="#00E5FF"/>
+    </radialGradient>
+    ${Array.from({ length: childCount }, (_, i) => `
+      <radialGradient id="childGrad${i}" cx="50%" cy="50%" r="70%">
+        <stop id="c${i}s0" offset="0%" stop-color="#FFF"/>
+        <stop id="c${i}s1" offset="100%" stop-color="#000"/>
+      </radialGradient>
+    `).join('')}
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <path id="svgParentOrb" fill="url(#parentGrad)" opacity="0.95" filter="url(#glow)"/>
+  <g id="svgChildren">
+    ${Array.from({ length: childCount }, (_, i) => 
+      `<path id="svgChild${i}" fill="url(#childGrad${i})" opacity="0.95"/>`
+    ).join('')}
+  </g>
+`;
+
+// Setup Canvas
+const canvas = document.getElementById('canvasOrbs');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width;
+  canvas.height = rect.height;
+  
+  const vw = rect.width;
+  const vh = rect.height;
+  sharedState.parentCenter = { x: vw/2, y: vh/2 };
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+// FPS tracking
+const fpsTrackers = {
+  svg: { frames: 0, lastTime: performance.now(), fps: 0 },
+  canvas: { frames: 0, lastTime: performance.now(), fps: 0 }
+};
+
+function updateFPS(which) {
+  const tracker = fpsTrackers[which];
+  tracker.frames++;
+  const now = performance.now();
+  if (now - tracker.lastTime > 1000) {
+    tracker.fps = Math.round(tracker.frames * 1000 / (now - tracker.lastTime));
+    tracker.frames = 0;
+    tracker.lastTime = now;
+    document.getElementById(which + 'Fps').textContent = tracker.fps + ' FPS';
+  }
+}
+
+// SVG render function
+function renderSVG(now) {
+  if (!svgActive) return;
+  
+  updateFPS('svg');
+  
+  // Update shared physics
+  [sharedState.drag, sharedState.dragV] = dampedSpring(
+    sharedState.drag, sharedState.dragTarget, sharedState.dragV, 0.045, 0.9
+  );
+  sharedState.dragTarget *= 0.95;
+  
+  // Update gradient colors
+  const baseHue = (now * 0.01) % 360;
+  const gradientStops = [
+    { id: 'p0', phase: 0 },
+    { id: 'p1', phase: Math.PI * 0.5 },
+    { id: 'p2', phase: Math.PI },
+    { id: 'p3', phase: Math.PI * 1.5 },
+    { id: 'p4', phase: Math.PI * 2 }
+  ];
+  
+  gradientStops.forEach(stop => {
+    const el = svg.querySelector(`#${stop.id}`);
+    if (el) {
+      const hueOffset = 60 * Math.sin(now * 0.00015 + stop.phase);
+      let hue = (baseHue + hueOffset) % 360;
+      if (hue < 0) hue += 360;
+      const sat = 75 + 25 * Math.sin(now * 0.0002 + stop.phase);
+      const light = 50 + 15 * Math.sin(now * 0.00025 + stop.phase * 0.5);
+      el.setAttribute('stop-color', hslToHex(hue, sat, light));
+    }
+  });
+  
+  // Parent orb
+  const parentPath = document.getElementById('svgParentOrb');
+  const px = sharedState.parentCenter.x + Math.sin(now * 0.0001) * 25;
+  const py = sharedState.parentCenter.y + Math.cos(now * 0.00012) * 20;
+  const morphT = now * 0.00015;
+  const { path } = generateSuperSmoothBlob(px, py + sharedState.drag * 0.3, 100 + sharedState.drag * 0.15, 64, morphT, 1);
+  parentPath.setAttribute('d', path);
+  
+  // Child orbs
+  sharedState.childStates.forEach((state, i) => {
+    [state.drag, state.dragV] = dampedSpring(state.drag, state.dragTarget, state.dragV, 0.055, 0.88);
+    state.dragTarget *= 0.94;
+    
+    const childPath = document.getElementById(`svgChild${i}`);
+    state.orbitalAngle += 0.008;
+    const radius = 160 + i * 25;
+    const x = px + Math.cos(state.orbitalAngle) * radius;
+    const y = py + Math.sin(state.orbitalAngle) * radius + state.drag * 0.2;
+    
+    const { path: childPathData } = generateSuperSmoothBlob(x, y, 36 + state.drag * 0.08, 48, now * 0.0002 + i * 10, 0.5, i);
+    childPath.setAttribute('d', childPathData);
+    
+    // Update colors
+    const hue = (i * 72 + now * 0.018) % 360;
+    const color = hslToHex(hue, 80, 60);
+    svg.querySelector(`#c${i}s0`).setAttribute('stop-color', color);
+    svg.querySelector(`#c${i}s1`).setAttribute('stop-color', hslToHex((hue + 180) % 360, 70, 25));
+  });
+}
+
+// Canvas render function
+function renderCanvas(now) {
+  if (!canvasActive) return;
+  
+  updateFPS('canvas');
+  
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  // Apply glow effect
+  ctx.shadowBlur = 4;
+  ctx.shadowColor = 'rgba(0, 229, 255, 0.5)';
+  
+  // Parent orb
+  const px = sharedState.parentCenter.x + Math.sin(now * 0.0001) * 25;
+  const py = sharedState.parentCenter.y + Math.cos(now * 0.00012) * 20;
+  const morphT = now * 0.00015;
+  const { path, points } = generateSuperSmoothBlob(px, py + sharedState.drag * 0.3, 100 + sharedState.drag * 0.15, 64, morphT, 1);
+  
+  // Create gradient
+  const baseHue = (now * 0.01) % 360;
+  const gradient = ctx.createRadialGradient(px, py + sharedState.drag * 0.3, 0, px, py + sharedState.drag * 0.3, 70);
+  
+  // Add gradient stops matching SVG
+  for (let i = 0; i < 5; i++) {
+    const phase = i * Math.PI * 0.5;
+    const hueOffset = 60 * Math.sin(now * 0.00015 + phase);
+    let hue = (baseHue + hueOffset) % 360;
+    if (hue < 0) hue += 360;
+    const sat = 75 + 25 * Math.sin(now * 0.0002 + phase);
+    const light = 50 + 15 * Math.sin(now * 0.00025 + phase * 0.5);
+    gradient.addColorStop(i / 4, hslToHex(hue, sat, light));
+  }
+  
+  // Draw parent using Path2D for exact same curves
+  const path2d = new Path2D(path);
+  ctx.fillStyle = gradient;
+  ctx.globalAlpha = 0.95;
+  ctx.fill(path2d);
+  
+  // Child orbs
+  sharedState.childStates.forEach((state, i) => {
+    state.orbitalAngle += 0.008;
+    const radius = 160 + i * 25;
+    const x = px + Math.cos(state.orbitalAngle) * radius;
+    const y = py + Math.sin(state.orbitalAngle) * radius + state.drag * 0.2;
+    
+    const { path: childPath } = generateSuperSmoothBlob(x, y, 36 + state.drag * 0.08, 48, now * 0.0002 + i * 10, 0.5, i);
+    
+    // Child gradient
+    const hue = (i * 72 + now * 0.018) % 360;
+    const childGrad = ctx.createRadialGradient(x, y, 0, x, y, 36 * 0.7);
+    childGrad.addColorStop(0, hslToHex(hue, 80, 60));
+    childGrad.addColorStop(1, hslToHex((hue + 180) % 360, 70, 25));
+    
+    const childPath2d = new Path2D(childPath);
+    ctx.fillStyle = childGrad;
+    ctx.fill(childPath2d);
+  });
+}
+
+// Main animation loop
+function animate() {
+  const now = performance.now();
+  sharedState.time = now;
+  
+  renderSVG(now);
+  renderCanvas(now);
+  
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+// Add scroll interaction
+window.addEventListener('wheel', (e) => {
+  const velocity = Math.max(-80, Math.min(80, e.deltaY / 10));
+  sharedState.dragTarget += velocity * 0.8;
+  sharedState.childStates.forEach(s => s.dragTarget += velocity * 0.5);
+  e.preventDefault();
+}, { passive: false });
+</script>
+</body>
+</html>

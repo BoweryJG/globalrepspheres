@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Container, Typography, Grid, Button, Chip } from '@mui/material';
-import { Check, Star, Bolt, TrendingUp } from '@mui/icons-material';
+import { Check, Star, Bolt } from '@mui/icons-material';
 
 const pricingTiers = [
   {
@@ -106,7 +106,7 @@ export default function PricingSection() {
         <Box sx={{ textAlign: 'center', mb: 8 }}>
           <Chip
             icon={<Bolt sx={{ fontSize: 16 }} />}
-            label="LIMITED TIME: Founding Member Pricing"
+            label="UPDATED PRICING: 5 Tiers Available"
             sx={{
               mb: 3,
               backgroundColor: 'rgba(0,255,198,0.1)',
@@ -425,6 +425,79 @@ export default function PricingSection() {
             );
           })}
         </Grid>
+
+        {/* Elite Tier Special CTA */}
+        <Box sx={{ 
+          mt: 8, 
+          p: 4, 
+          borderRadius: '24px',
+          background: 'linear-gradient(135deg, rgba(123,66,246,0.1) 0%, rgba(91,50,214,0.1) 100%)',
+          border: '2px solid rgba(123,66,246,0.3)',
+          textAlign: 'center',
+        }}>
+          <Typography
+            variant="h4"
+            sx={{
+              fontFamily: "'Space Grotesk', Arial, sans-serif",
+              fontWeight: 700,
+              fontSize: { xs: '1.8rem', md: '2.5rem' },
+              mb: 2,
+              background: 'linear-gradient(90deg, #7B42F6 0%, #00ffc6 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}
+          >
+            Ready for Elite Status?
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              fontFamily: "'DM Sans', Arial, sans-serif",
+              color: 'rgba(255,255,255,0.8)',
+              fontSize: '1.1rem',
+              mb: 3,
+              maxWidth: '600px',
+              mx: 'auto',
+            }}
+          >
+            Join the top 1% of sales professionals with our white-glove Elite package.
+            Your personal AI-powered sales acceleration team awaits.
+          </Typography>
+          <Typography
+            variant="h5"
+            sx={{
+              fontFamily: "'Space Grotesk', Arial, sans-serif",
+              fontWeight: 600,
+              fontSize: { xs: '1.5rem', md: '2rem' },
+              mb: 3,
+              color: '#fff',
+            }}
+          >
+            $1,499<Typography component="span" sx={{ fontSize: '1.2rem', opacity: 0.7 }}>/month</Typography>
+          </Typography>
+          <Button
+            variant="contained"
+            size="large"
+            sx={{
+              px: 5,
+              py: 2,
+              borderRadius: '30px',
+              background: 'linear-gradient(135deg, #7B42F6 0%, #5B32D6 100%)',
+              fontFamily: "'Space Grotesk', Arial, sans-serif",
+              fontWeight: 600,
+              fontSize: '1.1rem',
+              letterSpacing: '0.02em',
+              boxShadow: '0 4px 20px rgba(123,66,246,0.4)',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                transform: 'translateY(-2px)',
+                boxShadow: '0 8px 30px rgba(123,66,246,0.5)',
+              },
+            }}
+          >
+            Apply for Elite Access
+          </Button>
+        </Box>
 
         {/* Bottom CTA */}
         <Box sx={{ textAlign: 'center', mt: 10 }}>

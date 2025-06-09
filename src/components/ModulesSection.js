@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
-import { Box, Container, Typography, Grid, Button } from '@mui/material';
+import { Box, Container, Typography, Grid } from '@mui/material';
 import { 
   TrendingUp, 
   Psychology, 
   RecordVoiceOver, 
   Hub,
   AutoAwesome,
-  Speed,
-  Analytics,
-  CloudSync
 } from '@mui/icons-material';
 
 const modules = [

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Box, 
   IconButton, 
@@ -18,7 +18,6 @@ import DownloadIcon from '@mui/icons-material/Download';
 import SpeedIcon from '@mui/icons-material/Speed';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import ReplayIcon from '@mui/icons-material/Replay';
 import Forward30Icon from '@mui/icons-material/Forward30';
 import Replay10Icon from '@mui/icons-material/Replay10';
 import WaveformVisualizer from './WaveformVisualizer';
@@ -74,12 +73,6 @@ const AudioPlayer = ({ episode }) => {
     }
   };
   
-  const handleSeek = (event, newValue) => {
-    if (wavesurferInstance) {
-      wavesurferInstance.seekTo(newValue / duration);
-      setCurrentTime(newValue);
-    }
-  };
   
   const handleSpeedMenuOpen = (event) => {
     setSpeedMenuAnchor(event.currentTarget);
