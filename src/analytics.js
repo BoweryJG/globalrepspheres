@@ -5,7 +5,7 @@ export function initAnalytics() {
   const measurementId = process.env.REACT_APP_GA_ID;
   
   if (!measurementId) {
-    console.warn('REACT_APP_GA_ID not set in environment variables');
+    // Silently skip if GA ID is not set
     return;
   }
   

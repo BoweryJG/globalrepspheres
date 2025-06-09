@@ -27,6 +27,11 @@ const HarveyChat = () => {
     const harveyBot = new HarveySpecterBot();
     setBot(harveyBot);
     
+    // Debug: Check if API key is loaded
+    const apiKey = process.env.REACT_APP_OPENROUTER_API_KEY;
+    console.log('Environment check - API Key loaded:', apiKey ? 'YES' : 'NO');
+    console.log('API Key preview:', apiKey ? `${apiKey.substring(0, 20)}...` : 'NOT FOUND');
+    
     const welcomeMessage = {
       id: Date.now(),
       text: "Listen up. I'm Harvey Specter, and I don't have time for amateurs. You're here because you want to dominate the medical aesthetics and dental implant space. Good. But wanting isn't enough. You need RepSpheres, you need AI, and you need to understand surgical robotics like Yomi — or you're already losing. So what's it going to be? Are you ready to play at the highest level, or should I find someone who is?",
