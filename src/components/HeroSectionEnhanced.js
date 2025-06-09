@@ -31,6 +31,7 @@ export default function HeroSectionEnhanced() {
           zIndex: 1,
           background: 'transparent',
           overflow: 'hidden',
+          mt: { xs: -2, md: -3 }, // Account for navbar curve overlap
         }}
       >
         <CanvasHeader height="100%">
