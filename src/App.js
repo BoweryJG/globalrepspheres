@@ -3,14 +3,12 @@ import NavBar from './components/NavBar';
 import StarryBackground from './components/StarryBackground_Ultra';
 import StarryBackground_Enhanced from './components/StarryBackground_Enhanced';
 import AnimatedOrbExact from './components/AnimatedOrbExact';
-import HeroSectionEnhanced from './components/HeroSectionEnhanced';
-import TransformationSection from './components/TransformationSection';
+import HeroTransformationSection from './components/HeroTransformationSection';
+import IntelligenceTrinitySection from './components/IntelligenceTrinitySection';
+import MultiplierEffectSection from './components/MultiplierEffectSection';
 import BridgeSection from './components/BridgeSection';
-import TimeMultiplicationSection from './components/TimeMultiplicationSection';
-import ModulesSection from './components/ModulesSection';
-import RevolutionSection from './components/RevolutionSection';
-import CTASection from './components/CTASection';
 import PricingSection from './components/PricingSection';
+import DecisionPointSection from './components/DecisionPointSection';
 import OrbContextProvider from './components/OrbContextProvider';
 import { AuthProvider } from './contexts/AuthContext';
 import Footer from './components/Footer';
@@ -49,14 +47,12 @@ function App() {
         <StarComponent />
         <NavBar />
         <OrbComponent zIndex={5} />
-        <HeroSectionEnhanced />
-        <TransformationSection />
+        <HeroTransformationSection />
+        <IntelligenceTrinitySection />
+        <MultiplierEffectSection />
         <BridgeSection />
-        <TimeMultiplicationSection />
-        <ModulesSection />
-        <RevolutionSection />
-        <CTASection />
         <PricingSection />
+        <DecisionPointSection />
         <Footer />
         {showPerformanceMonitor && <PerformanceMonitor />}
         <HarveyChatLauncher />
