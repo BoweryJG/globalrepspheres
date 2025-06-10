@@ -15,7 +15,7 @@ A cutting-edge AI-powered platform revolutionizing medical and dental sales inte
 ### Core Intelligence
 - **300+ AI Models**: Access to the most comprehensive AI model suite in the industry
 - **15 Years of Industry Data**: The largest dataset ever assembled for dental and aesthetic industries
-- **Elite Medical Sales Chatbot**: AI assistant with deep medical knowledge and Socratic conversation approach
+- **"The Boss" AI Chatbot**: Harvey Specter-inspired AI assistant with premium glassmorphic design and elite medical knowledge
 - **Real-time Market Insights**: Live competitive intelligence and market evolution tracking
 
 ### Technical Features
@@ -151,7 +151,8 @@ globalrepspheres/
 ### UI Components
 - **NavBar**: Curved navigation bar with canvas animations and external module links
 - **HeroSectionEnhanced**: Enhanced hero section with integrated canvas effects
-- **MedicalChatbot**: AI-powered medical knowledge assistant
+- **HarveyChat**: "The Boss" AI chatbot with premium glassmorphic design and Harvey Specter energy
+- **MedicalChatbot**: AI-powered medical knowledge assistant (legacy component)
 - **AudioPlayer**: Advanced audio player with waveform visualization
 - **PricingSection**: Dynamic pricing tiers with Stripe Checkout integration
 
@@ -214,9 +215,28 @@ Ensure all these variables are set in your production environment:
 
 All plans include a free trial. Annual billing saves up to 20%.
 
+## 🤖 "The Boss" AI Chatbot
+
+### Features
+- **Harvey Specter Energy**: Confident, driven messaging that embodies elite sales mentality
+- **Premium Design**: Glassmorphic interface with animated gradient borders and floating avatars
+- **Advanced Styling**: 
+  - Backdrop blur effects and glass-like message bubbles
+  - Smooth hover animations and gradient input fields
+  - Floating bot avatar with subtle animation
+  - Custom scrollbar styling with cyan accents
+- **Intelligence**: Powered by 300+ AI models and 15 years of medical industry data
+- **Personality**: "Your success is my business" - focused on driving results and winning
+- **Integration**: Seamlessly integrated with RepSpheres platform data and insights
+
+### Design Philosophy
+The chatbot embodies Harvey Specter's philosophy: confidence, excellence, and results-driven communication. Every interaction is designed to motivate and empower users to achieve their sales goals.
+
 ## Recent Updates
 
 ### January 2025
+- **"The Boss" AI Chatbot**: Complete redesign with Harvey Specter energy and premium glassmorphic styling
+- **Chatbot Styling**: Floating avatar animations, glass-effect message bubbles, gradient borders
 - **Navigation Enhancement**: Updated module links for Market Data, Canvas, and Sphere oS
 - **Google Analytics Integration**: Added comprehensive event tracking across all CTAs
 - **Stripe Checkout Integration**: Complete payment flow with success/cancel pages
