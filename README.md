@@ -2,6 +2,14 @@
 
 A cutting-edge AI-powered platform revolutionizing medical and dental sales intelligence. Built with React and featuring advanced canvas animations, real-time data visualization, and an intelligent chatbot powered by over 300 AI models and 15 years of pivotal industry data.
 
+## 🚀 Platform Modules
+
+### Core RepSpheres Modules
+- **[Market Data](https://marketdata.repspheres.com/)**: Real-time market intelligence and competitive analysis
+- **[Canvas](https://canvas.repspheres.com/)**: AI-powered sales automation workspace
+- **[Sphere oS](https://crm.repspheres.com/)**: Intelligent CRM system with workflow automation
+- **[Podcast](/?page=podcast)**: Industry insights and AI-powered interviews
+
 ## Features
 
 ### Core Intelligence
@@ -84,8 +92,13 @@ REACT_APP_SUPABASE_URL=<your-supabase-url>
 REACT_APP_SUPABASE_ANON_KEY=<your-supabase-anon-key>
 
 # Backend and Analytics
-REACT_APP_BACKEND_URL=<your-render-backend-url>
+REACT_APP_BACKEND_URL=<your-render-backend-url>  # e.g., https://osbackend-zl1h.onrender.com
 REACT_APP_GA_ID=<your-google-analytics-id>
+
+# Stripe Configuration (handled by backend)
+# Your backend should have:
+# STRIPE_SECRET_KEY=<your-stripe-secret-key>
+# STRIPE_WEBHOOK_SECRET=<your-stripe-webhook-secret>
 ```
 
 **Important**: After creating or modifying the `.env` file, you must restart the development server for the changes to take effect.
@@ -101,6 +114,32 @@ The `REACT_APP_BACKEND_URL` should point to your deployed backend on Render (e.g
 
 **Note**: The `.env` file is gitignored and should never be committed to version control.
 
+## Project Structure
+
+```
+globalrepspheres/
+├── public/
+│   ├── index.html              # Main app entry
+│   ├── signup.html             # Signup page
+│   ├── login.html              # Login page
+│   ├── demo.html               # Demo booking page
+│   ├── success.html            # Payment success page
+│   ├── cancel.html             # Payment cancellation page
+│   ├── contact-sales.html      # Enterprise contact form
+│   ├── elite-application.html  # Elite tier application
+│   └── podcast.html            # Podcast player page
+├── src/
+│   ├── components/
+│   │   ├── NavBar.js           # Main navigation with external links
+│   │   ├── PricingSection.js   # Pricing tiers with Stripe integration
+│   │   ├── MedicalChatbot.js   # AI-powered chatbot
+│   │   └── [other components]
+│   ├── stripeService.js        # Stripe Checkout integration
+│   ├── App.js                  # Main app component
+│   └── index.js                # App entry point
+└── .env                        # Environment variables (not in git)
+```
+
 ## Key Components
 
 ### Canvas Components
@@ -110,10 +149,11 @@ The `REACT_APP_BACKEND_URL` should point to your deployed backend on Render (e.g
 - **AnimatedOrbExact**: High-fidelity orb rendering for hero sections
 
 ### UI Components
-- **NavBar**: Curved navigation bar with canvas animations
+- **NavBar**: Curved navigation bar with canvas animations and external module links
 - **HeroSectionEnhanced**: Enhanced hero section with integrated canvas effects
 - **MedicalChatbot**: AI-powered medical knowledge assistant
 - **AudioPlayer**: Advanced audio player with waveform visualization
+- **PricingSection**: Dynamic pricing tiers with Stripe Checkout integration
 
 ## Performance Considerations
 
@@ -163,11 +203,26 @@ Ensure all these variables are set in your production environment:
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+## 💳 Pricing Tiers
+
+### Available Plans
+1. **Explorer ($49/month)**: Test the waters with essential market insights
+2. **Professional ($149/month)**: Everything you need to excel in your territory
+3. **Growth ($349/month)**: Scale your success with advanced analytics
+4. **Enterprise ($749/month)**: Command center for market domination
+5. **Elite ($1,499/month)**: Your personal AI-powered sales acceleration team
+
+All plans include a free trial. Annual billing saves up to 20%.
+
 ## Recent Updates
 
 ### January 2025
-- **Fixed Background Rendering**: Resolved black overlay issue in hero section, now properly displays blue/purple starry background
-- **Environment Variables**: Fixed environment variable loading issues for chatbot and analytics
+- **Navigation Enhancement**: Updated module links for Market Data, Canvas, and Sphere oS
+- **Google Analytics Integration**: Added comprehensive event tracking across all CTAs
+- **Stripe Checkout Integration**: Complete payment flow with success/cancel pages
+- **Static Pages**: Added demo booking, contact sales, and elite application pages
+- **Fixed Background Rendering**: Resolved black overlay issue in hero section
+- **Environment Variables**: Fixed environment variable loading issues
 - **Performance Optimization**: Removed duplicate background layers to improve CPU performance
 - **CI/CD Pipeline**: Fixed GitHub Actions build failures by aligning with Netlify configuration
 - **Code Cleanup**: Removed over 100k cached node_modules files from git tracking
@@ -190,6 +245,17 @@ Ensure all these variables are set in your production environment:
    - Clear browser cache and reload
    - Check that no browser extensions are interfering with CSS
    - Verify WebGL is enabled in your browser
+
+4. **Stripe Checkout Not Working**
+   - Ensure `REACT_APP_BACKEND_URL` is set correctly (e.g., `https://osbackend-zl1h.onrender.com`)
+   - Verify backend is running and has proper Stripe keys configured
+   - Check that the backend endpoints use `/api/create-checkout-session`
+   - Ensure all Stripe price IDs in PricingSection.js match your Stripe dashboard
+
+5. **Navigation Links Not Working**
+   - External modules (Market Data, Canvas, Sphere oS) require separate deployments
+   - Internal links use React Router or query parameters
+   - Check browser console for any CORS or network errors
 
 ## Project Heritage
 
