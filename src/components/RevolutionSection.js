@@ -220,16 +220,16 @@ export default function RevolutionSection() {
                 icon: '📊',
               },
               {
+                point: 'Their top 10 prospects from thousands of messy contacts - instantly',
+                icon: '💎',
+              },
+              {
                 point: 'The exact message that resonates with each physician',
                 icon: '🎯',
               },
               {
-                point: 'When competitors are making moves in their territory',
-                icon: '👁️',
-              },
-              {
-                point: 'How to reach 1000 prospects while others reach 10',
-                icon: '🚀',
+                point: 'When and how to follow up for maximum impact',
+                icon: '⏰',
               },
             ].map((item, index) => (
               <Grid item xs={12} md={6} key={index}>
