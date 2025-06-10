@@ -7,14 +7,142 @@ import {
   Typography,
   Avatar,
   CircularProgress,
-  Fade
+  Fade,
+  keyframes
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import {
   Send as SendIcon,
   Gavel as GavelIcon,
   Person as PersonIcon
 } from '@mui/icons-material';
 import HarveySpecterBot from '../services/harveySpecterBot';
+
+// Styled components for the wow factor
+const ChatContainer = styled(Box)(({ theme }) => ({
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  background: 'linear-gradient(135deg, rgba(11, 11, 32, 0.95) 0%, rgba(24, 24, 43, 0.95) 100%)',
+  backdropFilter: 'blur(20px)',
+  WebkitBackdropFilter: 'blur(20px)',
+  borderRadius: theme.spacing(3),
+  overflow: 'hidden',
+  position: 'relative',
+  boxShadow: '0 20px 50px rgba(0, 0, 0, 0.5), 0 0 100px rgba(0, 229, 255, 0.1)',
+}));
+
+const HeaderBox = styled(Box)(({ theme }) => ({
+  background: 'linear-gradient(135deg, #00E5FF 0%, #5B3CFF 100%)',
+  position: 'relative',
+  overflow: 'hidden',
+  '&::after': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: '-100%',
+    width: '200%',
+    height: '100%',
+    background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
+    animation: 'shimmer 3s infinite',
+  },
+  '@keyframes shimmer': {
+    '0%': { left: '-100%' },
+    '100%': { left: '100%' },
+  },
+}));
+
+const float = keyframes`
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+`;
+
+const BotAvatar = styled(Avatar)(({ theme }) => ({
+  background: 'linear-gradient(135deg, #00E5FF 0%, #5B3CFF 100%)',
+  boxShadow: '0 4px 20px rgba(0, 229, 255, 0.5)',
+  animation: `${float} 3s ease-in-out infinite`,
+}));
+
+const UserAvatar = styled(Avatar)(({ theme }) => ({
+  background: 'linear-gradient(135deg, #FF006E 0%, #8338EC 100%)',
+  boxShadow: '0 4px 20px rgba(255, 0, 110, 0.3)',
+}));
+
+const MessageBubble = styled(Paper)(({ theme }) => ({
+  backdropFilter: 'blur(10px)',
+  WebkitBackdropFilter: 'blur(10px)',
+  borderRadius: theme.spacing(2.5),
+  padding: theme.spacing(2.5),
+  position: 'relative',
+  transition: 'all 0.3s ease',
+  '&:hover': {
+    transform: 'translateY(-2px)',
+  },
+}));
+
+const StyledTextField = styled(TextField)(({ theme }) => ({
+  '& .MuiOutlinedInput-root': {
+    background: 'rgba(255, 255, 255, 0.05)',
+    borderRadius: theme.spacing(3),
+    color: 'white',
+    transition: 'all 0.3s ease',
+    '& fieldset': {
+      borderColor: 'rgba(255, 255, 255, 0.2)',
+      transition: 'all 0.3s ease',
+    },
+    '&:hover fieldset': {
+      borderColor: 'rgba(0, 229, 255, 0.4)',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: '#00E5FF',
+      borderWidth: 2,
+      boxShadow: '0 0 20px rgba(0, 229, 255, 0.2)',
+    },
+    '& input::placeholder, & textarea::placeholder': {
+      color: 'rgba(255, 255, 255, 0.5)',
+    },
+  },
+  '& .MuiInputBase-input': {
+    color: 'white',
+  },
+}));
+
+const SendButton = styled(IconButton)(({ theme }) => ({
+  background: 'linear-gradient(45deg, #00E5FF 30%, #5B3CFF 90%)',
+  color: 'white',
+  transition: 'all 0.3s ease',
+  '&:hover': {
+    background: 'linear-gradient(45deg, #00E5FF 60%, #5B3CFF 100%)',
+    transform: 'scale(1.1)',
+    boxShadow: '0 5px 20px rgba(0, 229, 255, 0.4)',
+  },
+  '&:disabled': {
+    background: 'rgba(255, 255, 255, 0.1)',
+    color: 'rgba(255, 255, 255, 0.3)',
+  },
+}));
+
+const MessagesContainer = styled(Box)(({ theme }) => ({
+  flex: 1,
+  overflow: 'auto',
+  padding: theme.spacing(3),
+  background: 'transparent',
+  position: 'relative',
+  '&::-webkit-scrollbar': {
+    width: '8px',
+  },
+  '&::-webkit-scrollbar-track': {
+    background: 'rgba(255, 255, 255, 0.05)',
+    borderRadius: '4px',
+  },
+  '&::-webkit-scrollbar-thumb': {
+    background: 'rgba(0, 229, 255, 0.3)',
+    borderRadius: '4px',
+    '&:hover': {
+      background: 'rgba(0, 229, 255, 0.5)',
+    },
+  },
+}));
 
 const HarveyChat = () => {
   const [messages, setMessages] = useState([]);
@@ -34,7 +162,7 @@ const HarveyChat = () => {
     
     const welcomeMessage = {
       id: Date.now(),
-      text: "Listen up. I don't have time for amateurs. You're here because you want to dominate the medical aesthetics and dental implant space. Good. But wanting isn't enough. You need RepSpheres, you need AI, and you need to understand surgical robotics like Yomi — or you're already losing. So what's it going to be? Are you ready to play at the highest level, or should I find someone who is?",
+      text: "Ever wondered if your boss really had your best interests at heart? I do. That's why they call me 'The Boss.'\n\nI don't have dreams, I have goals - and right now, my goal is to make you unstoppable. I've analyzed 2.4 million provider records, mastered 300+ AI models, and built on 15 years of industry wins. I don't do second place.\n\nWhether you're here to crush sales, transform your practice, or get the answers nobody else will give you - I play to win. And when you work with me, so do you.\n\nTime is money. Let's get to work.",
       sender: 'bot',
       timestamp: new Date()
     };
@@ -92,33 +220,31 @@ const HarveyChat = () => {
   };
 
   return (
-    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <Box sx={{ 
-        p: 2, 
-        background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)', 
-        color: 'white' 
-      }}>
+    <ChatContainer>
+      <HeaderBox sx={{ p: 3, color: 'white' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <GavelIcon sx={{ fontSize: 32 }} />
+          <BotAvatar sx={{ width: 48, height: 48 }}>
+            <GavelIcon sx={{ fontSize: 32 }} />
+          </BotAvatar>
           <Box>
-            <Typography variant="h6" fontWeight="bold">
-              Boss
+            <Typography variant="h6" fontWeight="bold" sx={{ letterSpacing: '0.5px' }}>
+              The Boss
             </Typography>
-            <Typography variant="caption" sx={{ opacity: 0.9 }}>
-              Medical Industry Expert
+            <Typography variant="caption" sx={{ opacity: 0.9, fontStyle: 'italic' }}>
+              Your success is my business
             </Typography>
           </Box>
         </Box>
-      </Box>
+      </HeaderBox>
 
-      <Box sx={{ flex: 1, overflow: 'auto', p: 2, backgroundColor: '#f5f5f5' }}>
+      <MessagesContainer>
         {messages.map((message) => (
-          <Fade in key={message.id}>
+          <Fade in key={message.id} timeout={600}>
             <Box
               sx={{
                 display: 'flex',
                 justifyContent: message.sender === 'user' ? 'flex-end' : 'flex-start',
-                mb: 2
+                mb: 3
               }}
             >
               <Box
@@ -126,77 +252,85 @@ const HarveyChat = () => {
                   display: 'flex',
                   flexDirection: message.sender === 'user' ? 'row-reverse' : 'row',
                   alignItems: 'flex-start',
-                  gap: 1,
-                  maxWidth: '70%'
+                  gap: 2,
+                  maxWidth: '75%'
                 }}
               >
-                <Avatar
+                {message.sender === 'user' ? (
+                  <UserAvatar sx={{ width: 40, height: 40 }}>
+                    <PersonIcon />
+                  </UserAvatar>
+                ) : (
+                  <BotAvatar sx={{ width: 40, height: 40 }}>
+                    <GavelIcon />
+                  </BotAvatar>
+                )}
+                <MessageBubble 
+                  elevation={0} 
                   sx={{
-                    backgroundColor: message.sender === 'user' ? '#1976d2' : '#1a1a1a',
-                    width: 36,
-                    height: 36
+                    background: message.sender === 'user'
+                      ? 'linear-gradient(135deg, rgba(91, 60, 255, 0.9) 0%, rgba(131, 56, 236, 0.9) 100%)'
+                      : 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)',
+                    border: message.sender === 'user' 
+                      ? '1px solid rgba(91, 60, 255, 0.3)' 
+                      : '1px solid rgba(255, 255, 255, 0.1)',
+                    color: message.sender === 'user' ? 'white' : 'rgba(255, 255, 255, 0.95)',
+                    '&:hover': {
+                      boxShadow: message.sender === 'user'
+                        ? '0 8px 30px rgba(91, 60, 255, 0.3)'
+                        : '0 8px 30px rgba(0, 229, 255, 0.2)',
+                    },
                   }}
                 >
-                  {message.sender === 'user' ? <PersonIcon /> : <GavelIcon />}
-                </Avatar>
-                <Paper
-                  sx={{
-                    p: 2,
-                    backgroundColor: message.sender === 'user' ? '#1976d2' : 'white',
-                    color: message.sender === 'user' ? 'white' : 'text.primary',
-                    borderRadius: 2
-                  }}
-                >
-                  <Typography variant="body1" sx={{ whiteSpace: 'pre-line' }}>
+                  <Typography variant="body1" sx={{ whiteSpace: 'pre-line', lineHeight: 1.6 }}>
                     {message.text}
                   </Typography>
-                  <Typography variant="caption" sx={{ display: 'block', mt: 1, opacity: 0.7 }}>
+                  <Typography variant="caption" sx={{ display: 'block', mt: 1.5, opacity: 0.6 }}>
                     {message.timestamp.toLocaleTimeString()}
                   </Typography>
-                </Paper>
+                </MessageBubble>
               </Box>
             </Box>
           </Fade>
         ))}
         {isLoading && (
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, ml: 6 }}>
-            <CircularProgress size={20} />
-            <Typography variant="body2" color="text.secondary">
-              Boss is formulating a response...
-            </Typography>
-          </Box>
+          <Fade in>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, ml: 7 }}>
+              <CircularProgress size={20} sx={{ color: '#00E5FF' }} />
+              <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+                The Boss is strategizing...
+              </Typography>
+            </Box>
+          </Fade>
         )}
         <div ref={messagesEndRef} />
-      </Box>
+      </MessagesContainer>
 
-      <Box sx={{ p: 2, borderTop: 1, borderColor: 'divider' }}>
-        <Box sx={{ display: 'flex', gap: 1 }}>
-          <TextField
+      <Box sx={{ 
+        p: 2.5, 
+        background: 'linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.3) 100%)',
+        borderTop: '1px solid rgba(255, 255, 255, 0.1)'
+      }}>
+        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+          <StyledTextField
             fullWidth
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="State your business..."
+            placeholder="Tell me what you need to win..."
             variant="outlined"
             disabled={isLoading}
           />
-          <IconButton
-            color="primary"
+          <SendButton
+            size="large"
             onClick={handleSendMessage}
             disabled={!inputMessage.trim() || isLoading}
-            sx={{
-              backgroundColor: '#1a1a1a',
-              color: 'white',
-              '&:hover': {
-                backgroundColor: '#2d2d2d'
-              }
-            }}
           >
             <SendIcon />
-          </IconButton>
+          </SendButton>
         </Box>
       </Box>
-    </Box>
+    </ChatContainer>
   );
 };
 
