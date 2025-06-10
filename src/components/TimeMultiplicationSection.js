@@ -70,7 +70,7 @@ export default function TimeMultiplicationSection() {
               backgroundClip: 'text',
             }}
           >
-            What If You Had 100 Hours in Your Day?
+            What If Every Message Was Your Best Message?
           </Typography>
           
           <Typography
@@ -84,9 +84,9 @@ export default function TimeMultiplicationSection() {
               lineHeight: 1.6,
             }}
           >
-            Send 1000 perfect messages in 60 seconds. Research any practice in 2 seconds. 
+            Each outreach perfectly researched. Every follow-up strategically timed. 
             <Box component="span" sx={{ display: 'block', mt: 1, color: '#00ffc6', fontWeight: 500 }}>
-              Automation isn't the future. It's the minimum.
+              Scale your best work, not generic templates. You decide the volume.
             </Box>
           </Typography>
         </Box>
@@ -111,10 +111,10 @@ export default function TimeMultiplicationSection() {
               color: '#3a86ff',
             },
             {
-              task: 'Send Messages',
-              before: '1 at a time',
-              after: '1000 at once',
-              multiplier: '1000x',
+              task: 'Strategic Follow-Up',
+              before: 'Manual tracking',
+              after: 'Intelligent sequences',
+              multiplier: 'Perfect timing',
               icon: <GrowthIcon />,
               color: '#7B42F6',
             },
@@ -262,7 +262,7 @@ export default function TimeMultiplicationSection() {
               fontSize: '1.3rem',
             }}
           >
-            While you read this section, automated reps have sent:
+            Quality at Scale: Your Intelligence, Multiplied
           </Typography>
           
           <Typography
@@ -286,9 +286,15 @@ export default function TimeMultiplicationSection() {
               fontFamily: "'DM Sans', Arial, sans-serif",
               color: 'rgba(255,255,255,0.7)',
               fontSize: '1.1rem',
+              maxWidth: 600,
+              mx: 'auto',
+              lineHeight: 1.5,
             }}
           >
-            perfectly researched, personalized messages
+            Each message crafted with the same care as your best work.
+            <Box component="span" sx={{ display: 'block', mt: 1 }}>
+              Send 10 or 10,000 - each one lands perfectly.
+            </Box>
           </Typography>
         </Box>
 
@@ -305,7 +311,7 @@ export default function TimeMultiplicationSection() {
               mb: 6,
             }}
           >
-            Every Rep Using This Gains 20+ Hours Per Week
+            Strategic Intelligence, Not Spray and Pray
           </Typography>
           
           <Typography
@@ -316,27 +322,32 @@ export default function TimeMultiplicationSection() {
               textAlign: 'center',
               mb: 6,
               fontSize: { xs: '1.1rem', md: '1.4rem' },
+              maxWidth: 800,
+              mx: 'auto',
             }}
           >
-            Spend time building relationships, not searching spreadsheets
+            Know exactly who to reach, what resonates with them, and what to say when they're not ready yet.
+            <Box component="span" sx={{ display: 'block', mt: 1, color: '#00ffc6' }}>
+              This is relationship building at scale.
+            </Box>
           </Typography>
           
           <Grid container spacing={3} justifyContent="center">
             {[
               {
                 icon: <RelationshipIcon sx={{ fontSize: 40 }} />,
-                title: 'Build Real Relationships',
-                description: 'Focus on what matters: connecting with physicians',
+                title: 'Nurture at Scale',
+                description: 'Every touchpoint feels personal because it is',
               },
               {
                 icon: <GrowthIcon sx={{ fontSize: 40 }} />,
-                title: 'Strategic Territory Planning',
-                description: 'See opportunities others miss with AI insights',
+                title: 'Strategic Persistence',
+                description: 'Know when and how to follow up for maximum impact',
               },
               {
                 icon: <AutomationIcon sx={{ fontSize: 40 }} />,
-                title: 'Scale Without Burnout',
-                description: 'Work smarter, not harder—let automation handle the rest',
+                title: 'Your Voice, Amplified',
+                description: 'Scale your expertise, not generic messaging',
               },
             ].map((item, index) => (
               <Grid item xs={12} md={4} key={index}>
@@ -385,6 +396,95 @@ export default function TimeMultiplicationSection() {
           </Grid>
         </Box>
 
+        {/* Strategic Intelligence Section */}
+        <Box sx={{ mb: 8 }}>
+          <Typography
+            variant="h3"
+            sx={{
+              fontFamily: "'Space Grotesk', Arial, sans-serif",
+              fontWeight: 700,
+              fontSize: { xs: '2rem', md: '2.8rem' },
+              color: '#fff',
+              textAlign: 'center',
+              mb: 6,
+            }}
+          >
+            The Intelligence That Matters
+          </Typography>
+
+          <Grid container spacing={4}>
+            <Grid item xs={12} md={6}>
+              <Box
+                sx={{
+                  p: 4,
+                  borderRadius: '20px',
+                  background: 'rgba(0, 255, 198, 0.05)',
+                  border: '1px solid rgba(0, 255, 198, 0.2)',
+                  height: '100%',
+                }}
+              >
+                <Typography
+                  variant="h5"
+                  sx={{
+                    fontFamily: "'Space Grotesk', Arial, sans-serif",
+                    fontWeight: 600,
+                    color: '#00ffc6',
+                    mb: 3,
+                  }}
+                >
+                  What to Say When They Say No
+                </Typography>
+                <Typography
+                  sx={{
+                    fontFamily: "'DM Sans', Arial, sans-serif",
+                    color: 'rgba(255,255,255,0.8)',
+                    fontSize: '1.1rem',
+                    lineHeight: 1.6,
+                  }}
+                >
+                  Every objection has a thoughtful response. Every "not now" has a perfect follow-up timing. 
+                  This isn't about volume - it's about knowing exactly how to nurture each relationship until they're ready.
+                </Typography>
+              </Box>
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <Box
+                sx={{
+                  p: 4,
+                  borderRadius: '20px',
+                  background: 'rgba(123, 66, 246, 0.05)',
+                  border: '1px solid rgba(123, 66, 246, 0.2)',
+                  height: '100%',
+                }}
+              >
+                <Typography
+                  variant="h5"
+                  sx={{
+                    fontFamily: "'Space Grotesk', Arial, sans-serif",
+                    fontWeight: 600,
+                    color: '#7B42F6',
+                    mb: 3,
+                  }}
+                >
+                  Your Expertise, Scaled Perfectly
+                </Typography>
+                <Typography
+                  sx={{
+                    fontFamily: "'DM Sans', Arial, sans-serif",
+                    color: 'rgba(255,255,255,0.8)',
+                    fontSize: '1.1rem',
+                    lineHeight: 1.6,
+                  }}
+                >
+                  Whether you reach 10 physicians or 10,000, each one gets your best thinking. 
+                  We build your intelligence into every interaction, so scaling never means compromising on quality.
+                </Typography>
+              </Box>
+            </Grid>
+          </Grid>
+        </Box>
+
         {/* Closing CTA */}
         <Box
           sx={{
@@ -405,9 +505,9 @@ export default function TimeMultiplicationSection() {
               fontWeight: 500,
             }}
           >
-            The question isn't whether you need automation.
+            Quality and quantity aren't opposites anymore.
             <Box component="span" sx={{ display: 'block', mt: 1, color: '#ff006e' }}>
-              It's how many deals you're losing without it.
+              With the right intelligence, they multiply each other.
             </Box>
           </Typography>
         </Box>

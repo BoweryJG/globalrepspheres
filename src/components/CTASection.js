@@ -175,7 +175,7 @@ export default function CTASection() {
                       fontSize: '0.95rem',
                     }}
                   >
-                    Send 1000 perfectly researched messages immediately
+                    Send perfectly researched messages - 10 or 10,000, your choice
                   </Typography>
                 </Box>
               </Grid>

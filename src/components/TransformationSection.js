@@ -244,7 +244,7 @@ export default function TransformationSection() {
                     fontWeight: 500,
                   }}
                 >
-                  "I know more about a practice in 2 seconds than I used to learn in 2 hours"
+                  "I craft better messages in seconds than I used to write in hours - and send exactly the right amount"
                 </Typography>
               </Box>
             </Box>

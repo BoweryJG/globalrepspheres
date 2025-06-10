@@ -100,9 +100,9 @@ export default function RevolutionSection() {
           {[
             {
               icon: <SpeedIcon sx={{ fontSize: 48 }} />,
-              stat: '10,000+',
-              label: 'Messages sent monthly by smart reps',
-              subtext: 'Each one perfectly researched and personalized',
+              stat: 'Perfect',
+              label: 'Every message, every time',
+              subtext: 'Quality at whatever scale makes sense for you',
               color: '#00ffc6',
             },
             {
