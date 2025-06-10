@@ -46,19 +46,21 @@ export default function MultiplierEffectSection() {
 
   const caseStudyData = {
     name: "Sarah Chen",
-    role: "Territory Manager",
+    role: "Territory Manager, Growth Plan ($349/month)",
     territory: "San Francisco Bay Area",
     before: {
       messagesPerWeek: 50,
       responseRate: "3.2%",
       timeSpent: "20 hours",
-      deals: "2-3 per month"
+      deals: "2-3 per month",
+      roi: "$8,400"
     },
     after: {
       messagesPerWeek: 2847,
-      responseRate: "24.7%",
+      responseRate: "24.7%", 
       timeSpent: "2 hours",
-      deals: "18 per month"
+      deals: "18 per month",
+      roi: "$151,200"
     }
   };
 
@@ -488,7 +490,7 @@ export default function MultiplierEffectSection() {
                 </Grid>
               </Grid>
 
-              {/* ROI Highlights */}
+              {/* ROI Calculation */}
               <Box sx={{ mt: 4 }}>
                 <Typography
                   variant="h5"
@@ -496,12 +498,103 @@ export default function MultiplierEffectSection() {
                     fontFamily: "'Space Grotesk', Arial, sans-serif",
                     fontWeight: 600,
                     color: '#7B42F6',
-                    mb: 2,
+                    mb: 3,
                   }}
                 >
-                  The Multiplication Effect:
+                  ROI Calculation:
                 </Typography>
                 
+                <Box
+                  sx={{
+                    p: 3,
+                    borderRadius: '16px',
+                    background: 'rgba(123,66,246,0.1)',
+                    border: '1px solid rgba(123,66,246,0.3)',
+                    mb: 3,
+                  }}
+                >
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          fontFamily: "'DM Sans', Arial, sans-serif",
+                          color: 'rgba(255,255,255,0.7)',
+                          fontSize: '0.8rem',
+                          mb: 0.5,
+                        }}
+                      >
+                        Monthly Revenue Before
+                      </Typography>
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          fontFamily: "'Space Grotesk', Arial, sans-serif",
+                          fontWeight: 700,
+                          color: '#ff6b6b',
+                        }}
+                      >
+                        {caseStudyData.before.roi}
+                      </Typography>
+                    </Grid>
+                    
+                    <Grid item xs={6}>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          fontFamily: "'DM Sans', Arial, sans-serif",
+                          color: 'rgba(255,255,255,0.7)',
+                          fontSize: '0.8rem',
+                          mb: 0.5,
+                        }}
+                      >
+                        Monthly Revenue After
+                      </Typography>
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          fontFamily: "'Space Grotesk', Arial, sans-serif",
+                          fontWeight: 700,
+                          color: '#00ffc6',
+                        }}
+                      >
+                        {caseStudyData.after.roi}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  
+                  <Box
+                    sx={{
+                      mt: 2,
+                      pt: 2,
+                      borderTop: '1px solid rgba(123,66,246,0.3)',
+                      textAlign: 'center',
+                    }}
+                  >
+                    <Typography
+                      variant="h5"
+                      sx={{
+                        fontFamily: "'Space Grotesk', Arial, sans-serif",
+                        fontWeight: 800,
+                        color: '#7B42F6',
+                        mb: 1,
+                      }}
+                    >
+                      1,700% ROI
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        fontFamily: "'DM Sans', Arial, sans-serif",
+                        color: 'rgba(255,255,255,0.8)',
+                        fontSize: '0.9rem',
+                      }}
+                    >
+                      Investment: $349/month • Return: $142,800 additional monthly revenue
+                    </Typography>
+                  </Box>
+                </Box>
+
                 <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                   {[
                     { label: '5,694% more messages', icon: Send },

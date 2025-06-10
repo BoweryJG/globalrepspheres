@@ -5,119 +5,128 @@ import { createCheckoutSession } from '../stripeService';
 
 const pricingTiers = [
   {
-    id: 'starter',
-    name: 'Starter',
-    price: '$297',
+    id: 'explorer',
+    name: 'Explorer',
+    price: '$49',
     period: '/month',
-    description: 'Perfect for individual reps ready to level up',
+    annualPrice: '$490',
+    annualPeriod: '/year',
+    description: 'Test the waters with essential market insights',
     features: [
-      'Market Insights (Basic)',
-      '25 AI Workspace reports/month',
-      '10 Conversation analyses/month',
-      'Email support',
-      'Mobile app access'
+      'Access to 25% of dental/aesthetic procedure database',
+      'View market sizes and growth rates (top-level only)',
+      '5 AI Workspace prompts/month',
+      'Basic category descriptions',
+      'Weekly market digest email',
+      'Explorer Badge in community'
     ],
     cta: 'Start Free Trial',
     popular: false,
     gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    stripeId: 'price_starter_monthly',
+    stripeMonthly: 'price_1RRuqbGRiAPUZqWu3f91wnNx',
+    stripeAnnual: 'price_1RWMXEGRiAPUZqWuPwcgrovN',
   },
   {
     id: 'professional',
     name: 'Professional',
-    price: '$797',
+    price: '$149',
     period: '/month',
-    description: 'For serious closers who want every advantage',
+    annualPrice: '$1,490',
+    annualPeriod: '/year',
+    description: 'Everything you need to excel in your territory',
     features: [
-      'Full Market Insights with real-time data',
-      '100 AI Workspace reports/month',
-      'Unlimited Conversation Analysis',
-      'Basic Twilio integration',
-      'Priority support',
-      'Custom report templates'
+      'Full access to complete procedure database',
+      'Detailed market insights with growth projections',
+      '50 AI Workspace prompts/month',
+      'Linguistics module: 10 call analyses/month',
+      'Recent news article links',
+      'Export capabilities (PDF/CSV)',
+      'Professional Badge + priority support'
     ],
     cta: 'Start Free Trial',
     popular: true,
     gradient: 'linear-gradient(135deg, #00ffc6 0%, #00d4a8 100%)',
     savings: 'Most Popular',
-    stripeId: 'price_professional_monthly',
+    stripeMonthly: 'price_1RRurNGRiAPUZqWuklICsE4P',
+    stripeAnnual: 'price_1RWMWjGRiAPUZqWu6YBZY7o4',
   },
   {
     id: 'growth',
     name: 'Growth',
-    price: '$1,297',
+    price: '$349',
     period: '/month',
-    description: 'Scale your territory with AI automation',
+    annualPrice: '$3,490',
+    annualPeriod: '/year',
+    description: 'Scale your success with advanced analytics',
     features: [
       'Everything in Professional',
-      'Full Twilio automation platform',
-      'Call transcription & AI insights',
-      'Professional phone line',
-      'Post-call automated campaigns',
-      'Team collaboration (up to 10 users)'
+      'Unlimited AI Workspace prompts',
+      '50 call analyses/month with coaching insights',
+      'CRM module access (manual entry)',
+      'Custom market reports (3/month)',
+      'Team collaboration features (up to 3 users)',
+      'API access for basic integrations',
+      'Growth Badge + quarterly strategy call'
     ],
     cta: 'Start Free Trial',
     popular: false,
     gradient: 'linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%)',
-    stripeId: 'price_growth_monthly',
-  },
-  {
-    id: 'scale',
-    name: 'Scale',
-    price: '$1,997',
-    period: '/month',
-    description: 'Territory management at enterprise level',
-    features: [
-      'Everything in Growth',
-      'Advanced psychological indicators',
-      'Custom AI prompt configuration',
-      'White-label options',
-      'Dedicated account manager',
-      'Team collaboration (up to 25 users)'
-    ],
-    cta: 'Start Free Trial',
-    popular: false,
-    gradient: 'linear-gradient(135deg, #3a86ff 0%, #2968db 100%)',
-    stripeId: 'price_scale_monthly',
+    stripeMonthly: 'price_1RWMW3GRiAPUZqWuoTA0eLUC',
+    stripeAnnual: 'price_1RRus5GRiAPUZqWup3jk1S8U',
   },
   {
     id: 'enterprise',
     name: 'Enterprise',
-    price: 'Custom',
-    period: '',
-    description: 'For teams that refuse to lose',
+    price: '$749',
+    period: '/month',
+    annualPrice: '$7,490',
+    annualPeriod: '/year',
+    description: 'Command center for market domination',
     features: [
-      'Everything in Scale',
-      'Custom integrations',
-      'On-premise deployment options',
-      'SLA guarantee',
-      'Advanced analytics dashboard',
-      'Unlimited users'
+      'Everything in Growth',
+      'Unlimited call analyses with AI coaching',
+      'Full CRM automation features',
+      'AI-powered workflow automation (5 workflows)',
+      'Custom AI prompt library creation',
+      'White-label reports for clients',
+      'Team access (up to 10 users)',
+      'Priority API access',
+      'Enterprise Badge + monthly strategy calls'
     ],
-    cta: 'Contact Sales',
+    cta: 'Start Free Trial',
     popular: false,
     gradient: 'linear-gradient(135deg, #7B42F6 0%, #5B32D6 100%)',
-    stripeId: null,
+    savings: 'Save $1,498',
+    stripeMonthly: 'price_1RRushGRiAPUZqWuIvqueK7h',
+    stripeAnnual: 'price_1RWMT4GRiAPUZqWuqiNhkZfw',
   },
   {
     id: 'elite',
     name: 'Elite',
-    price: '$2,997',
+    price: '$1,499',
     period: '/month',
+    annualPrice: '$14,990',
+    annualPeriod: '/year',
     description: 'Your personal AI-powered sales acceleration team',
     features: [
       'Everything in Enterprise',
-      'Weekly 1:1 strategy sessions',
-      'Custom territory analysis',
-      'Personal brand development',
-      'Exclusive mastermind access',
-      'Direct founder access'
+      'Unlimited workflow automations',
+      'Custom AI agent configuration',
+      'Done-for-you report generation',
+      'Dedicated success manager',
+      'Custom integrations',
+      'Unlimited team members',
+      'Quarterly business reviews',
+      'Early access to new features',
+      'Elite Badge + weekly check-ins'
     ],
     cta: 'Apply Now',
     popular: false,
     gradient: 'linear-gradient(135deg, #ff006e 0%, #8338ec 100%)',
     highlight: true,
-    stripeId: 'price_elite_monthly',
+    savings: 'Save $2,998',
+    stripeMonthly: 'price_1RRutVGRiAPUZqWuDMSAqHsD',
+    stripeAnnual: 'price_1RWMSCGRiAPUZqWu30j19b9G',
   }
 ];
 
@@ -126,8 +135,10 @@ export default function PricingSection() {
   const [billingPeriod, setBillingPeriod] = useState('monthly');
 
   const handleSubscribe = async (tier) => {
-    if (tier.stripeId) {
-      await createCheckoutSession(tier.stripeId);
+    const priceId = billingPeriod === 'annual' ? tier.stripeAnnual : tier.stripeMonthly;
+    
+    if (priceId) {
+      await createCheckoutSession(priceId);
     } else if (tier.id === 'enterprise') {
       window.location.href = '/contact-sales';
     } else if (tier.id === 'elite') {
@@ -166,7 +177,7 @@ export default function PricingSection() {
         <Box sx={{ textAlign: 'center', mb: 8 }}>
           <Chip
             icon={<Bolt sx={{ fontSize: 16 }} />}
-            label="NEW: 6 Complete Tiers Available"
+            label="5 COMPLETE TIERS AVAILABLE"
             sx={{
               mb: 3,
               backgroundColor: 'rgba(0,255,198,0.1)',
@@ -212,24 +223,82 @@ export default function PricingSection() {
             Join 500+ top performers already dominating their markets.
           </Typography>
 
-          {/* ROI Calculator Link */}
-          <Box sx={{ mb: 6 }}>
-            <Button
-              variant="text"
+          {/* Billing Period Toggle */}
+          <Box sx={{ mb: 6, display: 'flex', justifyContent: 'center' }}>
+            <Box
               sx={{
-                color: '#00ffc6',
-                fontFamily: "'DM Sans', Arial, sans-serif",
-                fontWeight: 500,
-                fontSize: '1rem',
-                textDecoration: 'underline',
-                '&:hover': {
-                  textDecoration: 'underline',
-                  backgroundColor: 'rgba(0,255,198,0.05)',
-                },
+                display: 'inline-flex',
+                backgroundColor: 'rgba(24,24,43,0.8)',
+                backdropFilter: 'blur(10px)',
+                borderRadius: '50px',
+                border: '1px solid rgba(255,255,255,0.1)',
+                p: 0.5,
               }}
             >
-              Calculate Your ROI →
-            </Button>
+              <Button
+                variant={billingPeriod === 'monthly' ? 'contained' : 'text'}
+                onClick={() => setBillingPeriod('monthly')}
+                sx={{
+                  borderRadius: '50px',
+                  px: 3,
+                  py: 1,
+                  fontFamily: "'DM Sans', Arial, sans-serif",
+                  fontWeight: 600,
+                  fontSize: '0.9rem',
+                  background: billingPeriod === 'monthly' 
+                    ? 'linear-gradient(135deg, #00ffc6 0%, #00d4a8 100%)'
+                    : 'transparent',
+                  color: billingPeriod === 'monthly' ? '#0a0a0a' : 'rgba(255,255,255,0.7)',
+                  '&:hover': {
+                    backgroundColor: billingPeriod === 'monthly' 
+                      ? 'linear-gradient(135deg, #00ffc6 0%, #00d4a8 100%)'
+                      : 'rgba(255,255,255,0.1)',
+                  },
+                }}
+              >
+                Monthly
+              </Button>
+              <Button
+                variant={billingPeriod === 'annual' ? 'contained' : 'text'}
+                onClick={() => setBillingPeriod('annual')}
+                sx={{
+                  borderRadius: '50px',
+                  px: 3,
+                  py: 1,
+                  fontFamily: "'DM Sans', Arial, sans-serif",
+                  fontWeight: 600,
+                  fontSize: '0.9rem',
+                  background: billingPeriod === 'annual' 
+                    ? 'linear-gradient(135deg, #00ffc6 0%, #00d4a8 100%)'
+                    : 'transparent',
+                  color: billingPeriod === 'annual' ? '#0a0a0a' : 'rgba(255,255,255,0.7)',
+                  position: 'relative',
+                  '&:hover': {
+                    backgroundColor: billingPeriod === 'annual' 
+                      ? 'linear-gradient(135deg, #00ffc6 0%, #00d4a8 100%)'
+                      : 'rgba(255,255,255,0.1)',
+                  },
+                }}
+              >
+                Annual
+                <Chip
+                  label="Save up to 20%"
+                  size="small"
+                  sx={{
+                    position: 'absolute',
+                    top: -8,
+                    right: -10,
+                    backgroundColor: '#ff006e',
+                    color: '#fff',
+                    fontSize: '0.6rem',
+                    height: 16,
+                    '& .MuiChip-label': {
+                      px: 1,
+                    },
+                  }}
+                />
+              </Button>
+            </Box>
           </Box>
         </Box>
 
@@ -241,7 +310,7 @@ export default function PricingSection() {
             const isHighlight = tier.highlight;
             
             return (
-              <Grid item xs={12} sm={6} lg={4} xl={2} key={tier.id}>
+              <Grid item xs={12} sm={6} lg={4} xl={2.4} key={tier.id}>
                 <Box
                   onMouseEnter={() => setHoveredTier(tier.id)}
                   onMouseLeave={() => setHoveredTier(null)}
@@ -394,7 +463,7 @@ export default function PricingSection() {
                               lineHeight: 1,
                             }}
                           >
-                            {tier.price}
+                            {billingPeriod === 'annual' ? tier.annualPrice : tier.price}
                           </Typography>
                           <Typography
                             component="span"
@@ -405,7 +474,7 @@ export default function PricingSection() {
                               ml: 0.5,
                             }}
                           >
-                            {tier.period}
+                            {billingPeriod === 'annual' ? tier.annualPeriod : tier.period}
                           </Typography>
                         </Box>
 
