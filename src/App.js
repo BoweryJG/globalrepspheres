@@ -3,17 +3,14 @@ import NavBar from './components/NavBar';
 import StarryBackground from './components/StarryBackground_Ultra';
 import StarryBackground_Enhanced from './components/StarryBackground_Enhanced';
 import AnimatedOrbExact from './components/AnimatedOrbExact';
-import HeroSection from './components/HeroSection';
 import HeroSectionEnhanced from './components/HeroSectionEnhanced';
-import PhilosophicalOpenerSection from './components/PhilosophicalOpenerSection';
-import CrossroadsSection from './components/CrossroadsSection';
-import SystemArchitectsSection from './components/SystemArchitectsSection';
-import SocraticMethodSection from './components/SocraticMethodSection';
+import TransformationSection from './components/TransformationSection';
+import BridgeSection from './components/BridgeSection';
+import TimeMultiplicationSection from './components/TimeMultiplicationSection';
 import ModulesSection from './components/ModulesSection';
-import UrgencySection from './components/UrgencySection';
-import ProofOfConceptSection from './components/ProofOfConceptSection';
-import PricingSection from './components/PricingSection';
+import RevolutionSection from './components/RevolutionSection';
 import CTASection from './components/CTASection';
+import PricingSection from './components/PricingSection';
 import OrbContextProvider from './components/OrbContextProvider';
 import { AuthProvider } from './contexts/AuthContext';
 import Footer from './components/Footer';
@@ -53,13 +50,11 @@ function App() {
         <NavBar />
         <OrbComponent zIndex={5} />
         <HeroSectionEnhanced />
-        <PhilosophicalOpenerSection />
-        <CrossroadsSection />
-        <SystemArchitectsSection />
-        <SocraticMethodSection />
+        <TransformationSection />
+        <BridgeSection />
+        <TimeMultiplicationSection />
         <ModulesSection />
-        <UrgencySection />
-        <ProofOfConceptSection />
+        <RevolutionSection />
         <CTASection />
         <PricingSection />
         <Footer />
