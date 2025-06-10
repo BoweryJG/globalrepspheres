@@ -61,7 +61,7 @@ const getNavLinks = (currentUrl, isAdmin) => {
   const links = [
     { 
       key: 'insights',
-      label: 'Market Insights', 
+      label: 'Market Data', 
       href: 'https://marketdata.repspheres.com/',
       icon: <InsightsIcon fontSize="small" sx={{ 
         color: ACCENT_COLOR,
@@ -82,7 +82,7 @@ const getNavLinks = (currentUrl, isAdmin) => {
     },
     { 
       key: 'sphereos',
-      label: 'Sphere OS', 
+      label: 'Sphere oS', 
       href: 'https://crm.repspheres.com/',
       icon: <MemoryIcon fontSize="small" sx={{ 
         color: ACCENT_COLOR,
@@ -132,6 +132,7 @@ const moreMenuItems = [
 
 // Check if a link is active
 const isLinkActive = (href, currentUrl) => {
+  // For external URLs
   if (href.startsWith('http')) {
     return currentUrl.includes(new URL(href).hostname);
   }
@@ -239,6 +240,16 @@ export default function NavBar() {
   // Handle navigation with loading state
   const handleNavigation = (href) => {
     setNavLoading(true);
+    
+    // Track navigation with Google Analytics
+    if (window.gtag) {
+      window.gtag('event', 'navigation', {
+        event_category: 'engagement',
+        event_label: href,
+        value: 1
+      });
+    }
+    
     setTimeout(() => {
       window.location.href = href;
     }, 300);

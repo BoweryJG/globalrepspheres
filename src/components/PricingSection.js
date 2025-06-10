@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Container, Typography, Grid, Button, Chip } from '@mui/material';
+import { Box, Container, Typography, Grid, Button, Chip, CircularProgress } from '@mui/material';
 import { Check, Star, Bolt, Phone } from '@mui/icons-material';
 import { createCheckoutSession } from '../stripeService';
 
@@ -133,16 +133,36 @@ const pricingTiers = [
 export default function PricingSection() {
   const [hoveredTier, setHoveredTier] = useState(null);
   const [billingPeriod, setBillingPeriod] = useState('monthly');
+  const [loadingTier, setLoadingTier] = useState(null);
 
   const handleSubscribe = async (tier) => {
-    const priceId = billingPeriod === 'annual' ? tier.stripeAnnual : tier.stripeMonthly;
+    setLoadingTier(tier.id);
     
-    if (priceId) {
-      await createCheckoutSession(priceId);
-    } else if (tier.id === 'enterprise') {
-      window.location.href = '/contact-sales';
-    } else if (tier.id === 'elite') {
-      window.location.href = '/elite-application';
+    // Track subscription attempt with Google Analytics
+    if (window.gtag) {
+      window.gtag('event', 'subscription_attempt', {
+        event_category: 'engagement',
+        event_label: `pricing_${tier.id}_${billingPeriod}`,
+        value: billingPeriod === 'annual' ? 
+          parseInt(tier.annualPrice.replace(/[^0-9]/g, '')) : 
+          parseInt(tier.price.replace(/[^0-9]/g, ''))
+      });
+    }
+    
+    try {
+      const priceId = billingPeriod === 'annual' ? tier.stripeAnnual : tier.stripeMonthly;
+      
+      if (priceId) {
+        await createCheckoutSession(priceId);
+      } else if (tier.id === 'enterprise') {
+        window.location.href = '/contact-sales';
+      } else if (tier.id === 'elite') {
+        window.location.href = '/elite-application';
+      }
+    } catch (error) {
+      console.error('Subscription error:', error);
+      setLoadingTier(null);
+      // You could add a user-facing error notification here
     }
   };
 
@@ -552,6 +572,7 @@ export default function PricingSection() {
                           variant="contained"
                           fullWidth
                           onClick={() => handleSubscribe(tier)}
+                          disabled={loadingTier === tier.id}
                           sx={{
                             py: 2,
                             borderRadius: '12px',
@@ -573,9 +594,20 @@ export default function PricingSection() {
                                 ? '0 8px 30px rgba(0,255,198,0.4)'
                                 : '0 4px 20px rgba(255,255,255,0.1)',
                             },
+                            '&:disabled': {
+                              opacity: 0.7,
+                              cursor: 'not-allowed',
+                            },
                           }}
                         >
-                          {tier.cta}
+                          {loadingTier === tier.id ? (
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                              <CircularProgress size={20} sx={{ color: 'inherit' }} />
+                              Processing...
+                            </Box>
+                          ) : (
+                            tier.cta
+                          )}
                         </Button>
                       </Box>
                     </Box>
@@ -615,6 +647,16 @@ export default function PricingSection() {
           <Button
             variant="outlined"
             size="large"
+            onClick={() => {
+              if (window.gtag) {
+                window.gtag('event', 'book_demo', {
+                  event_category: 'engagement',
+                  event_label: 'pricing_section_bottom',
+                  value: 1
+                });
+              }
+              window.location.href = '/demo';
+            }}
             sx={{
               px: 5,
               py: 2,

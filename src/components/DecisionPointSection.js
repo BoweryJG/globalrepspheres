@@ -440,7 +440,16 @@ export default function DecisionPointSection() {
               variant="contained"
               size="large"
               endIcon={<ArrowForward />}
-              href="#pricing"
+              onClick={() => {
+                if (window.gtag) {
+                  window.gtag('event', 'get_repsphere_now', {
+                    event_category: 'engagement',
+                    event_label: 'decision_point_section',
+                    value: 1
+                  });
+                }
+                window.location.href = '#pricing';
+              }}
               sx={{
                 px: 6,
                 py: 3,
@@ -468,7 +477,16 @@ export default function DecisionPointSection() {
             <Button
               variant="outlined"
               size="large"
-              href="#demo"
+              onClick={() => {
+                if (window.gtag) {
+                  window.gtag('event', 'watch_demo', {
+                    event_category: 'engagement',
+                    event_label: 'decision_point_section',
+                    value: 1
+                  });
+                }
+                window.location.href = '/demo';
+              }}
               sx={{
                 px: 6,
                 py: 3,

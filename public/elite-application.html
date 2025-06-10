@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elite Application - RepSpheres</title>
+  <link rel="icon" href="/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', Arial, sans-serif;
+      background-color: #0a0a0a;
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Luxury background effect */
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: radial-gradient(ellipse at top center, rgba(123,66,246,0.2) 0%, transparent 40%),
+                  radial-gradient(ellipse at bottom center, rgba(255,215,0,0.1) 0%, transparent 50%);
+    }
+
+    .gold-particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: #FFD700;
+      border-radius: 50%;
+      opacity: 0;
+      animation: float 15s infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { 
+        opacity: 0;
+        transform: translateY(100vh) translateX(0);
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) translateX(100px);
+      }
+    }
+
+    /* Header */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,215,0,0.2);
+      z-index: 100;
+      padding: 1rem 2rem;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, #FFD700 0%, #7B42F6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-decoration: none;
+    }
+
+    .back-link {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .back-link:hover {
+      color: #FFD700;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 10rem 2rem 4rem;
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .elite-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      background: linear-gradient(135deg, rgba(255,215,0,0.1) 0%, rgba(123,66,246,0.1) 100%);
+      border: 2px solid rgba(255,215,0,0.3);
+      color: #FFD700;
+      padding: 0.75rem 2rem;
+      border-radius: 50px;
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 2rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .elite-badge::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255,215,0,0.3), transparent);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%) translateY(-100%); }
+      100% { transform: translateX(100%) translateY(100%); }
+    }
+
+    .hero h1 {
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-size: 4.5rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      line-height: 1.1;
+      background: linear-gradient(90deg, #FFD700 0%, #7B42F6 50%, #FFD700 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.5rem;
+      color: rgba(255,255,255,0.9);
+      line-height: 1.6;
+      margin-bottom: 3rem;
+    }
+
+    /* Elite Benefits */
+    .benefits-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+    }
+
+    .benefit-card {
+      background: rgba(24,24,43,0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 2px solid rgba(255,215,0,0.2);
+      border-radius: 24px;
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .benefit-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(255,215,0,0.05) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .benefit-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255,215,0,0.4);
+    }
+
+    .benefit-card:hover::before {
+      opacity: 1;
+    }
+
+    .benefit-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+      color: #0a0a0a;
+    }
+
+    .benefit-card h3 {
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+
+    .benefit-card p {
+      color: rgba(255,255,255,0.8);
+      line-height: 1.6;
+    }
+
+    /* Application Form */
+    .application-section {
+      max-width: 900px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+    }
+
+    .form-container {
+      background: linear-gradient(135deg, rgba(123,66,246,0.1) 0%, rgba(255,215,0,0.05) 100%);
+      border: 2px solid rgba(255,215,0,0.3);
+      border-radius: 24px;
+      padding: 4rem;
+      position: relative;
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .form-header h2 {
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(90deg, #FFD700 0%, #7B42F6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .form-header p {
+      color: rgba(255,255,255,0.8);
+      font-size: 1.2rem;
+    }
+
+    .qualification-note {
+      background: rgba(255,215,0,0.1);
+      border: 1px solid rgba(255,215,0,0.3);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+
+    .qualification-note p {
+      color: #FFD700;
+      font-weight: 500;
+    }
+
+    .form-section {
+      margin-bottom: 3rem;
+    }
+
+    .form-section h3 {
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: #FFD700;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 1rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      color: #fff;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: #FFD700;
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 0 0 3px rgba(255,215,0,0.1);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    select.form-control {
+      cursor: pointer;
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 150px;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: start;
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 24px;
+      height: 24px;
+      accent-color: #FFD700;
+      cursor: pointer;
+    }
+
+    .checkbox-group label {
+      cursor: pointer;
+      line-height: 1.5;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+      color: #0a0a0a;
+      border: none;
+      border-radius: 50px;
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-size: 1.2rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 2rem;
+      box-shadow: 0 4px 20px rgba(255,215,0,0.4);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(255,215,0,0.6);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .success-message {
+      display: none;
+      text-align: center;
+      padding: 3rem;
+      background: rgba(255,215,0,0.1);
+      border: 2px solid rgba(255,215,0,0.3);
+      border-radius: 16px;
+      margin-top: 2rem;
+    }
+
+    .success-message.show {
+      display: block;
+    }
+
+    .success-message h3 {
+      color: #FFD700;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Stats */
+    .elite-stats {
+      background: rgba(255,215,0,0.05);
+      border-radius: 24px;
+      padding: 2rem;
+      margin: 3rem 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      text-align: center;
+    }
+
+    .stat {
+      padding: 1rem;
+    }
+
+    .stat-number {
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #FFD700;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      color: rgba(255,255,255,0.7);
+      font-size: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 3rem;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .benefits-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-container {
+        padding: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="background"></div>
+  <div class="gold-particles" id="particles"></div>
+
+  <header class="header">
+    <div class="header-content">
+      <a href="/" class="logo">RepSpheres</a>
+      <a href="/" class="back-link">
+        <span>←</span> Back to Home
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="elite-badge">
+      <span>★</span> ELITE TIER APPLICATION <span>★</span>
+    </div>
+    <h1>Join the Top 1%</h1>
+    <p>Elite tier is reserved for exceptional sales professionals who demand the absolute best. Limited to 100 members worldwide.</p>
+  </section>
+
+  <!-- Elite Benefits -->
+  <section class="benefits-grid">
+    <div class="benefit-card">
+      <div class="benefit-icon">🏆</div>
+      <h3>Unlimited Everything</h3>
+      <p>No limits on campaigns, messages, territories, or AI usage. Complete freedom to scale your operations without restrictions.</p>
+    </div>
+
+    <div class="benefit-card">
+      <div class="benefit-icon">🎯</div>
+      <h3>1-on-1 Strategy Sessions</h3>
+      <p>Weekly calls with our founder and success team. Get personalized strategies and insider techniques used by top performers.</p>
+    </div>
+
+    <div class="benefit-card">
+      <div class="benefit-icon">🚀</div>
+      <h3>Priority Everything</h3>
+      <p>First access to new features, instant support response, and custom development for your specific needs.</p>
+    </div>
+
+    <div class="benefit-card">
+      <div class="benefit-icon">🧠</div>
+      <h3>Advanced AI Training</h3>
+      <p>Your own custom AI model trained on your best performers' calls and messages. Replicate success at scale.</p>
+    </div>
+
+    <div class="benefit-card">
+      <div class="benefit-icon">💎</div>
+      <h3>Elite Network Access</h3>
+      <p>Connect with other Elite members. Share strategies, form partnerships, and learn from the best in the industry.</p>
+    </div>
+
+    <div class="benefit-card">
+      <div class="benefit-icon">📊</div>
+      <h3>Executive Dashboard</h3>
+      <p>Custom-built analytics and reporting tailored to your KPIs. Real-time insights that drive million-dollar decisions.</p>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <div class="elite-stats">
+    <div class="stat">
+      <div class="stat-number">100</div>
+      <div class="stat-label">Member Limit</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">$8.2M</div>
+      <div class="stat-label">Avg Member Revenue</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">340%</div>
+      <div class="stat-label">Avg ROI</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">87</div>
+      <div class="stat-label">Current Members</div>
+    </div>
+  </div>
+
+  <!-- Application Form -->
+  <section class="application-section">
+    <div class="form-container">
+      <div class="form-header">
+        <h2>Elite Application</h2>
+        <p>Tell us why you belong in the Elite</p>
+      </div>
+
+      <div class="qualification-note">
+        <p>⚡ Applications are reviewed within 24 hours. Only 13 spots remaining for 2025.</p>
+      </div>
+
+      <form id="eliteApplicationForm">
+        <!-- Personal Information -->
+        <div class="form-section">
+          <h3>Personal Information</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">First Name*</label>
+              <input type="text" id="firstName" name="firstName" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name*</label>
+              <input type="text" id="lastName" name="lastName" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Work Email*</label>
+              <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone Number*</label>
+              <input type="tel" id="phone" name="phone" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="linkedin">LinkedIn Profile*</label>
+              <input type="url" id="linkedin" name="linkedin" class="form-control" placeholder="https://linkedin.com/in/yourprofile" required>
+            </div>
+            <div class="form-group">
+              <label for="company">Company*</label>
+              <input type="text" id="company" name="company" class="form-control" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- Professional Background -->
+        <div class="form-section">
+          <h3>Professional Background</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="title">Current Title*</label>
+              <input type="text" id="title" name="title" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="experience">Years in Sales*</label>
+              <select id="experience" name="experience" class="form-control" required>
+                <option value="">Select experience</option>
+                <option value="5-7">5-7 years</option>
+                <option value="8-10">8-10 years</option>
+                <option value="11-15">11-15 years</option>
+                <option value="16-20">16-20 years</option>
+                <option value="20+">20+ years</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="annualRevenue">Annual Revenue Generated (Last Year)*</label>
+              <select id="annualRevenue" name="annualRevenue" class="form-control" required>
+                <option value="">Select revenue range</option>
+                <option value="1-2M">$1M - $2M</option>
+                <option value="2-5M">$2M - $5M</option>
+                <option value="5-10M">$5M - $10M</option>
+                <option value="10-25M">$10M - $25M</option>
+                <option value="25M+">$25M+</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="territorySize">Territory/Book Size*</label>
+              <select id="territorySize" name="territorySize" class="form-control" required>
+                <option value="">Select territory size</option>
+                <option value="100-250">100-250 accounts</option>
+                <option value="251-500">251-500 accounts</option>
+                <option value="501-1000">501-1,000 accounts</option>
+                <option value="1000-2500">1,000-2,500 accounts</option>
+                <option value="2500+">2,500+ accounts</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="achievements">Notable Achievements & Awards*</label>
+            <textarea id="achievements" name="achievements" class="form-control" required
+              placeholder="President's Club, Top Producer awards, record-breaking quarters, etc."></textarea>
+          </div>
+        </div>
+
+        <!-- Strategic Vision -->
+        <div class="form-section">
+          <h3>Strategic Vision</h3>
+          <div class="form-group">
+            <label for="currentChallenges">What are your biggest sales challenges right now?*</label>
+            <textarea id="currentChallenges" name="currentChallenges" class="form-control" required
+              placeholder="Be specific about what's holding you back from even greater success"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="whyElite">Why do you need Elite tier specifically?*</label>
+            <textarea id="whyElite" name="whyElite" class="form-control" required
+              placeholder="What will you do with unlimited access that you can't do with other tiers?"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="growthPlan">What's your 12-month growth plan?*</label>
+            <textarea id="growthPlan" name="growthPlan" class="form-control" required
+              placeholder="Share your vision for the next year and how RepSpheres Elite fits into it"></textarea>
+          </div>
+        </div>
+
+        <!-- Additional Information -->
+        <div class="form-section">
+          <h3>Additional Information</h3>
+          <div class="form-group">
+            <label for="referral">How did you hear about RepSpheres Elite?</label>
+            <select id="referral" name="referral" class="form-control">
+              <option value="">Select source</option>
+              <option value="current-member">Current Elite Member</option>
+              <option value="sales-leader">Sales Leadership</option>
+              <option value="linkedin">LinkedIn</option>
+              <option value="conference">Conference/Event</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="startDate">When do you want to start?*</label>
+            <select id="startDate" name="startDate" class="form-control" required>
+              <option value="">Select timeframe</option>
+              <option value="immediately">Immediately</option>
+              <option value="1-week">Within 1 week</option>
+              <option value="2-weeks">Within 2 weeks</option>
+              <option value="1-month">Within 1 month</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="agreement" name="agreement" required>
+          <label for="agreement">
+            I understand that Elite membership is $1,499/month with a 12-month commitment, 
+            and that acceptance is based on qualification and availability.
+          </label>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">
+          Submit Elite Application →
+        </button>
+      </form>
+
+      <div class="success-message" id="successMessage">
+        <h3>Application Received!</h3>
+        <p>Thank you for applying to RepSpheres Elite. Our founder will personally review your application within 24 hours.</p>
+        <p style="margin-top: 1rem;">If accepted, you'll receive a call from our team to discuss onboarding and your custom success plan.</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Create floating gold particles
+    function createParticles() {
+      const container = document.getElementById('particles');
+      for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 15 + 's';
+        particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+        container.appendChild(particle);
+      }
+    }
+    
+    createParticles();
+
+    // Form submission
+    document.getElementById('eliteApplicationForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const submitBtn = document.getElementById('submitBtn');
+      const successMessage = document.getElementById('successMessage');
+      
+      // Validate agreement
+      if (!document.getElementById('agreement').checked) {
+        alert('Please confirm your understanding of the Elite membership terms.');
+        return;
+      }
+      
+      // Disable submit button
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting Application...';
+      
+      // Collect form data
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData);
+      
+      try {
+        // In production, send to your backend
+        const response = await fetch('/api/elite-application', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+        
+        // For now, just simulate success
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // Show success message
+        this.style.display = 'none';
+        successMessage.classList.add('show');
+        
+        // Track conversion
+        if (window.gtag) {
+          window.gtag('event', 'elite_application', {
+            event_category: 'engagement',
+            event_label: 'elite_tier',
+            value: 1499,
+          });
+        }
+      } catch (error) {
+        console.error('Error submitting application:', error);
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Elite Application →';
+        alert('There was an error submitting your application. Please try again or email us at elite@repspheres.com');
+      }
+    });
+  </script>
+</body>
+</html>

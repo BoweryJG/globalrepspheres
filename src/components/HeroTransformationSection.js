@@ -166,7 +166,16 @@ export default function HeroTransformationSection() {
                   variant="contained"
                   size="large"
                   endIcon={<ArrowForward />}
-                  href="#pricing"
+                  onClick={() => {
+                    if (window.gtag) {
+                      window.gtag('event', 'start_free_trial', {
+                        event_category: 'engagement',
+                        event_label: 'hero_transformation_section',
+                        value: 1
+                      });
+                    }
+                    window.location.href = '#pricing';
+                  }}
                   sx={{
                     px: 4,
                     py: 2,
@@ -193,7 +202,16 @@ export default function HeroTransformationSection() {
                   variant="outlined"
                   size="large"
                   startIcon={<PlayArrow />}
-                  href="#demo"
+                  onClick={() => {
+                    if (window.gtag) {
+                      window.gtag('event', 'watch_demo', {
+                        event_category: 'engagement',
+                        event_label: 'hero_transformation_section',
+                        value: 1
+                      });
+                    }
+                    window.location.href = '/demo';
+                  }}
                   sx={{
                     px: 4,
                     py: 2,

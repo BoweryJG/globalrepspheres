@@ -252,10 +252,28 @@ const FinalCTASection = () => {
 
               {/* CTA Buttons */}
               <Box display="flex" flexDirection={{ xs: 'column', sm: 'row' }}>
-                <GlowingButton size="large" onClick={() => window.location.href = '/signup'}>
+                <GlowingButton size="large" onClick={() => {
+                  if (window.gtag) {
+                    window.gtag('event', 'claim_advantage', {
+                      event_category: 'engagement',
+                      event_label: 'final_cta_section',
+                      value: 1
+                    });
+                  }
+                  window.location.href = '/signup';
+                }}>
                   Claim Your Advantage Now
                 </GlowingButton>
-                <SecondaryButton size="large" onClick={() => window.location.href = '#demo'}>
+                <SecondaryButton size="large" onClick={() => {
+                  if (window.gtag) {
+                    window.gtag('event', 'book_demo_final', {
+                      event_category: 'engagement', 
+                      event_label: 'final_cta_section',
+                      value: 1
+                    });
+                  }
+                  window.location.href = '/demo';
+                }}>
                   Book a Demo
                 </SecondaryButton>
               </Box>

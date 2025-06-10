@@ -241,7 +241,16 @@ export default function CTASection() {
                 <Button
                   variant="contained"
                   size="large"
-                  href="/pricing"
+                  onClick={() => {
+                    if (window.gtag) {
+                      window.gtag('event', 'choose_plan', {
+                        event_category: 'engagement',
+                        event_label: 'cta_section',
+                        value: 1
+                      });
+                    }
+                    window.location.href = '#pricing';
+                  }}
                   endIcon={<ArrowIcon />}
                   sx={{
                     px: 6,
@@ -271,7 +280,16 @@ export default function CTASection() {
                 <Button
                   variant="outlined"
                   size="large"
-                  href="/demo"
+                  onClick={() => {
+                    if (window.gtag) {
+                      window.gtag('event', 'see_demo', {
+                        event_category: 'engagement',
+                        event_label: 'cta_section',
+                        value: 1
+                      });
+                    }
+                    window.location.href = '/demo';
+                  }}
                   sx={{
                     px: 6,
                     py: 2.4,
