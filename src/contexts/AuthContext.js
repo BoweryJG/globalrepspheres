@@ -37,10 +37,21 @@ export function AuthProvider({ children }) {
       if (intendedPath) {
         setIntendedDestination(intendedPath);
       }
+      
+      // Store the full return URL if we're on a subdomain
+      const currentUrl = window.location.href;
+      if (currentUrl.includes('crm.repspheres.com') || 
+          currentUrl.includes('marketdata.repspheres.com') || 
+          currentUrl.includes('canvas.repspheres.com')) {
+        sessionStorage.setItem('authReturnUrl', currentUrl);
+      }
+      
+      // Always redirect to main domain for auth callback
+      const mainDomain = 'https://globalrepspheres.netlify.app';
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: `${mainDomain}/auth/callback`,
         },
       });
       if (error) throw error;
@@ -56,10 +67,21 @@ export function AuthProvider({ children }) {
       if (intendedPath) {
         setIntendedDestination(intendedPath);
       }
+      
+      // Store the full return URL if we're on a subdomain
+      const currentUrl = window.location.href;
+      if (currentUrl.includes('crm.repspheres.com') || 
+          currentUrl.includes('marketdata.repspheres.com') || 
+          currentUrl.includes('canvas.repspheres.com')) {
+        sessionStorage.setItem('authReturnUrl', currentUrl);
+      }
+      
+      // Always redirect to main domain for auth callback
+      const mainDomain = 'https://globalrepspheres.netlify.app';
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'facebook',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: `${mainDomain}/auth/callback`,
         },
       });
       if (error) throw error;
@@ -136,10 +158,21 @@ export function AuthProvider({ children }) {
       if (intendedPath) {
         setIntendedDestination(intendedPath);
       }
+      
+      // Store the full return URL if we're on a subdomain
+      const currentUrl = window.location.href;
+      if (currentUrl.includes('crm.repspheres.com') || 
+          currentUrl.includes('marketdata.repspheres.com') || 
+          currentUrl.includes('canvas.repspheres.com')) {
+        sessionStorage.setItem('authReturnUrl', currentUrl);
+      }
+      
+      // Always redirect to main domain for auth callback
+      const mainDomain = 'https://globalrepspheres.netlify.app';
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: `${mainDomain}/auth/callback`,
         },
       });
       if (error) throw error;
