@@ -2,13 +2,18 @@
   --primary: #7B42F6;
   --primary-dark: #5B3CFF;
   --secondary: #00ffc6;
+  --canvas-blue: #00d4ff;
   --dark-bg: #0B0B20;
   --card-bg: rgba(40, 20, 70, 0.55);
   --text-light: #ffffff;
   --text-muted: #b39ddb;
   --gradient-primary: linear-gradient(135deg, #7B42F6 0%, #00ffc6 100%);
+  --gradient-canvas: linear-gradient(90deg, #00ffc6 0%, #00d4ff 50%, #7B42F6 100%);
   --transition-standard: all 0.3s ease;
 }
+
+/* Import canvas effects */
+@import './styles/canvas-effects.css';
 
 * {
   margin: 0;

@@ -1,0 +1,207 @@
+/* Canvas Header Styles */
+.canvas-header-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Glowing text effect */
+.canvas-glow {
+  color: #00d4ff;
+  text-shadow: 
+    0 0 10px rgba(0, 212, 255, 0.8),
+    0 0 20px rgba(0, 212, 255, 0.6),
+    0 0 30px rgba(0, 212, 255, 0.4),
+    0 0 40px rgba(0, 212, 255, 0.2);
+  animation: glow-pulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow-pulse {
+  from {
+    text-shadow: 
+      0 0 10px rgba(0, 212, 255, 0.8),
+      0 0 20px rgba(0, 212, 255, 0.6),
+      0 0 30px rgba(0, 212, 255, 0.4),
+      0 0 40px rgba(0, 212, 255, 0.2);
+  }
+  to {
+    text-shadow: 
+      0 0 15px rgba(0, 212, 255, 1),
+      0 0 30px rgba(0, 212, 255, 0.8),
+      0 0 45px rgba(0, 212, 255, 0.6),
+      0 0 60px rgba(0, 212, 255, 0.4);
+  }
+}
+
+/* High value glowing effect */
+.canvas-glow-gold {
+  color: #fbbf24;
+  text-shadow: 
+    0 0 10px rgba(251, 191, 36, 0.8),
+    0 0 20px rgba(251, 191, 36, 0.6),
+    0 0 30px rgba(251, 191, 36, 0.4),
+    0 0 40px rgba(251, 191, 36, 0.2);
+  animation: glow-pulse-gold 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow-pulse-gold {
+  from {
+    text-shadow: 
+      0 0 10px rgba(251, 191, 36, 0.8),
+      0 0 20px rgba(251, 191, 36, 0.6),
+      0 0 30px rgba(251, 191, 36, 0.4),
+      0 0 40px rgba(251, 191, 36, 0.2);
+  }
+  to {
+    text-shadow: 
+      0 0 15px rgba(251, 191, 36, 1),
+      0 0 30px rgba(251, 191, 36, 0.8),
+      0 0 45px rgba(251, 191, 36, 0.6),
+      0 0 60px rgba(251, 191, 36, 0.4);
+  }
+}
+
+/* Button animations */
+.canvas-button {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(90deg, #00d4ff 0%, #00b8e6 100%);
+  color: #0a0a0a;
+  border: none;
+  border-radius: 8px;
+  padding: 1rem 2rem;
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.canvas-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.canvas-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 10px 20px rgba(0, 212, 255, 0.3),
+    0 0 20px rgba(0, 212, 255, 0.5);
+}
+
+.canvas-button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.canvas-button:active {
+  transform: translateY(0);
+}
+
+/* Input styling */
+.canvas-input-field {
+  background: rgba(26, 26, 26, 0.8);
+  border: 1px solid rgba(51, 51, 51, 0.8);
+  border-radius: 8px;
+  padding: 1rem 1rem 1rem 3rem;
+  color: white;
+  font-family: 'JetBrains Mono', monospace;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.canvas-input-field:focus {
+  outline: none;
+  border-color: #00d4ff;
+  box-shadow: 
+    0 0 10px rgba(0, 212, 255, 0.3),
+    inset 0 0 5px rgba(0, 212, 255, 0.1);
+  background: rgba(26, 26, 26, 0.95);
+}
+
+/* Glass morphism card */
+.canvas-glass-card {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 
+    0 8px 32px 0 rgba(0, 212, 255, 0.1),
+    inset 0 0 20px rgba(0, 212, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.canvas-glass-card:hover {
+  border-color: rgba(0, 212, 255, 0.3);
+  box-shadow: 
+    0 8px 32px 0 rgba(0, 212, 255, 0.2),
+    inset 0 0 20px rgba(0, 212, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Animated gradient border */
+.canvas-gradient-border {
+  position: relative;
+  background: #1a1a1a;
+  border-radius: 12px;
+  padding: 2px;
+}
+
+.canvas-gradient-border::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 12px;
+  padding: 2px;
+  background: linear-gradient(
+    45deg,
+    #00d4ff,
+    #00ffc6,
+    #7B42F6,
+    #00d4ff
+  );
+  background-size: 400% 400%;
+  animation: gradient-rotate 3s ease infinite;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+@keyframes gradient-rotate {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .canvas-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .canvas-glass-card {
+    padding: 1.5rem;
+  }
+}

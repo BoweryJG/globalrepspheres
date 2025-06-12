@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book a Demo - RepSpheres</title>
+  <link rel="icon" href="/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', Arial, sans-serif;
+      background-color: #0a0a0a;
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Header */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(10, 10, 10, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      z-index: 100;
+      padding: 1rem 2rem;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, #00ffc6 0%, #3a86ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-decoration: none;
+    }
+
+    .back-link {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .back-link:hover {
+      color: #00ffc6;
+    }
+
+    /* Main content */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 8rem 2rem 4rem;
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .left-content h1 {
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 2rem;
+      line-height: 1.1;
+      background: linear-gradient(90deg, #00ffc6 0%, #3a86ff 50%, #7B42F6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .left-content p {
+      font-size: 1.3rem;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .benefits {
+      margin: 3rem 0;
+    }
+
+    .benefit {
+      display: flex;
+      align-items: start;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding: 1.5rem;
+      background: rgba(255,255,255,0.03);
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: all 0.3s ease;
+    }
+
+    .benefit:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(0,255,198,0.3);
+      transform: translateX(5px);
+    }
+
+    .benefit-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #00ffc6 0%, #00d4a8 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-weight: bold;
+      color: #0a0a0a;
+    }
+
+    .benefit-content h3 {
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+
+    .benefit-content p {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* Form section */
+    .form-container {
+      background: rgba(24,24,43,0.6);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 24px;
+      border: 2px solid rgba(255,255,255,0.1);
+      padding: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-container::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(0,255,198,0.1) 0%, transparent 70%);
+      animation: rotate 20s linear infinite;
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .form-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .form-header h2 {
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-header p {
+      color: rgba(255,255,255,0.7);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 1rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      color: #fff;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: #00ffc6;
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 0 0 3px rgba(0,255,198,0.1);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    select.form-control {
+      cursor: pointer;
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 1.25rem;
+      background: linear-gradient(135deg, #00ffc6 0%, #00d4a8 100%);
+      color: #0a0a0a;
+      border: none;
+      border-radius: 50px;
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 1rem;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,255,198,0.4);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .trust-badges {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .trust-badge {
+      text-align: center;
+      color: rgba(255,255,255,0.6);
+      font-size: 0.9rem;
+    }
+
+    .success-message {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+      background: rgba(0,255,198,0.1);
+      border: 1px solid rgba(0,255,198,0.3);
+      border-radius: 16px;
+      margin-top: 2rem;
+    }
+
+    .success-message.show {
+      display: block;
+    }
+
+    @media (max-width: 968px) {
+      .container {
+        grid-template-columns: 1fr;
+        padding-top: 6rem;
+      }
+
+      .left-content h1 {
+        font-size: 2.5rem;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <a href="/" class="logo">RepSpheres</a>
+      <a href="/" class="back-link">
+        <span>←</span> Back to Home
+      </a>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="left-content">
+      <h1>See RepSpheres in Action</h1>
+      <p>Get a personalized demo and discover how RepSpheres can transform your sales process in just 15 minutes.</p>
+
+      <div class="benefits">
+        <div class="benefit">
+          <div class="benefit-icon">15</div>
+          <div class="benefit-content">
+            <h3>15-Minute Demo</h3>
+            <p>Quick, focused demonstration tailored to your specific needs</p>
+          </div>
+        </div>
+
+        <div class="benefit">
+          <div class="benefit-icon">AI</div>
+          <div class="benefit-content">
+            <h3>Live AI in Action</h3>
+            <p>Watch real-time territory analysis and automated campaign creation</p>
+          </div>
+        </div>
+
+        <div class="benefit">
+          <div class="benefit-icon">$</div>
+          <div class="benefit-content">
+            <h3>ROI Calculator</h3>
+            <p>Get a custom ROI projection based on your territory and volume</p>
+          </div>
+        </div>
+
+        <div class="benefit">
+          <div class="benefit-icon">✓</div>
+          <div class="benefit-content">
+            <h3>No Commitment</h3>
+            <p>Free demo with no strings attached - see the value first</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-container">
+      <div class="form-content">
+        <div class="form-header">
+          <h2>Book Your Demo</h2>
+          <p>Fill out the form and we'll contact you within 1 hour</p>
+        </div>
+
+        <form id="demoForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">First Name*</label>
+              <input type="text" id="firstName" name="firstName" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name*</label>
+              <input type="text" id="lastName" name="lastName" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Work Email*</label>
+            <input type="email" id="email" name="email" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number*</label>
+            <input type="tel" id="phone" name="phone" class="form-control" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="company">Company*</label>
+              <input type="text" id="company" name="company" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="role">Your Role*</label>
+              <select id="role" name="role" class="form-control" required>
+                <option value="">Select your role</option>
+                <option value="sales-rep">Sales Representative</option>
+                <option value="territory-manager">Territory Manager</option>
+                <option value="area-manager">Area Sales Manager</option>
+                <option value="regional-manager">Regional Sales Manager</option>
+                <option value="sales-director">Sales Director</option>
+                <option value="vp-sales">VP of Sales</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="territory">Territory Size</label>
+            <select id="territory" name="territory" class="form-control">
+              <option value="">Select territory size</option>
+              <option value="small">Small (1-50 accounts)</option>
+              <option value="medium">Medium (51-200 accounts)</option>
+              <option value="large">Large (201-500 accounts)</option>
+              <option value="enterprise">Enterprise (500+ accounts)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="message">What are your biggest sales challenges? (Optional)</label>
+            <textarea id="message" name="message" class="form-control" rows="4"></textarea>
+          </div>
+
+          <button type="submit" class="submit-btn" id="submitBtn">
+            Book My Demo →
+          </button>
+        </form>
+
+        <div class="success-message" id="successMessage">
+          <h3 style="color: #00ffc6; margin-bottom: 1rem;">Demo Request Received!</h3>
+          <p>Thanks for your interest! Our team will contact you within 1 hour to schedule your personalized demo.</p>
+        </div>
+
+        <div class="trust-badges">
+          <div class="trust-badge">🔒 Your data is secure</div>
+          <div class="trust-badge">⚡ 1-hour response time</div>
+          <div class="trust-badge">🏆 500+ happy customers</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('demoForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const submitBtn = document.getElementById('submitBtn');
+      const successMessage = document.getElementById('successMessage');
+      
+      // Disable submit button
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting...';
+      
+      // Collect form data
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData);
+      
+      try {
+        // In production, send to your backend
+        const response = await fetch('/api/demo-request', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+        
+        // For now, just simulate success
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Show success message
+        this.style.display = 'none';
+        successMessage.classList.add('show');
+        
+        // Track conversion
+        if (window.gtag) {
+          window.gtag('event', 'demo_request', {
+            event_category: 'engagement',
+            event_label: data.role,
+          });
+        }
+      } catch (error) {
+        console.error('Error submitting form:', error);
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Book My Demo →';
+        alert('There was an error submitting your request. Please try again or email us at sales@repspheres.com');
+      }
+    });
+  </script>
+</body>
+</html>

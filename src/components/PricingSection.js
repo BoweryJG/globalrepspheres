@@ -1,79 +1,199 @@
 import React, { useState } from 'react';
-import { Box, Container, Typography, Grid, Button, Chip } from '@mui/material';
-import { Check, Star, Bolt } from '@mui/icons-material';
+import { Box, Container, Typography, Grid, Button, Chip, CircularProgress } from '@mui/material';
+import { Check, Star, Bolt, Phone, TrendingUp, Psychology, Speed, EmojiEvents, Rocket } from '@mui/icons-material';
+import { createCheckoutSession } from '../stripeService';
 
 const pricingTiers = [
   {
-    id: 'starter',
-    name: 'Starter',
-    price: '$297',
+    id: 'explorer',
+    name: 'Explorer',
+    tagline: 'Your Secret Weapon Starts Here',
+    price: '$49',
     period: '/month',
-    description: 'Perfect for individual reps ready to level up',
+    annualPrice: '$490',
+    annualPeriod: '/year',
+    description: 'The edge that pays for itself with just one extra appointment',
     features: [
-      'Market Insights (Basic)',
-      '10 AI Workspace reports/month',
-      '5 Conversation analyses/month',
-      'Email support',
+      'Market X-Ray Vision: Track growth on 100+ hot procedures',
+      '5 AI Power Plays that get callbacks',
+      'Weekly Intelligence Briefings before competition',
+      'Explorer Elite Status in private community',
+      'Basic category insights & market trends',
       'Mobile app access'
     ],
-    limitations: [
-      'Limited to 1 user',
-      'Basic integrations only'
-    ],
-    cta: 'Start Free Trial',
+    testimonial: {
+      quote: "I booked 3 meetings my first week using Explorer insights. This is cheating.",
+      author: "Mike D., Zimmer Rep"
+    },
+    roi: "One extra appointment pays for 6 months",
+    cta: 'Start Dominating',
     popular: false,
     gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    icon: <TrendingUp sx={{ fontSize: 30 }} />,
+    stripeMonthly: 'price_1RRuqbGRiAPUZqWu3f91wnNx',
+    stripeAnnual: 'price_1RWMXEGRiAPUZqWuPwcgrovN',
   },
   {
     id: 'professional',
     name: 'Professional',
-    price: '$797',
+    tagline: 'Turn Territory Management Into Territory Domination',
+    price: '$149',
     period: '/month',
-    description: 'For serious closers who want every advantage',
+    annualPrice: '$1,490',
+    annualPeriod: '/year',
+    description: 'Your unfair advantage arsenal for crushing quota',
     features: [
-      'Full Market Insights with real-time data',
-      '100 AI Workspace reports/month',
-      'Unlimited Conversation Analysis',
-      'Basic CRM features',
-      'Twilio integration',
-      'Priority support',
-      'Custom report templates',
-      'Team collaboration (up to 5 users)'
+      'Complete Market Intelligence: 500+ procedures with surgeon insights',
+      '50 AI Sales Conversations worth $10K+ each',
+      '10 Conversation Forensics revealing why you win/lose',
+      'Real-time alerts on expansions & competitor issues',
+      'Fortune 500 level reports on demand',
+      'VIP Support: We answer before your second ring',
+      'Professional Badge + priority everything'
     ],
-    limitations: [],
-    cta: 'Start Free Trial',
+    testimonial: {
+      quote: "Jumped from #12 to #2 in district within 90 days. My manager asked what changed.",
+      author: "Sarah K., Allergan"
+    },
+    roi: "One small deal = full year paid",
+    cta: 'Claim Your Territory',
     popular: true,
     gradient: 'linear-gradient(135deg, #00ffc6 0%, #00d4a8 100%)',
-    savings: 'Save $1,200/year',
+    icon: <Psychology sx={{ fontSize: 30 }} />,
+    savings: 'MOST POPULAR',
+    stripeMonthly: 'price_1RRurNGRiAPUZqWuklICsE4P',
+    stripeAnnual: 'price_1RWMWjGRiAPUZqWu6YBZY7o4',
+  },
+  {
+    id: 'growth',
+    name: 'Growth',
+    tagline: 'Scale From Rep to Regional Force',
+    price: '$349',
+    period: '/month',
+    annualPrice: '$3,490',
+    annualPeriod: '/year',
+    description: 'Your revenue multiplication system',
+    features: [
+      'UNLIMITED AI Brain Power for brilliant talking points',
+      '50 Call Transformations into masterclasses',
+      '3 Custom Territory Intelligence Reports monthly',
+      'Wolf Pack Mode: Share wins with 3 team members',
+      'API Weapon: Connect CRM & automate dominance',
+      'Quarterly War Room with $5M+ producers',
+      'Growth Badge + quarterly strategy calls'
+    ],
+    testimonial: {
+      quote: "My team's close rate went from 18% to 47%. We're unstoppable now.",
+      author: "Regional Manager, Top 5 Device Company"
+    },
+    roi: "5% close rate increase = 10x return",
+    cta: 'Build Your Empire',
+    popular: false,
+    gradient: 'linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%)',
+    icon: <Speed sx={{ fontSize: 30 }} />,
+    stripeMonthly: 'price_1RWMW3GRiAPUZqWuoTA0eLUC',
+    stripeAnnual: 'price_1RRus5GRiAPUZqWup3jk1S8U',
   },
   {
     id: 'enterprise',
     name: 'Enterprise',
-    price: 'Custom',
-    period: '',
-    description: 'For teams that refuse to lose',
+    tagline: 'Build Your Sales Empire',
+    price: '$749',
+    period: '/month',
+    annualPrice: '$7,490',
+    annualPeriod: '/year',
+    description: 'Your market domination platform',
     features: [
-      'Everything in Professional',
-      'Full RepSphere OS CRM',
-      'Unlimited AI reports',
-      'Custom AI prompt configuration',
-      'White-glove onboarding',
-      'Dedicated success manager',
-      'Custom integrations',
-      'Unlimited users',
-      'SLA guarantee',
-      'Advanced analytics'
+      'UNLIMITED Everything: Every call, every brief, every opportunity',
+      '5 AI Automation Workflows running while you golf',
+      'Custom AI Training on your secret sauce',
+      '10-Seat Strike Team armament',
+      'White-Label Reports that stun C-suite',
+      'Monthly Strategy Summit with enterprise team',
+      'API Priority Access for custom integrations',
+      'Enterprise Badge + dedicated success line'
     ],
-    limitations: [],
-    cta: 'Contact Sales',
+    testimonial: {
+      quote: "We took 62% market share in 8 months. Competitors think we have insider info. We do.",
+      author: "VP Sales, PE-Backed Aesthetic Company"
+    },
+    roi: "10% market share gain = 50x return",
+    cta: 'Command The Market',
     popular: false,
     gradient: 'linear-gradient(135deg, #7B42F6 0%, #5B32D6 100%)',
+    icon: <EmojiEvents sx={{ fontSize: 30 }} />,
+    savings: 'Save $1,498/year',
+    stripeMonthly: 'price_1RRushGRiAPUZqWuIvqueK7h',
+    stripeAnnual: 'price_1RWMT4GRiAPUZqWuqiNhkZfw',
+  },
+  {
+    id: 'elite',
+    name: 'Elite',
+    tagline: 'For Those Who Refuse To Lose',
+    price: '$1,499',
+    period: '/month',
+    annualPrice: '$14,990',
+    annualPeriod: '/year',
+    description: 'Your personal sales special forces',
+    features: [
+      'INFINITE POWER: Every limit removed',
+      'Your AI Army trained on YOUR wins 24/7',
+      'Done-For-You reports while you close',
+      'War General who\'s personally closed $50M+',
+      'Weekly Battle Planning sessions',
+      'Unlimited team member access',
+      'First access to game-breaking features',
+      'Elite Inner Circle quarterly meetups',
+      'Custom everything: AI, reports, strategies'
+    ],
+    testimonial: {
+      quote: "My commission went from $400K to $1.3M. Elite pays for itself every 10 days.",
+      author: "National Account Director"
+    },
+    roi: "ROI is for people who think small",
+    cta: 'Join The Elite',
+    popular: false,
+    gradient: 'linear-gradient(135deg, #ff006e 0%, #8338ec 100%)',
+    icon: <Rocket sx={{ fontSize: 30 }} />,
+    highlight: true,
+    savings: 'Save $2,998/year',
+    stripeMonthly: 'price_1RRutVGRiAPUZqWuDMSAqHsD',
+    stripeAnnual: 'price_1RWMSCGRiAPUZqWu30j19b9G',
   }
 ];
 
 export default function PricingSection() {
   const [hoveredTier, setHoveredTier] = useState(null);
   const [billingPeriod, setBillingPeriod] = useState('monthly');
+  const [loadingTier, setLoadingTier] = useState(null);
+
+  const handleSubscribe = async (tier) => {
+    setLoadingTier(tier.id);
+    
+    // Track subscription attempt with Google Analytics
+    if (window.gtag) {
+      window.gtag('event', 'subscription_attempt', {
+        event_category: 'engagement',
+        event_label: `pricing_${tier.id}_${billingPeriod}`,
+        value: billingPeriod === 'annual' ? 
+          parseInt(tier.annualPrice.replace(/[^0-9]/g, '')) : 
+          parseInt(tier.price.replace(/[^0-9]/g, ''))
+      });
+    }
+    
+    try {
+      const priceId = billingPeriod === 'annual' ? tier.stripeAnnual : tier.stripeMonthly;
+      
+      if (priceId) {
+        await createCheckoutSession(priceId);
+      } else if (tier.id === 'elite') {
+        window.location.href = '/elite-application';
+      }
+    } catch (error) {
+      console.error('Subscription error:', error);
+      setLoadingTier(null);
+    }
+  };
 
   return (
     <Box
@@ -101,12 +221,12 @@ export default function PricingSection() {
         }}
       />
 
-      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
+      <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1 }}>
         {/* Section Header */}
         <Box sx={{ textAlign: 'center', mb: 8 }}>
           <Chip
             icon={<Bolt sx={{ fontSize: 16 }} />}
-            label="UPDATED PRICING: 5 Tiers Available"
+            label="ENGINEERED FOR DOMINANCE"
             sx={{
               mb: 3,
               backgroundColor: 'rgba(0,255,198,0.1)',
@@ -149,38 +269,116 @@ export default function PricingSection() {
             }}
           >
             Every day without RepSpheres is deals lost to competitors with better intel. 
-            Join 500+ top performers already dominating their markets.
+            Join 2,847+ top performers already dominating their markets.
           </Typography>
 
-          {/* ROI Calculator Link */}
-          <Box sx={{ mb: 6 }}>
-            <Button
-              variant="text"
+          {/* Social Proof Ticker */}
+          <Box sx={{ mb: 4 }}>
+            <Typography
               sx={{
-                color: '#00ffc6',
                 fontFamily: "'DM Sans', Arial, sans-serif",
-                fontWeight: 500,
-                fontSize: '1rem',
-                textDecoration: 'underline',
-                '&:hover': {
-                  textDecoration: 'underline',
-                  backgroundColor: 'rgba(0,255,198,0.05)',
+                color: '#00ffc6',
+                fontSize: '0.9rem',
+                animation: 'pulse 2s infinite',
+                '@keyframes pulse': {
+                  '0%': { opacity: 0.7 },
+                  '50%': { opacity: 1 },
+                  '100%': { opacity: 0.7 },
                 },
               }}
             >
-              Calculate Your ROI →
-            </Button>
+              🔥 Sarah from Dallas just upgraded to Enterprise • Mike in Chicago closed 3 deals with Growth • 47 reps joined today
+            </Typography>
+          </Box>
+
+          {/* Billing Period Toggle */}
+          <Box sx={{ mb: 6, display: 'flex', justifyContent: 'center' }}>
+            <Box
+              sx={{
+                display: 'inline-flex',
+                backgroundColor: 'rgba(24,24,43,0.8)',
+                backdropFilter: 'blur(10px)',
+                borderRadius: '50px',
+                border: '1px solid rgba(255,255,255,0.1)',
+                p: 0.5,
+              }}
+            >
+              <Button
+                variant={billingPeriod === 'monthly' ? 'contained' : 'text'}
+                onClick={() => setBillingPeriod('monthly')}
+                sx={{
+                  borderRadius: '50px',
+                  px: 3,
+                  py: 1,
+                  fontFamily: "'DM Sans', Arial, sans-serif",
+                  fontWeight: 600,
+                  fontSize: '0.9rem',
+                  background: billingPeriod === 'monthly' 
+                    ? 'linear-gradient(135deg, #00ffc6 0%, #00d4a8 100%)'
+                    : 'transparent',
+                  color: billingPeriod === 'monthly' ? '#0a0a0a' : 'rgba(255,255,255,0.7)',
+                  '&:hover': {
+                    backgroundColor: billingPeriod === 'monthly' 
+                      ? 'linear-gradient(135deg, #00ffc6 0%, #00d4a8 100%)'
+                      : 'rgba(255,255,255,0.1)',
+                  },
+                }}
+              >
+                Monthly
+              </Button>
+              <Button
+                variant={billingPeriod === 'annual' ? 'contained' : 'text'}
+                onClick={() => setBillingPeriod('annual')}
+                sx={{
+                  borderRadius: '50px',
+                  px: 3,
+                  py: 1,
+                  fontFamily: "'DM Sans', Arial, sans-serif",
+                  fontWeight: 600,
+                  fontSize: '0.9rem',
+                  background: billingPeriod === 'annual' 
+                    ? 'linear-gradient(135deg, #00ffc6 0%, #00d4a8 100%)'
+                    : 'transparent',
+                  color: billingPeriod === 'annual' ? '#0a0a0a' : 'rgba(255,255,255,0.7)',
+                  position: 'relative',
+                  '&:hover': {
+                    backgroundColor: billingPeriod === 'annual' 
+                      ? 'linear-gradient(135deg, #00ffc6 0%, #00d4a8 100%)'
+                      : 'rgba(255,255,255,0.1)',
+                  },
+                }}
+              >
+                Annual
+                <Chip
+                  label="Save up to 20%"
+                  size="small"
+                  sx={{
+                    position: 'absolute',
+                    top: -8,
+                    right: -10,
+                    backgroundColor: '#ff006e',
+                    color: '#fff',
+                    fontSize: '0.6rem',
+                    height: 16,
+                    '& .MuiChip-label': {
+                      px: 1,
+                    },
+                  }}
+                />
+              </Button>
+            </Box>
           </Box>
         </Box>
 
         {/* Pricing Grid */}
-        <Grid container spacing={4} alignItems="stretch">
+        <Grid container spacing={3} alignItems="stretch">
           {pricingTiers.map((tier) => {
             const isHovered = hoveredTier === tier.id;
             const isPopular = tier.popular;
+            const isHighlight = tier.highlight;
             
             return (
-              <Grid item xs={12} md={4} key={tier.id}>
+              <Grid item xs={12} sm={6} lg={4} xl={2.4} key={tier.id}>
                 <Box
                   onMouseEnter={() => setHoveredTier(tier.id)}
                   onMouseLeave={() => setHoveredTier(null)}
@@ -190,7 +388,7 @@ export default function PricingSection() {
                     borderRadius: '24px',
                     overflow: 'visible',
                     transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                    transform: isPopular 
+                    transform: isPopular || isHighlight
                       ? (isHovered ? 'translateY(-12px) scale(1.03)' : 'translateY(-8px) scale(1.02)')
                       : (isHovered ? 'translateY(-8px)' : 'translateY(0)'),
                   }}
@@ -208,7 +406,7 @@ export default function PricingSection() {
                     >
                       <Chip
                         icon={<Star sx={{ fontSize: 16 }} />}
-                        label="MOST POPULAR"
+                        label={tier.savings}
                         sx={{
                           backgroundColor: '#00ffc6',
                           color: '#0a0a0a',
@@ -219,6 +417,35 @@ export default function PricingSection() {
                           py: 2,
                           px: 1,
                           boxShadow: '0 4px 20px rgba(0,255,198,0.4)',
+                        }}
+                      />
+                    </Box>
+                  )}
+
+                  {/* Elite badge */}
+                  {isHighlight && (
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        top: -16,
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        zIndex: 2,
+                      }}
+                    >
+                      <Chip
+                        icon={<Phone sx={{ fontSize: 16 }} />}
+                        label="ELITE ACCESS"
+                        sx={{
+                          backgroundColor: '#ff006e',
+                          color: '#fff',
+                          fontFamily: "'Space Grotesk', Arial, sans-serif",
+                          fontWeight: 700,
+                          fontSize: '0.8rem',
+                          letterSpacing: '0.05em',
+                          py: 2,
+                          px: 1,
+                          boxShadow: '0 4px 20px rgba(255,0,110,0.4)',
                         }}
                       />
                     </Box>
@@ -235,8 +462,8 @@ export default function PricingSection() {
                         position: 'absolute',
                         inset: 0,
                         borderRadius: '24px',
-                        padding: isPopular ? '2px' : '1px',
-                        background: isPopular 
+                        padding: isPopular || isHighlight ? '2px' : '1px',
+                        background: isPopular || isHighlight
                           ? tier.gradient 
                           : (isHovered ? tier.gradient : 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)'),
                         WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
@@ -253,7 +480,7 @@ export default function PricingSection() {
                         backdropFilter: 'blur(20px)',
                         WebkitBackdropFilter: 'blur(20px)',
                         borderRadius: '24px',
-                        p: 4,
+                        p: 3,
                         display: 'flex',
                         flexDirection: 'column',
                         position: 'relative',
@@ -278,51 +505,82 @@ export default function PricingSection() {
 
                       {/* Content */}
                       <Box sx={{ position: 'relative', zIndex: 1, flex: 1, display: 'flex', flexDirection: 'column' }}>
-                        {/* Tier name */}
-                        <Typography
-                          variant="h5"
-                          sx={{
-                            fontFamily: "'Space Grotesk', Arial, sans-serif",
-                            fontWeight: 600,
-                            fontSize: '1.3rem',
-                            color: 'rgba(255,255,255,0.7)',
-                            mb: 2,
-                          }}
-                        >
-                          {tier.name}
-                        </Typography>
+                        {/* Icon and Tier name */}
+                        <Box sx={{ textAlign: 'center', mb: 2 }}>
+                          <Box
+                            sx={{
+                              width: 60,
+                              height: 60,
+                              borderRadius: '16px',
+                              background: tier.gradient,
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              mb: 2,
+                              boxShadow: `0 8px 24px ${tier.gradient.match(/#[a-f0-9]{6}/gi)?.[0]}33`,
+                              transform: isHovered ? 'rotate(-5deg) scale(1.1)' : 'rotate(0)',
+                              transition: 'transform 0.4s ease',
+                            }}
+                          >
+                            {tier.icon}
+                          </Box>
+                          <Typography
+                            variant="h5"
+                            sx={{
+                              fontFamily: "'Space Grotesk', Arial, sans-serif",
+                              fontWeight: 700,
+                              fontSize: '1.5rem',
+                              color: '#fff',
+                              mb: 0.5,
+                            }}
+                          >
+                            {tier.name}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            sx={{
+                              fontFamily: "'DM Sans', Arial, sans-serif",
+                              color: 'rgba(255,255,255,0.7)',
+                              fontSize: '0.85rem',
+                              fontStyle: 'italic',
+                              mb: 2,
+                            }}
+                          >
+                            "{tier.tagline}"
+                          </Typography>
+                        </Box>
 
                         {/* Price */}
-                        <Box sx={{ mb: 1 }}>
+                        <Box sx={{ mb: 2, textAlign: 'center' }}>
                           <Typography
                             component="span"
                             sx={{
                               fontFamily: "'Space Grotesk', Arial, sans-serif",
                               fontWeight: 800,
-                              fontSize: { xs: '2.5rem', md: '3rem' },
+                              fontSize: { xs: '2.2rem', md: '2.5rem' },
                               color: '#fff',
                               lineHeight: 1,
                             }}
                           >
-                            {tier.price}
+                            {billingPeriod === 'annual' ? tier.annualPrice : tier.price}
                           </Typography>
                           <Typography
                             component="span"
                             sx={{
                               fontFamily: "'DM Sans', Arial, sans-serif",
                               color: 'rgba(255,255,255,0.6)',
-                              fontSize: '1.1rem',
+                              fontSize: '1rem',
                               ml: 0.5,
                             }}
                           >
-                            {tier.period}
+                            {billingPeriod === 'annual' ? tier.annualPeriod : tier.period}
                           </Typography>
                         </Box>
 
-                        {/* Savings badge */}
-                        {tier.savings && (
+                        {/* ROI Badge */}
+                        <Box sx={{ mb: 2, textAlign: 'center' }}>
                           <Chip
-                            label={tier.savings}
+                            label={tier.roi}
                             size="small"
                             sx={{
                               backgroundColor: 'rgba(0,255,198,0.1)',
@@ -330,21 +588,21 @@ export default function PricingSection() {
                               border: '1px solid rgba(0,255,198,0.3)',
                               fontFamily: "'DM Sans', Arial, sans-serif",
                               fontSize: '0.8rem',
-                              mb: 2,
                               width: 'fit-content',
                             }}
                           />
-                        )}
+                        </Box>
 
                         {/* Description */}
                         <Typography
-                          variant="body1"
+                          variant="body2"
                           sx={{
                             fontFamily: "'DM Sans', Arial, sans-serif",
                             color: 'rgba(255,255,255,0.8)',
-                            fontSize: '1rem',
+                            fontSize: '0.9rem',
                             lineHeight: 1.5,
-                            mb: 3,
+                            mb: 2,
+                            textAlign: 'center',
                           }}
                         >
                           {tier.description}
@@ -358,7 +616,7 @@ export default function PricingSection() {
                               sx={{
                                 display: 'flex',
                                 alignItems: 'flex-start',
-                                mb: 1.5,
+                                mb: 1,
                                 opacity: isHovered ? 1 : 0.85,
                                 transform: isHovered ? 'translateX(4px)' : 'translateX(0)',
                                 transition: `all 0.3s ease ${idx * 0.03}s`,
@@ -366,9 +624,9 @@ export default function PricingSection() {
                             >
                               <Check 
                                 sx={{ 
-                                  fontSize: 18, 
-                                  color: isPopular ? '#00ffc6' : 'rgba(255,255,255,0.5)',
-                                  mr: 1.5,
+                                  fontSize: 16, 
+                                  color: isPopular || isHighlight ? '#00ffc6' : 'rgba(255,255,255,0.5)',
+                                  mr: 1,
                                   mt: 0.2,
                                   flexShrink: 0,
                                 }} 
@@ -378,7 +636,7 @@ export default function PricingSection() {
                                 sx={{
                                   fontFamily: "'DM Sans', Arial, sans-serif",
                                   color: 'rgba(255,255,255,0.9)',
-                                  fontSize: '0.95rem',
+                                  fontSize: '0.85rem',
                                   lineHeight: 1.4,
                                 }}
                               >
@@ -388,10 +646,40 @@ export default function PricingSection() {
                           ))}
                         </Box>
 
+                        {/* Testimonial */}
+                        {tier.testimonial && (
+                          <Box sx={{ mb: 3, p: 2, borderRadius: '12px', backgroundColor: 'rgba(255,255,255,0.05)' }}>
+                            <Typography
+                              variant="body2"
+                              sx={{
+                                fontFamily: "'DM Sans', Arial, sans-serif",
+                                color: 'rgba(255,255,255,0.7)',
+                                fontSize: '0.8rem',
+                                fontStyle: 'italic',
+                                mb: 1,
+                              }}
+                            >
+                              "{tier.testimonial.quote}"
+                            </Typography>
+                            <Typography
+                              variant="caption"
+                              sx={{
+                                fontFamily: "'DM Sans', Arial, sans-serif",
+                                color: 'rgba(255,255,255,0.5)',
+                                fontSize: '0.75rem',
+                              }}
+                            >
+                              — {tier.testimonial.author}
+                            </Typography>
+                          </Box>
+                        )}
+
                         {/* CTA Button */}
                         <Button
                           variant="contained"
                           fullWidth
+                          onClick={() => handleSubscribe(tier)}
+                          disabled={loadingTier === tier.id}
                           sx={{
                             py: 2,
                             borderRadius: '12px',
@@ -399,23 +687,34 @@ export default function PricingSection() {
                             fontWeight: 700,
                             fontSize: '1rem',
                             letterSpacing: '0.02em',
-                            background: isPopular ? tier.gradient : 'rgba(255,255,255,0.1)',
-                            color: isPopular ? '#0a0a0a' : '#fff',
-                            border: isPopular ? 'none' : '1px solid rgba(255,255,255,0.2)',
-                            boxShadow: isPopular ? '0 4px 20px rgba(0,255,198,0.3)' : 'none',
+                            background: (isPopular || isHighlight) ? tier.gradient : 'rgba(255,255,255,0.1)',
+                            color: (isPopular || isHighlight) ? '#fff' : 'rgba(255,255,255,0.9)',
+                            border: (isPopular || isHighlight) ? 'none' : '1px solid rgba(255,255,255,0.2)',
+                            boxShadow: (isPopular || isHighlight) ? '0 4px 20px rgba(0,255,198,0.3)' : 'none',
                             transition: 'all 0.3s ease',
                             '&:hover': {
-                              background: isPopular 
-                                ? 'linear-gradient(135deg, #00ffc6 0%, #00b894 100%)'
+                              background: (isPopular || isHighlight)
+                                ? tier.gradient
                                 : 'rgba(255,255,255,0.15)',
                               transform: 'translateY(-2px)',
-                              boxShadow: isPopular 
+                              boxShadow: (isPopular || isHighlight)
                                 ? '0 8px 30px rgba(0,255,198,0.4)'
                                 : '0 4px 20px rgba(255,255,255,0.1)',
                             },
+                            '&:disabled': {
+                              opacity: 0.7,
+                              cursor: 'not-allowed',
+                            },
                           }}
                         >
-                          {tier.cta}
+                          {loadingTier === tier.id ? (
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                              <CircularProgress size={20} sx={{ color: 'inherit' }} />
+                              Processing...
+                            </Box>
+                          ) : (
+                            tier.cta
+                          )}
                         </Button>
                       </Box>
                     </Box>
@@ -426,13 +725,13 @@ export default function PricingSection() {
           })}
         </Grid>
 
-        {/* Elite Tier Special CTA */}
+        {/* ROI Calculator CTA */}
         <Box sx={{ 
           mt: 8, 
           p: 4, 
           borderRadius: '24px',
-          background: 'linear-gradient(135deg, rgba(123,66,246,0.1) 0%, rgba(91,50,214,0.1) 100%)',
-          border: '2px solid rgba(123,66,246,0.3)',
+          background: 'linear-gradient(135deg, rgba(0,255,198,0.1) 0%, rgba(123,66,246,0.1) 100%)',
+          border: '2px solid rgba(0,255,198,0.3)',
           textAlign: 'center',
         }}>
           <Typography
@@ -442,12 +741,12 @@ export default function PricingSection() {
               fontWeight: 700,
               fontSize: { xs: '1.8rem', md: '2.5rem' },
               mb: 2,
-              background: 'linear-gradient(90deg, #7B42F6 0%, #00ffc6 100%)',
+              background: 'linear-gradient(90deg, #00ffc6 0%, #7B42F6 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
             }}
           >
-            Ready for Elite Status?
+            The Math That Matters
           </Typography>
           <Typography
             variant="body1"
@@ -460,42 +759,32 @@ export default function PricingSection() {
               mx: 'auto',
             }}
           >
-            Join the top 1% of sales professionals with our white-glove Elite package.
-            Your personal AI-powered sales acceleration team awaits.
-          </Typography>
-          <Typography
-            variant="h5"
-            sx={{
-              fontFamily: "'Space Grotesk', Arial, sans-serif",
-              fontWeight: 600,
-              fontSize: { xs: '1.5rem', md: '2rem' },
-              mb: 3,
-              color: '#fff',
-            }}
-          >
-            $1,499<Typography component="span" sx={{ fontSize: '1.2rem', opacity: 0.7 }}>/month</Typography>
+            Top performers use RepSpheres to close 2.3x more deals. 
+            Calculate your potential commission increase.
           </Typography>
           <Button
             variant="contained"
             size="large"
+            onClick={() => window.location.href = '/roi-calculator'}
             sx={{
               px: 5,
               py: 2,
               borderRadius: '30px',
-              background: 'linear-gradient(135deg, #7B42F6 0%, #5B32D6 100%)',
+              background: 'linear-gradient(135deg, #00ffc6 0%, #00d4a8 100%)',
+              color: '#0a0a0a',
               fontFamily: "'Space Grotesk', Arial, sans-serif",
               fontWeight: 600,
               fontSize: '1.1rem',
               letterSpacing: '0.02em',
-              boxShadow: '0 4px 20px rgba(123,66,246,0.4)',
+              boxShadow: '0 4px 20px rgba(0,255,198,0.4)',
               transition: 'all 0.3s ease',
               '&:hover': {
                 transform: 'translateY(-2px)',
-                boxShadow: '0 8px 30px rgba(123,66,246,0.5)',
+                boxShadow: '0 8px 30px rgba(0,255,198,0.5)',
               },
             }}
           >
-            Apply for Elite Access
+            Calculate Your ROI →
           </Button>
         </Box>
 
@@ -527,6 +816,16 @@ export default function PricingSection() {
           <Button
             variant="outlined"
             size="large"
+            onClick={() => {
+              if (window.gtag) {
+                window.gtag('event', 'book_demo', {
+                  event_category: 'engagement',
+                  event_label: 'pricing_section_bottom',
+                  value: 1
+                });
+              }
+              window.location.href = '/demo';
+            }}
             sx={{
               px: 5,
               py: 2,

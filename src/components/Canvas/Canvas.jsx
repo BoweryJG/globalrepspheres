@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { performAIScan } from '../../lib/ai'
 import { TargetSightIcon, DoctorTargetIcon, ProductScanIcon, TacticalBriefIcon } from './Icons'
-import './App.css'
+import CanvasHeader from '../CanvasHeader/CanvasHeader'
+import './Canvas.css'
+import '../CanvasHeader/CanvasHeader.css'
 
-function App() {
+function Canvas() {
   const [doctor, setDoctor] = useState('')
   const [product, setProduct] = useState('')
   const [isScanning, setIsScanning] = useState(false)
@@ -33,14 +35,22 @@ function App() {
 
   return (
     <div className="canvas-app">
-      {/* Header */}
-      <header className="header">
-        <div className="header-icon">
-          <TargetSightIcon className="w-12 h-12 text-electric-blue" />
-        </div>
-        <h1><span className="glow">CANVAS</span></h1>
-        <p>INTERSTELLAR SALES INTELLIGENCE MODULE</p>
-      </header>
+      {/* Enhanced Canvas Header */}
+      <CanvasHeader height="300px">
+        <header className="header">
+          <div className="header-icon">
+            <TargetSightIcon className="w-12 h-12 text-electric-blue" />
+          </div>
+          <h1><span className="canvas-glow">CANVAS</span></h1>
+          <p style={{ 
+            color: '#888', 
+            fontSize: '0.9rem', 
+            letterSpacing: '0.2em', 
+            textTransform: 'uppercase',
+            marginTop: '0.5rem'
+          }}>INTERSTELLAR SALES INTELLIGENCE MODULE</p>
+        </header>
+      </CanvasHeader>
 
       {/* Scan Form */}
       <div className="scan-form">
@@ -139,4 +149,4 @@ function App() {
   )
 }
 
-export default App
+export default Canvas

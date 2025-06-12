@@ -3,22 +3,18 @@ import NavBar from './components/NavBar';
 import StarryBackground from './components/StarryBackground_Ultra';
 import StarryBackground_Enhanced from './components/StarryBackground_Enhanced';
 import AnimatedOrbExact from './components/AnimatedOrbExact';
-import HeroSection from './components/HeroSection';
-import PhilosophicalOpenerSection from './components/PhilosophicalOpenerSection';
-import CrossroadsSection from './components/CrossroadsSection';
-import SystemArchitectsSection from './components/SystemArchitectsSection';
-import SocraticMethodSection from './components/SocraticMethodSection';
-import ModulesSection from './components/ModulesSection';
-import UrgencySection from './components/UrgencySection';
-import ProofOfConceptSection from './components/ProofOfConceptSection';
+import HeroTransformationSection from './components/HeroTransformationSection';
+import IntelligenceTrinitySection from './components/IntelligenceTrinitySection';
+import MultiplierEffectSection from './components/MultiplierEffectSection';
+import BridgeSection from './components/BridgeSection';
 import PricingSection from './components/PricingSection';
-import CTASection from './components/CTASection';
+import DecisionPointSection from './components/DecisionPointSection';
 import OrbContextProvider from './components/OrbContextProvider';
 import { AuthProvider } from './contexts/AuthContext';
+import { SubscriptionProvider } from './contexts/SubscriptionContext';
 import Footer from './components/Footer';
 import PerformanceMonitor from './components/PerformanceMonitor';
-import ChatbotLauncher from './components/ChatbotLauncher';
-
+import HarveyChatLauncher from './components/HarveyChatLauncher';
 function App() {
   const [performanceMode, setPerformanceMode] = useState(() => {
     // Check localStorage for saved preference
@@ -49,22 +45,20 @@ function App() {
   return (
     <OrbContextProvider>
       <AuthProvider>
+        <SubscriptionProvider>
         <StarComponent />
         <NavBar />
         <OrbComponent zIndex={5} />
-        <HeroSection />
-        <PhilosophicalOpenerSection />
-        <CrossroadsSection />
-        <SystemArchitectsSection />
-        <SocraticMethodSection />
-        <ModulesSection />
-        <UrgencySection />
-        <ProofOfConceptSection />
-        <CTASection />
+        <HeroTransformationSection />
+        <IntelligenceTrinitySection />
+        <MultiplierEffectSection />
+        <BridgeSection />
         <PricingSection />
+        <DecisionPointSection />
         <Footer />
         {showPerformanceMonitor && <PerformanceMonitor />}
-        <ChatbotLauncher />
+        <HarveyChatLauncher />
+        </SubscriptionProvider>
       </AuthProvider>
     </OrbContextProvider>
   );

@@ -47,10 +47,12 @@ The RepSpheres ecosystem consists of multiple integrated applications and servic
 - Company information and blog
 - Podcast integration
 - Analytics tracking
+- **"The Boss" AI Chatbot**: Harvey Specter-inspired AI assistant with premium glassmorphic design
 
 **Tech Stack**:
 - React 18 with TypeScript
 - Three.js for 3D animations
+- Canvas API with WebGL acceleration
 - Supabase for authentication
 - Google Analytics integration
 - Netlify hosting
@@ -227,9 +229,11 @@ Create `.env` files in each project:
 **globalrepspheres/.env**:
 ```bash
 REACT_APP_SUPABASE_URL=https://cbopynuvhcymbumjnvay.supabase.co
-REACT_APP_SUPABASE_KEY=your_anon_key
+REACT_APP_SUPABASE_ANON_KEY=your_anon_key
 REACT_APP_BACKEND_URL=https://osbackend-zl1h.onrender.com
 REACT_APP_GA_ID=your_google_analytics_id
+REACT_APP_OPENROUTER_API_KEY=your_openrouter_key
+REACT_APP_BRAVE_API_KEY=your_brave_api_key
 ```
 
 **SphereOsCrM/.env.local**:
@@ -351,8 +355,9 @@ Each frontend app has a `netlify.toml` configuration:
 ### AI Services
 - **OpenAI**: GPT-4 for analysis
 - **Google Gemini**: Alternative AI provider
-- **OpenRouter**: Multi-model access
+- **OpenRouter**: Multi-model access (Claude Opus 4)
 - **Whisper**: Audio transcription
+- **Brave Search**: Web search capabilities
 
 ### Analytics
 - **Google Analytics 4**: User behavior tracking
@@ -409,6 +414,53 @@ Each frontend app has a `netlify.toml` configuration:
 - **User Guides**: Platform documentation
 - **Change Logs**: Version history
 
+## 🤖 "The Boss" AI Chatbot
+
+### Features
+- **Harvey Specter Energy**: Confident, driven messaging that embodies elite sales mentality
+- **Premium Design**: Glassmorphic interface with animated gradient borders and floating avatars
+- **Advanced Styling**: 
+  - Backdrop blur effects and glass-like message bubbles
+  - Smooth hover animations and gradient input fields
+  - Floating bot avatar with subtle animation
+  - Custom scrollbar styling with cyan accents
+- **Intelligence**: Powered by 300+ AI models and 15 years of medical industry data
+- **Personality**: "Your success is my business" - focused on driving results and winning
+- **Integration**: Seamlessly integrated with RepSpheres platform data and insights
+
+### Design Philosophy
+The chatbot embodies Harvey Specter's philosophy: confidence, excellence, and results-driven communication. Every interaction is designed to motivate and empower users to achieve their sales goals.
+
+## Recent Updates
+
+### June 2025
+- **Comprehensive Ecosystem Documentation**: Complete platform architecture documentation
+- **SUIS Integration**: Sphere Universal Intelligence System implementation
+- **External Recording Upload**: PLAUD and manual recording support with AI analysis
+- **Multi-Provider AI**: Choice of OpenAI or Google Gemini for transcription
+- **API Key Management**: Users can configure their own service API keys
+- **Contact Marketplace**: Shared contact data marketplace functionality
+- **Enhanced Payment Processing**: 5 subscription tiers with proper Stripe integration
+- **Backend API Migration**: Improved scalability with dedicated backend service
+
+### January 2025
+- **"The Boss" AI Chatbot**: Complete redesign with Harvey Specter energy and premium glassmorphic styling
+- **Navigation Enhancement**: Updated module links for Market Data, Canvas, and Sphere oS
+- **Google Analytics Integration**: Added comprehensive event tracking across all CTAs
+- **Stripe Checkout Integration**: Complete payment flow with success/cancel pages
+- **Performance Optimization**: Removed duplicate background layers to improve CPU performance
+
+## 💳 Pricing Tiers
+
+### Available Plans
+1. **Explorer ($49/month)**: Test the waters with essential market insights
+2. **Professional ($149/month)**: Everything you need to excel in your territory
+3. **Growth ($349/month)**: Scale your success with advanced analytics
+4. **Enterprise ($749/month)**: Command center for market domination
+5. **Elite ($1,499/month)**: Your personal AI-powered sales acceleration team
+
+All plans include a free trial. Annual billing saves up to 20%.
+
 ## 🆘 Support & Resources
 
 ### Documentation
@@ -446,10 +498,19 @@ Each frontend app has a `netlify.toml` configuration:
 - [ ] Custom integrations
 - [ ] White-label options
 
+## Project Heritage
+
+RepSpheres is built on 15 years of pioneering work in medical aesthetics, including:
+- Original CoolSculpting team at Zeltiq
+- Revolutionary fat reduction procedures that transformed aesthetic medicine
+- Advanced robotics work with Neocis (funded by NVIDIA)
+- The largest dataset ever assembled for dental and aesthetic industries
+
 ## 📄 License
 
 Copyright © 2025 RepSpheres. All rights reserved.
 
 ---
 
-Built with ❤️ by the RepSpheres team
+Built with ❤️ by the RepSpheres team  
+Powered by Bowery Creative Agency - Empowering physician campaigns for over 15 years

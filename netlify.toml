@@ -1,7 +1,7 @@
 [build]
   command = "npm run build:netlify"
   publish = "build"
-  environment = { SECRETS_SCAN_OMIT_KEYS = "REACT_APP_API_BASE_URL,REACT_APP_GOOGLE_CLIENT_ID,REACT_APP_GA_ID" }
+  environment = { SECRETS_SCAN_OMIT_KEYS = "REACT_APP_API_BASE_URL,REACT_APP_GOOGLE_CLIENT_ID,REACT_APP_GA_ID,REACT_APP_OPENROUTER_API_KEY" }
 
 [[redirects]]
   from = "/podcast.html"

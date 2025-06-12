@@ -5,18 +5,25 @@ const BRAVE_SEARCH_API_ENDPOINT = 'https://api.search.brave.com/res/v1/web/searc
 
 class MedicalSalesChatbot {
   constructor() {
-    this.apiKey = process.env.REACT_APP_OPENROUTER_API_KEY;
-    this.braveApiKey = process.env.REACT_APP_BRAVE_API_KEY;
+    // In React, environment variables are injected at build time
+    this.apiKey = process.env.REACT_APP_OPENROUTER_API_KEY || window.REACT_APP_OPENROUTER_API_KEY;
+    this.braveApiKey = process.env.REACT_APP_BRAVE_API_KEY || window.REACT_APP_BRAVE_API_KEY;
     this.conversationHistory = [];
     this.userProfile = null;
     this.systemPrompt = this.buildSystemPrompt();
     
+    // Log the API key status for debugging
+    console.log('ChatbotService initialized');
+    console.log('API Key present:', !!this.apiKey);
+    console.log('API Key length:', this.apiKey ? this.apiKey.length : 0);
+    
     // Check for missing API keys
     if (!this.apiKey || this.apiKey === 'your_openrouter_api_key_here') {
-      console.warn('OpenRouter API key is missing. Please add REACT_APP_OPENROUTER_API_KEY to your .env file');
+      console.error('OpenRouter API key is missing! Check your .env file and ensure the server was restarted.');
+      throw new Error('OpenRouter API key is not configured. Please check your .env file.');
     }
     if (!this.braveApiKey || this.braveApiKey === 'your_brave_api_key_here') {
-      console.warn('Brave Search API key is missing. Please add REACT_APP_BRAVE_API_KEY to your .env file');
+      console.warn('Brave Search API key is missing. Search functionality will be disabled.');
     }
   }
 
@@ -191,8 +198,8 @@ Respond with only one of: SALES_REP, PHYSICIAN, PATIENT`;
       
       let errorMessage = "I apologize, but I'm experiencing technical difficulties.";
       
-      if (error.message?.includes('API key')) {
-        errorMessage = "The chatbot is not properly configured. Please ensure the OpenRouter API key is set in the .env file. You need to:\n\n1. Get an API key from https://openrouter.ai/\n2. Add it to your .env file as REACT_APP_OPENROUTER_API_KEY\n3. Restart the development server";
+      if (error.message?.includes('API key') || error.response?.status === 401) {
+        errorMessage = "The OpenRouter API key is invalid or expired. To fix this:\n\n1. Go to https://openrouter.ai/ and sign in\n2. Go to your API Keys section\n3. Create a new API key\n4. Replace the old key in your .env file:\n   REACT_APP_OPENROUTER_API_KEY=your_new_key_here\n5. Stop the server (Ctrl+C) and restart with 'npm start'\n\nNote: The current API key in your .env appears to be invalid.";
       } else if (error.response?.status === 429) {
         errorMessage = "API rate limit exceeded. Please try again in a few moments.";
       } else if (error.response?.status === 500) {
