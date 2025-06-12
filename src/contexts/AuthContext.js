@@ -1,5 +1,12 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import supabase from '../supabase';
+import { 
+  initiateCrossDomainAuth, 
+  storeReturnUrl, 
+  isOnSubdomain,
+  setupCrossDomainAuthListener,
+  broadcastAuthState 
+} from '../utils/crossDomainAuth';
 
 // Create an authentication context
 const AuthContext = createContext();
@@ -38,23 +45,8 @@ export function AuthProvider({ children }) {
         setIntendedDestination(intendedPath);
       }
       
-      // Store the full return URL if we're on a subdomain
-      const currentUrl = window.location.href;
-      if (currentUrl.includes('crm.repspheres.com') || 
-          currentUrl.includes('marketdata.repspheres.com') || 
-          currentUrl.includes('canvas.repspheres.com')) {
-        sessionStorage.setItem('authReturnUrl', currentUrl);
-      }
-      
-      // Always redirect to main domain for auth callback
-      const mainDomain = 'https://globalrepspheres.netlify.app';
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${mainDomain}/auth/callback`,
-        },
-      });
-      if (error) throw error;
+      // Use cross-domain auth utility
+      await initiateCrossDomainAuth('google');
     } catch (error) {
       console.error('Error signing in with Google:', error.message);
       throw error;
@@ -68,23 +60,8 @@ export function AuthProvider({ children }) {
         setIntendedDestination(intendedPath);
       }
       
-      // Store the full return URL if we're on a subdomain
-      const currentUrl = window.location.href;
-      if (currentUrl.includes('crm.repspheres.com') || 
-          currentUrl.includes('marketdata.repspheres.com') || 
-          currentUrl.includes('canvas.repspheres.com')) {
-        sessionStorage.setItem('authReturnUrl', currentUrl);
-      }
-      
-      // Always redirect to main domain for auth callback
-      const mainDomain = 'https://globalrepspheres.netlify.app';
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'facebook',
-        options: {
-          redirectTo: `${mainDomain}/auth/callback`,
-        },
-      });
-      if (error) throw error;
+      // Use cross-domain auth utility
+      await initiateCrossDomainAuth('facebook');
     } catch (error) {
       console.error('Error signing in with Facebook:', error.message);
       throw error;
@@ -159,23 +136,8 @@ export function AuthProvider({ children }) {
         setIntendedDestination(intendedPath);
       }
       
-      // Store the full return URL if we're on a subdomain
-      const currentUrl = window.location.href;
-      if (currentUrl.includes('crm.repspheres.com') || 
-          currentUrl.includes('marketdata.repspheres.com') || 
-          currentUrl.includes('canvas.repspheres.com')) {
-        sessionStorage.setItem('authReturnUrl', currentUrl);
-      }
-      
-      // Always redirect to main domain for auth callback
-      const mainDomain = 'https://globalrepspheres.netlify.app';
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider,
-        options: {
-          redirectTo: `${mainDomain}/auth/callback`,
-        },
-      });
-      if (error) throw error;
+      // Use cross-domain auth utility
+      await initiateCrossDomainAuth(provider);
     } catch (error) {
       console.error(`Error signing in with ${provider}:`, error.message);
       throw error;
@@ -204,6 +166,9 @@ export function AuthProvider({ children }) {
       if (session) {
         const { data: { user: currentUser } } = await supabase.auth.getUser();
         setUser(currentUser);
+        
+        // Broadcast auth state to other domains
+        broadcastAuthState(session);
       }
       
       // Set up auth state change listener
@@ -212,14 +177,21 @@ export function AuthProvider({ children }) {
           if (session) {
             const { data: { user: currentUser } } = await supabase.auth.getUser();
             setUser(currentUser);
+            
+            // Broadcast auth state to other domains
+            broadcastAuthState(session);
           } else {
             setUser(null);
+            broadcastAuthState(null);
           }
           setLoading(false);
         }
       );
       
       setLoading(false);
+      
+      // Set up cross-domain auth listener
+      setupCrossDomainAuthListener();
       
       // Clean up subscription on unmount
       return () => {

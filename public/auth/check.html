@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checking Authentication - RepSpheres</title>
+  <link rel="icon" href="../favicon.ico">
+  <style>
+    body {
+      font-family: 'DM Sans', Arial, sans-serif;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    
+    .auth-container {
+      text-align: center;
+      background: rgba(24, 24, 43, 0.8);
+      border: 1px solid rgba(0, 255, 198, 0.3);
+      border-radius: 16px;
+      padding: 3rem;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(0, 255, 198, 0.2);
+      border-top: 3px solid #00ffc6;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    h2 {
+      color: #00ffc6;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    
+    p {
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <div class="spinner"></div>
+    <h2>Checking Authentication</h2>
+    <p>Verifying your access...</p>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+    
+    // Supabase configuration
+    const supabaseUrl = 'https://cbopynuvhcymbumjnvay.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNib3B5bnV2aGN5bWJ1bWpudmF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM5OTUxNzMsImV4cCI6MjA1OTU3MTE3M30.UZElMkoHugIt984RtYWyfrRuv2rB67opQdCrFVPCfzU';
+    
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
+    
+    async function checkAuth() {
+      // Get return URL from query params
+      const urlParams = new URLSearchParams(window.location.search);
+      const returnUrl = urlParams.get('return');
+      
+      try {
+        // Check if user is authenticated
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (session) {
+          // User is authenticated, redirect back
+          if (returnUrl) {
+            window.location.href = decodeURIComponent(returnUrl);
+          } else {
+            window.location.href = '/';
+          }
+        } else {
+          // User not authenticated, redirect to login with return URL
+          if (returnUrl) {
+            window.location.href = `/login?redirect=${encodeURIComponent(returnUrl)}`;
+          } else {
+            window.location.href = '/login';
+          }
+        }
+      } catch (error) {
+        console.error('Auth check error:', error);
+        // On error, redirect to login
+        window.location.href = '/login';
+      }
+    }
+    
+    // Start auth check
+    checkAuth();
+  </script>
+</body>
+</html>

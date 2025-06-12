@@ -66,44 +66,69 @@
     // Handle OAuth callback and redirect to intended destination
     function handleAuthCallback() {
       try {
-        // First check for cross-domain return URL
-        const authReturnUrl = sessionStorage.getItem('authReturnUrl');
-        
-        // Then check for intended destination
+        // Check multiple storage locations for return URL
+        const authReturnUrl = sessionStorage.getItem('authReturnUrl') || 
+                              localStorage.getItem('authReturnUrl');
         const intendedDestination = sessionStorage.getItem('intendedDestination');
         
-        // Clear stored values
+        // Clear all stored values
         sessionStorage.removeItem('authReturnUrl');
         sessionStorage.removeItem('intendedDestination');
+        sessionStorage.removeItem('authReturnDomain');
+        localStorage.removeItem('authReturnUrl');
+        localStorage.removeItem('authReturnDomain');
         
         // Wait a moment for auth state to update, then redirect
         setTimeout(() => {
           // Priority 1: Full return URL (for cross-domain redirects)
           if (authReturnUrl) {
-            window.location.href = authReturnUrl;
-          } 
+            // Validate it's a RepSpheres domain
+            const validDomains = [
+              'https://globalrepspheres.netlify.app',
+              'https://marketdata.repspheres.com',
+              'https://canvas.repspheres.com',
+              'https://crm.repspheres.com'
+            ];
+            
+            const isValid = validDomains.some(domain => authReturnUrl.startsWith(domain)) ||
+                           authReturnUrl.includes('localhost');
+            
+            if (isValid) {
+              window.location.href = authReturnUrl;
+              return;
+            }
+          }
+          
           // Priority 2: Intended destination path
-          else if (intendedDestination) {
+          if (intendedDestination) {
             window.location.href = intendedDestination;
-          } 
-          // Priority 3: Default redirect based on referrer or current context
-          else {
-            // Check if we came from a subdomain via referrer
-            const referrer = document.referrer;
-            if (referrer) {
-              if (referrer.includes('crm.repspheres.com')) {
-                window.location.href = 'https://crm.repspheres.com/';
-              } else if (referrer.includes('marketdata.repspheres.com')) {
-                window.location.href = 'https://marketdata.repspheres.com/';
-              } else if (referrer.includes('canvas.repspheres.com')) {
-                window.location.href = 'https://canvas.repspheres.com/';
-              } else {
-                window.location.href = '/';
-              }
+            return;
+          }
+          
+          // Priority 3: Check URL parameters
+          const urlParams = new URLSearchParams(window.location.search);
+          const returnParam = urlParams.get('return');
+          if (returnParam) {
+            const decodedReturn = decodeURIComponent(returnParam);
+            window.location.href = decodedReturn;
+            return;
+          }
+          
+          // Priority 4: Default redirect based on referrer
+          const referrer = document.referrer;
+          if (referrer) {
+            if (referrer.includes('crm.repspheres.com')) {
+              window.location.href = 'https://crm.repspheres.com/';
+            } else if (referrer.includes('marketdata.repspheres.com')) {
+              window.location.href = 'https://marketdata.repspheres.com/';
+            } else if (referrer.includes('canvas.repspheres.com')) {
+              window.location.href = 'https://canvas.repspheres.com/';
             } else {
-              // Default to main site
               window.location.href = '/';
             }
+          } else {
+            // Default to main site
+            window.location.href = '/';
           }
         }, 1500);
         
