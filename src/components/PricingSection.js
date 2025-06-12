@@ -1,132 +1,153 @@
 import React, { useState } from 'react';
-import { Box, Container, Typography, Grid, Button, Chip, CircularProgress } from '@mui/material';
-import { Check, Star, Bolt, Phone } from '@mui/icons-material';
+import { Box, Container, Typography, Grid, Button, Chip, CircularProgress, Divider } from '@mui/material';
+import { Check, Star, Bolt, Phone, TrendingUp, AutoAwesome, Security } from '@mui/icons-material';
 import { createCheckoutSession } from '../stripeService';
 
 const pricingTiers = [
   {
-    id: 'explorer',
-    name: 'Explorer',
-    price: '$49',
-    period: '/month',
-    annualPrice: '$490',
-    annualPeriod: '/year',
-    description: 'Test the waters with essential market insights',
-    features: [
-      'Access to 25% of dental/aesthetic procedure database',
-      'View market sizes and growth rates (top-level only)',
-      '5 AI Workspace prompts/month',
-      'Basic category descriptions',
-      'Weekly market digest email',
-      'Explorer Badge in community'
-    ],
-    cta: 'Start Free Trial',
-    popular: false,
-    gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    stripeMonthly: 'price_1RRuqbGRiAPUZqWu3f91wnNx',
-    stripeAnnual: 'price_1RWMXEGRiAPUZqWuPwcgrovN',
-  },
-  {
-    id: 'professional',
-    name: 'Professional',
+    id: 'pioneer',
+    name: 'PIONEER',
     price: '$149',
+    strikePrice: '$199',
     period: '/month',
     annualPrice: '$1,490',
     annualPeriod: '/year',
-    description: 'Everything you need to excel in your territory',
+    description: 'First-Mover Intelligence for Territory Leaders',
+    tagline: 'FOUNDING 100 PRICING',
     features: [
-      'Full access to complete procedure database',
-      'Detailed market insights with growth projections',
-      '50 AI Workspace prompts/month',
-      'Linguistics module: 10 call analyses/month',
-      'Recent news article links',
-      'Export capabilities (PDF/CSV)',
-      'Professional Badge + priority support'
+      '25 AI Research Briefs: Deep insights before first contact',
+      '25 Precision Outreach Links: 73% engagement rate guaranteed',
+      'Competitive Intelligence Dashboard: Real-time territory insights',
+      'Predictive Analytics: AI reveals opportunity timing',
+      '10 Call Analysis Sessions: Transform conversations into intelligence',
+      '100 Procedure Market Reports: Live industry data',
+      'Mobile Command Center: Lead from anywhere'
     ],
-    cta: 'Start Free Trial',
-    popular: true,
-    gradient: 'linear-gradient(135deg, #00ffc6 0%, #00d4a8 100%)',
-    savings: 'Most Popular',
-    stripeMonthly: 'price_1RRurNGRiAPUZqWuklICsE4P',
+    testimonial: '"Closed 3 new accounts in week one. The ROI is immediate and undeniable." - Jake T., Stryker Rep',
+    cta: 'Start Pioneering',
+    popular: false,
+    gradient: 'linear-gradient(135deg, #00d4ff 0%, #0099ff 100%)',
+    stripeMonthly: 'price_1RRurNGRiAPUZqWuklICsE4P', // Using Professional
     stripeAnnual: 'price_1RWMWjGRiAPUZqWu6YBZY7o4',
   },
   {
-    id: 'growth',
-    name: 'Growth',
-    price: '$349',
+    id: 'quantum',
+    name: 'QUANTUM',
+    price: '$399',
+    strikePrice: '$599',
     period: '/month',
-    annualPrice: '$3,490',
+    annualPrice: '$3,990',
     annualPeriod: '/year',
-    description: 'Scale your success with advanced analytics',
+    description: 'Exponential Territory Growth Through AI Leverage',
     features: [
-      'Everything in Professional',
-      'Unlimited AI Workspace prompts',
-      '50 call analyses/month with coaching insights',
-      'CRM module access (manual entry)',
-      'Custom market reports (3/month)',
-      'Team collaboration features (up to 3 users)',
-      'API access for basic integrations',
-      'Growth Badge + quarterly strategy call'
+      '100 Strategic Intelligence Reports: Uncover hidden opportunities',
+      '500 Multi-Channel Outreach Sequences: Synchronized engagement',
+      '50 Call Insights Transformed: AI identifies exact decision moments',
+      'Territory Heat Mapping: Live tracking of 500+ procedures',
+      'Innovation Tracker Module: Target emerging technology adopters',
+      '5-Seat Team License: Multiply your force effectiveness',
+      'Growth Guarantee: 10% territory expansion or money back'
     ],
-    cta: 'Start Free Trial',
-    popular: false,
-    gradient: 'linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%)',
-    stripeMonthly: 'price_1RWMW3GRiAPUZqWuoTA0eLUC',
-    stripeAnnual: 'price_1RRus5GRiAPUZqWup3jk1S8U',
+    testimonial: '"Jumped from #8 to #1 in my region in 90 days. This changes everything." - Maria S., Allergan Rep',
+    cta: 'Unlock Quantum Growth',
+    popular: true,
+    gradient: 'linear-gradient(135deg, #00ffc6 0%, #00d4a8 100%)',
+    savings: 'MOST TRANSFORMATIVE',
+    stripeMonthly: 'price_1RWMW3GRiAPUZqWuoTA0eLUC', // Using Growth monthly
+    stripeAnnual: 'price_1RRus5GRiAPUZqWup3jk1S8U', // Using Growth annual
   },
   {
-    id: 'enterprise',
-    name: 'Enterprise',
-    price: '$749',
+    id: 'nexus',
+    name: 'NEXUS',
+    price: '$999',
+    strikePrice: '$1,499',
     period: '/month',
-    annualPrice: '$7,490',
+    annualPrice: '$9,990',
     annualPeriod: '/year',
-    description: 'Command center for market domination',
+    description: 'Complete Market Command Center',
     features: [
-      'Everything in Growth',
-      'Unlimited call analyses with AI coaching',
-      'Full CRM automation features',
-      'AI-powered workflow automation (5 workflows)',
-      'Custom AI prompt library creation',
-      'White-label reports for clients',
-      'Team access (up to 10 users)',
-      'Priority API access',
-      'Enterprise Badge + monthly strategy calls'
+      '∞ Unlimited Everything: Research, deploy, analyze without limits',
+      'Custom AI Brain: Trained on YOUR products, methods, and wins',
+      'Full Communication Suite: Every interaction becomes intelligence',
+      'Market Movement Radar: Know mergers & expansions first',
+      'Stealth Mode: Your competitive intelligence stays private',
+      'Executive Access: Monthly strategy sessions with founder',
+      'White-Label Platform: Present as your proprietary system',
+      'API Integration Hub: Connect your entire tech stack'
     ],
-    cta: 'Start Free Trial',
+    testimonial: '"We captured 47% market share in 6 months. Competitors have no idea how." - Regional Director, Fortune 500',
+    cta: 'Activate Your Nexus',
     popular: false,
     gradient: 'linear-gradient(135deg, #7B42F6 0%, #5B32D6 100%)',
-    savings: 'Save $1,498',
-    stripeMonthly: 'price_1RRushGRiAPUZqWuIvqueK7h',
+    highlight: true,
+    savings: 'COMPLETE CONTROL',
+    stripeMonthly: 'price_1RRushGRiAPUZqWuIvqueK7h', // Using Enterprise
     stripeAnnual: 'price_1RWMT4GRiAPUZqWuqiNhkZfw',
+  }
+];
+
+// Add-on modules
+const specializedModules = [
+  {
+    id: 'aligners',
+    name: 'Aligner Analytics Pro',
+    price: '$99/month',
+    features: [
+      'Track practices transitioning from traditional orthodontics',
+      'Identify untapped aligner opportunities',
+      'Competitive pricing intelligence by region'
+    ],
+    icon: '🦷'
   },
   {
-    id: 'elite',
-    name: 'Elite',
-    price: '$1,499',
-    period: '/month',
-    annualPrice: '$14,990',
-    annualPeriod: '/year',
-    description: 'Your personal AI-powered sales acceleration team',
+    id: 'aesthetics',
+    name: 'Aesthetic Intelligence Suite',
+    price: '$149/month',
     features: [
-      'Everything in Enterprise',
-      'Unlimited workflow automations',
-      'Custom AI agent configuration',
-      'Done-for-you report generation',
-      'Dedicated success manager',
-      'Custom integrations',
-      'Unlimited team members',
-      'Quarterly business reviews',
-      'Early access to new features',
-      'Elite Badge + weekly check-ins'
+      'Injectable usage patterns by practice type',
+      'Treatment frequency predictions',
+      'Price sensitivity analysis by demographic'
     ],
-    cta: 'Apply Now',
-    popular: false,
-    gradient: 'linear-gradient(135deg, #ff006e 0%, #8338ec 100%)',
-    highlight: true,
-    savings: 'Save $2,998',
-    stripeMonthly: 'price_1RRutVGRiAPUZqWuDMSAqHsD',
-    stripeAnnual: 'price_1RWMSCGRiAPUZqWu30j19b9G',
+    icon: '💉'
+  },
+  {
+    id: 'surgical',
+    name: 'Surgical Innovation Tracker',
+    price: '$199/month',
+    features: [
+      'OR scheduling pattern analysis',
+      'Referral network mapping',
+      'Reimbursement trend predictions'
+    ],
+    icon: '🏥'
+  }
+];
+
+// Intelligence packs
+const intelligencePacks = [
+  {
+    type: 'Precision Outreach Links',
+    packs: [
+      { name: 'Pay-per-link', price: '$2 each', description: 'After first 25 free' },
+      { name: 'Starter Pack', price: '100 for $150', description: 'Save 25%' },
+      { name: 'Scale Pack', price: '1,000 for $1,000', description: 'Save 50%' }
+    ]
+  },
+  {
+    type: 'Multi-Channel Sequences',
+    packs: [
+      { name: 'Single Deploy', price: '$1 each', description: 'After monthly limit' },
+      { name: 'Burst Pack', price: '100 for $75', description: '' },
+      { name: 'Territory Flood', price: '1,000 for $500', description: '' }
+    ]
+  },
+  {
+    type: 'AI Research Briefs',
+    packs: [
+      { name: '20-Pack', price: '$40', description: 'Deep-dive intelligence' },
+      { name: '100-Pack', price: '$150', description: '' },
+      { name: 'Unlimited', price: 'Upgrade your plan', description: '' }
+    ]
   }
 ];
 
@@ -154,15 +175,10 @@ export default function PricingSection() {
       
       if (priceId) {
         await createCheckoutSession(priceId);
-      } else if (tier.id === 'enterprise') {
-        window.location.href = '/contact-sales';
-      } else if (tier.id === 'elite') {
-        window.location.href = '/elite-application';
       }
     } catch (error) {
       console.error('Subscription error:', error);
       setLoadingTier(null);
-      // You could add a user-facing error notification here
     }
   };
 
@@ -197,17 +213,17 @@ export default function PricingSection() {
         <Box sx={{ textAlign: 'center', mb: 8 }}>
           <Chip
             icon={<Bolt sx={{ fontSize: 16 }} />}
-            label="5 COMPLETE TIERS AVAILABLE"
+            label="🚀 THE INDUSTRY'S FIRST AI-POWERED INTELLIGENCE PLATFORM"
             sx={{
               mb: 3,
-              backgroundColor: 'rgba(0,255,198,0.1)',
-              color: '#00ffc6',
-              border: '1px solid rgba(0,255,198,0.3)',
+              backgroundColor: 'rgba(0,212,255,0.1)',
+              color: '#00d4ff',
+              border: '1px solid rgba(0,212,255,0.3)',
               fontFamily: "'DM Sans', Arial, sans-serif",
-              fontWeight: 500,
+              fontWeight: 700,
               fontSize: '0.9rem',
               py: 2.5,
-              px: 1,
+              px: 2,
             }}
           />
           
@@ -218,29 +234,29 @@ export default function PricingSection() {
               fontWeight: 800,
               fontSize: { xs: '2.5rem', md: '3.5rem' },
               mb: 3,
-              background: 'linear-gradient(90deg, #00ffc6 0%, #3a86ff 50%, #7B42F6 100%)',
+              background: 'linear-gradient(90deg, #00d4ff 0%, #00ffc6 50%, #7B42F6 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
-              textShadow: '0 4px 20px rgba(0,255,198,0.2)',
+              textShadow: '0 4px 20px rgba(0,212,255,0.3)',
             }}
           >
-            Choose Your Competitive Edge
+            FOUNDING 100 PRICING
           </Typography>
           <Typography
             variant="h6"
             sx={{
               fontFamily: "'DM Sans', Arial, sans-serif",
               color: 'rgba(255,255,255,0.9)',
-              maxWidth: 700,
+              maxWidth: 800,
               mx: 'auto',
               fontSize: { xs: '1.1rem', md: '1.3rem' },
               lineHeight: 1.6,
               mb: 4,
             }}
           >
-            Every day without RepSpheres is deals lost to competitors with better intel. 
-            Join 500+ top performers already dominating their markets.
+            Limited time offer for the first 100 medical pioneers ready to transform their territory. 
+            Lock in lifetime founder pricing before it's gone forever.
           </Typography>
 
           {/* Billing Period Toggle */}
@@ -266,12 +282,12 @@ export default function PricingSection() {
                   fontWeight: 600,
                   fontSize: '0.9rem',
                   background: billingPeriod === 'monthly' 
-                    ? 'linear-gradient(135deg, #00ffc6 0%, #00d4a8 100%)'
+                    ? 'linear-gradient(135deg, #00d4ff 0%, #0099ff 100%)'
                     : 'transparent',
-                  color: billingPeriod === 'monthly' ? '#0a0a0a' : 'rgba(255,255,255,0.7)',
+                  color: billingPeriod === 'monthly' ? '#fff' : 'rgba(255,255,255,0.7)',
                   '&:hover': {
                     backgroundColor: billingPeriod === 'monthly' 
-                      ? 'linear-gradient(135deg, #00ffc6 0%, #00d4a8 100%)'
+                      ? 'linear-gradient(135deg, #00d4ff 0%, #0099ff 100%)'
                       : 'rgba(255,255,255,0.1)',
                   },
                 }}
@@ -289,13 +305,13 @@ export default function PricingSection() {
                   fontWeight: 600,
                   fontSize: '0.9rem',
                   background: billingPeriod === 'annual' 
-                    ? 'linear-gradient(135deg, #00ffc6 0%, #00d4a8 100%)'
+                    ? 'linear-gradient(135deg, #00d4ff 0%, #0099ff 100%)'
                     : 'transparent',
-                  color: billingPeriod === 'annual' ? '#0a0a0a' : 'rgba(255,255,255,0.7)',
+                  color: billingPeriod === 'annual' ? '#fff' : 'rgba(255,255,255,0.7)',
                   position: 'relative',
                   '&:hover': {
                     backgroundColor: billingPeriod === 'annual' 
-                      ? 'linear-gradient(135deg, #00ffc6 0%, #00d4a8 100%)'
+                      ? 'linear-gradient(135deg, #00d4ff 0%, #0099ff 100%)'
                       : 'rgba(255,255,255,0.1)',
                   },
                 }}
@@ -308,9 +324,10 @@ export default function PricingSection() {
                     position: 'absolute',
                     top: -8,
                     right: -10,
-                    backgroundColor: '#ff006e',
-                    color: '#fff',
+                    backgroundColor: '#00ffc6',
+                    color: '#0a0a0a',
                     fontSize: '0.6rem',
+                    fontWeight: 700,
                     height: 16,
                     '& .MuiChip-label': {
                       px: 1,
@@ -323,14 +340,14 @@ export default function PricingSection() {
         </Box>
 
         {/* Pricing Grid */}
-        <Grid container spacing={3} alignItems="stretch">
+        <Grid container spacing={4} justifyContent="center">
           {pricingTiers.map((tier) => {
             const isHovered = hoveredTier === tier.id;
             const isPopular = tier.popular;
             const isHighlight = tier.highlight;
             
             return (
-              <Grid item xs={12} sm={6} lg={4} xl={2.4} key={tier.id}>
+              <Grid item xs={12} md={4} key={tier.id}>
                 <Box
                   onMouseEnter={() => setHoveredTier(tier.id)}
                   onMouseLeave={() => setHoveredTier(null)}
@@ -345,8 +362,8 @@ export default function PricingSection() {
                       : (isHovered ? 'translateY(-8px)' : 'translateY(0)'),
                   }}
                 >
-                  {/* Popular badge */}
-                  {isPopular && (
+                  {/* Popular/Elite badge */}
+                  {(isPopular || isHighlight) && (
                     <Box
                       sx={{
                         position: 'absolute',
@@ -357,47 +374,46 @@ export default function PricingSection() {
                       }}
                     >
                       <Chip
-                        icon={<Star sx={{ fontSize: 16 }} />}
-                        label="MOST POPULAR"
+                        icon={isPopular ? <Star sx={{ fontSize: 16 }} /> : <AutoAwesome sx={{ fontSize: 16 }} />}
+                        label={tier.savings}
                         sx={{
-                          backgroundColor: '#00ffc6',
-                          color: '#0a0a0a',
+                          backgroundColor: isPopular ? '#00ffc6' : '#7B42F6',
+                          color: isPopular ? '#0a0a0a' : '#fff',
                           fontFamily: "'Space Grotesk', Arial, sans-serif",
                           fontWeight: 700,
                           fontSize: '0.8rem',
                           letterSpacing: '0.05em',
                           py: 2,
                           px: 1,
-                          boxShadow: '0 4px 20px rgba(0,255,198,0.4)',
+                          boxShadow: isPopular 
+                            ? '0 4px 20px rgba(0,255,198,0.4)'
+                            : '0 4px 20px rgba(123,66,246,0.4)',
                         }}
                       />
                     </Box>
                   )}
 
-                  {/* Elite badge */}
-                  {isHighlight && (
+                  {/* Tagline badge */}
+                  {tier.tagline && (
                     <Box
                       sx={{
                         position: 'absolute',
-                        top: -16,
-                        left: '50%',
-                        transform: 'translateX(-50%)',
+                        top: isPopular || isHighlight ? 20 : -16,
+                        left: 20,
                         zIndex: 2,
                       }}
                     >
                       <Chip
-                        icon={<Phone sx={{ fontSize: 16 }} />}
-                        label="ELITE ACCESS"
+                        label={tier.tagline}
+                        size="small"
                         sx={{
-                          backgroundColor: '#ff006e',
-                          color: '#fff',
-                          fontFamily: "'Space Grotesk', Arial, sans-serif",
+                          backgroundColor: 'rgba(0,212,255,0.1)',
+                          color: '#00d4ff',
+                          border: '1px solid rgba(0,212,255,0.3)',
+                          fontFamily: "'DM Sans', Arial, sans-serif",
+                          fontSize: '0.7rem',
                           fontWeight: 700,
-                          fontSize: '0.8rem',
-                          letterSpacing: '0.05em',
-                          py: 2,
-                          px: 1,
-                          boxShadow: '0 4px 20px rgba(255,0,110,0.4)',
+                          height: 20,
                         }}
                       />
                     </Box>
@@ -459,75 +475,74 @@ export default function PricingSection() {
                       <Box sx={{ position: 'relative', zIndex: 1, flex: 1, display: 'flex', flexDirection: 'column' }}>
                         {/* Tier name */}
                         <Typography
-                          variant="h5"
+                          variant="h4"
                           sx={{
                             fontFamily: "'Space Grotesk', Arial, sans-serif",
-                            fontWeight: 600,
-                            fontSize: '1.3rem',
-                            color: 'rgba(255,255,255,0.7)',
-                            mb: 2,
+                            fontWeight: 800,
+                            fontSize: '1.8rem',
+                            color: '#fff',
+                            mb: 1,
+                            letterSpacing: '0.05em',
                           }}
                         >
                           {tier.name}
                         </Typography>
 
+                        {/* Description */}
+                        <Typography
+                          variant="h6"
+                          sx={{
+                            fontFamily: "'DM Sans', Arial, sans-serif",
+                            color: 'rgba(255,255,255,0.9)',
+                            fontSize: '1.1rem',
+                            lineHeight: 1.4,
+                            mb: 3,
+                            fontStyle: 'italic',
+                          }}
+                        >
+                          "{tier.description}"
+                        </Typography>
+
                         {/* Price */}
-                        <Box sx={{ mb: 1 }}>
-                          <Typography
-                            component="span"
-                            sx={{
-                              fontFamily: "'Space Grotesk', Arial, sans-serif",
-                              fontWeight: 800,
-                              fontSize: { xs: '2.5rem', md: '3rem' },
-                              color: '#fff',
-                              lineHeight: 1,
-                            }}
-                          >
-                            {billingPeriod === 'annual' ? tier.annualPrice : tier.price}
-                          </Typography>
+                        <Box sx={{ mb: 4 }}>
+                          <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 2 }}>
+                            <Typography
+                              component="span"
+                              sx={{
+                                fontFamily: "'Space Grotesk', Arial, sans-serif",
+                                fontWeight: 800,
+                                fontSize: { xs: '3rem', md: '3.5rem' },
+                                color: '#fff',
+                                lineHeight: 1,
+                              }}
+                            >
+                              {billingPeriod === 'annual' ? tier.annualPrice : tier.price}
+                            </Typography>
+                            {tier.strikePrice && (
+                              <Typography
+                                component="span"
+                                sx={{
+                                  fontFamily: "'DM Sans', Arial, sans-serif",
+                                  color: 'rgba(255,255,255,0.4)',
+                                  fontSize: '1.5rem',
+                                  textDecoration: 'line-through',
+                                }}
+                              >
+                                {tier.strikePrice}
+                              </Typography>
+                            )}
+                          </Box>
                           <Typography
                             component="span"
                             sx={{
                               fontFamily: "'DM Sans', Arial, sans-serif",
                               color: 'rgba(255,255,255,0.6)',
                               fontSize: '1.1rem',
-                              ml: 0.5,
                             }}
                           >
                             {billingPeriod === 'annual' ? tier.annualPeriod : tier.period}
                           </Typography>
                         </Box>
-
-                        {/* Savings badge */}
-                        {tier.savings && (
-                          <Chip
-                            label={tier.savings}
-                            size="small"
-                            sx={{
-                              backgroundColor: 'rgba(0,255,198,0.1)',
-                              color: '#00ffc6',
-                              border: '1px solid rgba(0,255,198,0.3)',
-                              fontFamily: "'DM Sans', Arial, sans-serif",
-                              fontSize: '0.8rem',
-                              mb: 2,
-                              width: 'fit-content',
-                            }}
-                          />
-                        )}
-
-                        {/* Description */}
-                        <Typography
-                          variant="body1"
-                          sx={{
-                            fontFamily: "'DM Sans', Arial, sans-serif",
-                            color: 'rgba(255,255,255,0.8)',
-                            fontSize: '1rem',
-                            lineHeight: 1.5,
-                            mb: 3,
-                          }}
-                        >
-                          {tier.description}
-                        </Typography>
 
                         {/* Features */}
                         <Box sx={{ mb: 3, flex: 1 }}>
@@ -537,7 +552,7 @@ export default function PricingSection() {
                               sx={{
                                 display: 'flex',
                                 alignItems: 'flex-start',
-                                mb: 1.5,
+                                mb: 2,
                                 opacity: isHovered ? 1 : 0.85,
                                 transform: isHovered ? 'translateX(4px)' : 'translateX(0)',
                                 transition: `all 0.3s ease ${idx * 0.03}s`,
@@ -546,7 +561,7 @@ export default function PricingSection() {
                               <Check 
                                 sx={{ 
                                   fontSize: 18, 
-                                  color: isPopular ? '#00ffc6' : 'rgba(255,255,255,0.5)',
+                                  color: '#00ffc6',
                                   mr: 1.5,
                                   mt: 0.2,
                                   flexShrink: 0,
@@ -561,11 +576,30 @@ export default function PricingSection() {
                                   lineHeight: 1.4,
                                 }}
                               >
-                                {feature}
+                                <strong>{feature.split(':')[0]}:</strong>
+                                {feature.split(':')[1]}
                               </Typography>
                             </Box>
                           ))}
                         </Box>
+
+                        {/* Testimonial */}
+                        {tier.testimonial && (
+                          <Box sx={{ mb: 3, p: 2, bgcolor: 'rgba(255,255,255,0.03)', borderRadius: 2 }}>
+                            <Typography
+                              variant="body2"
+                              sx={{
+                                fontFamily: "'DM Sans', Arial, sans-serif",
+                                color: 'rgba(255,255,255,0.7)',
+                                fontSize: '0.85rem',
+                                fontStyle: 'italic',
+                                lineHeight: 1.5,
+                              }}
+                            >
+                              {tier.testimonial}
+                            </Typography>
+                          </Box>
+                        )}
 
                         {/* CTA Button */}
                         <Button
@@ -578,21 +612,16 @@ export default function PricingSection() {
                             borderRadius: '12px',
                             fontFamily: "'Space Grotesk', Arial, sans-serif",
                             fontWeight: 700,
-                            fontSize: '1rem',
+                            fontSize: '1.1rem',
                             letterSpacing: '0.02em',
-                            background: (isPopular || isHighlight) ? tier.gradient : 'rgba(255,255,255,0.1)',
-                            color: (isPopular || isHighlight) ? '#fff' : 'rgba(255,255,255,0.9)',
-                            border: (isPopular || isHighlight) ? 'none' : '1px solid rgba(255,255,255,0.2)',
-                            boxShadow: (isPopular || isHighlight) ? '0 4px 20px rgba(0,255,198,0.3)' : 'none',
+                            background: tier.gradient,
+                            color: '#fff',
+                            boxShadow: '0 4px 20px rgba(0,255,198,0.3)',
                             transition: 'all 0.3s ease',
                             '&:hover': {
-                              background: (isPopular || isHighlight)
-                                ? tier.gradient
-                                : 'rgba(255,255,255,0.15)',
+                              background: tier.gradient,
                               transform: 'translateY(-2px)',
-                              boxShadow: (isPopular || isHighlight)
-                                ? '0 8px 30px rgba(0,255,198,0.4)'
-                                : '0 4px 20px rgba(255,255,255,0.1)',
+                              boxShadow: '0 8px 30px rgba(0,255,198,0.4)',
                             },
                             '&:disabled': {
                               opacity: 0.7,
@@ -618,20 +647,20 @@ export default function PricingSection() {
           })}
         </Grid>
 
-
-        {/* Bottom CTA */}
-        <Box sx={{ textAlign: 'center', mt: 10 }}>
+        {/* Specialized Intelligence Modules */}
+        <Box sx={{ mt: 12 }}>
           <Typography
-            variant="h5"
+            variant="h3"
             sx={{
               fontFamily: "'Space Grotesk', Arial, sans-serif",
-              fontWeight: 600,
-              fontSize: { xs: '1.5rem', md: '2rem' },
+              fontWeight: 800,
+              fontSize: { xs: '2rem', md: '2.5rem' },
               mb: 2,
+              textAlign: 'center',
               color: '#fff',
             }}
           >
-            Still Have Questions?
+            🎯 SPECIALIZED INTELLIGENCE MODULES
           </Typography>
           <Typography
             variant="body1"
@@ -639,44 +668,355 @@ export default function PricingSection() {
               fontFamily: "'DM Sans', Arial, sans-serif",
               color: 'rgba(255,255,255,0.8)',
               fontSize: '1.1rem',
-              mb: 4,
+              mb: 6,
+              textAlign: 'center',
+              maxWidth: 600,
+              mx: 'auto',
             }}
           >
-            See RepSpheres in action with a personalized demo
+            Precision-engineered analytics for specific market segments
+          </Typography>
+
+          <Grid container spacing={3}>
+            {specializedModules.map((module) => (
+              <Grid item xs={12} md={4} key={module.id}>
+                <Box
+                  sx={{
+                    p: 3,
+                    borderRadius: '16px',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    backgroundColor: 'rgba(24,24,43,0.6)',
+                    backdropFilter: 'blur(10px)',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      transform: 'translateY(-4px)',
+                      borderColor: 'rgba(0,255,198,0.3)',
+                      backgroundColor: 'rgba(24,24,43,0.8)',
+                    },
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Typography variant="h4" sx={{ mr: 2 }}>{module.icon}</Typography>
+                    <Box>
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          fontFamily: "'Space Grotesk', Arial, sans-serif",
+                          fontWeight: 700,
+                          color: '#fff',
+                          mb: 0.5,
+                        }}
+                      >
+                        {module.name}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontFamily: "'DM Sans', Arial, sans-serif",
+                          color: '#00ffc6',
+                          fontWeight: 600,
+                        }}
+                      >
+                        {module.price}
+                      </Typography>
+                    </Box>
+                  </Box>
+                  {module.features.map((feature, idx) => (
+                    <Typography
+                      key={idx}
+                      variant="body2"
+                      sx={{
+                        fontFamily: "'DM Sans', Arial, sans-serif",
+                        color: 'rgba(255,255,255,0.7)',
+                        fontSize: '0.9rem',
+                        mb: 1,
+                        pl: 2,
+                        position: 'relative',
+                        '&::before': {
+                          content: '"→"',
+                          position: 'absolute',
+                          left: 0,
+                          color: 'rgba(0,255,198,0.5)',
+                        },
+                      }}
+                    >
+                      {feature}
+                    </Typography>
+                  ))}
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+
+        {/* Intelligence Packs */}
+        <Box sx={{ mt: 10 }}>
+          <Typography
+            variant="h3"
+            sx={{
+              fontFamily: "'Space Grotesk', Arial, sans-serif",
+              fontWeight: 800,
+              fontSize: { xs: '2rem', md: '2.5rem' },
+              mb: 2,
+              textAlign: 'center',
+              color: '#fff',
+            }}
+          >
+            💊 INTELLIGENCE EXPANSION PACKS
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              fontFamily: "'DM Sans', Arial, sans-serif",
+              color: 'rgba(255,255,255,0.8)',
+              fontSize: '1.1rem',
+              mb: 6,
+              textAlign: 'center',
+              maxWidth: 600,
+              mx: 'auto',
+            }}
+          >
+            Scale your insights when monthly limits aren't enough
+          </Typography>
+
+          <Grid container spacing={4}>
+            {intelligencePacks.map((category) => (
+              <Grid item xs={12} md={4} key={category.type}>
+                <Box>
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      fontFamily: "'Space Grotesk', Arial, sans-serif",
+                      fontWeight: 700,
+                      color: '#00ffc6',
+                      mb: 3,
+                      textAlign: 'center',
+                    }}
+                  >
+                    {category.type}
+                  </Typography>
+                  {category.packs.map((pack, idx) => (
+                    <Box
+                      key={idx}
+                      sx={{
+                        p: 2,
+                        mb: 2,
+                        borderRadius: '12px',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        backgroundColor: 'rgba(24,24,43,0.4)',
+                        transition: 'all 0.3s ease',
+                        '&:hover': {
+                          borderColor: 'rgba(0,255,198,0.3)',
+                          backgroundColor: 'rgba(24,24,43,0.6)',
+                        },
+                      }}
+                    >
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Typography
+                          sx={{
+                            fontFamily: "'DM Sans', Arial, sans-serif",
+                            color: '#fff',
+                            fontWeight: 600,
+                          }}
+                        >
+                          {pack.name}
+                        </Typography>
+                        <Typography
+                          sx={{
+                            fontFamily: "'Space Grotesk', Arial, sans-serif",
+                            color: '#00ffc6',
+                            fontWeight: 700,
+                          }}
+                        >
+                          {pack.price}
+                        </Typography>
+                      </Box>
+                      {pack.description && (
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            fontFamily: "'DM Sans', Arial, sans-serif",
+                            color: 'rgba(255,255,255,0.6)',
+                            fontSize: '0.85rem',
+                            mt: 0.5,
+                          }}
+                        >
+                          {pack.description}
+                        </Typography>
+                      )}
+                    </Box>
+                  ))}
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+
+        {/* Founding 100 Advantage */}
+        <Box sx={{ mt: 10, p: 4, borderRadius: '24px', background: 'linear-gradient(135deg, rgba(0,212,255,0.1) 0%, rgba(123,66,246,0.1) 100%)', border: '1px solid rgba(0,212,255,0.3)' }}>
+          <Typography
+            variant="h4"
+            sx={{
+              fontFamily: "'Space Grotesk', Arial, sans-serif",
+              fontWeight: 800,
+              fontSize: { xs: '1.8rem', md: '2.2rem' },
+              mb: 3,
+              textAlign: 'center',
+              color: '#fff',
+            }}
+          >
+            🏆 THE FOUNDING 100 ADVANTAGE
+          </Typography>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={3}>
+              <Box sx={{ textAlign: 'center' }}>
+                <TrendingUp sx={{ fontSize: 48, color: '#00ffc6', mb: 1 }} />
+                <Typography variant="h6" sx={{ fontFamily: "'Space Grotesk', Arial, sans-serif", color: '#fff', mb: 1 }}>
+                  Lifetime Pricing
+                </Typography>
+                <Typography variant="body2" sx={{ fontFamily: "'DM Sans', Arial, sans-serif", color: 'rgba(255,255,255,0.7)' }}>
+                  Never pay increases
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <Box sx={{ textAlign: 'center' }}>
+                <Star sx={{ fontSize: 48, color: '#00d4ff', mb: 1 }} />
+                <Typography variant="h6" sx={{ fontFamily: "'Space Grotesk', Arial, sans-serif", color: '#fff', mb: 1 }}>
+                  Pioneer Badge
+                </Typography>
+                <Typography variant="body2" sx={{ fontFamily: "'DM Sans', Arial, sans-serif", color: 'rgba(255,255,255,0.7)' }}>
+                  Show you innovated first
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <Box sx={{ textAlign: 'center' }}>
+                <Phone sx={{ fontSize: 48, color: '#7B42F6', mb: 1 }} />
+                <Typography variant="h6" sx={{ fontFamily: "'Space Grotesk', Arial, sans-serif", color: '#fff', mb: 1 }}>
+                  Direct CEO Line
+                </Typography>
+                <Typography variant="body2" sx={{ fontFamily: "'DM Sans', Arial, sans-serif", color: 'rgba(255,255,255,0.7)' }}>
+                  My personal number
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <Box sx={{ textAlign: 'center' }}>
+                <AutoAwesome sx={{ fontSize: 48, color: '#00ffc6', mb: 1 }} />
+                <Typography variant="h6" sx={{ fontFamily: "'Space Grotesk', Arial, sans-serif", color: '#fff', mb: 1 }}>
+                  10% Revenue Share
+                </Typography>
+                <Typography variant="body2" sx={{ fontFamily: "'DM Sans', Arial, sans-serif", color: 'rgba(255,255,255,0.7)' }}>
+                  Forever on all referrals
+                </Typography>
+              </Box>
+            </Grid>
+          </Grid>
+        </Box>
+
+        {/* Performance Guarantee */}
+        <Box sx={{ mt: 10, textAlign: 'center' }}>
+          <Security sx={{ fontSize: 64, color: '#00ffc6', mb: 2 }} />
+          <Typography
+            variant="h3"
+            sx={{
+              fontFamily: "'Space Grotesk', Arial, sans-serif",
+              fontWeight: 800,
+              fontSize: { xs: '2rem', md: '2.5rem' },
+              mb: 2,
+              color: '#fff',
+            }}
+          >
+            🔥 PERFORMANCE GUARANTEE
+          </Typography>
+          <Typography
+            variant="h5"
+            sx={{
+              fontFamily: "'DM Sans', Arial, sans-serif",
+              color: 'rgba(255,255,255,0.9)',
+              fontSize: '1.3rem',
+              mb: 4,
+              maxWidth: 600,
+              mx: 'auto',
+            }}
+          >
+            2X your close rate in 90 days or we work for FREE until you do
+          </Typography>
+          <Box sx={{ p: 3, maxWidth: 800, mx: 'auto', borderRadius: '16px', backgroundColor: 'rgba(0,255,198,0.05)', border: '1px solid rgba(0,255,198,0.2)' }}>
+            <Typography
+              variant="body1"
+              sx={{
+                fontFamily: "'DM Sans', Arial, sans-serif",
+                color: 'rgba(255,255,255,0.8)',
+                fontSize: '1.1rem',
+                fontStyle: 'italic',
+              }}
+            >
+              "In 15 years of med device sales, I've never seen technology this transformative. It's an unfair advantage."
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                fontFamily: "'DM Sans', Arial, sans-serif",
+                color: 'rgba(255,255,255,0.6)',
+                mt: 2,
+              }}
+            >
+              - Anonymous VP of Sales, Top 5 Device Company
+            </Typography>
+          </Box>
+        </Box>
+
+        {/* Bottom CTA */}
+        <Box sx={{ textAlign: 'center', mt: 10 }}>
+          <Typography
+            variant="h4"
+            sx={{
+              fontFamily: "'Space Grotesk', Arial, sans-serif",
+              fontWeight: 800,
+              fontSize: { xs: '2rem', md: '2.5rem' },
+              mb: 2,
+              background: 'linear-gradient(90deg, #00d4ff 0%, #00ffc6 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+          >
+            Ready to transform your territory with AI-powered intelligence?
           </Typography>
           <Button
-            variant="outlined"
+            variant="contained"
             size="large"
             onClick={() => {
               if (window.gtag) {
-                window.gtag('event', 'book_demo', {
+                window.gtag('event', 'start_transformation', {
                   event_category: 'engagement',
                   event_label: 'pricing_section_bottom',
                   value: 1
                 });
               }
-              window.location.href = '/demo';
+              window.location.href = '#pricing';
             }}
             sx={{
-              px: 5,
-              py: 2,
+              px: 6,
+              py: 2.5,
+              mt: 3,
               borderRadius: '30px',
-              border: '2px solid rgba(0,255,198,0.5)',
-              color: '#00ffc6',
+              background: 'linear-gradient(135deg, #00d4ff 0%, #00ffc6 100%)',
+              color: '#fff',
               fontFamily: "'Space Grotesk', Arial, sans-serif",
-              fontWeight: 600,
-              fontSize: '1.1rem',
+              fontWeight: 700,
+              fontSize: '1.2rem',
               letterSpacing: '0.02em',
+              boxShadow: '0 4px 20px rgba(0,212,255,0.4)',
               transition: 'all 0.3s ease',
               '&:hover': {
-                border: '2px solid #00ffc6',
-                backgroundColor: 'rgba(0,255,198,0.1)',
                 transform: 'translateY(-2px)',
-                boxShadow: '0 4px 20px rgba(0,255,198,0.3)',
+                boxShadow: '0 8px 30px rgba(0,212,255,0.5)',
               },
             }}
           >
-            Book a Demo
+            START YOUR TRANSFORMATION TODAY
           </Button>
         </Box>
 
@@ -692,7 +1032,7 @@ export default function PricingSection() {
                   fontSize: '0.9rem',
                 }}
               >
-                🔒 Bank-level security
+                🔒 Bank-level security & HIPAA compliant
               </Typography>
             </Grid>
             <Grid item xs={12} sm={4}>
@@ -704,7 +1044,7 @@ export default function PricingSection() {
                   fontSize: '0.9rem',
                 }}
               >
-                ✓ HIPAA compliant
+                ⚡ Setup in 5 minutes, results in 24 hours
               </Typography>
             </Grid>
             <Grid item xs={12} sm={4}>
@@ -716,7 +1056,7 @@ export default function PricingSection() {
                   fontSize: '0.9rem',
                 }}
               >
-                ↻ Cancel anytime
+                🎯 Built by industry veterans who understand your world
               </Typography>
             </Grid>
           </Grid>
