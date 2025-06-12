@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Authentication - RepSpheres</title>
+  <link rel="icon" href="../favicon.ico">
+  <style>
+    body {
+      font-family: 'DM Sans', Arial, sans-serif;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    
+    .auth-container {
+      text-align: center;
+      background: rgba(24, 24, 43, 0.8);
+      border: 1px solid rgba(0, 255, 198, 0.3);
+      border-radius: 16px;
+      padding: 3rem;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(0, 255, 198, 0.2);
+      border-top: 3px solid #00ffc6;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    h2 {
+      color: #00ffc6;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    
+    p {
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <div class="spinner"></div>
+    <h2>Completing Authentication</h2>
+    <p>Redirecting you to your destination...</p>
+  </div>
+
+  <script>
+    // Handle OAuth callback and redirect to intended destination
+    function handleAuthCallback() {
+      try {
+        // Get the intended destination from session storage
+        const intendedDestination = sessionStorage.getItem('intendedDestination');
+        
+        // Clear the intended destination
+        sessionStorage.removeItem('intendedDestination');
+        
+        // Wait a moment for auth state to update, then redirect
+        setTimeout(() => {
+          if (intendedDestination) {
+            window.location.href = intendedDestination;
+          } else {
+            // Default redirect based on current page context
+            const currentHost = window.location.host;
+            
+            // Check if we're on a subdomain and redirect accordingly
+            if (currentHost.includes('marketdata.')) {
+              window.location.href = 'https://marketdata.repspheres.com/';
+            } else if (currentHost.includes('canvas.')) {
+              window.location.href = 'https://canvas.repspheres.com/';
+            } else if (currentHost.includes('crm.')) {
+              window.location.href = 'https://crm.repspheres.com/';
+            } else {
+              // Default to main site
+              window.location.href = '/';
+            }
+          }
+        }, 1500);
+        
+      } catch (error) {
+        console.error('Auth callback error:', error);
+        // Fallback to home page
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 2000);
+      }
+    }
+    
+    // Start the callback handling
+    handleAuthCallback();
+  </script>
+</body>
+</html>

@@ -9,6 +9,21 @@ export function useAuth() {
   return useContext(AuthContext);
 }
 
+// Helper functions for managing intended destinations
+const setIntendedDestination = (path) => {
+  sessionStorage.setItem('intendedDestination', path);
+};
+
+const getIntendedDestination = () => {
+  const destination = sessionStorage.getItem('intendedDestination');
+  sessionStorage.removeItem('intendedDestination');
+  return destination;
+};
+
+const clearIntendedDestination = () => {
+  sessionStorage.removeItem('intendedDestination');
+};
+
 // Authentication provider component
 export function AuthProvider({ children }) {
   // State for the current user
@@ -17,43 +32,66 @@ export function AuthProvider({ children }) {
   const [isAdmin, setIsAdmin] = useState(false);
 
   // Function to sign in with Google
-  const signInWithGoogle = async () => {
+  const signInWithGoogle = async (intendedPath = null) => {
     try {
+      if (intendedPath) {
+        setIntendedDestination(intendedPath);
+      }
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: window.location.origin,
+          redirectTo: `${window.location.origin}/auth/callback`,
         },
       });
       if (error) throw error;
     } catch (error) {
       console.error('Error signing in with Google:', error.message);
+      throw error;
     }
   };
 
   // Function to sign in with Facebook
-  const signInWithFacebook = async () => {
+  const signInWithFacebook = async (intendedPath = null) => {
     try {
+      if (intendedPath) {
+        setIntendedDestination(intendedPath);
+      }
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'facebook',
         options: {
-          redirectTo: window.location.origin,
+          redirectTo: `${window.location.origin}/auth/callback`,
         },
       });
       if (error) throw error;
     } catch (error) {
       console.error('Error signing in with Facebook:', error.message);
+      throw error;
     }
   };
 
   // Function to sign in with email and password
-  const signInWithEmail = async (email, password) => {
+  const signInWithEmail = async (email, password, intendedPath = null) => {
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
       if (error) throw error;
+      
+      // Handle post-login navigation for email sign-in
+      if (intendedPath) {
+        setTimeout(() => {
+          window.location.href = intendedPath;
+        }, 100);
+      } else {
+        const destination = getIntendedDestination();
+        if (destination) {
+          setTimeout(() => {
+            window.location.href = destination;
+          }, 100);
+        }
+      }
+      
       return data;
     } catch (error) {
       console.error('Error signing in with email:', error.message);
@@ -93,12 +131,15 @@ export function AuthProvider({ children }) {
   };
 
   // Generic function to sign in with any OAuth provider
-  const signInWithProvider = async (provider) => {
+  const signInWithProvider = async (provider, intendedPath = null) => {
     try {
+      if (intendedPath) {
+        setIntendedDestination(intendedPath);
+      }
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: window.location.origin,
+          redirectTo: `${window.location.origin}/auth/callback`,
         },
       });
       if (error) throw error;
@@ -189,6 +230,9 @@ export function AuthProvider({ children }) {
     resetPassword,
     signInWithProvider,
     signOut,
+    setIntendedDestination,
+    getIntendedDestination,
+    clearIntendedDestination,
   };
 
   return (
