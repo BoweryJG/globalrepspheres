@@ -99,7 +99,8 @@ export default function AuthModal({ open, onClose, mode = 'login' }) {
     signInWithEmail,
     signUpWithEmail,
     resetPassword,
-    signInWithProvider
+    signInWithProvider,
+    getIntendedDestination
   } = useAuth();
 
   // Reset form when modal opens/closes
@@ -128,22 +129,22 @@ export default function AuthModal({ open, onClose, mode = 'login' }) {
     setLoading(true);
     setError('');
     try {
+      // Get current intended destination before OAuth redirect
+      const intendedDestination = getIntendedDestination() || window.location.pathname;
+      
       if (provider === 'google') {
-        await signInWithGoogle();
+        await signInWithGoogle(intendedDestination);
       } else if (provider === 'facebook') {
-        await signInWithFacebook();
+        await signInWithFacebook(intendedDestination);
       } else if (provider === 'apple') {
-        await signInWithProvider('apple');
+        await signInWithProvider('apple', intendedDestination);
       } else if (provider === 'github') {
-        await signInWithProvider('github');
+        await signInWithProvider('github', intendedDestination);
       }
+      // OAuth will redirect, so we don't need to handle success here
       setSuccess(true);
-      setTimeout(() => {
-        onClose();
-      }, 1000);
     } catch (err) {
       setError(err.message || 'Authentication failed. Please try again.');
-    } finally {
       setLoading(false);
     }
   };
@@ -158,10 +159,13 @@ export default function AuthModal({ open, onClose, mode = 'login' }) {
         await resetPassword(email);
         setEmailSent(true);
       } else if (isLogin) {
-        await signInWithEmail(email, password);
+        // Get intended destination before login
+        const intendedDestination = getIntendedDestination();
+        await signInWithEmail(email, password, intendedDestination);
         setSuccess(true);
         setTimeout(() => {
           onClose();
+          // If no intended destination and AuthContext doesn't redirect, stay on current page
         }, 1000);
       } else {
         if (password !== confirmPassword) {
@@ -174,6 +178,7 @@ export default function AuthModal({ open, onClose, mode = 'login' }) {
         setSuccess(true);
         setTimeout(() => {
           onClose();
+          // After signup, user might need to verify email
         }, 1000);
       }
     } catch (err) {

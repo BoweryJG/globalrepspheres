@@ -39,6 +39,7 @@ import InvertColorsIcon from '@mui/icons-material/InvertColors';
 import SpeedIcon from '@mui/icons-material/Speed';
 import Switch from '@mui/material/Switch';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import { handleAuthenticatedNavigation } from '../utils/authUtils';
 
 const ACCENT_COLOR = '#00ffc6';
 const CANVAS_COLOR = '#00d4ff';
@@ -177,7 +178,7 @@ export default function NavBar() {
   const isXXS = useMediaQuery('(max-width:320px)');
   
   // Get authentication context
-  const { user, loading, signOut, isAdmin } = useAuth();
+  const { user, loading, signOut, isAdmin, setIntendedDestination } = useAuth();
   
   // Get current URL to determine which page we're on
   const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
@@ -237,22 +238,24 @@ export default function NavBar() {
     </svg>
   );
   
-  // Handle navigation with loading state
+  // Handle navigation with loading state and authentication
   const handleNavigation = (href) => {
     setNavLoading(true);
     
-    // Track navigation with Google Analytics
-    if (window.gtag) {
-      window.gtag('event', 'navigation', {
-        event_category: 'engagement',
-        event_label: href,
-        value: 1
-      });
-    }
+    // Use authenticated navigation utility
+    const navigationSucceeded = handleAuthenticatedNavigation(
+      href, 
+      user, 
+      setIntendedDestination, 
+      true // trackAnalytics
+    );
     
-    setTimeout(() => {
-      window.location.href = href;
-    }, 300);
+    // If navigation was blocked for auth, reset loading state
+    if (!navigationSucceeded) {
+      setTimeout(() => {
+        setNavLoading(false);
+      }, 300);
+    }
   };
   
   // Handle drawer toggle with swipe support
