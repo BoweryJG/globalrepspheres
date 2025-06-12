@@ -73,11 +73,11 @@ The RepSpheres ecosystem consists of multiple integrated applications and servic
 - **Team Collaboration**: Multi-user support with role-based access
 
 **Subscription Tiers**:
-- Explorer ($49/mo): Essential features
-- Professional ($149/mo): Full CRM access
-- Growth ($349/mo): Advanced analytics
-- Enterprise ($749/mo): Team features
-- Elite ($1,499/mo): AI acceleration
+- Explorer ($49/mo): Your secret weapon starts here
+- Professional ($149/mo): Everything you need to excel
+- Growth ($349/mo): Scale your success with advanced analytics
+- Enterprise ($749/mo): Command center for market domination
+- Elite ($1,499/mo): Your personal AI-powered sales acceleration team
 
 ### 3. Market Data Intelligence
 **Location**: `/Market Data - RepSpheres`  
@@ -433,6 +433,16 @@ The chatbot embodies Harvey Specter's philosophy: confidence, excellence, and re
 
 ## Recent Updates
 
+### December 2025
+- **Revolutionary Subscription System**: Implemented psychologically-irresistible pricing with usage tracking
+- **Smart Upgrade Prompts**: Context-aware upgrade suggestions at 80% usage thresholds
+- **ROI-Focused Messaging**: Testimonials and revenue calculations for each tier
+- **Usage Analytics Dashboard**: Real-time tracking with visual progress indicators
+- **Magic Links Integration**: Ripples system for instant content deployment
+- **Tier Enforcement**: Backend usage limits with graceful upgrade prompts
+- **Social Proof Engine**: Live ticker showing customer success stories
+- **Psychological Triggers**: Scarcity, exclusivity, and peer comparison elements
+
 ### June 2025
 - **Comprehensive Ecosystem Documentation**: Complete platform architecture documentation
 - **SUIS Integration**: Sphere Universal Intelligence System implementation
@@ -453,11 +463,61 @@ The chatbot embodies Harvey Specter's philosophy: confidence, excellence, and re
 ## 💳 Pricing Tiers
 
 ### Available Plans
-1. **Explorer ($49/month)**: Test the waters with essential market insights
-2. **Professional ($149/month)**: Everything you need to excel in your territory
-3. **Growth ($349/month)**: Scale your success with advanced analytics
-4. **Enterprise ($749/month)**: Command center for market domination
-5. **Elite ($1,499/month)**: Your personal AI-powered sales acceleration team
+
+**🚀 Explorer ($49/month)**: *Your Secret Weapon Starts Here*
+- 25 Canvas briefs monthly  
+- 5 AI prompts with basic models
+- 5 call analyses with transcription
+- 100 procedure database entries
+- 10 verified contacts
+- 25 Ripples (magic links)
+- ROI: One extra appointment pays for 6 months
+
+**💼 Professional ($149/month)**: *Everything You Need to Excel*
+- 50 Canvas briefs monthly
+- 50 AI prompts with premium models
+- 10 call analyses with linguistic insights
+- 500 procedure database entries
+- 25 verified contacts
+- 50 Ripples (magic links)
+- ROI: $15,000+ extra revenue monthly
+
+**📈 Growth ($349/month)**: *Scale Your Success*
+- 100 Canvas briefs monthly
+- Unlimited AI prompts
+- 50 call analyses with advanced insights
+- Full procedure database access
+- 50 verified contacts
+- 100 Ripples (magic links)
+- ROI: $35,000+ extra revenue monthly
+
+**🏢 Enterprise ($749/month)**: *Command Center for Market Domination*
+- Unlimited Canvas briefs
+- Unlimited AI prompts
+- Unlimited call analyses
+- Full procedure database access
+- 100 verified contacts
+- Unlimited Ripples (magic links)
+- Team collaboration features
+- ROI: $75,000+ extra revenue monthly
+
+**👑 Elite ($1,499/month)**: *Your Personal AI Sales Acceleration Team*
+- Everything unlimited
+- Priority AI processing
+- Custom model training
+- Dedicated success manager
+- White-glove onboarding
+- Custom integrations
+- ROI: $150,000+ extra revenue monthly
+
+**Features Include**:
+- Usage tracking with smart upgrade prompts
+- Psychological triggers at 80% usage thresholds
+- Pay-per-use add-ons available
+- Twilio phone services integration
+- Magic links for instant content deployment
+- Real-time usage analytics
+- ROI-focused messaging
 
 All plans include a free trial. Annual billing saves up to 20%.
 
