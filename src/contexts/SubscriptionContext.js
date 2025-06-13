@@ -70,6 +70,21 @@ export function SubscriptionProvider({ children }) {
   useEffect(() => {
     fetchSubscription();
     fetchUsage();
+
+    // Listen for auth state changes
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+        fetchSubscription();
+        fetchUsage();
+      } else if (event === 'SIGNED_OUT') {
+        setSubscription({ tier: 'free', status: 'active', isDemo: true });
+        setUsage({});
+      }
+    });
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
   }, []);
 
   const fetchSubscription = async () => {
@@ -81,10 +96,33 @@ export function SubscriptionProvider({ children }) {
         return;
       }
 
-      // Fetch subscription from backend
+      // Get the session token from Supabase
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        setSubscription({ tier: 'free', status: 'active' });
+        setLoading(false);
+        return;
+      }
+
+      // For now, authenticated users get professional tier access
+      // TODO: Integrate with actual subscription backend
+      if (user.email) {
+        setSubscription({ 
+          tier: 'professional', 
+          status: 'active',
+          isDemo: false,
+          user_id: user.id,
+          email: user.email
+        });
+      } else {
+        setSubscription({ tier: 'free', status: 'active', isDemo: true });
+      }
+
+      // When backend is ready, use this:
+      /*
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/subscription-status`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+          'Authorization': `Bearer ${session.access_token}`,
         },
       });
 
@@ -95,9 +133,10 @@ export function SubscriptionProvider({ children }) {
         // Default to free tier if no subscription
         setSubscription({ tier: 'free', status: 'active' });
       }
+      */
     } catch (error) {
       console.error('Error fetching subscription:', error);
-      setSubscription({ tier: 'free', status: 'active' });
+      setSubscription({ tier: 'free', status: 'active', isDemo: true });
     } finally {
       setLoading(false);
     }
@@ -108,9 +147,28 @@ export function SubscriptionProvider({ children }) {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        setUsage({});
+        return;
+      }
+
+      // For now, return sample usage for authenticated users
+      // TODO: Integrate with actual usage backend
+      setUsage({
+        canvas_briefs: 5,
+        ai_prompts: 10,
+        call_analyses: 2,
+        market_procedures: 50,
+        contacts: 15,
+        ripples: 20,
+      });
+
+      // When backend is ready, use this:
+      /*
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/usage`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+          'Authorization': `Bearer ${session.access_token}`,
         },
       });
 
@@ -118,6 +176,7 @@ export function SubscriptionProvider({ children }) {
         const data = await response.json();
         setUsage(data);
       }
+      */
     } catch (error) {
       console.error('Error fetching usage:', error);
     }
@@ -145,10 +204,22 @@ export function SubscriptionProvider({ children }) {
 
   const incrementUsage = async (feature) => {
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+
+      // For now, just increment locally
+      // TODO: Integrate with actual usage backend
+      setUsage(prev => ({
+        ...prev,
+        [feature]: (prev[feature] || 0) + 1
+      }));
+
+      // When backend is ready, use this:
+      /*
       await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/usage/increment`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+          'Authorization': `Bearer ${session.access_token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ feature }),
@@ -156,6 +227,7 @@ export function SubscriptionProvider({ children }) {
       
       // Refresh usage
       await fetchUsage();
+      */
     } catch (error) {
       console.error('Error incrementing usage:', error);
     }
@@ -198,6 +270,9 @@ export function SubscriptionProvider({ children }) {
     limits: TIER_LIMITS[subscription?.tier] || TIER_LIMITS.free,
     refreshSubscription: fetchSubscription,
     refreshUsage: fetchUsage,
+    isDemo: subscription?.isDemo ?? true,
+    isAuthenticated: !!subscription?.user_id,
+    tier: subscription?.tier || 'free',
   };
 
   return (
