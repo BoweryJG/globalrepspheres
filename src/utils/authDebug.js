@@ -3,7 +3,7 @@
  * Helps diagnose cross-domain authentication issues
  */
 
-import { supabase } from '../services/supabaseClient';
+import { supabase } from '../supabase';
 
 export async function debugAuth() {
   console.group('🔍 RepSpheres Auth Debug Info');
