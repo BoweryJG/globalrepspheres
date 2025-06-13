@@ -104,9 +104,39 @@ export function SubscriptionProvider({ children }) {
         return;
       }
 
-      // For now, authenticated users get professional tier access
-      // TODO: Integrate with actual subscription backend
-      if (user.email) {
+      // Fetch subscription from backend
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
+      
+      try {
+        const response = await fetch(`${backendUrl}/api/subscription-status`, {
+          headers: {
+            'Authorization': `Bearer ${session.access_token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setSubscription({
+            ...data,
+            isDemo: false,
+            user_id: user.id,
+            email: user.email
+          });
+        } else {
+          // If backend returns error, default to professional tier for authenticated users
+          console.warn('Subscription API returned:', response.status);
+          setSubscription({ 
+            tier: 'professional', 
+            status: 'active',
+            isDemo: false,
+            user_id: user.id,
+            email: user.email
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching subscription from backend:', error);
+        // Fallback to professional tier for authenticated users
         setSubscription({ 
           tier: 'professional', 
           status: 'active',
@@ -114,26 +144,7 @@ export function SubscriptionProvider({ children }) {
           user_id: user.id,
           email: user.email
         });
-      } else {
-        setSubscription({ tier: 'free', status: 'active', isDemo: true });
       }
-
-      // When backend is ready, use this:
-      /*
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/subscription-status`, {
-        headers: {
-          'Authorization': `Bearer ${session.access_token}`,
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setSubscription(data);
-      } else {
-        // Default to free tier if no subscription
-        setSubscription({ tier: 'free', status: 'active' });
-      }
-      */
     } catch (error) {
       console.error('Error fetching subscription:', error);
       setSubscription({ tier: 'free', status: 'active', isDemo: true });
@@ -153,30 +164,44 @@ export function SubscriptionProvider({ children }) {
         return;
       }
 
-      // For now, return sample usage for authenticated users
-      // TODO: Integrate with actual usage backend
-      setUsage({
-        canvas_briefs: 5,
-        ai_prompts: 10,
-        call_analyses: 2,
-        market_procedures: 50,
-        contacts: 15,
-        ripples: 20,
-      });
+      // Fetch usage from backend
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
+      
+      try {
+        const response = await fetch(`${backendUrl}/api/usage`, {
+          headers: {
+            'Authorization': `Bearer ${session.access_token}`,
+            'Content-Type': 'application/json',
+          },
+        });
 
-      // When backend is ready, use this:
-      /*
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/usage`, {
-        headers: {
-          'Authorization': `Bearer ${session.access_token}`,
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setUsage(data);
+        if (response.ok) {
+          const data = await response.json();
+          setUsage(data);
+        } else {
+          console.warn('Usage API returned:', response.status);
+          // Default usage values
+          setUsage({
+            canvas_briefs: 0,
+            ai_prompts: 0,
+            call_analyses: 0,
+            market_procedures: 0,
+            contacts: 0,
+            ripples: 0,
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching usage from backend:', error);
+        // Default usage values
+        setUsage({
+          canvas_briefs: 0,
+          ai_prompts: 0,
+          call_analyses: 0,
+          market_procedures: 0,
+          contacts: 0,
+          ripples: 0,
+        });
       }
-      */
     } catch (error) {
       console.error('Error fetching usage:', error);
     }
@@ -207,27 +232,38 @@ export function SubscriptionProvider({ children }) {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) return;
 
-      // For now, just increment locally
-      // TODO: Integrate with actual usage backend
-      setUsage(prev => ({
-        ...prev,
-        [feature]: (prev[feature] || 0) + 1
-      }));
-
-      // When backend is ready, use this:
-      /*
-      await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/usage/increment`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${session.access_token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ feature }),
-      });
+      // Increment usage via backend
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
       
-      // Refresh usage
-      await fetchUsage();
-      */
+      try {
+        const response = await fetch(`${backendUrl}/api/usage/increment`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${session.access_token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ feature }),
+        });
+
+        if (response.ok) {
+          // Refresh usage after successful increment
+          await fetchUsage();
+        } else {
+          console.warn('Increment usage API returned:', response.status);
+          // Optimistically update local state
+          setUsage(prev => ({
+            ...prev,
+            [feature]: (prev[feature] || 0) + 1
+          }));
+        }
+      } catch (error) {
+        console.error('Error incrementing usage:', error);
+        // Optimistically update local state
+        setUsage(prev => ({
+          ...prev,
+          [feature]: (prev[feature] || 0) + 1
+        }));
+      }
     } catch (error) {
       console.error('Error incrementing usage:', error);
     }
