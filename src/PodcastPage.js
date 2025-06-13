@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Container, Tabs, Tab, Paper } from '@mui/material';
+import { Box, Typography, Container, Tabs, Tab, Paper } from '@mui/material';
 import NavBar from './components/NavBar';
 import StarryBackground from './components/StarryBackground';
 import OrbContextProvider from './components/OrbContextProvider';
@@ -16,6 +16,24 @@ import LiveTvIcon from '@mui/icons-material/LiveTv';
 const SUPABASE_URL = process.env.REACT_APP_SUPABASE_URL;
 const SUPABASE_KEY = process.env.REACT_APP_SUPABASE_KEY;
 
+// Function to format podcast title from filename
+const formatPodcastTitle = (filename) => {
+  // Remove file extension
+  let title = filename.replace(/\.[^/.]+$/, "");
+  // Replace underscores and hyphens with spaces
+  title = title.replace(/[_-]/g, " ");
+  // Capitalize first letter of each word
+  title = title.split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+  
+  return title;
+};
+
+// Function to generate a description based on the title
+const generateDescription = (title) => {
+  return `An in-depth discussion about ${title}.`;
+};
 
 export default function PodcastPage() {
   const [episodes, setEpisodes] = useState([]);
