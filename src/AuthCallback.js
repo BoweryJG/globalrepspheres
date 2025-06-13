@@ -18,16 +18,41 @@ export default function AuthCallback() {
           return;
         }
 
-        // Check for intended destination
-        const intendedDestination = sessionStorage.getItem('intendedDestination');
-        sessionStorage.removeItem('intendedDestination');
+        // Check all possible sources for intended destination
+        const getIntendedDestination = () => {
+          // Priority 1: Session storage
+          const sessionDest = sessionStorage.getItem('intendedDestination');
+          if (sessionDest) {
+            sessionStorage.removeItem('intendedDestination');
+            return sessionDest;
+          }
+          
+          // Priority 2: URL params
+          const urlParams = new URLSearchParams(window.location.search);
+          const redirectParam = urlParams.get('redirect');
+          if (redirectParam) {
+            return decodeURIComponent(redirectParam);
+          }
+          
+          // Priority 3: Auth return URL
+          const authReturn = sessionStorage.getItem('authReturnUrl');
+          if (authReturn) {
+            sessionStorage.removeItem('authReturnUrl');
+            return authReturn;
+          }
+          
+          // Default
+          return '/';
+        };
 
-        if (intendedDestination) {
+        const destination = getIntendedDestination();
+        
+        if (destination) {
           // If it's an external RepSpheres domain, redirect there
-          if (intendedDestination.includes('repspheres.com')) {
-            window.location.href = intendedDestination;
+          if (destination.includes('repspheres.com') && !destination.startsWith('/')) {
+            window.location.href = destination;
           } else {
-            navigate(intendedDestination);
+            navigate(destination);
           }
         } else {
           // Default redirect to home

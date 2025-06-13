@@ -12,6 +12,7 @@ import AppWrapper from './AppWrapper';
 import reportWebVitals from './reportWebVitals';
 import { initAnalytics } from './analytics';
 import './utils/corsTest'; // Make CORS test available globally
+import './utils/authDebug'; // Make auth debug available globally
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

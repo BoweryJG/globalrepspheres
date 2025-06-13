@@ -3,7 +3,28 @@
   publish = "build"
   environment = { SECRETS_SCAN_OMIT_KEYS = "REACT_APP_API_BASE_URL,REACT_APP_GOOGLE_CLIENT_ID,REACT_APP_GA_ID,REACT_APP_OPENROUTER_API_KEY" }
 
+# Handle SPA routing - all routes should be handled by React
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
 [[redirects]]
   from = "/podcast.html"
   to = "/"
+  status = 200
+
+[[redirects]]
+  from = "/login.html"
+  to = "/login"
+  status = 200
+
+[[redirects]]
+  from = "/signup.html"
+  to = "/signup"
+  status = 200
+
+[[redirects]]
+  from = "/admin-analytics.html"
+  to = "/admin-analytics"
   status = 200

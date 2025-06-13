@@ -142,10 +142,16 @@ export function AuthProvider({ children }) {
         setIntendedDestination(intendedPath);
       }
       
+      // Get the intended destination to pass it along
+      const destination = sessionStorage.getItem('intendedDestination') || intendedPath;
+      const redirectUrl = destination 
+        ? `https://repspheres.com/auth/callback?redirect=${encodeURIComponent(destination)}`
+        : `https://repspheres.com/auth/callback`;
+      
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `https://repspheres.com/auth/callback`,
+          redirectTo: redirectUrl,
         },
       });
       
