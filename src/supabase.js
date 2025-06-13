@@ -9,46 +9,24 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     persistSession: true,
     storageKey: 'repspheres-auth',
-    storage: {
-      getItem: (key) => {
-        // Try to get from localStorage first (persists across domains if same origin)
-        const localItem = localStorage.getItem(key);
-        if (localItem) return localItem;
-        
-        // For cross-domain, we'll use a different approach
-        return null;
-      },
-      setItem: (key, value) => {
-        localStorage.setItem(key, value);
-        
-        // Broadcast auth change to other tabs/domains
-        if (window.BroadcastChannel) {
-          const channel = new BroadcastChannel('repspheres-auth');
-          channel.postMessage({ type: 'auth-update', key, value });
-        }
-      },
-      removeItem: (key) => {
-        localStorage.removeItem(key);
-        
-        // Broadcast auth removal
-        if (window.BroadcastChannel) {
-          const channel = new BroadcastChannel('repspheres-auth');
-          channel.postMessage({ type: 'auth-remove', key });
-        }
-      },
+    storage: window.localStorage,
+    cookieOptions: {
+      // This enables cross-subdomain authentication
+      domain: '.repspheres.com',
+      sameSite: 'lax',
+      secure: true,
+      maxAge: 60 * 60 * 24 * 7 // 7 days
     },
+    // Fallback for local development
+    ...(window.location.hostname === 'localhost' && {
+      cookieOptions: {
+        domain: 'localhost',
+        sameSite: 'lax',
+        secure: false,
+        maxAge: 60 * 60 * 24 * 7 // 7 days
+      }
+    })
   },
 });
-
-// Listen for auth changes from other tabs/domains
-if (window.BroadcastChannel) {
-  const channel = new BroadcastChannel('repspheres-auth');
-  channel.onmessage = (event) => {
-    if (event.data.type === 'auth-update') {
-      // Refresh auth state when changes detected
-      supabase.auth.getSession();
-    }
-  };
-}
 
 export default supabase;

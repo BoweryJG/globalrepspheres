@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
@@ -94,7 +95,8 @@ const getNavLinks = (currentUrl, isAdmin) => {
     {
       key: 'podcast',
       label: 'Podcast',
-      href: '/?page=podcast',
+      href: '/podcast',
+      internal: true,
       icon: <PodcastsIcon fontSize="small" sx={{ 
         color: ACCENT_COLOR,
         filter: 'drop-shadow(0 0 3px rgba(0, 212, 255, 0.5))'
@@ -108,6 +110,7 @@ const getNavLinks = (currentUrl, isAdmin) => {
       key: 'analytics',
       label: 'Analytics',
       href: '/admin-analytics',
+      internal: true,
       icon: <InsightsIcon fontSize="small" sx={{ color: ACCENT_COLOR }} />,
       description: 'Admin dashboard'
     });
@@ -156,6 +159,8 @@ export default function NavBar() {
   const [isNavHovered, setIsNavHovered] = React.useState(false);
   const [settingsAnchor, setSettingsAnchor] = React.useState(null);
   const theme = useTheme();
+  const navigate = useNavigate();
+  const location = useLocation();
   
   // Settings states
   const [invertedTheme, setInvertedTheme] = React.useState(() => {
@@ -239,22 +244,30 @@ export default function NavBar() {
   );
   
   // Handle navigation with loading state and authentication
-  const handleNavigation = (href) => {
+  const handleNavigation = (href, isInternal = false) => {
     setNavLoading(true);
     
-    // Use authenticated navigation utility
-    const navigationSucceeded = handleAuthenticatedNavigation(
-      href, 
-      user, 
-      setIntendedDestination, 
-      true // trackAnalytics
-    );
-    
-    // If navigation was blocked for auth, reset loading state
-    if (!navigationSucceeded) {
+    if (isInternal) {
+      // For internal routes, use React Router
+      navigate(href);
       setTimeout(() => {
         setNavLoading(false);
       }, 300);
+    } else {
+      // For external URLs, use the existing utility
+      const navigationSucceeded = handleAuthenticatedNavigation(
+        href, 
+        user, 
+        setIntendedDestination, 
+        true // trackAnalytics
+      );
+      
+      // If navigation was blocked for auth, reset loading state
+      if (!navigationSucceeded) {
+        setTimeout(() => {
+          setNavLoading(false);
+        }, 300);
+      }
     }
   };
   
@@ -420,17 +433,23 @@ export default function NavBar() {
         role="presentation"
       >
         {/* RepSpheres Logo in Drawer */}
-        <Box sx={{ 
+        <Box 
+          component={Link}
+          to="/"
+          onClick={() => setDrawerOpen(false)}
+          sx={{ 
           display: 'flex', 
           alignItems: 'center', 
           mb: 4, 
           mt: 2,
           cursor: 'pointer',
+          textDecoration: 'none',
+          color: 'inherit',
           transition: 'transform 0.3s ease',
           '&:hover': {
             transform: 'scale(1.05)',
           }
-        }} onClick={() => handleNavigation('https://repspheres.com')}>
+        }}>
           <Box sx={{ 
             width: 32, 
             height: 32, 
@@ -457,11 +476,15 @@ export default function NavBar() {
           {navLinks.map((link) => (
             <ListItem key={link.key} disablePadding sx={{ mb: 1 }}>
               <ListItemButton
-                component="a"
-                href={link.href}
+                component={link.internal ? Link : 'a'}
+                to={link.internal ? link.href : undefined}
+                href={!link.internal ? link.href : undefined}
                 onClick={(e) => {
-                  e.preventDefault();
-                  handleNavigation(link.href);
+                  if (!link.internal) {
+                    e.preventDefault();
+                    handleNavigation(link.href, link.internal);
+                  }
+                  setDrawerOpen(false);
                 }}
                 sx={{
                   py: 1,
@@ -784,12 +807,8 @@ export default function NavBar() {
         }}>
           {/* Logo Section */}
           <Box 
-            component="a" 
-            href="https://repspheres.com" 
-            onClick={(e) => {
-              e.preventDefault();
-              handleNavigation('https://repspheres.com');
-            }}
+            component={Link} 
+            to="/" 
             sx={{ 
               display: 'flex', 
               alignItems: 'center',
@@ -860,11 +879,14 @@ export default function NavBar() {
                     TransitionProps={{ timeout: 300 }}
                   >
                     <Button
-                      component="a"
-                      href={link.href}
+                      component={link.internal ? Link : 'a'}
+                      to={link.internal ? link.href : undefined}
+                      href={!link.internal ? link.href : undefined}
                       onClick={(e) => {
-                        e.preventDefault();
-                        handleNavigation(link.href);
+                        if (!link.internal) {
+                          e.preventDefault();
+                          handleNavigation(link.href, link.internal);
+                        }
                       }}
                       className={isLinkActive(link.href, currentUrl) ? 'active' : ''}
                       sx={{
