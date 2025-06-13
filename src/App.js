@@ -15,6 +15,7 @@ import { SubscriptionProvider } from './contexts/SubscriptionContext';
 import Footer from './components/Footer';
 import PerformanceMonitor from './components/PerformanceMonitor';
 import HarveyChatLauncher from './components/HarveyChatLauncher';
+import { logBackendStatus } from './utils/backendHealth';
 function App() {
   const [performanceMode, setPerformanceMode] = useState(() => {
     // Check localStorage for saved preference
@@ -31,6 +32,9 @@ function App() {
     };
     
     window.addEventListener('performanceModeChanged', handlePerformanceModeChange);
+    
+    // Check backend health on app startup
+    logBackendStatus();
     
     return () => {
       window.removeEventListener('performanceModeChanged', handlePerformanceModeChange);

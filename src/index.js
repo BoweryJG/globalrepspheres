@@ -11,6 +11,7 @@ import AuthCallback from './AuthCallback';
 import AppWrapper from './AppWrapper';
 import reportWebVitals from './reportWebVitals';
 import { initAnalytics } from './analytics';
+import './utils/corsTest'; // Make CORS test available globally
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
