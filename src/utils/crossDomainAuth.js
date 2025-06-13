@@ -7,7 +7,7 @@ import supabase from '../supabase';
 
 // Configuration for all RepSpheres domains
 const REPSPHERES_DOMAINS = {
-  main: 'https://globalrepspheres.netlify.app',
+  main: 'https://repspheres.com',
   marketdata: 'https://marketdata.repspheres.com',
   canvas: 'https://canvas.repspheres.com',
   crm: 'https://crm.repspheres.com'
