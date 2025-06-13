@@ -1,7 +1,8 @@
 # RepSpheres Sales Intelligence Platform - Unified App Routing
 
 # Conversation Analysis (Sales call analysis and personality insights) - PRIORITY RULE
-/conversation-analysis/*  https://linguisticsjg.netlify.app/:splat  200!
+# NOTE: Linguistics functionality is now integrated into CRM module
+/conversation-analysis/*  https://crm.repspheres.com/conversation-analysis/:splat  200!
 
 # Market Insights (Market data, growth rates, automation workflows)
 /market/*  https://whimsical-cheesecake-4e6ab9.netlify.app/:splat  200
