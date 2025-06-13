@@ -2,8 +2,8 @@
  * API Configuration
  */
 
-// Backend API URL - defaults to localhost for development
-export const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
+// Backend API URL - defaults to production URL
+export const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://osbackend-zl1h.onrender.com';
 
 // API Endpoints
 export const API_ENDPOINTS = {

@@ -105,7 +105,7 @@ export function SubscriptionProvider({ children }) {
       }
 
       // Fetch subscription from backend
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://osbackend-zl1h.onrender.com';
       
       try {
         const response = await fetch(`${backendUrl}/api/subscription-status`, {
@@ -165,7 +165,7 @@ export function SubscriptionProvider({ children }) {
       }
 
       // Fetch usage from backend
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://osbackend-zl1h.onrender.com';
       
       try {
         const response = await fetch(`${backendUrl}/api/usage`, {
@@ -233,7 +233,7 @@ export function SubscriptionProvider({ children }) {
       if (!session) return;
 
       // Increment usage via backend
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://osbackend-zl1h.onrender.com';
       
       try {
         const response = await fetch(`${backendUrl}/api/usage/increment`, {
