@@ -41,6 +41,7 @@ import SpeedIcon from '@mui/icons-material/Speed';
 import Switch from '@mui/material/Switch';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import { handleAuthenticatedNavigation } from '../utils/authUtils';
+import { getUserInitials, getUserDisplayName } from '../utils/userUtils';
 
 const ACCENT_COLOR = '#00ffc6';
 const CANVAS_COLOR = '#00d4ff';
@@ -928,7 +929,7 @@ export default function NavBar() {
               {loading ? (
                 <CircularProgress size={24} color="inherit" sx={{ opacity: 0.7 }} />
               ) : user ? (
-                <Tooltip title="Account menu" arrow>
+                <Tooltip title={`${getUserDisplayName(user) || "Account"} menu`} arrow>
                   <IconButton
                     onClick={handleAuthMenuOpen}
                     size="small"
@@ -950,7 +951,17 @@ export default function NavBar() {
                         sx={{ width: 32, height: 32 }}
                       />
                     ) : (
-                      <PersonIcon sx={{ color: '#fff' }} />
+                      <Avatar
+                        sx={{ 
+                          width: 32, 
+                          height: 32,
+                          bgcolor: 'rgba(123, 66, 246, 0.8)',
+                          fontSize: '0.875rem',
+                          fontWeight: 600
+                        }}
+                      >
+                        {getUserInitials(user)}
+                      </Avatar>
                     )}
                   </IconButton>
                 </Tooltip>

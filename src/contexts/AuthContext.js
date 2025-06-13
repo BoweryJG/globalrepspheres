@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import supabase from '../supabase';
+import { setupCrossDomainAuthListener, broadcastAuthState } from '../utils/crossDomainAuth';
 
 // Create an authentication context
 const AuthContext = createContext();
@@ -41,7 +42,7 @@ export function AuthProvider({ children }) {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: `https://repspheres.com/auth/callback`,
         },
       });
       
@@ -62,7 +63,7 @@ export function AuthProvider({ children }) {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'facebook',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: `https://repspheres.com/auth/callback`,
         },
       });
       
@@ -144,7 +145,7 @@ export function AuthProvider({ children }) {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: `https://repspheres.com/auth/callback`,
         },
       });
       
@@ -168,6 +169,9 @@ export function AuthProvider({ children }) {
 
   // Effect to set up auth state listener and handle initial session
   useEffect(() => {
+    // Set up cross-domain auth listener
+    setupCrossDomainAuthListener();
+    
     // Get the current session
     const initializeAuth = async () => {
       setLoading(true);
@@ -177,6 +181,8 @@ export function AuthProvider({ children }) {
       if (session) {
         const { data: { user: currentUser } } = await supabase.auth.getUser();
         setUser(currentUser);
+        // Broadcast auth state to other domains
+        broadcastAuthState(session);
       }
       
       // Set up auth state change listener
@@ -185,8 +191,12 @@ export function AuthProvider({ children }) {
           if (session) {
             const { data: { user: currentUser } } = await supabase.auth.getUser();
             setUser(currentUser);
+            // Broadcast auth state to other domains
+            broadcastAuthState(session);
           } else {
             setUser(null);
+            // Broadcast logout to other domains
+            broadcastAuthState(null);
           }
           setLoading(false);
         }

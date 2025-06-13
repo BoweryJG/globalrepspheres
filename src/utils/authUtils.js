@@ -38,6 +38,9 @@ export function navigateToModule(moduleUrl, user, setIntendedDestination) {
     // Store intended destination for after login
     setIntendedDestination(moduleUrl);
     
+    // Store the intended destination in sessionStorage for cross-domain access
+    sessionStorage.setItem('authReturnUrl', moduleUrl);
+    
     // Redirect to login with the module URL as intended destination
     const encodedUrl = encodeURIComponent(moduleUrl);
     window.location.href = `/login?redirect=${encodedUrl}`;
