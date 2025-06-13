@@ -96,7 +96,7 @@ const getNavLinks = (currentUrl, isAdmin) => {
     {
       key: 'podcast',
       label: 'Podcast',
-      href: '/podcast',
+      href: 'https://podcast.repspheres.com',
       internal: true,
       icon: <PodcastsIcon fontSize="small" sx={{ 
         color: ACCENT_COLOR,
