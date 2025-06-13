@@ -104,7 +104,7 @@ export default function BridgeSection() {
               mx: 'auto',
             }}
           >
-            After 15 years in medical aesthetics—from industry pioneers to NVIDIA-backed surgical robotics—I built the bridge between raw intelligence and real results
+            After 15 years in medical aesthetics—from the foundational CoolSculpting launch team to leading robotic sales in New York—I built the bridge between raw intelligence and real results
           </Typography>
         </Box>
 

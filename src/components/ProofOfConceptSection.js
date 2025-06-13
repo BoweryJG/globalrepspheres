@@ -82,7 +82,7 @@ export default function ProofOfConceptSection() {
             {
               year: '2010',
               title: 'Original Coolsculpting Team',
-              description: 'Part of the pioneering Zeltiq team that revolutionized aesthetic medicine',
+              description: 'Part of the foundational CoolSculpting launch team that revolutionized aesthetic medicine',
               icon: '❄️',
               achievement: 'Helped build a $2B category',
             },
