@@ -106,8 +106,8 @@ export function generateOAuthCallbackUrl(currentUrl = window.location.href) {
     'marketdata': 'https://marketdata.repspheres.com',
     'canvas': 'https://canvas.repspheres.com',
     'crm': 'https://crm.repspheres.com',
-    'main': window.location.origin,
-    'podcast': window.location.origin
+    'podcast': 'https://podcast.repspheres.com',
+    'main': window.location.origin
   };
 
   const baseUrl = moduleBaseUrls[currentModule] || window.location.origin;
@@ -171,6 +171,7 @@ export function initCrossModuleAuthSync() {
       'https://marketdata.repspheres.com',
       'https://canvas.repspheres.com',
       'https://crm.repspheres.com',
+      'https://podcast.repspheres.com',
       window.location.origin
     ];
 
@@ -190,7 +191,8 @@ export function initCrossModuleAuthSync() {
     const allowedOrigins = [
       'https://marketdata.repspheres.com',
       'https://canvas.repspheres.com', 
-      'https://crm.repspheres.com'
+      'https://crm.repspheres.com',
+      'https://podcast.repspheres.com'
     ];
 
     allowedOrigins.forEach(origin => {

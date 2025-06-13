@@ -10,7 +10,8 @@ const REPSPHERES_DOMAINS = {
   main: 'https://repspheres.com',
   marketdata: 'https://marketdata.repspheres.com',
   canvas: 'https://canvas.repspheres.com',
-  crm: 'https://crm.repspheres.com'
+  crm: 'https://crm.repspheres.com',
+  podcast: 'https://podcast.repspheres.com'
 };
 
 /**
@@ -31,7 +32,8 @@ export function isOnSubdomain() {
   const hostname = window.location.hostname;
   return hostname.includes('marketdata.repspheres.com') ||
          hostname.includes('canvas.repspheres.com') ||
-         hostname.includes('crm.repspheres.com');
+         hostname.includes('crm.repspheres.com') ||
+         hostname.includes('podcast.repspheres.com');
 }
 
 /**
@@ -46,6 +48,8 @@ export function getCurrentDomain() {
     return 'canvas';
   } else if (hostname.includes('crm.repspheres.com')) {
     return 'crm';
+  } else if (hostname.includes('podcast.repspheres.com')) {
+    return 'podcast';
   }
   
   return 'main';
