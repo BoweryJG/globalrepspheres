@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { 
   Box, 
   Button, 
@@ -23,6 +24,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const navigate = useNavigate();
   
   const { 
     user, 
@@ -45,9 +47,9 @@ export default function LoginPage() {
   useEffect(() => {
     if (user) {
       // User is logged in, redirect them
-      window.location.href = '/';
+      navigate('/');
     }
-  }, [user]);
+  }, [user, navigate]);
 
   const handleEmailLogin = async (e) => {
     e.preventDefault();
@@ -296,7 +298,8 @@ export default function LoginPage() {
                 Don't have an account?{' '}
                 <Button
                   variant="text"
-                  onClick={() => window.location.href = '/signup'}
+                  component={Link}
+                  to="/signup"
                   sx={{
                     color: '#00ffc6',
                     textTransform: 'none',

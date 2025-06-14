@@ -8,6 +8,9 @@ import LoginPage from './LoginPage';
 import SignupPage from './SignupPage';
 import AdminAnalyticsPage from './AdminAnalyticsPage';
 import AuthCallback from './AuthCallback';
+import EliteApplicationPage from './pages/EliteApplicationPage';
+import ROICalculatorPage from './pages/ROICalculatorPage';
+import AccountPage from './pages/AccountPage';
 import AppWrapper from './AppWrapper';
 import reportWebVitals from './reportWebVitals';
 import { initAnalytics } from './analytics';
@@ -30,6 +33,10 @@ root.render(
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/admin-analytics" element={<AdminAnalyticsPage />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
+          <Route path="/elite-application" element={<EliteApplicationPage />} />
+          <Route path="/roi-calculator" element={<ROICalculatorPage />} />
+          <Route path="/account" element={<AccountPage />} />
+          <Route path="/canvas" element={<App />} />
         </Routes>
       </BrowserRouter>
     </AppWrapper>

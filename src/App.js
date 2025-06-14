@@ -9,9 +9,6 @@ import MultiplierEffectSection from './components/MultiplierEffectSection';
 import BridgeSection from './components/BridgeSection';
 import PricingSection from './components/PricingSection';
 import DecisionPointSection from './components/DecisionPointSection';
-import OrbContextProvider from './components/OrbContextProvider';
-import { AuthProvider } from './contexts/AuthContext';
-import { SubscriptionProvider } from './contexts/SubscriptionContext';
 import Footer from './components/Footer';
 import PerformanceMonitor from './components/PerformanceMonitor';
 import HarveyChatLauncher from './components/HarveyChatLauncher';
@@ -47,24 +44,20 @@ function App() {
   const StarComponent = performanceMode ? StarryBackground_Enhanced : StarryBackground;
 
   return (
-    <OrbContextProvider>
-      <AuthProvider>
-        <SubscriptionProvider>
-        <StarComponent />
-        <NavBar />
-        <OrbComponent zIndex={5} />
-        <HeroTransformationSection />
-        <IntelligenceTrinitySection />
-        <MultiplierEffectSection />
-        <BridgeSection />
-        <PricingSection />
-        <DecisionPointSection />
-        <Footer />
-        {showPerformanceMonitor && <PerformanceMonitor />}
-        <HarveyChatLauncher />
-        </SubscriptionProvider>
-      </AuthProvider>
-    </OrbContextProvider>
+    <>
+      <StarComponent />
+      <NavBar />
+      <OrbComponent zIndex={5} />
+      <HeroTransformationSection />
+      <IntelligenceTrinitySection />
+      <MultiplierEffectSection />
+      <BridgeSection />
+      <PricingSection />
+      <DecisionPointSection />
+      <Footer />
+      {showPerformanceMonitor && <PerformanceMonitor />}
+      <HarveyChatLauncher />
+    </>
   );
 }
 
