@@ -1,24 +1,44 @@
-// Stripe Pricing Configuration
+// Stripe Pricing Configuration - Unified 5-Tier Structure
 export const PRICING_TIERS = {
-  starter: {
-    name: 'Starter',
-    priceId: process.env.REACT_APP_STRIPE_STARTER_PRICE_ID,
-    price: 297,
+  explorer: {
+    name: 'Explorer',
+    priceId: process.env.REACT_APP_STRIPE_EXPLORER_MONTHLY_PRICE_ID || 'price_1RRuqbGRiAPUZqWu3f91wnNx',
+    price: 49,
     interval: 'month',
+    annualPriceId: process.env.REACT_APP_STRIPE_EXPLORER_ANNUAL_PRICE_ID || 'price_1RWMXEGRiAPUZqWuPwcgrovN',
+    annualPrice: 490,
   },
   professional: {
     name: 'Professional', 
-    priceId: process.env.REACT_APP_STRIPE_PROFESSIONAL_PRICE_ID,
-    price: 797,
+    priceId: process.env.REACT_APP_STRIPE_PROFESSIONAL_MONTHLY_PRICE_ID || 'price_1RRurNGRiAPUZqWuklICsE4P',
+    price: 149,
     interval: 'month',
-    annualPriceId: process.env.REACT_APP_STRIPE_PROFESSIONAL_ANNUAL_PRICE_ID,
-    annualPrice: 7970, // $797 * 10 months (2 months free)
+    annualPriceId: process.env.REACT_APP_STRIPE_PROFESSIONAL_ANNUAL_PRICE_ID || 'price_1RWMWjGRiAPUZqWu6YBZY7o4',
+    annualPrice: 1490,
+  },
+  growth: {
+    name: 'Growth',
+    priceId: process.env.REACT_APP_STRIPE_GROWTH_MONTHLY_PRICE_ID || 'price_1RWMW3GRiAPUZqWuoTA0eLUC',
+    price: 349,
+    interval: 'month',
+    annualPriceId: process.env.REACT_APP_STRIPE_GROWTH_ANNUAL_PRICE_ID || 'price_1RRus5GRiAPUZqWup3jk1S8U',
+    annualPrice: 3490,
   },
   enterprise: {
     name: 'Enterprise',
-    priceId: 'custom',
-    price: 'custom',
-    interval: 'custom',
+    priceId: process.env.REACT_APP_STRIPE_ENTERPRISE_MONTHLY_PRICE_ID || 'price_1RRushGRiAPUZqWuIvqueK7h',
+    price: 749,
+    interval: 'month',
+    annualPriceId: process.env.REACT_APP_STRIPE_ENTERPRISE_ANNUAL_PRICE_ID || 'price_1RWMT4GRiAPUZqWuqiNhkZfw',
+    annualPrice: 7490,
+  },
+  elite: {
+    name: 'Elite',
+    priceId: process.env.REACT_APP_STRIPE_ELITE_MONTHLY_PRICE_ID || 'price_1RRutVGRiAPUZqWuDMSAqHsD',
+    price: 1499,
+    interval: 'month',
+    annualPriceId: process.env.REACT_APP_STRIPE_ELITE_ANNUAL_PRICE_ID || 'price_1RWMSCGRiAPUZqWu30j19b9G',
+    annualPrice: 14990,
   }
 };
 
@@ -29,10 +49,10 @@ export async function createCheckoutSession(tier, billingInterval = 'month') {
     throw new Error('Backend URL not configured');
   }
 
-  // Handle enterprise tier differently
-  if (tier === 'enterprise') {
-    // Redirect to calendly or contact form
-    window.location.href = '/contact-sales';
+  // Handle elite tier differently for custom onboarding
+  if (tier === 'elite') {
+    // Redirect to elite application or contact form
+    window.location.href = '/elite-application';
     return;
   }
 

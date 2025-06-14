@@ -43,7 +43,7 @@ export function navigateToModule(moduleUrl, user, setIntendedDestination) {
     
     // Redirect to login with the module URL as intended destination
     const encodedUrl = encodeURIComponent(moduleUrl);
-    window.location.href = `/login?redirect=${encodedUrl}`;
+    window.location.href = `${window.location.origin}/login?redirect=${encodedUrl}`;
     return false;
   }
 
