@@ -9,20 +9,8 @@
  * @returns {boolean} - True if user can access the module, false if auth required
  */
 export function canAccessModule(moduleUrl, user) {
-  // Define which modules require authentication
-  const protectedModules = [
-    'https://marketdata.repspheres.com/',
-    'https://canvas.repspheres.com/',
-    'https://crm.repspheres.com/'
-  ];
-
-  const isProtected = protectedModules.some(module => moduleUrl.includes(module));
-  
-  // If module is protected and user is not authenticated, return false
-  if (isProtected && !user) {
-    return false;
-  }
-
+  // With independent auth per app, all modules are accessible without auth
+  // Each app handles its own authentication internally
   return true;
 }
 
@@ -34,29 +22,8 @@ export function canAccessModule(moduleUrl, user) {
  * @returns {boolean} - True if navigation proceeded, false if redirected to login
  */
 export function navigateToModule(moduleUrl, user, setIntendedDestination) {
-  // Prevent redirect loop - if we're already at the target, don't redirect
-  const currentUrl = window.location.href;
-  if (currentUrl === moduleUrl || currentUrl.includes(moduleUrl.replace(/\/$/, ''))) {
-    console.log('Already at target URL, preventing redirect loop');
-    return true;
-  }
-
-  if (!canAccessModule(moduleUrl, user)) {
-    // Store intended destination for after login
-    setIntendedDestination(moduleUrl);
-    
-    // Store the intended destination in sessionStorage for cross-domain access
-    sessionStorage.setItem('authReturnUrl', moduleUrl);
-    
-    // Only redirect to login if we're not already there
-    if (!window.location.pathname.includes('/login')) {
-      const encodedUrl = encodeURIComponent(moduleUrl);
-      window.location.href = `${window.location.origin}/login?redirect=${encodedUrl}`;
-    }
-    return false;
-  }
-
-  // User can access the module, proceed with navigation
+  // With independent auth, always allow navigation to modules
+  // Each app will handle its own authentication
   window.location.href = moduleUrl;
   return true;
 }
@@ -108,19 +75,8 @@ export function isProtectedPage(url = window.location.href) {
  * @returns {string} - Callback URL for OAuth redirect
  */
 export function generateOAuthCallbackUrl(currentUrl = window.location.href) {
-  const currentModule = getCurrentModule(currentUrl);
-  
-  // Map modules to their base URLs
-  const moduleBaseUrls = {
-    'marketdata': 'https://marketdata.repspheres.com',
-    'canvas': 'https://canvas.repspheres.com',
-    'crm': 'https://crm.repspheres.com',
-    'podcast': 'https://podcast.repspheres.com',
-    'main': window.location.origin
-  };
-
-  const baseUrl = moduleBaseUrls[currentModule] || window.location.origin;
-  return `${baseUrl}/auth/callback`;
+  // With independent auth, always use the current app's domain for OAuth callback
+  return `${window.location.origin}/auth/callback`;
 }
 
 /**

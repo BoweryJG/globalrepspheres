@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import PodcastPage from './PodcastPage';
-import LoginPage from './LoginPage';
+import SimpleLogin from './components/SimpleLogin';
 import SignupPage from './SignupPage';
 import AdminAnalyticsPage from './AdminAnalyticsPage';
 import AuthCallback from './AuthCallback';
@@ -29,7 +29,7 @@ root.render(
           <Route path="/" element={<App />} />
           <Route path="/podcast" element={<PodcastPage />} />
           <Route path="/podcast.html" element={<PodcastPage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/login" element={<SimpleLogin />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/admin-analytics" element={<AdminAnalyticsPage />} />
           <Route path="/auth/callback" element={<AuthCallback />} />

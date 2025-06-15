@@ -29,7 +29,8 @@ import Avatar from '@mui/material/Avatar';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import InfoModal from './InfoModal';
-import AuthModal from './AuthModal';
+import GlobalAuthModal from './GlobalAuthModal';
+import { useAuthModal } from '../hooks/useAuthModal';
 import Tooltip from '@mui/material/Tooltip';
 import Fade from '@mui/material/Fade';
 import Slide from '@mui/material/Slide';
@@ -154,13 +155,20 @@ export default function NavBar() {
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
   const [authMenuAnchorEl, setAuthMenuAnchorEl] = React.useState(null);
   const [openInfo, setOpenInfo] = React.useState(null); // which info modal is open
-  const [openAuth, setOpenAuth] = React.useState(null); // 'login' or 'signup'
   const [navLoading, setNavLoading] = React.useState(false);
   const [isNavHovered, setIsNavHovered] = React.useState(false);
   const [settingsAnchor, setSettingsAnchor] = React.useState(null);
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
+  
+  // Use the auth modal hook
+  const { 
+    isAuthModalOpen, 
+    openAuthModal, 
+    closeAuthModal, 
+    handleAuthSuccess 
+  } = useAuthModal();
   
   // Settings states
   const [invertedTheme, setInvertedTheme] = React.useState(() => {
@@ -296,14 +304,6 @@ export default function NavBar() {
 
   const handleInfoClose = () => {
     setOpenInfo(null);
-  };
-
-  const handleAuthOpen = (mode) => {
-    setOpenAuth(mode);
-  };
-
-  const handleAuthClose = () => {
-    setOpenAuth(null);
   };
   
   // Handle auth menu
@@ -712,7 +712,7 @@ export default function NavBar() {
                 fullWidth
                 onClick={() => {
                   setDrawerOpen(false);
-                  setTimeout(() => handleAuthOpen('login'), 300);
+                  setTimeout(() => openAuthModal(), 300);
                 }}
                 variant="outlined"
                 sx={{ ...loginStyles, justifyContent: 'center' }}
@@ -723,7 +723,7 @@ export default function NavBar() {
                 fullWidth
                 onClick={() => {
                   setDrawerOpen(false);
-                  setTimeout(() => handleAuthOpen('signup'), 300);
+                  setTimeout(() => openAuthModal(), 300);
                 }}
                 variant="contained"
                 sx={{ ...signupStyles, ml: 0, justifyContent: 'center' }}
@@ -967,14 +967,14 @@ export default function NavBar() {
               ) : (
                 <>
                   <Button
-                    onClick={() => handleAuthOpen('login')}
+                    onClick={() => openAuthModal()}
                     variant="outlined"
                     sx={loginStyles}
                   >
                     Log In
                   </Button>
                   <Button
-                    onClick={() => handleAuthOpen('signup')}
+                    onClick={() => openAuthModal()}
                     variant="contained"
                     sx={signupStyles}
                   >
@@ -1264,10 +1264,10 @@ export default function NavBar() {
       ))}
 
       {/* Auth Modal */}
-      <AuthModal 
-        open={openAuth !== null} 
-        onClose={handleAuthClose} 
-        initialMode={openAuth || 'login'}
+      <GlobalAuthModal 
+        open={isAuthModalOpen} 
+        onClose={closeAuthModal} 
+        onSuccess={handleAuthSuccess}
       />
     </>
   );
