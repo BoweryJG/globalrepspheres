@@ -42,7 +42,7 @@ export function AuthProvider({ children }) {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `https://repspheres.com/auth/callback`,
+          redirectTo: `${window.location.origin}/auth/callback`,
         },
       });
       
@@ -63,7 +63,7 @@ export function AuthProvider({ children }) {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'facebook',
         options: {
-          redirectTo: `https://repspheres.com/auth/callback`,
+          redirectTo: `${window.location.origin}/auth/callback`,
         },
       });
       

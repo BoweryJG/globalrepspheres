@@ -46,8 +46,31 @@ export default function LoginPage() {
   // Redirect if already logged in
   useEffect(() => {
     if (user) {
-      // User is logged in, redirect them
-      navigate('/');
+      // Check for intended destination
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirectTo = urlParams.get('redirect');
+      const intendedDest = sessionStorage.getItem('intendedDestination');
+      
+      if (redirectTo) {
+        // External redirect
+        const decodedUrl = decodeURIComponent(redirectTo);
+        if (decodedUrl.includes('repspheres.com')) {
+          window.location.href = decodedUrl;
+        } else {
+          navigate(decodedUrl);
+        }
+      } else if (intendedDest) {
+        // Session storage redirect
+        sessionStorage.removeItem('intendedDestination');
+        if (intendedDest.includes('repspheres.com') && !intendedDest.startsWith('/')) {
+          window.location.href = intendedDest;
+        } else {
+          navigate(intendedDest);
+        }
+      } else {
+        // Default redirect
+        navigate('/');
+      }
     }
   }, [user, navigate]);
 
