@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Redirect Loop</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #000; color: #0f0; }
+        .section { margin: 20px 0; padding: 10px; border: 1px solid #0f0; }
+        button { background: #0f0; color: #000; padding: 10px; margin: 5px; cursor: pointer; }
+        .error { color: #f00; }
+        .success { color: #0f0; }
+    </style>
+</head>
+<body>
+    <h1>RepSpheres Auth Debug</h1>
+    
+    <div class="section">
+        <h2>Current Status</h2>
+        <div id="status"></div>
+    </div>
+    
+    <div class="section">
+        <h2>Storage Data</h2>
+        <div id="storage"></div>
+    </div>
+    
+    <div class="section">
+        <h2>Cookies</h2>
+        <div id="cookies"></div>
+    </div>
+    
+    <div class="section">
+        <h2>Actions</h2>
+        <button onclick="clearAll()">Clear All Auth Data</button>
+        <button onclick="testAuth()">Test Supabase Auth</button>
+        <button onclick="checkCRM()">Check CRM Access</button>
+    </div>
+    
+    <div class="section">
+        <h2>Logs</h2>
+        <div id="logs"></div>
+    </div>
+
+    <script>
+        function log(msg, type = '') {
+            const logs = document.getElementById('logs');
+            const entry = document.createElement('div');
+            entry.className = type;
+            entry.textContent = `[${new Date().toISOString()}] ${msg}`;
+            logs.appendChild(entry);
+        }
+
+        function updateStatus() {
+            const status = document.getElementById('status');
+            status.innerHTML = `
+                <p>Current URL: ${window.location.href}</p>
+                <p>Origin: ${window.location.origin}</p>
+                <p>Hostname: ${window.location.hostname}</p>
+                <p>User Agent: ${navigator.userAgent}</p>
+            `;
+        }
+
+        function updateStorage() {
+            const storage = document.getElementById('storage');
+            let html = '<h3>Session Storage:</h3><pre>';
+            for (let i = 0; i < sessionStorage.length; i++) {
+                const key = sessionStorage.key(i);
+                html += `${key}: ${sessionStorage.getItem(key)}\n`;
+            }
+            html += '</pre><h3>Local Storage (auth related):</h3><pre>';
+            const authKeys = ['repspheres-auth', 'supabase.auth.token', 'intendedDestination', 'authReturnUrl'];
+            authKeys.forEach(key => {
+                const value = localStorage.getItem(key);
+                if (value) {
+                    html += `${key}: ${value.substring(0, 50)}...\n`;
+                }
+            });
+            html += '</pre>';
+            storage.innerHTML = html;
+        }
+
+        function updateCookies() {
+            const cookies = document.getElementById('cookies');
+            cookies.innerHTML = '<pre>' + document.cookie + '</pre>';
+        }
+
+        function clearAll() {
+            log('Clearing all auth data...');
+            sessionStorage.clear();
+            localStorage.removeItem('repspheres-auth');
+            localStorage.removeItem('supabase.auth.token');
+            localStorage.removeItem('intendedDestination');
+            localStorage.removeItem('authReturnUrl');
+            
+            // Clear cookies
+            document.cookie.split(";").forEach(function(c) { 
+                document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/;domain=.repspheres.com"); 
+                document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+            });
+            
+            log('Cleared all auth data', 'success');
+            updateStorage();
+            updateCookies();
+        }
+
+        async function testAuth() {
+            log('Testing Supabase auth...');
+            try {
+                const response = await fetch('https://cbopynuvhcymbumjnvay.supabase.co/auth/v1/user', {
+                    headers: {
+                        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNib3B5bnV2aGN5bWJ1bWpudmF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM5OTUxNzMsImV4cCI6MjA1OTU3MTE3M30.UZElMkoHugIt984RtYWyfrRuv2rB67opQdCrFVPCfzU',
+                        'Authorization': 'Bearer ' + (localStorage.getItem('repspheres-auth') || '')
+                    }
+                });
+                const data = await response.json();
+                log('Auth response: ' + JSON.stringify(data), response.ok ? 'success' : 'error');
+            } catch (error) {
+                log('Auth test failed: ' + error.message, 'error');
+            }
+        }
+
+        function checkCRM() {
+            log('Checking CRM access...');
+            const testUrl = 'https://crm.repspheres.com/';
+            log('Would redirect to: ' + testUrl);
+            log('Current auth state: ' + (localStorage.getItem('repspheres-auth') ? 'Authenticated' : 'Not authenticated'));
+        }
+
+        // Initial update
+        updateStatus();
+        updateStorage();
+        updateCookies();
+        
+        // Auto-refresh
+        setInterval(() => {
+            updateStorage();
+            updateCookies();
+        }, 2000);
+        
+        log('Debug tool loaded', 'success');
+    </script>
+</body>
+</html>

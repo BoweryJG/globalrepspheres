@@ -46,29 +46,22 @@ export default function LoginPage() {
   // Redirect if already logged in
   useEffect(() => {
     if (user) {
-      // Check for intended destination
+      // Simple redirect logic
       const urlParams = new URLSearchParams(window.location.search);
-      const redirectTo = urlParams.get('redirect');
-      const intendedDest = sessionStorage.getItem('intendedDestination');
+      const redirect = urlParams.get('redirect');
       
-      if (redirectTo) {
-        // External redirect
-        const decodedUrl = decodeURIComponent(redirectTo);
-        if (decodedUrl.includes('repspheres.com')) {
-          window.location.href = decodedUrl;
+      if (redirect) {
+        // Decode and validate redirect URL
+        const decodedUrl = decodeURIComponent(redirect);
+        if (decodedUrl.includes('repspheres.com') || decodedUrl.startsWith('/')) {
+          // Small delay to ensure auth is fully loaded
+          setTimeout(() => {
+            window.location.href = decodedUrl;
+          }, 500);
         } else {
-          navigate(decodedUrl);
-        }
-      } else if (intendedDest) {
-        // Session storage redirect
-        sessionStorage.removeItem('intendedDestination');
-        if (intendedDest.includes('repspheres.com') && !intendedDest.startsWith('/')) {
-          window.location.href = intendedDest;
-        } else {
-          navigate(intendedDest);
+          navigate('/');
         }
       } else {
-        // Default redirect
         navigate('/');
       }
     }

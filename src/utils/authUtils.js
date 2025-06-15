@@ -34,6 +34,13 @@ export function canAccessModule(moduleUrl, user) {
  * @returns {boolean} - True if navigation proceeded, false if redirected to login
  */
 export function navigateToModule(moduleUrl, user, setIntendedDestination) {
+  // Prevent redirect loop - if we're already at the target, don't redirect
+  const currentUrl = window.location.href;
+  if (currentUrl === moduleUrl || currentUrl.includes(moduleUrl.replace(/\/$/, ''))) {
+    console.log('Already at target URL, preventing redirect loop');
+    return true;
+  }
+
   if (!canAccessModule(moduleUrl, user)) {
     // Store intended destination for after login
     setIntendedDestination(moduleUrl);
@@ -41,9 +48,11 @@ export function navigateToModule(moduleUrl, user, setIntendedDestination) {
     // Store the intended destination in sessionStorage for cross-domain access
     sessionStorage.setItem('authReturnUrl', moduleUrl);
     
-    // Redirect to login with the module URL as intended destination
-    const encodedUrl = encodeURIComponent(moduleUrl);
-    window.location.href = `${window.location.origin}/login?redirect=${encodedUrl}`;
+    // Only redirect to login if we're not already there
+    if (!window.location.pathname.includes('/login')) {
+      const encodedUrl = encodeURIComponent(moduleUrl);
+      window.location.href = `${window.location.origin}/login?redirect=${encodedUrl}`;
+    }
     return false;
   }
 
