@@ -762,43 +762,35 @@ export default function NavBar() {
                 scrollbarWidth: 'none',
               }}>
                 {navLinks.map((link) => (
-                  <Tooltip 
+                  <Button
                     key={link.key}
-                    title={link.description}
-                    arrow
-                    placement="bottom"
-                    TransitionComponent={Fade}
-                    TransitionProps={{ timeout: 300 }}
+                    component={link.internal ? Link : 'a'}
+                    to={link.internal ? link.href : undefined}
+                    href={!link.internal ? link.href : undefined}
+                    onClick={(e) => {
+                      if (!link.internal) {
+                        e.preventDefault();
+                        handleNavigation(link.href, link.internal);
+                      }
+                    }}
+                    className={isLinkActive(link.href, currentUrl) ? 'active' : ''}
+                    sx={{
+                      ...navButtonStyles,
+                      ...getLinkStyles(link.key),
+                      '& .buttonText': {
+                        display: { xs: 'none', sm: 'inline' }
+                      }
+                    }}
                   >
-                    <Button
-                      component={link.internal ? Link : 'a'}
-                      to={link.internal ? link.href : undefined}
-                      href={!link.internal ? link.href : undefined}
-                      onClick={(e) => {
-                        if (!link.internal) {
-                          e.preventDefault();
-                          handleNavigation(link.href, link.internal);
-                        }
-                      }}
-                      className={isLinkActive(link.href, currentUrl) ? 'active' : ''}
-                      sx={{
-                        ...navButtonStyles,
-                        ...getLinkStyles(link.key),
-                        '& .buttonText': {
-                          display: { xs: 'none', sm: 'inline' }
-                        }
-                      }}
-                    >
-                      <Box sx={{ 
-                        mr: { xs: 0, sm: 1 },
-                        display: 'flex',
-                        alignItems: 'center'
-                      }}>
-                        {link.icon}
-                      </Box>
-                      <Box component="span" className="buttonText">{link.label}</Box>
-                    </Button>
-                  </Tooltip>
+                    <Box sx={{ 
+                      mr: { xs: 0, sm: 1 },
+                      display: 'flex',
+                      alignItems: 'center'
+                    }}>
+                      {link.icon}
+                    </Box>
+                    <Box component="span" className="buttonText">{link.label}</Box>
+                  </Button>
                 ))}
               </Box>
             </Box>
