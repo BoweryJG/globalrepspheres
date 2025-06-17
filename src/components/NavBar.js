@@ -29,8 +29,6 @@ import Avatar from '@mui/material/Avatar';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import InfoModal from './InfoModal';
-import GlobalAuthModal from './GlobalAuthModal';
-import { useAuthModal } from '../hooks/useAuthModal';
 import Tooltip from '@mui/material/Tooltip';
 import Fade from '@mui/material/Fade';
 import Slide from '@mui/material/Slide';
@@ -162,13 +160,6 @@ export default function NavBar() {
   const navigate = useNavigate();
   const location = useLocation();
   
-  // Use the auth modal hook
-  const { 
-    isAuthModalOpen, 
-    openAuthModal, 
-    closeAuthModal, 
-    handleAuthSuccess 
-  } = useAuthModal();
   
   // Settings states
   const [invertedTheme, setInvertedTheme] = React.useState(() => {
@@ -636,103 +627,6 @@ export default function NavBar() {
           ))}
         </List>
         
-        {/* Auth Button */}
-        <Box sx={{ mt: 4, px: 1 }}>
-          {loading ? (
-            <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
-              <CircularProgress size={28} sx={{ color: '#fff', opacity: 0.7 }} />
-            </Box>
-          ) : user ? (
-            <Box>
-              <Box sx={{ 
-                display: 'flex', 
-                alignItems: 'center',
-                mb: 2,
-                p: 1,
-                borderRadius: '8px',
-                background: 'rgba(255,255,255,0.05)',
-                transition: 'all 0.3s ease',
-                '&:hover': {
-                  background: 'rgba(255,255,255,0.08)',
-                }
-              }}>
-                {user.user_metadata?.avatar_url ? (
-                  <Avatar 
-                    src={user.user_metadata.avatar_url} 
-                    sx={{ width: 40, height: 40, mr: 1.5 }}
-                  />
-                ) : (
-                  <Avatar sx={{ width: 40, height: 40, mr: 1.5, bgcolor: '#7B42F6' }}>
-                    <PersonIcon />
-                  </Avatar>
-                )}
-                <Box sx={{ overflow: 'hidden' }}>
-                  <Box sx={{ 
-                    fontSize: '0.9rem', 
-                    fontWeight: 500,
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                  }}>
-                    {user.user_metadata?.full_name || 'User'}
-                  </Box>
-                  <Box sx={{ 
-                    fontSize: '0.8rem', 
-                    opacity: 0.7,
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                  }}>
-                    {user.email}
-                  </Box>
-                </Box>
-              </Box>
-              <Button
-                fullWidth
-                variant="outlined"
-                onClick={signOut}
-                startIcon={<LogoutIcon />}
-                sx={{
-                  color: '#fff',
-                  borderColor: 'rgba(255,255,255,0.2)',
-                  transition: 'all 0.3s ease',
-                  '&:hover': {
-                    borderColor: '#fff',
-                    background: 'rgba(255,255,255,0.1)',
-                    transform: 'scale(1.02)',
-                  }
-                }}
-              >
-                Sign Out
-              </Button>
-            </Box>
-          ) : (
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-              <Button
-                fullWidth
-                onClick={() => {
-                  setDrawerOpen(false);
-                  setTimeout(() => openAuthModal(), 300);
-                }}
-                variant="outlined"
-                sx={{ ...loginStyles, justifyContent: 'center' }}
-              >
-                Log In
-              </Button>
-              <Button
-                fullWidth
-                onClick={() => {
-                  setDrawerOpen(false);
-                  setTimeout(() => openAuthModal(), 300);
-                }}
-                variant="contained"
-                sx={{ ...signupStyles, ml: 0, justifyContent: 'center' }}
-              >
-                Sign Up
-              </Button>
-            </Box>
-          )}
-        </Box>
       </Box>
     </Slide>
   );
@@ -920,69 +814,6 @@ export default function NavBar() {
             gap: { xs: 0.5, sm: 1 },
           }}>
             
-            {/* Auth Button or User Profile */}
-            <Box sx={{
-              display: 'flex',
-              alignItems: 'center',
-            }}>
-              {loading ? (
-                <CircularProgress size={24} color="inherit" sx={{ opacity: 0.7 }} />
-              ) : user ? (
-                <Tooltip title={`${getUserDisplayName(user) || "Account"} menu`} arrow>
-                  <IconButton
-                    onClick={handleAuthMenuOpen}
-                    size="small"
-                    sx={{
-                      ml: 0.5,
-                      border: '1px solid rgba(255,255,255,0.2)',
-                      p: 0.5,
-                      transition: 'all 0.3s ease',
-                      '&:hover': {
-                        borderColor: ACCENT_COLOR,
-                        transform: 'scale(1.1)',
-                        boxShadow: `0 0 15px ${ACCENT_COLOR}40`,
-                      }
-                    }}
-                  >
-                    {user.user_metadata?.avatar_url ? (
-                      <Avatar
-                        src={user.user_metadata.avatar_url}
-                        sx={{ width: 32, height: 32 }}
-                      />
-                    ) : (
-                      <Avatar
-                        sx={{ 
-                          width: 32, 
-                          height: 32,
-                          bgcolor: 'rgba(123, 66, 246, 0.8)',
-                          fontSize: '0.875rem',
-                          fontWeight: 600
-                        }}
-                      >
-                        {getUserInitials(user)}
-                      </Avatar>
-                    )}
-                  </IconButton>
-                </Tooltip>
-              ) : (
-                <>
-                  <Button
-                    onClick={() => openAuthModal()}
-                    variant="outlined"
-                    sx={loginStyles}
-                  >
-                    Log In
-                  </Button>
-                  <Button
-                    onClick={() => openAuthModal()}
-                    variant="contained"
-                    sx={signupStyles}
-                  >
-                    Sign Up
-                  </Button>
-                </>
-              )}
-            </Box>
 
             {/* Settings Menu Button */}
             <Tooltip title="Settings" arrow>
@@ -1105,63 +936,6 @@ export default function NavBar() {
         ))}
       </Menu>
       
-      {/* Auth Menu */}
-      <Menu
-        anchorEl={authMenuAnchorEl}
-        open={Boolean(authMenuAnchorEl)}
-        onClose={handleAuthMenuClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        PaperProps={{
-          sx: {
-            mt: 1,
-            borderRadius: '12px',
-            background: 'rgba(30,20,55,0.95)',
-            backdropFilter: 'blur(15px)',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
-            border: '1px solid rgba(123,66,246,0.2)',
-            color: '#fff',
-            minWidth: '220px',
-            p: 1,
-          }
-        }}
-      >
-        {user && (
-          <Box sx={{ p: 1, mb: 1, borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-              {user.user_metadata?.full_name || 'User'}
-            </Typography>
-            <Typography variant="caption" sx={{ opacity: 0.7 }}>
-              {user.email}
-            </Typography>
-          </Box>
-        )}
-        <MenuItem 
-          onClick={handleSignOut}
-          sx={{
-            py: 1.2,
-            px: 2,
-            fontSize: '0.95rem',
-            color: '#ff7979',
-            transition: 'all 0.2s ease',
-            '&:hover': {
-              background: 'rgba(255,121,121,0.15)',
-            },
-            display: 'flex',
-            alignItems: 'center',
-            gap: 1,
-          }}
-        >
-          <LogoutIcon fontSize="small" />
-          Sign Out
-        </MenuItem>
-      </Menu>
       
       {/* Settings Menu */}
       <Menu
@@ -1263,12 +1037,6 @@ export default function NavBar() {
         </InfoModal>
       ))}
 
-      {/* Auth Modal */}
-      <GlobalAuthModal 
-        open={isAuthModalOpen} 
-        onClose={closeAuthModal} 
-        onSuccess={handleAuthSuccess}
-      />
     </>
   );
 }
