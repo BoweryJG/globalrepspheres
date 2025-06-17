@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import SimpleNavBar from './components/SimpleNavBar';
+import NavBar from './components/NavBar';
 import StarryBackground from './components/StarryBackground_Ultra';
 import StarryBackground_Enhanced from './components/StarryBackground_Enhanced';
 import AnimatedOrbExact from './components/AnimatedOrbExact';
@@ -46,7 +46,7 @@ function App() {
   return (
     <>
       <StarComponent />
-      <SimpleNavBar />
+      <NavBar />
       <OrbComponent zIndex={5} />
       <HeroTransformationSection />
       <IntelligenceTrinitySection />

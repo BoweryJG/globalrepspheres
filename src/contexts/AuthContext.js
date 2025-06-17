@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import supabase from '../supabase';
-import { setupCrossDomainAuthListener, broadcastAuthState } from '../utils/crossDomainAuth';
+// Cross-domain auth removed - each app handles its own auth
 
 // Create an authentication context
 const AuthContext = createContext();
@@ -175,10 +175,6 @@ export function AuthProvider({ children }) {
 
   // Effect to set up auth state listener and handle initial session
   useEffect(() => {
-    // Set up cross-domain auth listener
-    setupCrossDomainAuthListener();
-    
-    // Get the current session
     const initializeAuth = async () => {
       setLoading(true);
       
@@ -187,22 +183,16 @@ export function AuthProvider({ children }) {
       if (session) {
         const { data: { user: currentUser } } = await supabase.auth.getUser();
         setUser(currentUser);
-        // Broadcast auth state to other domains
-        broadcastAuthState(session);
       }
       
-      // Set up auth state change listener
+      // Set up auth state change listener - local only
       const { data: authListener } = supabase.auth.onAuthStateChange(
         async (event, session) => {
           if (session) {
             const { data: { user: currentUser } } = await supabase.auth.getUser();
             setUser(currentUser);
-            // Broadcast auth state to other domains
-            broadcastAuthState(session);
           } else {
             setUser(null);
-            // Broadcast logout to other domains
-            broadcastAuthState(null);
           }
           setLoading(false);
         }
