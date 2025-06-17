@@ -4,9 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Authentication - RepSpheres</title>
-      <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/favicon-16x16.png" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
   <style>
     body {
       font-family: 'DM Sans', Arial, sans-serif;
@@ -56,115 +53,22 @@
       margin-bottom: 0;
     }
   </style>
-    
-    <!-- Apple Touch Icon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/apple-touch-icon.png" />
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://repspheres.com/" />
-    <meta property="og:title" content="RepSpheres - AI-Powered B2B Sales Platform" />
-    <meta property="og:description" content="Transform your B2B sales with AI-powered relationship management and intelligent sales automation" />
-    <meta property="og:image" content="%PUBLIC_URL%/og-image.png" />
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://repspheres.com/" />
-    <meta property="twitter:title" content="RepSpheres - AI-Powered B2B Sales Platform" />
-    <meta property="twitter:description" content="Transform your B2B sales with AI-powered relationship management and intelligent sales automation" />
-    <meta property="twitter:image" content="%PUBLIC_URL%/og-image.png" />
-    
-    <!-- iOS specific -->
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="RepSpheres" />
-  </head>
+</head>
 <body>
   <div class="auth-container">
     <div class="spinner"></div>
     <h2>Completing Authentication</h2>
-    <p>Redirecting you to your destination...</p>
+    <p>Redirecting you to RepSpheres...</p>
   </div>
 
   <script>
-    // Handle OAuth callback and redirect to intended destination
+    // Simple OAuth callback handler - only handles local auth
     function handleAuthCallback() {
-      try {
-        // Check multiple storage locations for return URL
-        const authReturnUrl = sessionStorage.getItem('authReturnUrl') || 
-                              localStorage.getItem('authReturnUrl');
-        const intendedDestination = sessionStorage.getItem('intendedDestination');
-        
-        // Clear all stored values
-        sessionStorage.removeItem('authReturnUrl');
-        sessionStorage.removeItem('intendedDestination');
-        sessionStorage.removeItem('authReturnDomain');
-        localStorage.removeItem('authReturnUrl');
-        localStorage.removeItem('authReturnDomain');
-        
-        // Wait a moment for auth state to update, then redirect
-        setTimeout(() => {
-          // Priority 1: Full return URL (for cross-domain redirects)
-          if (authReturnUrl) {
-            // Validate it's a RepSpheres domain
-            const validDomains = [
-              'https://repspheres.com',
-              'https://www.repspheres.com',
-              'https://globalrepspheres.netlify.app',
-              'https://marketdata.repspheres.com',
-              'https://canvas.repspheres.com',
-              'https://crm.repspheres.com'
-            ];
-            
-            const isValid = validDomains.some(domain => authReturnUrl.startsWith(domain)) ||
-                           authReturnUrl.includes('localhost');
-            
-            if (isValid) {
-              window.location.href = authReturnUrl;
-              return;
-            }
-          }
-          
-          // Priority 2: Intended destination path
-          if (intendedDestination) {
-            window.location.href = intendedDestination;
-            return;
-          }
-          
-          // Priority 3: Check URL parameters
-          const urlParams = new URLSearchParams(window.location.search);
-          const returnParam = urlParams.get('return');
-          if (returnParam) {
-            const decodedReturn = decodeURIComponent(returnParam);
-            window.location.href = decodedReturn;
-            return;
-          }
-          
-          // Priority 4: Default redirect based on referrer
-          const referrer = document.referrer;
-          if (referrer) {
-            if (referrer.includes('crm.repspheres.com')) {
-              window.location.href = 'https://crm.repspheres.com/';
-            } else if (referrer.includes('marketdata.repspheres.com')) {
-              window.location.href = 'https://marketdata.repspheres.com/';
-            } else if (referrer.includes('canvas.repspheres.com')) {
-              window.location.href = 'https://canvas.repspheres.com/';
-            } else {
-              window.location.href = '/';
-            }
-          } else {
-            // Default to main site
-            window.location.href = '/';
-          }
-        }, 1500);
-        
-      } catch (error) {
-        console.error('Auth callback error:', error);
-        // Fallback to home page
-        setTimeout(() => {
-          window.location.href = '/';
-        }, 2000);
-      }
+      // Wait a moment for auth state to update
+      setTimeout(() => {
+        // Always redirect to home page after auth
+        window.location.href = '/';
+      }, 1500);
     }
     
     // Start the callback handling
