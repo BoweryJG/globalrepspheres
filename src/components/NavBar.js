@@ -29,12 +29,12 @@ import Avatar from '@mui/material/Avatar';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import InfoModal from './InfoModal';
+import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
 import Fade from '@mui/material/Fade';
 import Slide from '@mui/material/Slide';
 import { keyframes } from '@mui/system';
 import NavBarCanvas from './NavBarCanvas';
-import SettingsIcon from '@mui/icons-material/Settings';
 import InvertColorsIcon from '@mui/icons-material/InvertColors';
 import SpeedIcon from '@mui/icons-material/Speed';
 import Switch from '@mui/material/Switch';
@@ -155,7 +155,6 @@ export default function NavBar() {
   const [openInfo, setOpenInfo] = React.useState(null); // which info modal is open
   const [navLoading, setNavLoading] = React.useState(false);
   const [isNavHovered, setIsNavHovered] = React.useState(false);
-  const [settingsAnchor, setSettingsAnchor] = React.useState(null);
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
@@ -815,23 +814,6 @@ export default function NavBar() {
           }}>
             
 
-            {/* Settings Menu Button */}
-            <Tooltip title="Settings" arrow>
-              <IconButton
-                onClick={(e) => setSettingsAnchor(e.currentTarget)}
-                sx={{ 
-                  color: '#fff',
-                  ml: 0.5,
-                  transition: 'all 0.3s ease',
-                  '&:hover': {
-                    color: ACCENT_COLOR,
-                    transform: 'scale(1.1)',
-                  }
-                }}
-              >
-                <SettingsIcon />
-              </IconButton>
-            </Tooltip>
 
             {/* More Menu Button (Desktop) */}
             {!isMobile && (
@@ -912,10 +894,73 @@ export default function NavBar() {
             boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
             border: '1px solid rgba(123,66,246,0.2)',
             color: '#fff',
-            minWidth: '200px',
+            minWidth: '280px',
+            p: 1,
           }
         }}
       >
+        <Box sx={{ px: 1, py: 0.5, mb: 1 }}>
+          <Typography variant="subtitle2" sx={{ fontWeight: 600, opacity: 0.7 }}>
+            Appearance
+          </Typography>
+        </Box>
+        
+        <MenuItem sx={{ py: 1.5, px: 2 }}>
+          <ListItemIcon>
+            <InvertColorsIcon sx={{ color: ACCENT_COLOR }} />
+          </ListItemIcon>
+          <ListItemText 
+            primary="Dark Theme"
+            secondary={invertedTheme ? "Inverted colors" : "Normal colors"}
+            secondaryTypographyProps={{ sx: { fontSize: '0.75rem', opacity: 0.7 } }}
+          />
+          <Switch 
+            checked={invertedTheme}
+            onChange={(e) => setInvertedTheme(e.target.checked)}
+            onClick={(e) => e.stopPropagation()}
+            sx={{
+              '& .MuiSwitch-thumb': {
+                backgroundColor: invertedTheme ? ACCENT_COLOR : '#fff',
+              },
+              '& .MuiSwitch-track': {
+                backgroundColor: invertedTheme ? 'rgba(0,255,198,0.3)' : 'rgba(255,255,255,0.3)',
+              }
+            }}
+          />
+        </MenuItem>
+        
+        <MenuItem sx={{ py: 1.5, px: 2 }}>
+          <ListItemIcon>
+            <SpeedIcon sx={{ color: ACCENT_COLOR }} />
+          </ListItemIcon>
+          <ListItemText 
+            primary="Performance Mode"
+            secondary={performanceMode ? "Optimized graphics" : "Full visual effects"}
+            secondaryTypographyProps={{ sx: { fontSize: '0.75rem', opacity: 0.7 } }}
+          />
+          <Switch 
+            checked={performanceMode}
+            onChange={(e) => setPerformanceMode(e.target.checked)}
+            onClick={(e) => e.stopPropagation()}
+            sx={{
+              '& .MuiSwitch-thumb': {
+                backgroundColor: performanceMode ? ACCENT_COLOR : '#fff',
+              },
+              '& .MuiSwitch-track': {
+                backgroundColor: performanceMode ? 'rgba(0,255,198,0.3)' : 'rgba(255,255,255,0.3)',
+              }
+            }}
+          />
+        </MenuItem>
+        
+        <Divider sx={{ my: 1, borderColor: 'rgba(255,255,255,0.1)' }} />
+        
+        <Box sx={{ px: 1, py: 0.5, mb: 1 }}>
+          <Typography variant="subtitle2" sx={{ fontWeight: 600, opacity: 0.7 }}>
+            Information
+          </Typography>
+        </Box>
+        
         {moreMenuItems.map((item) => (
           <MenuItem 
             key={item.key} 
@@ -936,94 +981,6 @@ export default function NavBar() {
         ))}
       </Menu>
       
-      
-      {/* Settings Menu */}
-      <Menu
-        anchorEl={settingsAnchor}
-        open={Boolean(settingsAnchor)}
-        onClose={() => setSettingsAnchor(null)}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        PaperProps={{
-          sx: {
-            mt: 1,
-            borderRadius: '12px',
-            background: 'rgba(30,20,55,0.95)',
-            backdropFilter: 'blur(15px)',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
-            border: '1px solid rgba(123,66,246,0.2)',
-            color: '#fff',
-            minWidth: '280px',
-            p: 1,
-          }
-        }}
-      >
-        <Box sx={{ px: 1, py: 0.5, mb: 1 }}>
-          <Typography variant="subtitle2" sx={{ fontWeight: 600, opacity: 0.7 }}>
-            Appearance Settings
-          </Typography>
-        </Box>
-        
-        <MenuItem sx={{ py: 1.5, px: 2 }}>
-          <ListItemIcon>
-            <InvertColorsIcon sx={{ color: ACCENT_COLOR }} />
-          </ListItemIcon>
-          <ListItemText 
-            primary="Dark Theme"
-            secondary={invertedTheme ? "Inverted colors" : "Normal colors"}
-            secondaryTypographyProps={{ sx: { fontSize: '0.75rem', opacity: 0.7 } }}
-          />
-          <Switch 
-            checked={invertedTheme}
-            onChange={(e) => setInvertedTheme(e.target.checked)}
-            sx={{
-              '& .MuiSwitch-thumb': {
-                backgroundColor: invertedTheme ? ACCENT_COLOR : '#fff',
-              },
-              '& .MuiSwitch-track': {
-                backgroundColor: invertedTheme ? 'rgba(0,255,198,0.3)' : 'rgba(255,255,255,0.3)',
-              }
-            }}
-          />
-        </MenuItem>
-        
-        <Divider sx={{ my: 1, borderColor: 'rgba(255,255,255,0.1)' }} />
-        
-        <Box sx={{ px: 1, py: 0.5, mb: 1 }}>
-          <Typography variant="subtitle2" sx={{ fontWeight: 600, opacity: 0.7 }}>
-            Performance
-          </Typography>
-        </Box>
-        
-        <MenuItem sx={{ py: 1.5, px: 2 }}>
-          <ListItemIcon>
-            <SpeedIcon sx={{ color: ACCENT_COLOR }} />
-          </ListItemIcon>
-          <ListItemText 
-            primary="Performance Mode"
-            secondary={performanceMode ? "Optimized graphics" : "Full visual effects"}
-            secondaryTypographyProps={{ sx: { fontSize: '0.75rem', opacity: 0.7 } }}
-          />
-          <Switch 
-            checked={performanceMode}
-            onChange={(e) => setPerformanceMode(e.target.checked)}
-            sx={{
-              '& .MuiSwitch-thumb': {
-                backgroundColor: performanceMode ? ACCENT_COLOR : '#fff',
-              },
-              '& .MuiSwitch-track': {
-                backgroundColor: performanceMode ? 'rgba(0,255,198,0.3)' : 'rgba(255,255,255,0.3)',
-              }
-            }}
-          />
-        </MenuItem>
-      </Menu>
 
       {/* Info Modals */}
       {moreMenuItems.map(item => (
