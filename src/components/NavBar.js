@@ -808,21 +808,19 @@ export default function NavBar() {
 
             {/* More Menu Button (Desktop) */}
             {!isMobile && (
-              <Tooltip title="More options" arrow>
-                <IconButton
-                  onClick={handleMenuOpen}
-                  sx={{ 
-                    color: '#fff',
-                    transition: 'all 0.3s ease',
-                    '&:hover': {
-                      color: ACCENT_COLOR,
-                      transform: 'rotate(90deg) scale(1.1)',
-                    }
-                  }}
-                >
-                  <MoreVertIcon />
-                </IconButton>
-              </Tooltip>
+              <IconButton
+                onClick={handleMenuOpen}
+                sx={{ 
+                  color: '#fff',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    color: ACCENT_COLOR,
+                    transform: 'rotate(90deg) scale(1.1)',
+                  }
+                }}
+              >
+                <MoreVertIcon />
+              </IconButton>
             )}
 
             {/* Hamburger Menu Button (Mobile) */}
