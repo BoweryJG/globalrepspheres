@@ -542,3 +542,39 @@ p {
     padding: 2rem 0 1rem 0;
   }
 }
+
+/* Hide any external chatbot widgets that might compete */
+iframe[src*="chat"]:not([src*="repspheres"]),
+iframe[src*="widget"]:not([src*="repspheres"]),
+iframe[src*="messenger"]:not([src*="repspheres"]),
+div[class*="external-chat"]:not(.chatbot-launcher),
+div[id*="external-chat"]:not(.chatbot-launcher),
+div[class*="live-chat"]:not(.chatbot-launcher),
+div[id*="live-chat"]:not(.chatbot-launcher),
+div[class*="chat-widget"]:not(.chatbot-launcher),
+div[id*="chat-widget"]:not(.chatbot-launcher),
+/* Target common chatbot widget patterns */
+div[class*="intercom"],
+div[id*="intercom"],
+div[class*="drift"],
+div[id*="drift"],
+div[class*="crisp"],
+div[id*="crisp"],
+div[class*="tawk"],
+div[id*="tawk"],
+div[class*="zendesk"],
+div[id*="zendesk"],
+div[class*="freshchat"],
+div[id*="freshchat"],
+/* Target the specific Harvey widget if it has identifiable attributes */
+div[class*="harvey"]:not(.chatbot-launcher),
+div[id*="harvey"]:not(.chatbot-launcher) {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  z-index: -9999 !important;
+  position: fixed !important;
+  left: -9999px !important;
+  top: -9999px !important;
+}
