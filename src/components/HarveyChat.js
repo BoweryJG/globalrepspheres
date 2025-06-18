@@ -390,7 +390,7 @@ function HarveyChat({ open, onClose }) {
               HARVEY
             </Typography>
           </Box>
-          <PowerBadge label="ELITE" size="small" />
+          <PowerBadge label="CLOSER" size="small" />
           <IconButton onClick={onClose} size="small" sx={{ 
             color: '#FFE4B5',
             padding: '4px',
