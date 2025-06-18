@@ -278,11 +278,11 @@ const PowerBadge = styled(Chip)({
 
 // Harvey Persona
 const HARVEY_INTRO = {
-  text: `I've closed $47M in aesthetic deals. Analyzed 2.4 million provider records. Built 15 years of industry dominance.
+  text: `Listen - I know exactly why you're here. That deal that's stuck. The surgeon who won't return calls. The competitor undercutting you.
 
-They call me Harvey - because I don't just predict the future. I create it.
+I've got your back. 15 years, 2.4M provider profiles analyzed. I know every objection before they say it.
 
-What's your play?`,
+Tell me what's blocking you right now. Let's solve it.`,
   isUser: false,
   isHarvey: true,
   timestamp: new Date()
@@ -329,15 +329,37 @@ function HarveyChat({ open, onClose }) {
   };
 
   const generateHarveyResponse = (userInput) => {
+    const lowerInput = userInput.toLowerCase();
+    
+    // Context-aware responses based on keywords
+    if (lowerInput.includes('stuck') || lowerInput.includes('deal') || lowerInput.includes('close')) {
+      return "I see it. Here's your move: Stop selling features. That surgeon cares about one thing - patient outcomes. Send them your top 3 case studies, but lead with the complication rates. Then go silent for 48 hours. Trust me.";
+    }
+    
+    if (lowerInput.includes('competitor') || lowerInput.includes('price') || lowerInput.includes('undercut')) {
+      return "Price war? Never compete on price. You compete on access. Tell them: 'Dr., my competitors might be 15% cheaper, but when you need support at 10 PM on a Saturday, I'm the only one answering.' Then prove it.";
+    }
+    
+    if (lowerInput.includes('meeting') || lowerInput.includes('appointment') || lowerInput.includes('busy')) {
+      return "Can't get face time? Stop asking for meetings. Send this: 'Dr., I have 3 surgeons in your building using our tech. 5 minute coffee Thursday to show you their results?' Make it about peer validation, not your pitch.";
+    }
+    
+    if (lowerInput.includes('objection') || lowerInput.includes('concern') || lowerInput.includes('worried')) {
+      return "Perfect. Objections mean they're engaged. Whatever they said, repeat it back slower: 'So your concern is...' Then shut up. Count to 5. They'll tell you exactly how to close them. Works every time.";
+    }
+    
+    if (lowerInput.includes('help') || lowerInput.includes('advice') || lowerInput.includes('strategy')) {
+      return "Here's what separates closers from everyone else: We solve problems before they're asked. Text your top 5 prospects right now: 'Saw the new reimbursement changes. I have a workaround. Coffee?' You'll book 3 meetings by tomorrow.";
+    }
+    
+    // Default responses for general queries
     const responses = [
-      "Wrong question. The real question is: how fast can you scale? Because if you're not doubling revenue every 18 months in aesthetics, you're already obsolete.",
-      "I've seen a thousand reps try that approach. Exactly three succeeded. Here's what they did differently...",
-      "Let me tell you something about this industry - relationships are currency, and I'm the Federal Reserve.",
-      "That's amateur hour thinking. Winners in medical sales don't follow playbooks. They write them.",
-      "You want the truth? Your competition is already three moves ahead. But I know their endgame.",
-      "I don't do 'maybe.' I do million-dollar quarters and market domination. Which one interests you?",
-      "Every deal has a pressure point. Master surgeons respect one thing: absolute certainty. I'll show you how to project it.",
-      "In 15 years, I've never seen that strategy work. But this one? It's made careers."
+      "Got it. Here's the play: Your prospect is drowning in vendor calls. Stand out. Send a handwritten note with ONE patient success metric. No brochures. No pitch. Just results. Follow up in 3 days.",
+      "I know this pattern. You're overthinking it. The best reps I've trained do one thing differently - they sell the dream, not the device. What transformation does your product enable? Lead with that.",
+      "Smart question. Let me tell you what your competition doesn't know: Physicians buy from people who make their lives easier. Not products. Not features. Ease. How can you remove friction from their day?",
+      "This is exactly where deals die. But not yours. Next interaction, flip the script: 'Dr., what would need to be true for this to be a no-brainer for you?' Then deliver exactly that. Nothing more.",
+      "I've watched 1,000 reps fail here. You won't. Your advantage? You're asking the right questions. Now go deeper: What's their personal win? Not the practice's. Theirs. Solve for that.",
+      "Here's your edge: Everyone's pitching features. You're going to pitch time. 'Dr., this saves you 20 minutes per procedure.' Time is their scarcest resource. Position yourself as the one who gives it back."
     ];
     
     return responses[Math.floor(Math.random() * responses.length)];
