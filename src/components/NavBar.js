@@ -57,6 +57,16 @@ const borderGradient = keyframes`
   100% { background-position: 0% 50%; }
 `;
 
+const spin = keyframes`
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+`;
+
+const floatAnimation = keyframes`
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+`;
+
 // Main navigation links
 const getNavLinks = (currentUrl, isAdmin) => {
   const links = [
@@ -323,16 +333,54 @@ export default function NavBar() {
   const navButtonStyles = {
     ...buttonBaseStyles,
     fontSize: { xs: '0.9rem', sm: '0.95rem' },
-    px: { xs: 0.5, sm: 1 },
-    py: 0.5,
+    px: { xs: 1, sm: 1.5 },
+    py: { xs: 0.75, sm: 1 },
     mx: { xs: 0.5, sm: 1 },
     color: '#fff',
+    position: 'relative',
+    border: '1px solid transparent',
+    borderRadius: '12px',
+    background: 'rgba(255,255,255,0.03)',
+    backdropFilter: 'blur(10px)',
+    overflow: 'hidden',
+    '&::after': {
+      content: '""',
+      position: 'absolute',
+      inset: 0,
+      borderRadius: '12px',
+      padding: '1px',
+      background: `linear-gradient(135deg, transparent 30%, ${ACCENT_COLOR}20 50%, transparent 70%)`,
+      WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+      WebkitMaskComposite: 'xor',
+      maskComposite: 'exclude',
+      opacity: 0,
+      transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+    },
     '&:hover': {
-      background: 'rgba(255,255,255,0.05)',
-      transform: 'translateY(-1px)',
+      background: 'rgba(255,255,255,0.08)',
+      transform: 'translateY(-2px) scale(1.02)',
+      boxShadow: `0 8px 20px rgba(0,0,0,0.2), 0 0 20px ${ACCENT_COLOR}15`,
+      borderColor: `${ACCENT_COLOR}30`,
+      '& .MuiSvgIcon-root': {
+        transform: 'rotate(5deg) scale(1.1)',
+        filter: `drop-shadow(0 0 8px ${ACCENT_COLOR})`,
+      },
+      '&::after': {
+        opacity: 1,
+        background: `linear-gradient(135deg, transparent 20%, ${ACCENT_COLOR}40 50%, #7B42F640 60%, transparent 80%)`,
+        animation: `${glowPulse} 2s ease-in-out infinite`,
+      },
     },
     '&.active': {
-      background: 'rgba(123, 66, 246, 0.1)',
+      background: `linear-gradient(135deg, rgba(123, 66, 246, 0.15) 0%, rgba(0, 255, 198, 0.1) 100%)`,
+      borderColor: `${ACCENT_COLOR}50`,
+      boxShadow: `0 4px 15px rgba(123, 66, 246, 0.2), inset 0 1px 2px rgba(255,255,255,0.1)`,
+      '& .MuiSvgIcon-root': {
+        filter: `drop-shadow(0 0 4px ${ACCENT_COLOR})`,
+      },
+    },
+    '& .MuiSvgIcon-root': {
+      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
     },
   };
   
@@ -634,11 +682,12 @@ export default function NavBar() {
         onMouseEnter={() => setIsNavHovered(true)}
         onMouseLeave={() => setIsNavHovered(false)}
         sx={{
-        background: 'linear-gradient(135deg, rgba(26,26,46,0.95) 0%, rgba(15,15,30,0.98) 100%)',
-        backdropFilter: 'blur(40px)',
-        WebkitBackdropFilter: 'blur(40px)',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.3), 0 0 60px rgba(123,66,246,0.15)',
-        borderBottom: '1px solid rgba(123,66,246,0.1)',
+        background: `linear-gradient(135deg, rgba(26,26,46,0.98) 0%, rgba(15,15,30,0.99) 50%, rgba(10,10,20,0.98) 100%)`,
+        backdropFilter: 'blur(40px) saturate(150%)',
+        WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+        boxShadow: `0 8px 32px rgba(0,0,0,0.4), 0 0 60px rgba(123,66,246,0.2), inset 0 1px 0 rgba(255,255,255,0.05)`,
+        borderBottom: `2px solid transparent`,
+        borderImage: `linear-gradient(90deg, transparent 0%, ${ACCENT_COLOR}40 20%, #7B42F640 50%, ${ACCENT_COLOR}40 80%, transparent 100%) 1`,
         borderRadius: { xs: '0 0 16px 16px', md: '0 0 24px 24px' },
         mx: 'auto',
         mt: { xs: 0.5, md: 1 },
@@ -668,6 +717,19 @@ export default function NavBar() {
         },
       }}>
         <NavBarCanvas isHovered={isNavHovered} />
+        {/* Gradient overlay for depth */}
+        <Box sx={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '100%',
+          background: `radial-gradient(ellipse at top center, ${ACCENT_COLOR}08 0%, transparent 40%)`,
+          opacity: isNavHovered ? 1 : 0.5,
+          transition: 'opacity 0.5s ease',
+          pointerEvents: 'none',
+          mixBlendMode: 'screen',
+        }} />
         <Toolbar sx={{
           position: 'relative',
           zIndex: 1, 
@@ -696,9 +758,28 @@ export default function NavBar() {
             <Box sx={{ 
               display: 'flex',
               alignItems: 'center',
-              mr: 1,
-              width: { xs: 28, sm: 32 },
-              height: { xs: 28, sm: 32 }
+              mr: 1.5,
+              width: { xs: 36, sm: 40 },
+              height: { xs: 36, sm: 40 },
+              position: 'relative',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                inset: '-4px',
+                background: `conic-gradient(from 0deg at 50% 50%, ${ACCENT_COLOR}00 0deg, ${ACCENT_COLOR}40 90deg, #7B42F640 180deg, ${ACCENT_COLOR}00 360deg)`,
+                borderRadius: '50%',
+                animation: `${spin} 8s linear infinite`,
+                opacity: 0.6,
+              },
+              '&:hover': {
+                '& > svg': {
+                  animation: `${floatAnimation} 2s ease-in-out infinite`,
+                },
+                '&::before': {
+                  animation: `${spin} 2s linear infinite`,
+                  opacity: 1,
+                },
+              },
             }}>
               {orb}
             </Box>
