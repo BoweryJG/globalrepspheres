@@ -327,31 +327,12 @@ export default function NavBar() {
     py: 0.5,
     mx: { xs: 0.5, sm: 1 },
     color: '#fff',
-    position: 'relative',
-    overflow: 'hidden',
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      bottom: 0,
-      left: '50%',
-      transform: 'translateX(-50%)',
-      width: '0%',
-      height: '2px',
-      background: `linear-gradient(90deg, ${ACCENT_COLOR} 0%, #7B42F6 100%)`,
-      transition: 'width 0.3s ease',
-    },
     '&:hover': {
       background: 'rgba(255,255,255,0.05)',
       transform: 'translateY(-1px)',
-      '&::before': {
-        width: '80%',
-      },
     },
     '&.active': {
       background: 'rgba(123, 66, 246, 0.1)',
-      '&::before': {
-        width: '100%',
-      },
     },
   };
   
