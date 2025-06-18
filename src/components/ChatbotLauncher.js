@@ -20,11 +20,11 @@ import MedicalChatbot from './MedicalChatbot';
 
 const PulsingFab = styled(Fab)(({ theme }) => ({
   position: 'fixed',
-  bottom: 20,
-  right: 20,
+  bottom: 16,
+  right: 16,
   zIndex: 1299,
-  width: 48,
-  height: 48,
+  width: 40,
+  height: 40,
   background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
   '&:hover': {
     background: 'linear-gradient(135deg, #764ba2 0%, #667eea 100%)',
@@ -94,14 +94,14 @@ const ChatbotLauncher = () => {
         <Box
           sx={{
             position: 'fixed',
-            bottom: isMobile ? 0 : 90,
-            right: isMobile ? 0 : 20,
-            width: isMobile ? '100%' : 320,
-            height: isMobile ? '60vh' : 420,
-            maxHeight: isMobile ? '60vh' : 420,
+            bottom: isMobile ? 10 : 70,
+            right: isMobile ? '5%' : 16,
+            width: isMobile ? '90%' : 280,
+            height: isMobile ? '50vh' : 360,
+            maxHeight: isMobile ? '50vh' : 360,
             zIndex: 1100, // Lower than navbar (1200)
             boxShadow: '0 0 20px rgba(0,0,0,0.2)',
-            borderRadius: isMobile ? '16px 16px 0 0' : '16px',
+            borderRadius: '12px',
             overflow: 'hidden',
             display: 'flex',
             flexDirection: 'column',
@@ -169,7 +169,7 @@ const ChatbotLauncher = () => {
               }
             }}
           >
-            <AutoAwesomeIcon sx={{ fontSize: 20, color: 'white' }} />
+            <AutoAwesomeIcon sx={{ fontSize: 16, color: 'white' }} />
           </Badge>
         </PulsingFab>
       </Zoom>
@@ -179,8 +179,8 @@ const ChatbotLauncher = () => {
         <Box
           sx={{
             position: 'fixed',
-            bottom: 100,
-            right: 20,
+            bottom: 65,
+            right: 16,
             background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
             color: 'white',
             px: 2,
