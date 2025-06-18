@@ -20,40 +20,58 @@ import MedicalChatbot from './MedicalChatbot';
 
 const PulsingFab = styled(Fab)(({ theme }) => ({
   position: 'fixed',
-  bottom: 16,
-  right: 16,
+  bottom: 20,
+  right: 20,
   zIndex: 1299,
-  width: 40,
-  height: 40,
-  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+  width: 48,
+  height: 48,
+  background: 'linear-gradient(135deg, #667eea 0%, #f5576c 100%)',
+  border: '2px solid rgba(255, 255, 255, 0.1)',
   '&:hover': {
-    background: 'linear-gradient(135deg, #764ba2 0%, #667eea 100%)',
-    transform: 'scale(1.1)'
+    background: 'linear-gradient(135deg, #f5576c 0%, #667eea 100%)',
+    transform: 'scale(1.15) rotate(5deg)',
+    border: '2px solid rgba(102, 126, 234, 0.5)',
   },
-  transition: 'all 0.3s ease-in-out',
-  boxShadow: '0 4px 20px rgba(102, 126, 234, 0.4)',
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  boxShadow: '0 8px 24px rgba(102, 126, 234, 0.5), 0 0 40px rgba(102, 126, 234, 0.3)',
   '&::before': {
     content: '""',
     position: 'absolute',
-    top: -2,
-    left: -2,
-    right: -2,
-    bottom: -2,
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    top: -4,
+    left: -4,
+    right: -4,
+    bottom: -4,
+    background: 'linear-gradient(135deg, #667eea 0%, #f5576c 100%)',
     borderRadius: '50%',
-    opacity: 0.6,
+    opacity: 0.5,
     zIndex: -1,
-    animation: 'ripple 2s ease-out infinite'
+    animation: 'ripple 2.5s ease-out infinite'
+  },
+  '&::after': {
+    content: '""',
+    position: 'absolute',
+    inset: -1,
+    borderRadius: '50%',
+    background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.4), rgba(245, 87, 108, 0.4))',
+    animation: 'rotate 3s linear infinite',
+    WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+    WebkitMaskComposite: 'xor',
+    maskComposite: 'exclude',
+    padding: '1px',
   },
   '@keyframes ripple': {
     '0%': {
       transform: 'scale(1)',
-      opacity: 0.6
+      opacity: 0.5
     },
     '100%': {
-      transform: 'scale(1.2)',
+      transform: 'scale(1.4)',
       opacity: 0
     }
+  },
+  '@keyframes rotate': {
+    '0%': { transform: 'rotate(0deg)' },
+    '100%': { transform: 'rotate(360deg)' }
   }
 }));
 
@@ -214,7 +232,7 @@ const ChatbotLauncher = () => {
             handleToggle();
           }}
         >
-          💡 Ask our AI assistant
+          🔥 Meet Harvey - Your $47M AI Closer
         </Box>
       </Zoom>
     </>

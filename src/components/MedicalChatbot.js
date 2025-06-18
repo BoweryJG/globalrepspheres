@@ -24,23 +24,49 @@ import {
 } from '@mui/icons-material';
 import MedicalSalesChatbot from '../services/chatbotService';
 
-// Elegant, minimal design with refined styling
+// Premium design with sophisticated styling
 const ChatContainer = styled(Paper)(({ theme }) => ({
-  background: 'rgba(18, 18, 24, 0.92)',
-  backdropFilter: 'blur(16px) saturate(180%)',
-  WebkitBackdropFilter: 'blur(16px) saturate(180%)',
-  border: '1px solid rgba(255, 255, 255, 0.08)',
-  borderRadius: '12px',
+  background: 'linear-gradient(135deg, rgba(15, 15, 25, 0.95) 0%, rgba(25, 25, 40, 0.95) 100%)',
+  backdropFilter: 'blur(20px) saturate(200%)',
+  WebkitBackdropFilter: 'blur(20px) saturate(200%)',
+  border: '1px solid rgba(102, 126, 234, 0.2)',
+  borderRadius: '16px',
   overflow: 'hidden',
   position: 'relative',
-  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
+  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5), 0 0 80px rgba(102, 126, 234, 0.15)',
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    inset: 0,
+    borderRadius: '16px',
+    padding: '1px',
+    background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.5), rgba(245, 87, 108, 0.5))',
+    WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+    WebkitMaskComposite: 'xor',
+    maskComposite: 'exclude',
+    opacity: 0.3,
+  },
 }));
 
 const HeaderBox = styled(Box)(({ theme }) => ({
-  background: 'rgba(255, 255, 255, 0.03)',
-  borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-  padding: theme.spacing(1, 1.5),
+  background: 'linear-gradient(90deg, rgba(102, 126, 234, 0.1) 0%, rgba(245, 87, 108, 0.1) 100%)',
+  borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+  padding: theme.spacing(1.25, 1.5),
   position: 'relative',
+  '&::after': {
+    content: '""',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: '1px',
+    background: 'linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.5), transparent)',
+    animation: 'shimmer 3s infinite',
+  },
+  '@keyframes shimmer': {
+    '0%': { transform: 'translateX(-100%)' },
+    '100%': { transform: 'translateX(100%)' },
+  },
 }));
 
 const float = keyframes`
@@ -50,9 +76,13 @@ const float = keyframes`
 
 const BotAvatar = styled(Avatar)(({ theme }) => ({
   background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-  boxShadow: '0 2px 8px rgba(102, 126, 234, 0.3)',
-  width: 24,
-  height: 24,
+  boxShadow: '0 2px 12px rgba(102, 126, 234, 0.5), 0 0 20px rgba(102, 126, 234, 0.3)',
+  width: 28,
+  height: 28,
+  border: '2px solid rgba(255, 255, 255, 0.1)',
+  '&:hover': {
+    animation: `${float} 2s ease-in-out infinite`,
+  },
 }));
 
 const UserAvatar = styled(Avatar)(({ theme }) => ({
@@ -62,19 +92,26 @@ const UserAvatar = styled(Avatar)(({ theme }) => ({
   height: 24,
 }));
 
-const MessageBubble = styled(Box)(({ theme, isUser }) => ({
+const MessageBubble = styled(Box)(({ theme, isUser, isWelcome }) => ({
   background: isUser 
-    ? 'rgba(102, 126, 234, 0.15)'
-    : 'rgba(255, 255, 255, 0.05)',
-  backdropFilter: 'blur(10px)',
-  border: `1px solid ${isUser ? 'rgba(102, 126, 234, 0.3)' : 'rgba(255, 255, 255, 0.08)'}`,
-  borderRadius: '8px',
-  padding: '8px 12px',
+    ? 'linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(102, 126, 234, 0.15) 100%)'
+    : isWelcome 
+      ? 'linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(245, 87, 108, 0.08) 100%)'
+      : 'rgba(255, 255, 255, 0.05)',
+  backdropFilter: 'blur(12px)',
+  border: `1px solid ${isUser ? 'rgba(102, 126, 234, 0.4)' : isWelcome ? 'rgba(102, 126, 234, 0.3)' : 'rgba(255, 255, 255, 0.1)'}`,
+  borderRadius: isWelcome ? '12px' : '10px',
+  padding: isWelcome ? '16px 20px' : '10px 14px',
   color: '#fff',
-  fontSize: '0.75rem',
-  lineHeight: 1.4,
+  fontSize: isWelcome ? '0.8rem' : '0.75rem',
+  lineHeight: 1.5,
   maxWidth: '100%',
   position: 'relative',
+  boxShadow: isWelcome ? '0 8px 24px rgba(102, 126, 234, 0.2)' : 'none',
+  '& strong': {
+    color: '#667eea',
+    fontWeight: 700,
+  },
 }));
 
 const SendButton = styled(IconButton)(({ theme }) => ({
@@ -160,9 +197,10 @@ const MedicalChatbot = ({ isEmbedded = false, onNewMessage }) => {
       
       const welcomeMessage = {
         id: Date.now(),
-        text: "Hey there. I'm The Boss - your AI consultant. How can I help you dominate today?",
+        text: "I've closed $47M in aesthetic deals. Analyzed 2.4 million provider records. Built 15 years of industry dominance.\n\nThey call me Harvey - because I don't just predict the future, I create it.\n\n🎯 Need to crush your quota?\n💎 Want the inside track on territory gold?\n🚀 Ready to leave your competition wondering what hit them?\n\nI'm not your average AI. I'm your unfair advantage.\n\nWhat's your play?",
         sender: 'bot',
-        timestamp: new Date()
+        timestamp: new Date(),
+        isWelcome: true
       };
       setMessages([welcomeMessage]);
     } catch (error) {
@@ -238,7 +276,7 @@ const MedicalChatbot = ({ isEmbedded = false, onNewMessage }) => {
       chatbot.clearConversation();
       setMessages([{
         id: Date.now(),
-        text: "Fresh start. What's your move?",
+        text: "Clean slate. New game.\n\nWhat are we conquering today?",
         sender: 'bot',
         timestamp: new Date()
       }]);
@@ -269,12 +307,14 @@ const MedicalChatbot = ({ isEmbedded = false, onNewMessage }) => {
             </BotAvatar>
             <Box>
               <Typography variant="caption" sx={{ 
-                fontWeight: 600, 
+                fontWeight: 700, 
                 color: '#fff', 
-                fontSize: '0.75rem',
-                lineHeight: 1
+                fontSize: '0.8rem',
+                lineHeight: 1,
+                letterSpacing: '0.5px',
+                textTransform: 'uppercase',
               }}>
-                The Boss
+                Harvey
               </Typography>
               {userType && (
                 <Typography variant="caption" sx={{ 
@@ -282,7 +322,7 @@ const MedicalChatbot = ({ isEmbedded = false, onNewMessage }) => {
                   fontSize: '0.65rem',
                   lineHeight: 1
                 }}>
-                  AI Consultant
+                  Industry Dominator
                 </Typography>
               )}
             </Box>
@@ -331,7 +371,7 @@ const MedicalChatbot = ({ isEmbedded = false, onNewMessage }) => {
                     <BotIcon sx={{ fontSize: 12 }} />
                   </BotAvatar>
                 )}
-                <MessageBubble isUser={message.sender === 'user'}>
+                <MessageBubble isUser={message.sender === 'user'} isWelcome={message.isWelcome}>
                   {message.searchPerformed && (
                     <Chip
                       icon={<SearchIcon sx={{ fontSize: 10 }} />}
