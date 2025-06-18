@@ -11,7 +11,6 @@ import PricingSection from './components/PricingSection';
 import DecisionPointSection from './components/DecisionPointSection';
 import Footer from './components/Footer';
 import PerformanceMonitor from './components/PerformanceMonitor';
-import ChatbotLauncher from './components/ChatbotLauncher';
 import { logBackendStatus } from './utils/backendHealth';
 function App() {
   const [performanceMode, setPerformanceMode] = useState(() => {
@@ -56,7 +55,6 @@ function App() {
       <DecisionPointSection />
       <Footer />
       {showPerformanceMonitor && <PerformanceMonitor />}
-      <ChatbotLauncher />
     </>
   );
 }
