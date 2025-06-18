@@ -55,6 +55,7 @@
     ]
   },
   "devDependencies": {
+    "puppeteer": "^24.10.1",
     "react-app-rewired": "^2.2.1"
   }
 }
