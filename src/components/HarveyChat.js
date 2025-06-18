@@ -42,159 +42,237 @@ const fadeInUp = keyframes`
 `;
 
 // Styled Components
+const shimmer = keyframes`
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+`;
+
 const ChatContainer = styled(Paper)(({ theme }) => ({
   position: 'fixed',
-  bottom: '80px',
-  right: '20px',
-  width: '380px',
-  height: '500px',
+  bottom: '70px',
+  right: '16px',
+  width: '320px',
+  height: '420px',
   display: 'flex',
   flexDirection: 'column',
-  background: 'linear-gradient(135deg, #1a1a1a 0%, #2d1810 100%)',
-  border: '1px solid rgba(139, 69, 19, 0.3)',
-  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.8), 0 0 80px rgba(139, 69, 19, 0.2)',
+  background: '#0a0a0a',
+  border: '1px solid transparent',
+  backgroundImage: `
+    linear-gradient(#0a0a0a, #0a0a0a),
+    linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(212, 175, 55, 0.5) 20%, 
+      rgba(139, 69, 19, 0.8) 50%, 
+      rgba(212, 175, 55, 0.5) 80%, 
+      transparent 100%
+    )
+  `,
+  backgroundOrigin: 'border-box',
+  backgroundClip: 'padding-box, border-box',
+  boxShadow: `
+    0 20px 40px rgba(0, 0, 0, 0.95),
+    inset 0 1px 0 rgba(212, 175, 55, 0.2),
+    0 0 120px rgba(139, 69, 19, 0.15)
+  `,
   overflow: 'hidden',
   zIndex: 1000,
-  borderRadius: '16px',
+  borderRadius: '20px',
+  backdropFilter: 'blur(20px)',
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    inset: 0,
+    borderRadius: '20px',
+    padding: '1px',
+    background: 'linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.6), transparent)',
+    backgroundSize: '200% 100%',
+    animation: `${shimmer} 3s linear infinite`,
+    mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+    maskComposite: 'xor',
+    WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+    WebkitMaskComposite: 'xor',
+    opacity: 0.5
+  },
   '@media (max-width: 600px)': {
-    width: '90vw',
-    height: '70vh',
-    right: '5vw',
-    bottom: '70px'
+    width: '85vw',
+    height: '60vh',
+    right: '7.5vw',
+    bottom: '60px',
+    borderRadius: '16px'
   }
 }));
 
 const ChatHeader = styled(Box)({
-  padding: '16px 20px',
-  background: 'linear-gradient(90deg, #8B4513 0%, #654321 100%)',
-  borderBottom: '2px solid rgba(139, 69, 19, 0.5)',
+  padding: '12px 16px',
+  background: 'linear-gradient(135deg, rgba(139, 69, 19, 0.95) 0%, rgba(101, 67, 33, 0.95) 100%)',
+  borderBottom: '1px solid rgba(212, 175, 55, 0.3)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
   position: 'relative',
+  backdropFilter: 'blur(10px)',
   '&::after': {
     content: '""',
     position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
+    bottom: -1,
+    left: '20%',
+    right: '20%',
     height: '1px',
-    background: 'linear-gradient(90deg, transparent, #D4A574, transparent)',
-    animation: `${glow} 3s ease-in-out infinite`
+    background: 'linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.8), transparent)',
+    animation: `${glow} 2s ease-in-out infinite`
   }
 });
 
 const MessagesContainer = styled(Box)({
   flex: 1,
-  padding: '20px',
+  padding: '16px',
   overflowY: 'auto',
   display: 'flex',
   flexDirection: 'column',
-  gap: '16px',
+  gap: '12px',
+  background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(139,69,19,0.05) 100%)',
   '&::-webkit-scrollbar': {
-    width: '6px'
+    width: '4px'
   },
   '&::-webkit-scrollbar-track': {
-    background: 'rgba(139, 69, 19, 0.1)'
+    background: 'rgba(139, 69, 19, 0.05)',
+    borderRadius: '2px'
   },
   '&::-webkit-scrollbar-thumb': {
-    background: 'rgba(139, 69, 19, 0.5)',
-    borderRadius: '3px',
+    background: 'linear-gradient(180deg, #8B4513 0%, #D4A574 100%)',
+    borderRadius: '2px',
     '&:hover': {
-      background: 'rgba(139, 69, 19, 0.7)'
+      background: 'linear-gradient(180deg, #A0522D 0%, #DAA520 100%)'
     }
   }
 });
 
 const MessageBubble = styled(Box)(({ isUser }) => ({
   display: 'flex',
-  gap: '10px',
+  gap: '8px',
   flexDirection: isUser ? 'row-reverse' : 'row',
   alignItems: 'flex-start',
   animation: `${fadeInUp} 0.3s ease-out`
 }));
 
 const Message = styled(Paper)(({ isUser }) => ({
-  padding: '12px 16px',
-  maxWidth: '70%',
+  padding: '10px 14px',
+  maxWidth: '75%',
   wordWrap: 'break-word',
   background: isUser 
-    ? 'linear-gradient(135deg, #8B4513 0%, #654321 100%)' 
-    : 'rgba(30, 30, 30, 0.9)',
-  color: '#fff',
-  border: `1px solid ${isUser ? 'rgba(139, 69, 19, 0.5)' : 'rgba(255, 255, 255, 0.1)'}`,
-  borderRadius: isUser ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
-  fontSize: '0.9rem',
+    ? 'linear-gradient(135deg, rgba(139, 69, 19, 0.9) 0%, rgba(101, 67, 33, 0.9) 100%)' 
+    : 'rgba(20, 20, 20, 0.95)',
+  color: isUser ? '#FFE4B5' : '#E0E0E0',
+  border: `1px solid ${isUser ? 'rgba(212, 175, 55, 0.3)' : 'rgba(255, 255, 255, 0.05)'}`,
+  borderRadius: isUser ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
+  fontSize: '0.8rem',
   lineHeight: 1.5,
   boxShadow: isUser 
-    ? '0 2px 8px rgba(139, 69, 19, 0.3)' 
-    : '0 2px 8px rgba(0, 0, 0, 0.3)'
+    ? '0 4px 12px rgba(139, 69, 19, 0.4), inset 0 1px 0 rgba(255, 215, 0, 0.2)' 
+    : '0 2px 8px rgba(0, 0, 0, 0.4)',
+  backdropFilter: 'blur(10px)',
+  position: 'relative',
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: '1px',
+    background: isUser 
+      ? 'linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.3), transparent)'
+      : 'none',
+    opacity: 0.5
+  }
 }));
 
 const StyledAvatar = styled(Avatar)(({ isHarvey }) => ({
-  width: 36,
-  height: 36,
+  width: 28,
+  height: 28,
   background: isHarvey 
-    ? 'linear-gradient(135deg, #8B4513 0%, #654321 100%)'
+    ? 'linear-gradient(135deg, #D4A574 0%, #8B4513 100%)'
     : 'linear-gradient(135deg, #4a4a4a 0%, #2a2a2a 100%)',
-  border: `2px solid ${isHarvey ? 'rgba(139, 69, 19, 0.5)' : 'rgba(255, 255, 255, 0.2)'}`,
-  boxShadow: isHarvey ? '0 0 20px rgba(139, 69, 19, 0.5)' : 'none',
-  animation: isHarvey ? `${pulse} 3s ease-in-out infinite` : 'none'
+  border: `1.5px solid ${isHarvey ? 'rgba(255, 215, 0, 0.4)' : 'rgba(255, 255, 255, 0.1)'}`,
+  boxShadow: isHarvey 
+    ? '0 0 20px rgba(212, 175, 55, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3)' 
+    : 'none',
+  animation: isHarvey ? `${pulse} 4s ease-in-out infinite` : 'none',
+  fontSize: '0.8rem',
+  fontWeight: 'bold'
 }));
 
 const InputContainer = styled(Box)({
-  padding: '16px',
-  borderTop: '1px solid rgba(139, 69, 19, 0.3)',
+  padding: '12px',
+  borderTop: '1px solid rgba(212, 175, 55, 0.2)',
   display: 'flex',
-  gap: '12px',
+  gap: '8px',
   alignItems: 'center',
-  background: 'rgba(0, 0, 0, 0.3)'
+  background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(139, 69, 19, 0.1) 100%)',
+  backdropFilter: 'blur(10px)'
 });
 
 const StyledTextField = styled(TextField)({
   flex: 1,
   '& .MuiOutlinedInput-root': {
-    color: '#fff',
-    fontSize: '0.9rem',
+    color: '#E0E0E0',
+    fontSize: '0.8rem',
+    height: '36px',
+    background: 'rgba(20, 20, 20, 0.5)',
     '& fieldset': {
-      borderColor: 'rgba(139, 69, 19, 0.3)',
-      borderRadius: '12px'
+      borderColor: 'rgba(212, 175, 55, 0.2)',
+      borderRadius: '18px'
     },
     '&:hover fieldset': {
-      borderColor: 'rgba(139, 69, 19, 0.5)'
+      borderColor: 'rgba(212, 175, 55, 0.4)'
     },
     '&.Mui-focused fieldset': {
-      borderColor: '#8B4513'
+      borderColor: '#D4A574',
+      borderWidth: '1px'
     }
   },
   '& .MuiInputBase-input': {
-    fontSize: '0.9rem'
+    fontSize: '0.8rem',
+    padding: '8px 14px',
+    '&::placeholder': {
+      color: 'rgba(255, 255, 255, 0.3)'
+    }
   }
 });
 
 const SendButton = styled(IconButton)({
-  background: 'linear-gradient(135deg, #8B4513 0%, #654321 100%)',
-  color: '#fff',
+  background: 'linear-gradient(135deg, #D4A574 0%, #8B4513 100%)',
+  color: '#FFF',
+  width: '36px',
+  height: '36px',
+  boxShadow: '0 2px 8px rgba(212, 175, 55, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
   '&:hover': {
-    background: 'linear-gradient(135deg, #A0522D 0%, #8B4513 100%)',
-    transform: 'scale(1.05)'
+    background: 'linear-gradient(135deg, #DAA520 0%, #A0522D 100%)',
+    transform: 'scale(1.05)',
+    boxShadow: '0 4px 12px rgba(212, 175, 55, 0.5)'
   },
   '&:disabled': {
     opacity: 0.5
+  },
+  '& .MuiSvgIcon-root': {
+    fontSize: '1.1rem'
   }
 });
 
 const PowerBadge = styled(Chip)({
   position: 'absolute',
-  top: '8px',
-  right: '60px',
-  background: 'linear-gradient(90deg, #FFD700 0%, #FFA500 100%)',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  background: 'linear-gradient(135deg, #FFD700 0%, #B8860B 100%)',
   color: '#000',
-  fontWeight: 'bold',
-  fontSize: '0.7rem',
-  height: '20px',
+  fontWeight: '900',
+  fontSize: '0.6rem',
+  height: '18px',
+  letterSpacing: '0.5px',
+  boxShadow: '0 2px 8px rgba(255, 215, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.5)',
+  border: '1px solid rgba(184, 134, 11, 0.3)',
   '& .MuiChip-label': {
-    padding: '0 8px'
+    padding: '0 6px'
   }
 });
 
@@ -279,19 +357,26 @@ function HarveyChat({ open, onClose }) {
       <ChatContainer elevation={24}>
         <ChatHeader>
           <Box display="flex" alignItems="center" gap={1}>
-            <BusinessCenterIcon sx={{ color: '#FFD700', fontSize: '1.8rem' }} />
+            <BusinessCenterIcon sx={{ color: '#FFD700', fontSize: '1.4rem' }} />
             <Typography variant="h6" sx={{ 
-              fontWeight: 'bold', 
-              color: '#fff',
-              letterSpacing: '0.5px',
-              textShadow: '0 2px 4px rgba(0,0,0,0.5)'
+              fontWeight: '800', 
+              color: '#FFE4B5',
+              letterSpacing: '1px',
+              textShadow: '0 2px 8px rgba(0,0,0,0.8), 0 1px 0 rgba(255,255,255,0.1)',
+              fontSize: '0.9rem'
             }}>
               HARVEY
             </Typography>
           </Box>
           <PowerBadge label="ELITE" size="small" />
-          <IconButton onClick={onClose} size="small" sx={{ color: '#fff' }}>
-            <CloseIcon />
+          <IconButton onClick={onClose} size="small" sx={{ 
+            color: '#FFE4B5',
+            padding: '4px',
+            '&:hover': {
+              background: 'rgba(255, 215, 0, 0.1)'
+            }
+          }}>
+            <CloseIcon sx={{ fontSize: '1.2rem' }} />
           </IconButton>
         </ChatHeader>
 
@@ -312,8 +397,8 @@ function HarveyChat({ open, onClose }) {
             <MessageBubble isUser={false}>
               <StyledAvatar isHarvey={true}>H</StyledAvatar>
               <Box display="flex" alignItems="center" gap={1}>
-                <CircularProgress size={20} sx={{ color: '#8B4513' }} />
-                <Typography variant="body2" color="text.secondary">
+                <CircularProgress size={16} sx={{ color: '#D4A574' }} />
+                <Typography variant="body2" sx={{ color: 'rgba(212, 175, 55, 0.8)', fontSize: '0.75rem' }}>
                   Harvey is thinking...
                 </Typography>
               </Box>
