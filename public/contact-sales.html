@@ -619,17 +619,25 @@
       const data = Object.fromEntries(formData);
       
       try {
-        // In production, send to your backend
-        const response = await fetch('/api/enterprise-inquiry', {
+        // Get backend URL from environment or use default
+        const backendUrl = 'https://osbackend-zl1h.onrender.com';
+        
+        // Send to backend API
+        const response = await fetch(`${backendUrl}/api/enterprise-inquiry`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(data),
+          body: JSON.stringify({
+            ...data,
+            name: `${data.firstName} ${data.lastName}`,
+            submittedAt: new Date().toISOString()
+          }),
         });
         
-        // For now, just simulate success
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
         
         // Show success message
         this.style.display = 'none';

@@ -25,6 +25,18 @@ export const API_ENDPOINTS = {
   // User endpoints
   USER_PROFILE: `${BACKEND_URL}/api/user/profile`,
   USER_UPDATE: `${BACKEND_URL}/api/user/update`,
+  
+  // Email endpoints
+  EMAIL_SEND: `${BACKEND_URL}/api/emails/send`,
+  EMAIL_SEND_AS_REPSPHERES: `${BACKEND_URL}/api/emails/send-as-repspheres`,
+  EMAIL_BULK: `${BACKEND_URL}/api/emails/bulk`,
+  EMAIL_CAMPAIGN: `${BACKEND_URL}/api/emails/campaign`,
+  EMAIL_STATS: `${BACKEND_URL}/api/emails/stats`,
+  EMAIL_ALIASES: `${BACKEND_URL}/api/emails/aliases`,
+  
+  // Contact form endpoints
+  ENTERPRISE_INQUIRY: `${BACKEND_URL}/api/enterprise-inquiry`,
+  ELITE_APPLICATION: `${BACKEND_URL}/api/elite-application`,
 };
 
 /**

@@ -15,6 +15,7 @@ import {
 import { styled } from '@mui/material/styles';
 import StarryBackground from '../components/StarryBackground_Ultra';
 import NavBar from '../components/NavBar';
+import { API_ENDPOINTS } from '../config/api';
 
 const EliteContainer = styled(Box)(({ theme }) => ({
   minHeight: '100vh',
@@ -89,12 +90,16 @@ export default function EliteApplicationPage() {
     
     try {
       // Submit application to backend
-      const response = await fetch('/api/elite-application', {
+      const response = await fetch(API_ENDPOINTS.ELITE_APPLICATION, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          ...formData,
+          name: `${formData.firstName} ${formData.lastName}`,
+          submittedAt: new Date().toISOString()
+        })
       });
       
       if (response.ok) {
