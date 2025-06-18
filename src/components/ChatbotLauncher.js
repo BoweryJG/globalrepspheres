@@ -23,8 +23,8 @@ const PulsingFab = styled(Fab)(({ theme }) => ({
   bottom: 20,
   right: 20,
   zIndex: 1299,
-  width: 64,
-  height: 64,
+  width: 48,
+  height: 48,
   background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
   '&:hover': {
     background: 'linear-gradient(135deg, #764ba2 0%, #667eea 100%)',
@@ -96,9 +96,9 @@ const ChatbotLauncher = () => {
             position: 'fixed',
             bottom: isMobile ? 0 : 90,
             right: isMobile ? 0 : 20,
-            width: isMobile ? '100%' : 380,
-            height: isMobile ? '70vh' : 500,
-            maxHeight: isMobile ? '70vh' : 500,
+            width: isMobile ? '100%' : 320,
+            height: isMobile ? '60vh' : 420,
+            maxHeight: isMobile ? '60vh' : 420,
             zIndex: 1100, // Lower than navbar (1200)
             boxShadow: '0 0 20px rgba(0,0,0,0.2)',
             borderRadius: isMobile ? '16px 16px 0 0' : '16px',
@@ -114,8 +114,8 @@ const ChatbotLauncher = () => {
             size="small"
             sx={{
               position: 'absolute',
-              right: 12,
-              top: 12,
+              right: 8,
+              top: 8,
               zIndex: 9999,
               backgroundColor: '#f44336',
               color: 'white',
@@ -169,7 +169,7 @@ const ChatbotLauncher = () => {
               }
             }}
           >
-            <AutoAwesomeIcon sx={{ fontSize: 28, color: 'white' }} />
+            <AutoAwesomeIcon sx={{ fontSize: 20, color: 'white' }} />
           </Badge>
         </PulsingFab>
       </Zoom>
@@ -183,10 +183,10 @@ const ChatbotLauncher = () => {
             right: 20,
             background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
             color: 'white',
-            px: 2.5,
-            py: 1.5,
-            borderRadius: 2,
-            fontSize: '0.925rem',
+            px: 2,
+            py: 1,
+            borderRadius: 1.5,
+            fontSize: '0.75rem',
             fontWeight: 500,
             whiteSpace: 'nowrap',
             boxShadow: '0 4px 20px rgba(102, 126, 234, 0.4)',
@@ -214,7 +214,7 @@ const ChatbotLauncher = () => {
             handleToggle();
           }}
         >
-          💡 Need help? Ask our AI consultant!
+          💡 Ask our AI assistant
         </Box>
       </Zoom>
     </>

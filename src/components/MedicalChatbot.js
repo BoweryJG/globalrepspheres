@@ -24,16 +24,16 @@ import {
 } from '@mui/icons-material';
 import MedicalSalesChatbot from '../services/chatbotService';
 
-// Styled components for the wow factor
+// Styled components for the wow factor - SMALLER SIZES
 const ChatContainer = styled(Paper)(({ theme }) => ({
   background: 'linear-gradient(135deg, rgba(11, 11, 32, 0.95) 0%, rgba(24, 24, 43, 0.95) 100%)',
   backdropFilter: 'blur(20px)',
   WebkitBackdropFilter: 'blur(20px)',
   border: '1px solid rgba(0, 229, 255, 0.2)',
-  borderRadius: theme.spacing(3),
+  borderRadius: theme.spacing(2),
   overflow: 'hidden',
   position: 'relative',
-  boxShadow: '0 20px 50px rgba(0, 0, 0, 0.5), 0 0 100px rgba(0, 229, 255, 0.1)',
+  boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3), 0 0 50px rgba(0, 229, 255, 0.1)',
   '&::before': {
     content: '""',
     position: 'absolute',
@@ -42,7 +42,7 @@ const ChatContainer = styled(Paper)(({ theme }) => ({
     right: -2,
     bottom: -2,
     background: 'linear-gradient(45deg, #00E5FF, #5B3CFF, #00E5FF)',
-    borderRadius: theme.spacing(3),
+    borderRadius: theme.spacing(2),
     opacity: 0.3,
     animation: 'pulse 4s ease-in-out infinite',
     zIndex: -1,
@@ -57,6 +57,7 @@ const HeaderBox = styled(Box)(({ theme }) => ({
   background: 'linear-gradient(135deg, #00E5FF 0%, #5B3CFF 100%)',
   position: 'relative',
   overflow: 'hidden',
+  padding: theme.spacing(1.5, 2),
   '&::after': {
     content: '""',
     position: 'absolute',
@@ -75,18 +76,18 @@ const HeaderBox = styled(Box)(({ theme }) => ({
 
 const float = keyframes`
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+  50% { transform: translateY(-5px); }
 `;
 
 const BotAvatar = styled(Avatar)(({ theme }) => ({
   background: 'linear-gradient(135deg, #00E5FF 0%, #5B3CFF 100%)',
-  boxShadow: '0 4px 20px rgba(0, 229, 255, 0.5)',
+  boxShadow: '0 2px 10px rgba(0, 229, 255, 0.5)',
   animation: `${float} 3s ease-in-out infinite`,
 }));
 
 const UserAvatar = styled(Avatar)(({ theme }) => ({
   background: 'linear-gradient(135deg, #FF006E 0%, #8338EC 100%)',
-  boxShadow: '0 4px 20px rgba(255, 0, 110, 0.3)',
+  boxShadow: '0 2px 10px rgba(255, 0, 110, 0.3)',
 }));
 
 const MessageBubble = styled(Paper)(({ theme, isUser }) => ({
@@ -96,54 +97,40 @@ const MessageBubble = styled(Paper)(({ theme, isUser }) => ({
   backdropFilter: 'blur(10px)',
   WebkitBackdropFilter: 'blur(10px)',
   border: `1px solid ${isUser ? 'rgba(91, 60, 255, 0.3)' : 'rgba(255, 255, 255, 0.1)'}`,
-  borderRadius: theme.spacing(2.5),
-  padding: theme.spacing(2.5),
-  color: isUser ? 'white' : 'rgba(255, 255, 255, 0.95)',
+  borderRadius: theme.spacing(1.5),
+  padding: theme.spacing(1.5),
+  color: '#fff',
+  maxWidth: '100%',
+  wordBreak: 'break-word',
+  fontSize: '0.8rem',
+  lineHeight: 1.5,
+  boxShadow: isUser 
+    ? '0 4px 15px rgba(91, 60, 255, 0.2)' 
+    : '0 4px 15px rgba(0, 0, 0, 0.2)',
   position: 'relative',
-  transition: 'all 0.3s ease',
-  '&:hover': {
-    transform: 'translateY(-2px)',
-    boxShadow: isUser 
-      ? '0 8px 30px rgba(91, 60, 255, 0.3)'
-      : '0 8px 30px rgba(0, 229, 255, 0.2)',
-  },
-}));
-
-const StyledTextField = styled(TextField)(({ theme }) => ({
-  '& .MuiOutlinedInput-root': {
-    background: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: theme.spacing(3),
-    color: 'white',
-    transition: 'all 0.3s ease',
-    '& fieldset': {
-      borderColor: 'rgba(255, 255, 255, 0.2)',
-      transition: 'all 0.3s ease',
-    },
-    '&:hover fieldset': {
-      borderColor: 'rgba(0, 229, 255, 0.4)',
-    },
-    '&.Mui-focused fieldset': {
-      borderColor: '#00E5FF',
-      borderWidth: 2,
-      boxShadow: '0 0 20px rgba(0, 229, 255, 0.2)',
-    },
-    '& input::placeholder, & textarea::placeholder': {
-      color: 'rgba(255, 255, 255, 0.5)',
-    },
-  },
-  '& .MuiInputBase-input': {
-    color: 'white',
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    width: 0,
+    height: 0,
+    [isUser ? 'right' : 'left']: -8,
+    top: '50%',
+    transform: 'translateY(-50%)',
+    borderStyle: 'solid',
+    borderWidth: isUser ? '8px 0 8px 8px' : '8px 8px 8px 0',
+    borderColor: isUser 
+      ? `transparent transparent transparent rgba(91, 60, 255, 0.9)`
+      : `transparent rgba(255, 255, 255, 0.1) transparent transparent`,
   },
 }));
 
 const SendButton = styled(IconButton)(({ theme }) => ({
-  background: 'linear-gradient(45deg, #00E5FF 30%, #5B3CFF 90%)',
-  color: 'white',
-  transition: 'all 0.3s ease',
+  background: 'linear-gradient(135deg, #00E5FF 0%, #5B3CFF 100%)',
+  color: '#fff',
+  padding: '8px',
   '&:hover': {
-    background: 'linear-gradient(45deg, #00E5FF 60%, #5B3CFF 100%)',
+    background: 'linear-gradient(135deg, #5B3CFF 0%, #00E5FF 100%)',
     transform: 'scale(1.1)',
-    boxShadow: '0 5px 20px rgba(0, 229, 255, 0.4)',
   },
   '&:disabled': {
     background: 'rgba(255, 255, 255, 0.1)',
@@ -154,19 +141,19 @@ const SendButton = styled(IconButton)(({ theme }) => ({
 const MessagesContainer = styled(Box)(({ theme }) => ({
   flex: 1,
   overflow: 'auto',
-  padding: theme.spacing(3),
+  padding: theme.spacing(1.5),
   background: 'transparent',
   position: 'relative',
   '&::-webkit-scrollbar': {
-    width: '8px',
+    width: '6px',
   },
   '&::-webkit-scrollbar-track': {
     background: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: '4px',
+    borderRadius: '3px',
   },
   '&::-webkit-scrollbar-thumb': {
     background: 'rgba(0, 229, 255, 0.3)',
-    borderRadius: '4px',
+    borderRadius: '3px',
     '&:hover': {
       background: 'rgba(0, 229, 255, 0.5)',
     },
@@ -231,9 +218,9 @@ const MedicalChatbot = ({ isEmbedded = false, onNewMessage }) => {
   const getUserTypeLabel = (type) => {
     switch (type) {
       case 'SALES_REP':
-        return 'Sales Professional';
+        return 'Sales Pro';
       case 'PHYSICIAN':
-        return 'Medical Professional';
+        return 'Medical Pro';
       case 'PATIENT':
         return 'Patient';
       default:
@@ -297,7 +284,7 @@ const MedicalChatbot = ({ isEmbedded = false, onNewMessage }) => {
       chatbot.clearConversation();
       setMessages([{
         id: Date.now(),
-        text: "Clean slate. I respect that. Winners know when to reset and come back stronger.\n\nWhat's your next move?",
+        text: "Slate wiped clean. New game, new rules. What's your play?",
         sender: 'bot',
         timestamp: new Date()
       }]);
@@ -315,24 +302,22 @@ const MedicalChatbot = ({ isEmbedded = false, onNewMessage }) => {
   return (
     <Container maxWidth={isEmbedded ? false : "md"} sx={{ height: '100%', display: 'flex', flexDirection: 'column', py: isEmbedded ? 0 : 2, px: isEmbedded ? 0 : 2 }}>
       <ChatContainer elevation={isEmbedded ? 0 : 3} sx={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-        <HeaderBox sx={{ p: isEmbedded ? 1.5 : 3, pr: isEmbedded ? 6 : 3, color: 'white' }}>
+        <HeaderBox>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: isEmbedded ? 1 : 2 }}>
-              <BotAvatar sx={{ width: isEmbedded ? 40 : 48, height: isEmbedded ? 40 : 48 }}>
-                <BotIcon sx={{ fontSize: isEmbedded ? 24 : 32 }} />
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <BotAvatar sx={{ width: 32, height: 32 }}>
+                <BotIcon sx={{ fontSize: 18 }} />
               </BotAvatar>
               <Box>
-                <Typography variant={isEmbedded ? "body1" : "h5"} fontWeight="bold" sx={{ letterSpacing: '0.5px' }}>
+                <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#fff', fontSize: '0.9rem', lineHeight: 1.2 }}>
                   The Boss
                 </Typography>
-                {!isEmbedded && (
-                  <Typography variant="body2" sx={{ opacity: 0.9, fontStyle: 'italic' }}>
-                    Your success is my business
-                  </Typography>
-                )}
+                <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '0.65rem', fontStyle: 'italic' }}>
+                  Your success is my business
+                </Typography>
               </Box>
             </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
               {userType && (
                 <Chip
                   label={getUserTypeLabel(userType)}
@@ -341,21 +326,25 @@ const MedicalChatbot = ({ isEmbedded = false, onNewMessage }) => {
                     background: 'rgba(255, 255, 255, 0.2)',
                     border: '1px solid rgba(255, 255, 255, 0.3)',
                     color: 'white',
+                    fontSize: '0.65rem',
+                    height: '20px',
                     fontWeight: 600,
-                    letterSpacing: '0.5px'
+                    letterSpacing: '0.3px'
                   }}
                 />
               )}
               {!isEmbedded && (
                 <IconButton 
                   onClick={handleClearChat} 
+                  size="small"
                   sx={{ 
                     color: 'white',
+                    padding: '4px',
                     '&:hover': {
                       background: 'rgba(255, 255, 255, 0.1)'
                     }
                   }}>
-                  <ClearIcon />
+                  <ClearIcon sx={{ fontSize: 16 }} />
                 </IconButton>
               )}
             </Box>
@@ -369,7 +358,7 @@ const MedicalChatbot = ({ isEmbedded = false, onNewMessage }) => {
                 sx={{
                   display: 'flex',
                   justifyContent: message.sender === 'user' ? 'flex-end' : 'flex-start',
-                  mb: 3
+                  mb: 1.5
                 }}
               >
                 <Box
@@ -377,41 +366,47 @@ const MedicalChatbot = ({ isEmbedded = false, onNewMessage }) => {
                     display: 'flex',
                     flexDirection: message.sender === 'user' ? 'row-reverse' : 'row',
                     alignItems: 'flex-start',
-                    gap: 2,
-                    maxWidth: '75%'
+                    gap: 1,
+                    maxWidth: '85%'
                   }}
                 >
                   {message.sender === 'user' ? (
-                    <UserAvatar sx={{ width: 40, height: 40 }}>
-                      <PersonIcon />
+                    <UserAvatar sx={{ width: 24, height: 24 }}>
+                      <PersonIcon sx={{ fontSize: 14 }} />
                     </UserAvatar>
                   ) : (
-                    <BotAvatar sx={{ width: 40, height: 40 }}>
-                      <BotIcon />
+                    <BotAvatar sx={{ width: 24, height: 24 }}>
+                      <BotIcon sx={{ fontSize: 14 }} />
                     </BotAvatar>
                   )}
                   <MessageBubble elevation={0} isUser={message.sender === 'user'}>
                     {message.searchPerformed && (
                       <Chip
-                        icon={<SearchIcon />}
+                        icon={<SearchIcon sx={{ fontSize: 12 }} />}
                         label="Intel gathered"
                         size="small"
                         sx={{ 
-                          mb: 1.5,
+                          mb: 1,
                           background: 'rgba(0, 229, 255, 0.2)',
                           border: '1px solid rgba(0, 229, 255, 0.4)',
                           color: '#00E5FF',
+                          fontSize: '0.65rem',
+                          height: '18px',
                           '& .MuiChip-icon': {
                             color: '#00E5FF'
                           }
                         }}
                       />
                     )}
-                    <Typography variant="body1" sx={{ whiteSpace: 'pre-line', lineHeight: 1.6 }}>
+                    <Typography 
+                      sx={{ 
+                        whiteSpace: 'pre-wrap',
+                        fontSize: '0.8rem',
+                        lineHeight: 1.5,
+                        color: message.isError ? '#ff6b6b' : 'inherit'
+                      }}
+                    >
                       {message.text}
-                    </Typography>
-                    <Typography variant="caption" sx={{ display: 'block', mt: 1.5, opacity: 0.6 }}>
-                      {message.timestamp.toLocaleTimeString()}
                     </Typography>
                   </MessageBubble>
                 </Box>
@@ -419,46 +414,98 @@ const MedicalChatbot = ({ isEmbedded = false, onNewMessage }) => {
             </Fade>
           ))}
           {isLoading && (
-            <Fade in>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, ml: 7 }}>
-                <CircularProgress size={20} sx={{ color: '#00E5FF' }} />
-                <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-                  {isSearching ? 'Leveraging my network...' : 'Strategizing...'}
-                </Typography>
+            <Fade in timeout={300}>
+              <Box display="flex" alignItems="center" mb={1.5}>
+                <BotAvatar sx={{ width: 24, height: 24, mr: 1 }}>
+                  <BotIcon sx={{ fontSize: 14 }} />
+                </BotAvatar>
+                <MessageBubble elevation={0} isUser={false}>
+                  <Box display="flex" alignItems="center" gap={1}>
+                    <CircularProgress size={14} sx={{ color: '#00E5FF' }} />
+                    <Typography 
+                      sx={{ 
+                        fontSize: '0.75rem',
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        animation: 'typing 1.4s steps(3, end) infinite',
+                      }}
+                    >
+                      Processing...
+                    </Typography>
+                  </Box>
+                </MessageBubble>
               </Box>
             </Fade>
           )}
           <div ref={messagesEndRef} />
         </MessagesContainer>
 
-        <Box sx={{ 
-          p: 2.5, 
-          background: 'linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.3) 100%)',
-          borderTop: '1px solid rgba(255, 255, 255, 0.1)'
-        }}>
-          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-            <StyledTextField
+        <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.1)' }} />
+
+        <Box sx={{ p: 1.5, position: 'relative' }}>
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <TextField
               fullWidth
-              multiline
-              maxRows={4}
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Tell me what you need to win..."
-              variant="outlined"
+              placeholder="What's your next move?"
               disabled={isLoading}
+              variant="outlined"
+              size="small"
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  fontSize: '0.8rem',
+                  borderRadius: 2,
+                  backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                  color: '#fff',
+                  '& fieldset': {
+                    borderColor: 'rgba(255, 255, 255, 0.2)',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: 'rgba(0, 229, 255, 0.4)',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: '#00E5FF',
+                    borderWidth: 1,
+                  },
+                },
+                '& .MuiInputBase-input': {
+                  padding: '8px 12px',
+                  '&::placeholder': {
+                    color: 'rgba(255, 255, 255, 0.5)',
+                    opacity: 1,
+                  },
+                },
+              }}
             />
             <SendButton
-              size="large"
               onClick={handleSendMessage}
               disabled={!inputMessage.trim() || isLoading}
+              size="small"
             >
-              <SendIcon />
+              <SendIcon sx={{ fontSize: 18 }} />
             </SendButton>
           </Box>
-          <Typography variant="caption" sx={{ mt: 1.5, display: 'block', color: 'rgba(255, 255, 255, 0.4)', textAlign: 'center' }}>
-            Powered by 15 years of industry dominance
-          </Typography>
+          {isSearching && (
+            <Box sx={{ 
+              position: 'absolute', 
+              top: -30, 
+              left: '50%', 
+              transform: 'translateX(-50%)',
+              background: 'rgba(0, 229, 255, 0.2)',
+              borderRadius: 2,
+              px: 2,
+              py: 0.5,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1
+            }}>
+              <SearchIcon sx={{ fontSize: 14, color: '#00E5FF' }} />
+              <Typography sx={{ fontSize: '0.7rem', color: '#00E5FF' }}>
+                Gathering intel...
+              </Typography>
+            </Box>
+          )}
         </Box>
       </ChatContainer>
     </Container>
