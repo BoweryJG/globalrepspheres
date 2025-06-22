@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RepSpheres | The Collaborative AI Sales Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #141414;
+            --bg-darker: #0a0a0a;
+            --purple-primary: #9f58fa;
+            --purple-dark: #7e22ce;
+            --purple-light: #a855f7;
+            --blue-accent: #4B96DC;
+            --blue-light: #60a5fa;
+            --green-accent: #4bd48e;
+            --pink-accent: #f53969;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-hover: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            font-family: system-ui, -apple-system, "system-ui", "Segoe UI", Helvetica, Arial, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Starfield Background */
+        .starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle linear infinite;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0; transform: translateY(0); }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(-100vh); }
+        }
+
+        /* Gradient Blob Animation */
+        .gradient-blob {
+            position: fixed;
+            width: 800px;
+            height: 800px;
+            background: linear-gradient(to right, var(--purple-primary), var(--blue-accent));
+            border-radius: 50%;
+            opacity: 0.3;
+            filter: blur(120px);
+            animation: float 20s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        .blob-1 {
+            top: -400px;
+            left: -400px;
+        }
+
+        .blob-2 {
+            bottom: -400px;
+            right: -400px;
+            animation-delay: 10s;
+            background: linear-gradient(to right, var(--blue-accent), var(--green-accent));
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(100px, -100px) scale(1.1); }
+            66% { transform: translate(-100px, 100px) scale(0.9); }
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 20px 40px;
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--purple-primary), var(--blue-accent));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            color: white;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .github-stars {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--glass);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .github-stars:hover {
+            background: var(--glass-hover);
+            border-color: var(--purple-primary);
+            color: var(--text-primary);
+        }
+
+        .install-button {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            background: linear-gradient(to right, var(--purple-primary), var(--purple-light));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .install-button svg {
+            stroke: white;
+            fill: none;
+            width: 20px;
+            height: 20px;
+        }
+
+        .install-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .install-button:hover::before {
+            left: 100%;
+        }
+
+        .install-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(159, 88, 250, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 40px 80px;
+            z-index: 10;
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .hero-left {
+            z-index: 10;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: var(--glass);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .hero-badge svg {
+            stroke: var(--purple-primary);
+            fill: none;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 30px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, var(--blue-accent), var(--purple-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-description {
+            font-size: 1.25rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .primary-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 32px;
+            background: linear-gradient(to right, var(--purple-primary), var(--purple-light));
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .primary-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(159, 88, 250, 0.3);
+        }
+
+        .secondary-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 32px;
+            background: var(--glass);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .secondary-button:hover {
+            background: var(--glass-hover);
+            border-color: var(--purple-primary);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Visual */
+        .hero-visual {
+            position: relative;
+            z-index: 10;
+        }
+
+        .visual-container {
+            position: relative;
+            background: var(--glass);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 40px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .visual-header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 30px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot.red { background: #ff5f57; }
+        .dot.yellow { background: #ffbd2e; }
+        .dot.green { background: #28ca42; }
+
+        .code-demo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .code-line {
+            margin-bottom: 8px;
+            opacity: 0;
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .code-comment {
+            color: var(--text-muted);
+        }
+
+        .code-keyword {
+            color: var(--purple-primary);
+        }
+
+        .code-string {
+            color: var(--green-accent);
+        }
+
+        .code-function {
+            color: var(--blue-accent);
+        }
+
+        /* Stats Section */
+        .stats-section {
+            padding: 120px 40px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .stats-header {
+            max-width: 800px;
+            margin: 0 auto 80px;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--purple-primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            background: var(--glass);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, var(--purple-primary), var(--blue-accent));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--purple-primary);
+            box-shadow: 0 20px 40px rgba(159, 88, 250, 0.1);
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--purple-primary), var(--blue-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        /* Intelligence Timeline */
+        .timeline-section {
+            padding: 120px 40px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .timeline-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 80px;
+        }
+
+        .timeline-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--purple-primary), var(--blue-accent));
+            transform: translateX(-50%);
+        }
+
+        .timeline-step {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 120px;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .timeline-step.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline-step:nth-child(even) {
+            direction: rtl;
+        }
+
+        .timeline-step:nth-child(even) > * {
+            direction: ltr;
+        }
+
+        .step-content {
+            padding: 40px;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--purple-primary), var(--blue-accent));
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        /* Custom Icon Styles */
+        .step-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--glass);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .step-icon svg {
+            width: 36px;
+            height: 36px;
+            stroke: var(--purple-primary);
+            stroke-width: 1.5;
+            fill: none;
+            transition: all 0.3s ease;
+        }
+
+        .step-icon::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(45deg, var(--purple-primary), var(--blue-accent));
+            border-radius: 20px;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+        }
+
+        .timeline-step:hover .step-icon {
+            transform: scale(1.1);
+            border-color: transparent;
+        }
+
+        .timeline-step:hover .step-icon::before {
+            opacity: 0.2;
+        }
+
+        .timeline-step:hover .step-icon svg {
+            stroke: var(--purple-light);
+            filter: drop-shadow(0 0 12px rgba(159, 88, 250, 0.6));
+        }
+
+        .step-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .step-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .step-visual {
+            background: var(--glass);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 30px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .step-visual::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--purple-primary), var(--blue-accent));
+            border-radius: 20px;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+        }
+
+        .step-visual:hover::before {
+            opacity: 0.5;
+        }
+
+        /* Social Intelligence Display */
+        .social-feed {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        .social-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border-left: 3px solid var(--purple-primary);
+            opacity: 0;
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .social-item.alert {
+            border-left-color: var(--pink-accent);
+            background: rgba(245, 57, 105, 0.1);
+        }
+
+        .social-item.opportunity {
+            border-left-color: var(--green-accent);
+            background: rgba(75, 212, 142, 0.1);
+        }
+
+        /* Founder Section */
+        .founder-section {
+            padding: 120px 40px;
+            background: linear-gradient(to bottom, rgba(159, 88, 250, 0.03), transparent);
+            position: relative;
+            z-index: 10;
+        }
+
+        .founder-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .founder-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: var(--glass);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .founder-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 60px;
+        }
+
+        .founder-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            text-align: left;
+        }
+
+        .founder-visual {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .experience-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background: var(--glass);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .experience-card:hover {
+            transform: translateX(10px);
+            border-color: var(--purple-primary);
+            box-shadow: 0 10px 30px rgba(159, 88, 250, 0.1);
+        }
+
+        .company-logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--purple-primary), var(--blue-accent));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .company-logo.coolsculpting {
+            background: linear-gradient(135deg, #00bfff, #1e90ff);
+        }
+
+        .company-logo.nvidia {
+            background: linear-gradient(135deg, #76b900, #8cc800);
+        }
+
+        .company-logo.neocis {
+            background: linear-gradient(135deg, var(--pink-accent), var(--purple-primary));
+        }
+
+        .experience-card h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .experience-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .founder-story {
+            padding: 40px;
+        }
+
+        .founder-description {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .founder-insight {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-primary);
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--glass);
+            border-left: 3px solid var(--purple-primary);
+            border-radius: 8px;
+        }
+
+        .founder-quote {
+            font-size: 1.5rem;
+            font-weight: 600;
+            font-style: italic;
+            background: linear-gradient(to right, var(--purple-primary), var(--blue-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Harvey Chat Interface */
+        .harvey-section {
+            padding: 120px 40px;
+            background: linear-gradient(to bottom, transparent, rgba(159, 88, 250, 0.05));
+            position: relative;
+            z-index: 10;
+        }
+
+        .harvey-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .harvey-chat {
+            background: var(--glass);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 30px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .chat-message {
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .chat-message.user {
+            text-align: right;
+        }
+
+        .chat-bubble {
+            display: inline-block;
+            padding: 12px 20px;
+            border-radius: 16px;
+            max-width: 80%;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .chat-bubble.user {
+            background: linear-gradient(to right, var(--purple-primary), var(--purple-light));
+            color: white;
+        }
+
+        .chat-bubble.harvey {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 150px 40px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .cta-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 80px 60px;
+            background: var(--glass);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, var(--purple-primary), var(--blue-accent));
+            opacity: 0.1;
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 var(--green-accent);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(75, 212, 142, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(75, 212, 142, 0);
+            }
+        }
+
+        .cta-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .cta-description {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+        }
+
+        .countdown {
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(245, 57, 105, 0.1);
+            border: 1px solid var(--pink-accent);
+            border-radius: 8px;
+            color: var(--pink-accent);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            margin-top: 30px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-content,
+            .timeline-step,
+            .harvey-container,
+            .founder-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .timeline-line {
+                left: 20px;
+            }
+
+            .timeline-step:nth-child(even) {
+                direction: ltr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .nav {
+                padding: 15px 20px;
+            }
+
+            .github-stars {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- SVG Icon Definitions -->
+    <svg style="position: absolute; width: 0; height: 0; overflow: hidden;">
+        <defs>
+            <!-- Gradient Definitions -->
+            <linearGradient id="gradient-primary" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#9f58fa;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#4B96DC;stop-opacity:1" />
+            </linearGradient>
+
+            <!-- Social Intelligence Icon -->
+            <symbol id="social-intelligence" viewBox="0 0 48 48">
+                <circle cx="24" cy="12" r="8" stroke-width="1.5"/>
+                <path d="M36 36c0-6.627-5.373-12-12-12s-12 5.373-12 12" stroke-width="1.5"/>
+                <circle cx="40" cy="16" r="4" stroke-width="1.5"/>
+                <circle cx="8" cy="16" r="4" stroke-width="1.5"/>
+                <path d="M32 12l6 3M16 12l-6 3" stroke-width="1.5"/>
+                <path d="M24 20v-8M18 10l6-6 6 6" stroke-width="1.5" fill="none"/>
+            </symbol>
+
+            <!-- Practice Scanner Icon -->
+            <symbol id="practice-scanner" viewBox="0 0 48 48">
+                <rect x="8" y="8" width="32" height="32" rx="4" stroke-width="1.5"/>
+                <path d="M8 16h32M16 8v8M32 8v8" stroke-width="1.5"/>
+                <path d="M16 24h16M16 32h8" stroke-width="1.5"/>
+                <circle cx="36" cy="36" r="8" fill="#9f58fa"/>
+                <path d="M36 32v8M32 36h8" stroke="white" stroke-width="2"/>
+            </symbol>
+
+            <!-- AI Deployment Icon -->
+            <symbol id="ai-deployment" viewBox="0 0 48 48">
+                <path d="M24 4l16 8v16l-16 8-16-8V12z" stroke-width="1.5"/>
+                <path d="M24 20v16M8 12l16 8 16-8M16 16v16l8 4 8-4V16" stroke-width="1.5"/>
+                <circle cx="24" cy="20" r="4" fill="#9f58fa"/>
+                <path d="M20 40l4-4 4 4" stroke-width="2"/>
+            </symbol>
+
+            <!-- Meeting Intelligence Icon -->
+            <symbol id="meeting-intelligence" viewBox="0 0 48 48">
+                <rect x="6" y="10" width="36" height="28" rx="4" stroke-width="1.5"/>
+                <path d="M18 10v28M30 10v28" stroke-width="1.5"/>
+                <circle cx="12" cy="24" r="3" stroke-width="1.5"/>
+                <circle cx="36" cy="24" r="3" stroke-width="1.5"/>
+                <path d="M6 18h36M6 30h36" stroke-width="1.5" opacity="0.5"/>
+                <path d="M22 20l4 4-4 4M26 24h-8" stroke-width="2" stroke="#9f58fa"/>
+            </symbol>
+
+            <!-- Harvey AI Icon -->
+            <symbol id="harvey-ai" viewBox="0 0 48 48">
+                <circle cx="24" cy="20" r="12" stroke-width="1.5"/>
+                <path d="M24 32v8M16 36h16" stroke-width="1.5"/>
+                <circle cx="19" cy="18" r="2" fill="#9f58fa"/>
+                <circle cx="29" cy="18" r="2" fill="#9f58fa"/>
+                <path d="M19 24c0 2.761 2.239 5 5 5s5-2.239 5-5" stroke-width="1.5"/>
+                <path d="M12 8l4 4M36 8l-4 4M8 20h4M36 20h4" stroke-width="1.5" opacity="0.5"/>
+                <circle cx="24" cy="8" r="2" fill="#4B96DC"/>
+            </symbol>
+
+            <!-- Data Control Icon -->
+            <symbol id="data-control" viewBox="0 0 48 48">
+                <rect x="4" y="8" width="16" height="32" rx="2" stroke-width="1.5"/>
+                <rect x="28" y="8" width="16" height="32" rx="2" stroke-width="1.5"/>
+                <path d="M20 24h8M24 20v8" stroke-width="2"/>
+                <circle cx="12" cy="16" r="2" fill="#9f58fa"/>
+                <circle cx="12" cy="24" r="2" fill="#9f58fa"/>
+                <circle cx="12" cy="32" r="2" fill="#9f58fa"/>
+                <path d="M32 16h8M32 24h8M32 32h8" stroke-width="1.5"/>
+                <path d="M8 4v4M16 4v4M32 4v4M40 4v4" stroke-width="1.5" opacity="0.5"/>
+            </symbol>
+
+            <!-- Regulatory Window Icon -->
+            <symbol id="regulatory-window" viewBox="0 0 48 48">
+                <circle cx="24" cy="24" r="20" stroke-width="1.5"/>
+                <path d="M24 12v12l8 8" stroke-width="2"/>
+                <path d="M12 4l4 4M36 4l-4 4" stroke-width="1.5" stroke="#f53969"/>
+                <path d="M16 38h16" stroke-width="2" stroke="#f53969"/>
+                <text x="24" y="28" text-anchor="middle" font-size="8" fill="#9f58fa" font-weight="bold">18-24</text>
+            </symbol>
+        </defs>
+    </svg>
+
+    <!-- Animated Starfield -->
+    <div class="starfield" id="starfield"></div>
+
+    <!-- Gradient Blobs -->
+    <div class="gradient-blob blob-1"></div>
+    <div class="gradient-blob blob-2"></div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <div class="logo">
+                <div class="logo-icon">RS</div>
+                <span>RepSpheres</span>
+            </div>
+            <div class="nav-right">
+                <div class="github-stars">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/>
+                    </svg>
+                    <span id="starCount">47.2k</span> GitHub Stars
+                </div>
+                <button class="install-button">
+                    <svg width="20" height="20" viewBox="0 0 48 48" fill="none" style="margin-right: 8px;">
+                        <use href="#regulatory-window"/>
+                    </svg>
+                    Secure My Territory • 1.7M Installs
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-left">
+                <div class="hero-badge">
+                    <svg width="20" height="20" viewBox="0 0 48 48" fill="none">
+                        <use href="#social-intelligence"/>
+                    </svg>
+                    HELPING TEAMS DOMINATE 10X FASTER
+                </div>
+                <h1 class="hero-title">
+                    They Check Databases.<br>
+                    <span class="gradient-text">We Own Them.</span>
+                </h1>
+                <p class="hero-description">
+                    While your competition manually monitors new business openings, 
+                    RepSpheres autonomously tracks 12,847 practices, analyzes social patterns, 
+                    and deploys personalized outreach at scale. The gap is already insurmountable.
+                </p>
+                <div class="hero-cta">
+                    <a href="#secure" class="primary-button">
+                        Claim What's Already Yours
+                        <span>→</span>
+                    </a>
+                    <a href="#demo" class="secondary-button">
+                        <span>👁️</span>
+                        See The Intelligence
+                    </a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="visual-container">
+                    <div class="visual-header">
+                        <div class="dot red"></div>
+                        <div class="dot yellow"></div>
+                        <div class="dot green"></div>
+                    </div>
+                    <div class="code-demo">
+                        <div class="code-line" style="animation-delay: 0.1s">
+                            <span class="code-comment">// RepSpheres Intelligence Engine v3.2</span>
+                        </div>
+                        <div class="code-line" style="animation-delay: 0.2s">
+                            <span class="code-keyword">const</span> <span class="code-function">detectOpportunity</span> = () => {
+                        </div>
+                        <div class="code-line" style="animation-delay: 0.3s">
+                            &nbsp;&nbsp;<span class="code-comment">// Social pattern detected: Dr. Rodriguez</span>
+                        </div>
+                        <div class="code-line" style="animation-delay: 0.4s">
+                            &nbsp;&nbsp;<span class="code-keyword">if</span> (post.contains(<span class="code-string">"breast implant"</span>)) {
+                        </div>
+                        <div class="code-line" style="animation-delay: 0.5s">
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">alert</span>({
+                        </div>
+                        <div class="code-line" style="animation-delay: 0.6s">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type: <span class="code-string">"NEW_OPPORTUNITY"</span>,
+                        </div>
+                        <div class="code-line" style="animation-delay: 0.7s">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value: <span class="code-string">"$280K/year"</span>,
+                        </div>
+                        <div class="code-line" style="animation-delay: 0.8s">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action: <span class="code-string">"DEPLOY_OUTREACH"</span>
+                        </div>
+                        <div class="code-line" style="animation-delay: 0.9s">
+                            &nbsp;&nbsp;&nbsp;&nbsp;});
+                        </div>
+                        <div class="code-line" style="animation-delay: 1s">
+                            &nbsp;&nbsp;}
+                        </div>
+                        <div class="code-line" style="animation-delay: 1.1s">
+                            }
+                        </div>
+                        <div class="code-line" style="animation-delay: 1.2s">
+                            <span class="code-comment">// 47 opportunities detected while they typed one email</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="stats-header">
+            <div class="section-subtitle">THE UNFAIR ADVANTAGE</div>
+            <h2 class="section-title">
+                Numbers That End <span class="gradient-text">Competitions</span>
+            </h2>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="practicesMonitored">12,847</div>
+                <div class="stat-label">Practices Monitored 24/7</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">12 sec</div>
+                <div class="stat-label">From Detection to Outreach</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">84%</div>
+                <div class="stat-label">Response Rate</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">18-24mo</div>
+                <div class="stat-label">Until AI Disclosure Required</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Founder Section -->
+    <section class="founder-section">
+        <div class="founder-container">
+            <div class="founder-badge">
+                <svg width="24" height="24" viewBox="0 0 48 48" fill="none">
+                    <use href="#harvey-ai"/>
+                </svg>
+                THE INTELLIGENCE BEHIND THE INTELLIGENCE
+            </div>
+            <h2 class="founder-title">
+                15 Years of Industry Mastery,<br>
+                <span class="gradient-text">Weaponized for You</span>
+            </h2>
+            <div class="founder-content">
+                <div class="founder-visual">
+                    <div class="experience-card">
+                        <div class="company-logo coolsculpting">
+                            <span>❄️</span>
+                        </div>
+                        <div>
+                            <h4>CoolSculpting</h4>
+                            <p>Founding Team Member</p>
+                        </div>
+                    </div>
+                    <div class="experience-card">
+                        <div class="company-logo nvidia">
+                            <span>🚀</span>
+                        </div>
+                        <div>
+                            <h4>NVIDIA AI</h4>
+                            <p>Healthcare Applications</p>
+                        </div>
+                    </div>
+                    <div class="experience-card">
+                        <div class="company-logo neocis">
+                            <span>🤖</span>
+                        </div>
+                        <div>
+                            <h4>Neocis</h4>
+                            <p>Robotic Surgical Implants</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="founder-story">
+                    <p class="founder-description">
+                        I've been in the trenches for 15 years. Founding team at CoolSculpting. 
+                        Built mega aesthetic and dental technologies. Worked with NVIDIA on AI healthcare applications.
+                        Most recently at Neocis, pioneering robotic surgical devices for implants.
+                    </p>
+                    <p class="founder-insight">
+                        <strong>The difference?</strong> I don't just give you AI. I transform raw intelligence 
+                        into your exact sales workflows. Every alert, every insight, every recommendation 
+                        is filtered through 15 years of knowing exactly what makes practices buy.
+                    </p>
+                    <div class="founder-quote">
+                        "AI is powerful. But AI + deep industry expertise? That's unstoppable."
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Intelligence Timeline -->
+    <section class="timeline-section">
+        <div class="timeline-header">
+            <div class="section-subtitle">OMNISCIENT INTELLIGENCE</div>
+            <h2 class="section-title">
+                Your <span class="gradient-text">Unfair Advantage</span> Stack
+            </h2>
+        </div>
+        <div class="timeline-container">
+            <div class="timeline-line"></div>
+            
+            <!-- Step 1: Social Intelligence -->
+            <div class="timeline-step">
+                <div class="step-content">
+                    <div class="step-icon">
+                        <svg><use href="#social-intelligence"/></svg>
+                    </div>
+                    <h3 class="step-title">Social Media Pattern Recognition</h3>
+                    <p class="step-description">
+                        RepSpheres monitors every doctor's social media 24/7. New service mentioned? 
+                        Certification posted? Frustration expressed? You're instantly alerted to 
+                        behavior changes that signal opportunity.
+                    </p>
+                </div>
+                <div class="step-visual">
+                    <div class="social-feed">
+                        <div class="social-item alert" style="animation-delay: 0.1s">
+                            <strong>🔔 BEHAVIOR SHIFT</strong><br>
+                            Dr. Rodriguez posted about breast implants - first mention in 5 years<br>
+                            <span style="color: var(--green-accent)">→ Revenue opportunity: $280K/year</span>
+                        </div>
+                        <div class="social-item opportunity" style="animation-delay: 0.3s">
+                            <strong>📈 INTEREST SPIKE</strong><br>
+                            Brooklyn Aesthetics - 3 posts about body contouring this week<br>
+                            <span style="color: var(--green-accent)">→ Perfect timing for equipment proposal</span>
+                        </div>
+                        <div class="social-item" style="animation-delay: 0.5s">
+                            <strong>🎓 NEW CERTIFICATION</strong><br>
+                            Dr. Chen completed thread lift training - no current supplier<br>
+                            <span style="color: var(--green-accent)">→ Immediate need identified</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Registration Scanner -->
+            <div class="timeline-step">
+                <div class="step-visual">
+                    <div style="padding: 20px;">
+                        <h4 style="margin-bottom: 20px; color: var(--purple-primary);">NEW REGISTRATIONS DETECTED</h4>
+                        <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 12px; margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                <strong>Biscayne Aesthetic Institute</strong>
+                                <span style="color: var(--pink-accent);">HIGH PRIORITY</span>
+                            </div>
+                            <div style="color: var(--text-secondary); font-size: 0.9rem;">
+                                Miami, FL • Dr. Maria Gonzalez • $2.3M build-out<br>
+                                <span style="color: var(--green-accent);">Opens in 45 days - equipment decisions NOW</span>
+                            </div>
+                        </div>
+                        <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 12px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                <strong>Desert Bloom Medical Spa</strong>
+                                <span style="color: var(--purple-primary);">NEW</span>
+                            </div>
+                            <div style="color: var(--text-secondary); font-size: 0.9rem;">
+                                Scottsdale, AZ • 3 providers • Existing patient base<br>
+                                <span style="color: var(--green-accent);">Competitive financing will be key</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step-content">
+                    <div class="step-icon">
+                        <svg><use href="#practice-scanner"/></svg>
+                    </div>
+                    <h3 class="step-title">New Practice Pre-Cognition</h3>
+                    <p class="step-description">
+                        State databases, business registrations, building permits—RepSpheres catches 
+                        every new practice before they open. You have first contact advantage. 
+                        Every. Single. Time.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Step 3: Intelligence Deployment -->
+            <div class="timeline-step">
+                <div class="step-content">
+                    <div class="step-icon">
+                        <svg><use href="#ai-deployment"/></svg>
+                    </div>
+                    <h3 class="step-title">The Art of Inevitable Victory</h3>
+                    <p class="step-description">
+                        The motivated rep checks databases weekly. The RepSpheres user? 
+                        Has already met with every new practice before competitors know they exist. 
+                        Choose your mode: Precision Strike (human-in-loop) or Full Auto campaigns.
+                    </p>
+                </div>
+                <div class="step-visual">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 20px;">
+                        <div style="text-align: center;">
+                            <h4 style="color: var(--text-muted); margin-bottom: 20px;">Their Reality</h4>
+                            <div style="font-size: 3rem; font-weight: 800; color: var(--text-secondary);">1</div>
+                            <div style="color: var(--text-muted);">Email crafted</div>
+                            <div style="font-size: 2rem; margin-top: 20px; color: var(--text-secondary);">20 min</div>
+                            <div style="color: var(--text-muted);">Time invested</div>
+                        </div>
+                        <div style="text-align: center; border-left: 1px solid var(--border-color); padding-left: 20px;">
+                            <h4 style="color: var(--purple-primary); margin-bottom: 20px;">Your Dimension</h4>
+                            <div style="font-size: 3rem; font-weight: 800; background: linear-gradient(to right, var(--purple-primary), var(--blue-accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">188</div>
+                            <div style="color: var(--text-primary);">Messages deployed</div>
+                            <div style="font-size: 2rem; margin-top: 20px; color: var(--green-accent);">12 sec</div>
+                            <div style="color: var(--text-primary);">Total time</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Comprehensive Data Control -->
+            <div class="timeline-step">
+                <div class="step-visual">
+                    <div style="padding: 30px;">
+                        <h4 style="font-size: 1.5rem; margin-bottom: 20px; color: var(--purple-primary);">Total Information Dominance</h4>
+                        <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                            <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;">
+                                <div style="color: var(--green-accent); margin-bottom: 15px;">
+                                    <strong>SALES REP VIEW: EVERYTHING</strong>
+                                </div>
+                                <div style="color: var(--text-secondary); line-height: 1.8;">
+                                    • Complete 5-year purchase history<br>
+                                    • Every social media interaction<br>
+                                    • All competitor relationships<br>
+                                    • Full staff changes & dynamics<br>
+                                    • Revenue patterns & projections<br>
+                                    • Personal preferences & triggers
+                                </div>
+                            </div>
+                        </div>
+                        <div style="background: linear-gradient(135deg, rgba(159, 88, 250, 0.1), rgba(75, 150, 220, 0.1)); padding: 20px; border-radius: 12px; border: 1px solid var(--purple-primary);">
+                            <div style="font-size: 0.9rem; color: var(--text-primary); margin-bottom: 10px;">
+                                <strong>YOU CONTROL THE SYNC</strong>
+                            </div>
+                            <div style="display: flex; gap: 15px; justify-content: center;">
+                                <span style="padding: 8px 16px; background: rgba(0,0,0,0.3); border-radius: 8px;">HubSpot</span>
+                                <span style="padding: 8px 16px; background: rgba(0,0,0,0.3); border-radius: 8px;">Salesforce</span>
+                                <span style="padding: 8px 16px; background: rgba(0,0,0,0.3); border-radius: 8px;">Your CRM</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step-content">
+                    <div class="step-icon">
+                        <svg><use href="#data-control"/></svg>
+                    </div>
+                    <h3 class="step-title">The Power Inversion</h3>
+                    <p class="step-description">
+                        For the first time ever, the sales rep has MORE information than management. 
+                        RepSpheres delivers the most comprehensive data possible—then YOU decide 
+                        what to sync with HubSpot or Salesforce. The power dynamic just flipped. 
+                        You own the intelligence. You control the narrative.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Step 5: RepConnect Lines -->
+            <div class="timeline-step">
+                <div class="step-content">
+                    <div class="step-icon">
+                        <svg><use href="#meeting-intelligence"/></svg>
+                    </div>
+                    <h3 class="step-title">RepConnect Lines™</h3>
+                    <p class="step-description">
+                        The crucial link in our automation. Dedicated phone lines that know who's calling, 
+                        why they're calling, and their entire history—before you pick up. Instant context. 
+                        Instant intelligence. Every conversation armed with perfect information.
+                    </p>
+                </div>
+                <div class="step-visual">
+                    <div style="padding: 30px; text-align: center;">
+                        <h4 style="font-size: 1.5rem; margin-bottom: 20px;">Incoming Call Intelligence</h4>
+                        <div style="background: rgba(0,0,0,0.5); border: 2px solid var(--green-accent); border-radius: 20px; padding: 30px; position: relative; overflow: hidden;">
+                            <div style="position: absolute; top: 10px; right: 10px; display: flex; align-items: center; gap: 8px;">
+                                <span style="width: 8px; height: 8px; background: var(--green-accent); border-radius: 50%; animation: pulse 1s infinite;"></span>
+                                <span style="color: var(--green-accent); font-size: 0.85rem; font-weight: 600;">INCOMING</span>
+                            </div>
+                            <div style="font-family: 'JetBrains Mono', monospace;">
+                                <div style="font-size: 1.8rem; font-weight: 700; color: var(--text-primary); margin-bottom: 10px;">
+                                    Dr. Maria Rodriguez
+                                </div>
+                                <div style="color: var(--text-secondary); margin-bottom: 20px;">
+                                    Brooklyn Aesthetics • (347) 555-0123
+                                </div>
+                                <div style="text-align: left; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; font-size: 0.85rem;">
+                                    <div style="color: var(--purple-primary); margin-bottom: 8px;">
+                                        <strong>INSTANT CONTEXT:</strong>
+                                    </div>
+                                    <div style="color: var(--text-secondary); line-height: 1.6;">
+                                        • Viewed CoolSculpting Elite pricing 3x this week<br>
+                                        • Posted about "body contouring research" yesterday<br>
+                                        • Current Allergan spend: $47K/month<br>
+                                        • Decision maker: Likes data, hates pressure<br>
+                                        <span style="color: var(--green-accent);">→ Ready to buy, needs ROI numbers</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 20px; font-size: 0.9rem; color: var(--text-muted);">
+                            Before "Hello," you already know everything.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 6: Meeting Intelligence -->
+            <div class="timeline-step">
+                <div class="step-visual">
+                    <div style="padding: 30px; text-align: center;">
+                        <h4 style="font-size: 1.5rem; margin-bottom: 20px;">Perfect Recall. Perfect Response.</h4>
+                        <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; text-align: left;">
+                            <div style="color: var(--blue-accent); margin-bottom: 10px;">
+                                Dr. Chen: "We're happy with our current laser..."
+                            </div>
+                            <div style="color: var(--text-muted); margin-left: 20px; margin-bottom: 10px;">
+                                → AI: Price objection masking capability gap
+                            </div>
+                            <div style="color: var(--blue-accent); margin-bottom: 10px;">
+                                Dr. Chen: "...but struggling with pigmentation."
+                            </div>
+                            <div style="color: var(--green-accent); margin-left: 20px;">
+                                → Opportunity: PicoWay demo, 93% close rate
+                            </div>
+                        </div>
+                        <div style="margin-top: 20px; font-size: 0.9rem; color: var(--text-secondary);">
+                            5 AI-crafted follow-ups ready before you reach the parking lot
+                        </div>
+                    </div>
+                </div>
+                <div class="step-content">
+                    <div class="step-icon">
+                        <svg><use href="#meeting-intelligence"/></svg>
+                    </div>
+                    <h3 class="step-title">Meeting Intelligence Capture</h3>
+                    <p class="step-description">
+                        Every word captured. Every objection analyzed. Five follow-up options 
+                        generated instantly. RepSpheres ensures you never miss an opportunity 
+                        or fumble a follow-up. Fully compliant with all recording laws.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Harvey Section -->
+    <section class="harvey-section">
+        <div class="harvey-container">
+            <div>
+                <div class="section-subtitle">YOUR AI DIRECTOR OF SALES</div>
+                <h2 class="section-title">
+                    Meet <span class="gradient-text">Harvey</span>
+                </h2>
+                <p class="hero-description">
+                    For those times when your boss isn't available... or just doesn't want to help. 
+                    Harvey knows more about any aesthetic procedure and market condition than any 
+                    human alive. Available 24/7. Never condescending. Always brilliant.
+                </p>
+                <a href="#try-harvey" class="primary-button">
+                    Try Harvey Now
+                    <span>→</span>
+                </a>
+            </div>
+            <div class="harvey-chat">
+                <div class="chat-message user" style="animation-delay: 0.2s;">
+                    <div class="chat-bubble user">
+                        Harvey, what's the profit margin on PDO threads vs traditional fillers?
+                    </div>
+                </div>
+                <div class="chat-message" style="animation-delay: 0.6s;">
+                    <div class="chat-bubble harvey">
+                        PDO threads offer 68% margins vs 42% for fillers. But here's what matters: 
+                        threads create recurring revenue through maintenance every 12-18 months, 
+                        while attracting a younger demographic willing to pay premium prices. 
+                        Let me show you the exact positioning that's working...
+                    </div>
+                </div>
+                <div class="chat-message user" style="animation-delay: 1s;">
+                    <div class="chat-bubble user">
+                        How do I handle the "0% financing" objection from competitors?
+                    </div>
+                </div>
+                <div class="chat-message" style="animation-delay: 1.4s;">
+                    <div class="chat-bubble harvey">
+                        Focus on total cost of ownership. Their 0% comes with mandatory service 
+                        contracts that increase costs by 31% over 5 years. I'll draft a comparison 
+                        showing how your solution saves them $47,000...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-container">
+            <h2 class="cta-title">
+                The Playing Field Won't Stay<br>
+                <span class="gradient-text">Uneven Forever</span>
+            </h2>
+            <p class="cta-description">
+                18-24 months until AI disclosure becomes mandatory. Your window to build 
+                an insurmountable lead is closing. While they wonder how, you'll already 
+                know why.
+            </p>
+            <a href="#activate" class="primary-button">
+                Claim What's Already Yours
+                <span>→</span>
+            </a>
+            <div class="countdown">
+                ⚠️ REGULATORY WINDOW: <span id="repCount">327</span> reps activated this week
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Create starfield
+        const starfield = document.getElementById('starfield');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starfield.appendChild(star);
+        }
+
+        // Animate counters
+        let practices = 12847;
+        let stars = 47.2;
+        let reps = 327;
+
+        setInterval(() => {
+            practices += Math.floor(Math.random() * 10) + 5;
+            document.getElementById('practicesMonitored').textContent = practices.toLocaleString();
+            
+            if (Math.random() > 0.8) {
+                stars += 0.1;
+                document.getElementById('starCount').textContent = stars.toFixed(1) + 'k';
+            }
+            
+            if (Math.random() > 0.9) {
+                reps += 1;
+                document.getElementById('repCount').textContent = reps;
+            }
+        }, 3000);
+
+        // Timeline animation on scroll
+        const observerOptions = {
+            threshold: 0.3,
+            rootMargin: '0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.timeline-step').forEach(step => {
+            observer.observe(step);
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,2156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RepSpheres | Deep Intelligence for Medical Sales</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Bebas+Neue&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --medical-blue: #0891b2;
+            --medical-teal: #06b6d4;
+            --medical-dark: #164e63;
+            --surgery-green: #10b981;
+            --alert-red: #ef4444;
+            --premium-gold: #fbbf24;
+            --deep-black: #000000;
+            --pure-white: #ffffff;
+            --glass: rgba(255,255,255,0.02);
+            --glass-border: rgba(255,255,255,0.06);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255,255,255,0.85);
+            --text-muted: rgba(255,255,255,0.5);
+            --dental-blue: #1e40af;
+            --dental-light: #3b82f6;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--deep-black);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Noise Texture */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            z-index: 1;
+            pointer-events: none;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgbnVtT2N0YXZlcz0iNCIgc3RpdGNoVGlsZXM9InN0aXRjaCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNhKSIgb3BhY2l0eT0iMC4wNSIvPjwvc3ZnPg==');
+        }
+
+        /* Medical Grid Pattern */
+        .medical-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(var(--medical-teal) 1px, transparent 1px),
+                linear-gradient(90deg, var(--medical-teal) 1px, transparent 1px);
+            background-size: 100px 100px;
+            opacity: 0.02;
+            pointer-events: none;
+            z-index: 1;
+            transition: all 0.5s ease;
+        }
+
+        .medical-grid.dental-mode {
+            background-image: 
+                linear-gradient(var(--dental-blue) 1px, transparent 1px),
+                linear-gradient(90deg, var(--dental-blue) 1px, transparent 1px);
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 20px 40px;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border-bottom: 1px solid rgba(6,182,212,0.2);
+        }
+
+        .nav-inner {
+            max-width: 1800px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--medical-teal) 0%, var(--surgery-green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transition: all 0.5s ease;
+        }
+
+        .logo.dental-mode {
+            background: linear-gradient(135deg, var(--dental-blue) 0%, var(--dental-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Mode Toggle Switch */
+        .mode-toggle {
+            display: flex;
+            align-items: center;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            padding: 4px;
+            position: relative;
+        }
+
+        .toggle-option {
+            padding: 10px 30px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .toggle-option.active {
+            color: var(--pure-white);
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            height: calc(100% - 8px);
+            width: calc(50% - 4px);
+            background: linear-gradient(135deg, var(--medical-teal) 0%, var(--medical-dark) 100%);
+            border-radius: 36px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1;
+        }
+
+        .toggle-slider.dental-active {
+            left: calc(50%);
+            background: linear-gradient(135deg, var(--dental-blue) 0%, var(--dental-light) 100%);
+        }
+
+        .nav-status {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 20px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        .pulse-indicator {
+            width: 8px;
+            height: 8px;
+            background: var(--surgery-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 var(--surgery-green); }
+            70% { box-shadow: 0 0 0 10px rgba(16,185,129,0); }
+            100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 40px 60px;
+            z-index: 10;
+        }
+
+        /* Opening Statement */
+        .opening-statement {
+            text-align: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .contrast-headline {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(3rem, 8vw, 7rem);
+            font-weight: 700;
+            line-height: 0.9;
+            letter-spacing: -0.03em;
+            text-transform: uppercase;
+            margin-bottom: 60px;
+        }
+
+        .highlight-number {
+            color: var(--alert-red);
+            text-shadow: 0 0 40px var(--alert-red);
+        }
+
+        .highlight-success {
+            background: linear-gradient(90deg, var(--medical-teal) 0%, var(--surgery-green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 60px var(--medical-teal);
+            transition: all 0.5s ease;
+        }
+
+        .highlight-success.dental-mode {
+            background: linear-gradient(90deg, var(--dental-blue) 0%, var(--dental-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sub-statement {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 80px;
+            font-weight: 300;
+            letter-spacing: 0.02em;
+        }
+
+        /* Demo Section */
+        .demo-section {
+            position: relative;
+            padding: 100px 0;
+            background: radial-gradient(ellipse at center, rgba(6,182,212,0.1) 0%, transparent 50%);
+        }
+
+        /* Timeline Container */
+        .timeline-container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 0 40px;
+            position: relative;
+        }
+
+        /* Timeline Steps */
+        .timeline-step {
+            margin-bottom: 200px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .timeline-step.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .step-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        /* Enhanced Analysis Visual */
+        .analysis-visual {
+            background: var(--glass);
+            border: 2px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 20px;
+            height: 700px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        }
+
+        .analysis-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            border-bottom: 1px solid var(--glass-border);
+            margin-bottom: 20px;
+        }
+
+        .analysis-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--medical-teal);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .analysis-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--surgery-green);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--surgery-green);
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+
+        /* Analysis Panels */
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            height: calc(100% - 80px);
+        }
+
+        .analysis-panel {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .panel-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--medical-teal) 0%, var(--medical-dark) 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .panel-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Device Detection Panel */
+        .device-list {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.8;
+        }
+
+        .device-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            background: rgba(6,182,212,0.1);
+            border-left: 3px solid var(--medical-teal);
+            border-radius: 6px;
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .device-name {
+            color: var(--medical-teal);
+            font-weight: 600;
+        }
+
+        .device-age {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* Procedure Timeline */
+        .timeline-chart {
+            position: relative;
+            height: 100%;
+            padding: 20px 0;
+        }
+
+        .timeline-bar {
+            position: relative;
+            height: 40px;
+            margin-bottom: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .timeline-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: linear-gradient(90deg, var(--medical-dark) 0%, var(--medical-teal) 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 600;
+            animation: grow 1s ease forwards;
+        }
+
+        @keyframes grow {
+            from { width: 0%; }
+        }
+
+        .timeline-new {
+            background: linear-gradient(90deg, var(--alert-red) 0%, var(--premium-gold) 100%);
+            box-shadow: 0 0 20px rgba(255,187,36,0.5);
+        }
+
+        /* Opportunity Scanner */
+        .opportunity-list {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        .opportunity-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px;
+            margin-bottom: 10px;
+            background: rgba(16,185,129,0.1);
+            border: 1px solid var(--surgery-green);
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .opportunity-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(16,185,129,0.2), transparent);
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            to { left: 100%; }
+        }
+
+        .opportunity-icon {
+            font-size: 1.5rem;
+        }
+
+        .opportunity-text {
+            flex: 1;
+        }
+
+        .opportunity-value {
+            color: var(--surgery-green);
+            font-weight: 700;
+        }
+
+        /* Tech Stack Assessment */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .tech-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tech-item.active {
+            border-color: var(--surgery-green);
+            background: rgba(16,185,129,0.1);
+        }
+
+        .tech-name {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .tech-status {
+            font-size: 1.2rem;
+        }
+
+        /* Data Animation Classes */
+        .aesthetics-data { display: block; }
+        .dental-data { display: none; }
+
+        body.dental-mode .aesthetics-data { display: none; }
+        body.dental-mode .dental-data { display: block; }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .step-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .analysis-visual {
+                height: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .contrast-headline {
+                font-size: 3rem;
+            }
+            
+            .nav-center {
+                position: static;
+                transform: none;
+                margin: 20px 0;
+            }
+            
+            .nav-inner {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+
+        /* Profile Visual Updates */
+        .profile-visual {
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+        }
+
+        .profile-avatar {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, var(--medical-teal) 0%, var(--medical-dark) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(6,182,212,0.3);
+            transition: all 0.5s ease;
+        }
+
+        .profile-avatar.dental-mode {
+            background: linear-gradient(135deg, var(--dental-blue) 0%, var(--dental-light) 100%);
+        }
+
+        /* Success Visual */
+        .success-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 60px;
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(16,185,129,0.05) 100%);
+            border: 2px solid var(--surgery-green);
+            border-radius: 30px;
+            padding: 40px;
+            max-width: 600px;
+            box-shadow: 0 30px 60px rgba(16,185,129,0.2);
+            animation: successPulse 2s ease infinite;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, var(--medical-teal) 0%, var(--surgery-green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Loading States */
+        .loading-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: var(--medical-teal);
+            animation: loadingProgress 2s linear infinite;
+        }
+
+        @keyframes loadingProgress {
+            0% { width: 0%; left: 0; }
+            50% { width: 100%; left: 0; }
+            100% { width: 0%; left: 100%; }
+        }
+        
+        /* Social Media Intelligence Styles */
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--surgery-green);
+        }
+        
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--surgery-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+        }
+        
+        .social-monitoring {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .social-alert {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 20px;
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: slideIn 0.5s ease forwards;
+        }
+        
+        .social-alert.new-pattern {
+            border-color: var(--alert-red);
+            background: rgba(239,68,68,0.05);
+        }
+        
+        .social-alert.trending {
+            border-color: var(--premium-gold);
+            background: rgba(251,191,36,0.05);
+        }
+        
+        .social-alert.certification {
+            border-color: var(--medical-teal);
+            background: rgba(6,182,212,0.05);
+        }
+        
+        .social-alert.equipment {
+            border-color: var(--dental-blue);
+            background: rgba(30,64,175,0.05);
+        }
+        
+        .social-alert.frustration {
+            border-color: rgba(239,68,68,0.8);
+            background: rgba(239,68,68,0.08);
+        }
+        
+        .alert-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        
+        .alert-icon {
+            font-size: 1.2rem;
+        }
+        
+        .alert-type {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .alert-time {
+            margin-left: auto;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .alert-content {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .alert-content strong {
+            color: var(--text-primary);
+        }
+        
+        .alert-content .highlight {
+            color: var(--medical-teal);
+            font-weight: 600;
+            border-bottom: 1px dashed var(--medical-teal);
+        }
+        
+        .alert-action {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--surgery-green);
+        }
+        
+        /* New Practice Registration Scanner Styles */
+        .scanner-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            color: var(--medical-teal);
+        }
+        
+        .scan-animation {
+            width: 20px;
+            height: 2px;
+            background: var(--medical-teal);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .scan-animation::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--medical-teal), transparent);
+            animation: scanning 1.5s linear infinite;
+        }
+        
+        @keyframes scanning {
+            to { left: 100%; }
+        }
+        
+        .registration-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .registration-item {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 25px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        
+        .registration-item.priority {
+            border-color: var(--alert-red);
+            background: rgba(239,68,68,0.05);
+            box-shadow: 0 10px 30px rgba(239,68,68,0.1);
+        }
+        
+        .registration-item.expansion {
+            border-color: var(--premium-gold);
+            background: rgba(251,191,36,0.05);
+        }
+        
+        .reg-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+        }
+        
+        .reg-badge {
+            background: var(--alert-red);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .registration-item.expansion .reg-badge {
+            background: var(--premium-gold);
+        }
+        
+        .reg-date {
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .reg-location {
+            margin-left: auto;
+            color: var(--medical-teal);
+            font-weight: 600;
+        }
+        
+        .reg-details h4 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+        
+        .reg-details p {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+        
+        .reg-insights {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .insight-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .reg-opportunity {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--glass-border);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+        
+        .reg-opportunity strong {
+            color: var(--surgery-green);
+        }
+    </style>
+</head>
+<body>
+    <!-- Medical Grid -->
+    <div class="medical-grid" id="medicalGrid"></div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <div class="logo" id="logo">REPSPHERES</div>
+            
+            <!-- Mode Toggle -->
+            <div class="nav-center">
+                <div class="mode-toggle">
+                    <div class="toggle-option active" onclick="setMode('aesthetics')">AESTHETICS</div>
+                    <div class="toggle-option" onclick="setMode('dental')">DENTAL</div>
+                    <div class="toggle-slider" id="toggleSlider"></div>
+                </div>
+            </div>
+            
+            <div class="nav-status">
+                <div class="status-item">
+                    <div class="pulse-indicator"></div>
+                    <span>Deep Intel Active</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="opening-statement">
+            <h1 class="contrast-headline">
+                Surface-Level Intel Loses Deals.<br>
+                <span class="highlight-success" id="heroHighlight">Deep Intelligence Wins.</span>
+            </h1>
+            <p class="sub-statement">
+                Your competition knows they offer "laser." You know it's a Candela GentleMax Pro, 
+                purchased 2019, primarily used for hair removal, with untapped potential for skin rejuvenation.
+            </p>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="demo-section">
+        <div class="timeline-container">
+            <!-- Enhanced Analysis Step -->
+            <div class="timeline-step active">
+                <div class="step-content">
+                    <div class="step-story">
+                        <h3 style="font-family: 'Oswald', sans-serif; font-size: 3rem; text-transform: uppercase; margin-bottom: 20px;">
+                            Intelligence That<br><span style="color: var(--medical-teal);">Sees Everything</span>
+                        </h3>
+                        <p style="font-size: 1.2rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 30px;">
+                            While others see "new practice," your RepSphere extracts military-grade intelligence: 
+                            exact device models, procedure evolution, competitive gaps, and expansion opportunities.
+                        </p>
+                    </div>
+                    
+                    <div class="analysis-visual">
+                        <div class="loading-bar"></div>
+                        <div class="analysis-header">
+                            <h3 class="analysis-title">
+                                <span class="aesthetics-data">DEEP INTELLIGENCE: BROOKLYN AESTHETICS CENTER</span>
+                                <span class="dental-data">DEEP INTELLIGENCE: BROOKLYN DENTAL WELLNESS</span>
+                            </h3>
+                            <div class="analysis-status">
+                                <div class="status-dot"></div>
+                                <span>LIVE ANALYSIS</span>
+                            </div>
+                        </div>
+                        
+                        <div class="analysis-grid">
+                            <!-- Device Detection Panel -->
+                            <div class="analysis-panel">
+                                <div class="panel-header">
+                                    <div class="panel-icon">🔬</div>
+                                    <h4 class="panel-title">Device & Technology Detection</h4>
+                                </div>
+                                <div class="device-list">
+                                    <!-- Aesthetics Devices -->
+                                    <div class="aesthetics-data">
+                                        <div class="device-item" style="animation-delay: 0.2s;">
+                                            <span class="device-name">Candela GentleMax Pro</span>
+                                            <span class="device-age">2019 Model</span>
+                                        </div>
+                                        <div class="device-item" style="animation-delay: 0.4s;">
+                                            <span class="device-name">Sciton HALO Hybrid</span>
+                                            <span class="device-age">2021 Model</span>
+                                        </div>
+                                        <div class="device-item" style="animation-delay: 0.6s;">
+                                            <span class="device-name">InMode Morpheus8</span>
+                                            <span class="device-age">NEW - 2 months</span>
+                                        </div>
+                                        <div class="device-item" style="animation-delay: 0.8s;">
+                                            <span class="device-name">Allergan Botox</span>
+                                            <span class="device-age">Primary Injectable</span>
+                                        </div>
+                                        <div class="device-item" style="animation-delay: 1s;">
+                                            <span class="device-name">Galderma Restylane</span>
+                                            <span class="device-age">Full Line</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Dental Technology -->
+                                    <div class="dental-data">
+                                        <div class="device-item" style="animation-delay: 0.2s;">
+                                            <span class="device-name">Nobel Biocare System</span>
+                                            <span class="device-age">NEW - 3 months</span>
+                                        </div>
+                                        <div class="device-item" style="animation-delay: 0.4s;">
+                                            <span class="device-name">Planmeca ProMax 3D</span>
+                                            <span class="device-age">CBCT Scanner</span>
+                                        </div>
+                                        <div class="device-item" style="animation-delay: 0.6s;">
+                                            <span class="device-name">iTero Element 5D</span>
+                                            <span class="device-age">Intraoral Scanner</span>
+                                        </div>
+                                        <div class="device-item" style="animation-delay: 0.8s;">
+                                            <span class="device-name">BlueSkyBio Guides</span>
+                                            <span class="device-age">NOT DETECTED</span>
+                                        </div>
+                                        <div class="device-item" style="animation-delay: 1s;">
+                                            <span class="device-name">All-on-X Capability</span>
+                                            <span class="device-age">NOT OFFERED</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Procedure Timeline Panel -->
+                            <div class="analysis-panel">
+                                <div class="panel-header">
+                                    <div class="panel-icon">📊</div>
+                                    <h4 class="panel-title">Procedure Evolution Analysis</h4>
+                                </div>
+                                <div class="timeline-chart">
+                                    <!-- Aesthetics Timeline -->
+                                    <div class="aesthetics-data">
+                                        <div class="timeline-bar">
+                                            <div class="timeline-fill" style="width: 95%; animation-delay: 0.3s;">
+                                                Botox/Dysport - 5 Years
+                                            </div>
+                                        </div>
+                                        <div class="timeline-bar">
+                                            <div class="timeline-fill" style="width: 80%; animation-delay: 0.5s;">
+                                                Dermal Fillers - 4 Years
+                                            </div>
+                                        </div>
+                                        <div class="timeline-bar">
+                                            <div class="timeline-fill" style="width: 60%; animation-delay: 0.7s;">
+                                                Laser Hair Removal - 3 Years
+                                            </div>
+                                        </div>
+                                        <div class="timeline-bar">
+                                            <div class="timeline-fill" style="width: 40%; animation-delay: 0.9s;">
+                                                IPL Photofacials - 2 Years
+                                            </div>
+                                        </div>
+                                        <div class="timeline-bar">
+                                            <div class="timeline-fill timeline-new" style="width: 15%; animation-delay: 1.1s;">
+                                                RF Microneedling - NEW!
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Dental Timeline -->
+                                    <div class="dental-data">
+                                        <div class="timeline-bar">
+                                            <div class="timeline-fill" style="width: 95%; animation-delay: 0.3s;">
+                                                General Dentistry - 12 Years
+                                            </div>
+                                        </div>
+                                        <div class="timeline-bar">
+                                            <div class="timeline-fill" style="width: 70%; animation-delay: 0.5s;">
+                                                Cosmetic Dentistry - 8 Years
+                                            </div>
+                                        </div>
+                                        <div class="timeline-bar">
+                                            <div class="timeline-fill" style="width: 50%; animation-delay: 0.7s;">
+                                                Invisalign - 5 Years
+                                            </div>
+                                        </div>
+                                        <div class="timeline-bar">
+                                            <div class="timeline-fill timeline-new" style="width: 20%; animation-delay: 0.9s;">
+                                                Single Implants - NEW!
+                                            </div>
+                                        </div>
+                                        <div class="timeline-bar">
+                                            <div class="timeline-fill" style="width: 0%; animation-delay: 1.1s;">
+                                                Full Arch - NOT OFFERED
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Opportunity Scanner -->
+                            <div class="analysis-panel">
+                                <div class="panel-header">
+                                    <div class="panel-icon">🎯</div>
+                                    <h4 class="panel-title">Opportunity Scanner</h4>
+                                </div>
+                                <div class="opportunity-list">
+                                    <!-- Aesthetics Opportunities -->
+                                    <div class="aesthetics-data">
+                                        <div class="opportunity-item" style="animation-delay: 0.3s;">
+                                            <span class="opportunity-icon">💎</span>
+                                            <span class="opportunity-text">
+                                                GentleMax underutilized - only hair removal
+                                            </span>
+                                            <span class="opportunity-value">+$85K/yr</span>
+                                        </div>
+                                        <div class="opportunity-item" style="animation-delay: 0.5s;">
+                                            <span class="opportunity-icon">🚀</span>
+                                            <span class="opportunity-text">
+                                                No body contouring offerings detected
+                                            </span>
+                                            <span class="opportunity-value">+$120K/yr</span>
+                                        </div>
+                                        <div class="opportunity-item" style="animation-delay: 0.7s;">
+                                            <span class="opportunity-icon">⚡</span>
+                                            <span class="opportunity-text">
+                                                PDO threads capability gap
+                                            </span>
+                                            <span class="opportunity-value">+$65K/yr</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Dental Opportunities -->
+                                    <div class="dental-data">
+                                        <div class="opportunity-item" style="animation-delay: 0.3s;">
+                                            <span class="opportunity-icon">🔧</span>
+                                            <span class="opportunity-text">
+                                                No guided surgery system
+                                            </span>
+                                            <span class="opportunity-value">+30% accuracy</span>
+                                        </div>
+                                        <div class="opportunity-item" style="animation-delay: 0.5s;">
+                                            <span class="opportunity-icon">💰</span>
+                                            <span class="opportunity-text">
+                                                Full arch cases untapped
+                                            </span>
+                                            <span class="opportunity-value">+$250K/yr</span>
+                                        </div>
+                                        <div class="opportunity-item" style="animation-delay: 0.7s;">
+                                            <span class="opportunity-icon">📈</span>
+                                            <span class="opportunity-text">
+                                                Immediate load protocol missing
+                                            </span>
+                                            <span class="opportunity-value">+$150K/yr</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Tech Stack Assessment -->
+                            <div class="analysis-panel">
+                                <div class="panel-header">
+                                    <div class="panel-icon">⚙️</div>
+                                    <h4 class="panel-title">Technology Stack Assessment</h4>
+                                </div>
+                                <div class="tech-grid">
+                                    <!-- Aesthetics Tech -->
+                                    <div class="aesthetics-data">
+                                        <div class="tech-item active">
+                                            <span class="tech-name">EMR System</span>
+                                            <span class="tech-status">✅</span>
+                                        </div>
+                                        <div class="tech-item active">
+                                            <span class="tech-name">Photo Management</span>
+                                            <span class="tech-status">✅</span>
+                                        </div>
+                                        <div class="tech-item active">
+                                            <span class="tech-name">Online Booking</span>
+                                            <span class="tech-status">✅</span>
+                                        </div>
+                                        <div class="tech-item">
+                                            <span class="tech-name">Virtual Consults</span>
+                                            <span class="tech-status">❌</span>
+                                        </div>
+                                        <div class="tech-item active">
+                                            <span class="tech-name">Payment Plans</span>
+                                            <span class="tech-status">✅</span>
+                                        </div>
+                                        <div class="tech-item">
+                                            <span class="tech-name">AI Imaging</span>
+                                            <span class="tech-status">❌</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Dental Tech -->
+                                    <div class="dental-data">
+                                        <div class="tech-item active">
+                                            <span class="tech-name">CBCT Scanner</span>
+                                            <span class="tech-status">✅</span>
+                                        </div>
+                                        <div class="tech-item active">
+                                            <span class="tech-name">Intraoral Scanner</span>
+                                            <span class="tech-status">✅</span>
+                                        </div>
+                                        <div class="tech-item">
+                                            <span class="tech-name">Guided Surgery</span>
+                                            <span class="tech-status">❌</span>
+                                        </div>
+                                        <div class="tech-item">
+                                            <span class="tech-name">3D Printing</span>
+                                            <span class="tech-status">❌</span>
+                                        </div>
+                                        <div class="tech-item active">
+                                            <span class="tech-name">Digital Planning</span>
+                                            <span class="tech-status">✅</span>
+                                        </div>
+                                        <div class="tech-item">
+                                            <span class="tech-name">PRF System</span>
+                                            <span class="tech-status">❌</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Social Media Intelligence Panel -->
+                            <div class="analysis-panel" style="grid-column: span 2;">
+                                <div class="panel-header">
+                                    <div class="panel-icon">📱</div>
+                                    <h4 class="panel-title">Social Media Pattern Detection</h4>
+                                    <div class="live-indicator">
+                                        <span class="pulse-dot"></span>
+                                        <span>LIVE MONITORING</span>
+                                    </div>
+                                </div>
+                                <div class="social-monitoring">
+                                    <!-- Aesthetics Social -->
+                                    <div class="aesthetics-data">
+                                        <div class="social-alert new-pattern" style="animation-delay: 0.2s;">
+                                            <div class="alert-header">
+                                                <span class="alert-icon">🔔</span>
+                                                <span class="alert-type">NEW BEHAVIOR PATTERN</span>
+                                                <span class="alert-time">2 hours ago</span>
+                                            </div>
+                                            <div class="alert-content">
+                                                <strong>Dr. Rodriguez</strong> posted about <span class="highlight">breast implant consultations</span> - 
+                                                First mention ever. Previously only facial aesthetics.
+                                            </div>
+                                            <div class="alert-action">
+                                                <span class="revenue-impact">Potential: $280K/yr in implant procedures</span>
+                                            </div>
+                                        </div>
+                                        <div class="social-alert trending" style="animation-delay: 0.4s;">
+                                            <div class="alert-header">
+                                                <span class="alert-icon">📈</span>
+                                                <span class="alert-type">TRENDING INTEREST</span>
+                                                <span class="alert-time">Yesterday</span>
+                                            </div>
+                                            <div class="alert-content">
+                                                <strong>Brooklyn Aesthetics</strong> - 3 posts about <span class="highlight">body contouring</span> 
+                                                this week vs. 0 mentions in past 6 months.
+                                            </div>
+                                            <div class="alert-action">
+                                                <span class="revenue-impact">Market timing: Optimal for CoolSculpting Elite pitch</span>
+                                            </div>
+                                        </div>
+                                        <div class="social-alert certification" style="animation-delay: 0.6s;">
+                                            <div class="alert-header">
+                                                <span class="alert-icon">🎓</span>
+                                                <span class="alert-type">NEW CERTIFICATION</span>
+                                                <span class="alert-time">3 days ago</span>
+                                            </div>
+                                            <div class="alert-content">
+                                                <strong>Dr. Chen</strong> completed <span class="highlight">advanced thread lift training</span> - 
+                                                Now certified but has no PDO thread supplier.
+                                            </div>
+                                            <div class="alert-action">
+                                                <span class="revenue-impact">Immediate need: Thread portfolio + training support</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Dental Social -->
+                                    <div class="dental-data">
+                                        <div class="social-alert new-pattern" style="animation-delay: 0.2s;">
+                                            <div class="alert-header">
+                                                <span class="alert-icon">🦷</span>
+                                                <span class="alert-type">SERVICE EXPANSION</span>
+                                                <span class="alert-time">This morning</span>
+                                            </div>
+                                            <div class="alert-content">
+                                                <strong>Dr. Martinez DDS</strong> asking peers about <span class="highlight">All-on-4 protocols</span> - 
+                                                Currently only does single implants.
+                                            </div>
+                                            <div class="alert-action">
+                                                <span class="revenue-impact">Growth opportunity: $400K/yr in full arch cases</span>
+                                            </div>
+                                        </div>
+                                        <div class="social-alert equipment" style="animation-delay: 0.4s;">
+                                            <div class="alert-header">
+                                                <span class="alert-icon">🔧</span>
+                                                <span class="alert-type">EQUIPMENT RESEARCH</span>
+                                                <span class="alert-time">2 days ago</span>
+                                            </div>
+                                            <div class="alert-content">
+                                                <strong>Brooklyn Dental</strong> posted about <span class="highlight">3D printing workflows</span> - 
+                                                Comparing in-house vs. lab options.
+                                            </div>
+                                            <div class="alert-action">
+                                                <span class="revenue-impact">Decision stage: 3D printer evaluation active</span>
+                                            </div>
+                                        </div>
+                                        <div class="social-alert frustration" style="animation-delay: 0.6s;">
+                                            <div class="alert-header">
+                                                <span class="alert-icon">⚠️</span>
+                                                <span class="alert-type">PAIN POINT</span>
+                                                <span class="alert-time">Yesterday</span>
+                                            </div>
+                                            <div class="alert-content">
+                                                <strong>Dr. Park</strong> frustrated with <span class="highlight">guided surgery delays</span> - 
+                                                "Waiting 2 weeks for guides is killing my schedule"
+                                            </div>
+                                            <div class="alert-action">
+                                                <span class="revenue-impact">Solution needed: In-house guide production system</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- New Practice Registration Scanner -->
+                            <div class="analysis-panel" style="grid-column: span 2;">
+                                <div class="panel-header">
+                                    <div class="panel-icon">🏢</div>
+                                    <h4 class="panel-title">New Practice Registration Scanner</h4>
+                                    <div class="scanner-status">
+                                        <span class="scan-animation"></span>
+                                        <span>SCANNING STATE DATABASES</span>
+                                    </div>
+                                </div>
+                                <div class="registration-feed">
+                                    <div class="registration-item priority" style="animation-delay: 0.1s;">
+                                        <div class="reg-header">
+                                            <span class="reg-badge">NEW</span>
+                                            <span class="reg-date">Registered 3 days ago</span>
+                                            <span class="reg-location">Miami, FL</span>
+                                        </div>
+                                        <div class="reg-details">
+                                            <h4>Biscayne Aesthetic Institute</h4>
+                                            <p>Owner: Dr. Maria Gonzalez (Previously at University of Miami)</p>
+                                            <div class="reg-insights">
+                                                <span class="insight-item">💰 $2.3M build-out permit filed</span>
+                                                <span class="insight-item">📍 4,200 sq ft space</span>
+                                                <span class="insight-item">🎯 Opening in 45 days</span>
+                                            </div>
+                                        </div>
+                                        <div class="reg-opportunity">
+                                            <strong>Intelligence:</strong> High-budget practice, academic background suggests evidence-based approach. 
+                                            Perfect timing for equipment decisions.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="registration-item" style="animation-delay: 0.3s;">
+                                        <div class="reg-header">
+                                            <span class="reg-badge">NEW</span>
+                                            <span class="reg-date">Registered this week</span>
+                                            <span class="reg-location">Scottsdale, AZ</span>
+                                        </div>
+                                        <div class="reg-details">
+                                            <h4>Desert Bloom Medical Spa</h4>
+                                            <p>Owner: Sarah Mitchell, NP (Former partner at Scottsdale Skin)</p>
+                                            <div class="reg-insights">
+                                                <span class="insight-item">🔄 Non-compete expired</span>
+                                                <span class="insight-item">👥 Bringing 3 providers</span>
+                                                <span class="insight-item">📱 1.2K Instagram followers already</span>
+                                            </div>
+                                        </div>
+                                        <div class="reg-opportunity">
+                                            <strong>Intelligence:</strong> Experienced operator with existing patient base. 
+                                            Will need competitive financing to win from previous vendors.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="registration-item expansion" style="animation-delay: 0.5s;">
+                                        <div class="reg-header">
+                                            <span class="reg-badge">EXPANSION</span>
+                                            <span class="reg-date">Filed yesterday</span>
+                                            <span class="reg-location">Chicago, IL</span>
+                                        </div>
+                                        <div class="reg-details">
+                                            <h4>Magnificent Mile Dental - New Aesthetics Division</h4>
+                                            <p>Existing practice adding medical spa (DBA registration detected)</p>
+                                            <div class="reg-insights">
+                                                <span class="insight-item">🦷 12-year dental practice</span>
+                                                <span class="insight-item">💉 Hiring aesthetic NP</span>
+                                                <span class="insight-item">🏗️ Adjacent suite lease signed</span>
+                                            </div>
+                                        </div>
+                                        <div class="reg-opportunity">
+                                            <strong>Intelligence:</strong> Dental-to-aesthetics expansion with established patient base. 
+                                            No aesthetic equipment yet - full opportunity.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Aesthetics Scenarios Database
+        const aestheticsScenarios = [
+            {
+                name: "Radiance Medical Spa",
+                location: "Scottsdale, AZ",
+                devices: [
+                    { name: "Cynosure PicoSure", age: "2018 Model", category: "laser" },
+                    { name: "CoolSculpting Elite", age: "2022 Model", category: "body" },
+                    { name: "Hydrafacial MD", age: "2020 Model", category: "facial" },
+                    { name: "Allergan Portfolio", age: "Full Line", category: "injectable" },
+                    { name: "RHA Collection", age: "Limited SKUs", category: "filler" }
+                ],
+                procedures: [
+                    { name: "Injectables", duration: "7 Years", width: 95 },
+                    { name: "Laser Tattoo Removal", duration: "5 Years", width: 75 },
+                    { name: "Body Contouring", duration: "2 Years", width: 40 },
+                    { name: "Skin Resurfacing", duration: "1 Year", width: 25 },
+                    { name: "Biostimulators", duration: "NEW!", width: 10, isNew: true }
+                ],
+                opportunities: [
+                    { icon: "💎", text: "PicoSure only for tattoos - missing pigment market", value: "+$125K/yr" },
+                    { icon: "🚀", text: "No RF microneedling for acne scars", value: "+$95K/yr" },
+                    { icon: "⚡", text: "Missing Sculptra for full-face volumization", value: "+$180K/yr" }
+                ],
+                tech: [
+                    { name: "EMR System", status: true },
+                    { name: "Before/After AI", status: false },
+                    { name: "Membership Platform", status: true },
+                    { name: "Virtual Consults", status: false },
+                    { name: "Touchless Payments", status: true },
+                    { name: "Treatment Planning", status: false }
+                ]
+            },
+            {
+                name: "Manhattan Dermatology Associates",
+                location: "New York, NY",
+                devices: [
+                    { name: "Sciton BBL HERO", age: "2023 Model", category: "IPL" },
+                    { name: "Fraxel DUAL", age: "2019 Model", category: "laser" },
+                    { name: "Thermage FLX", age: "2021 Model", category: "RF" },
+                    { name: "Merz Portfolio", age: "Radiesse Only", category: "injectable" },
+                    { name: "miraDry", age: "2020 Model", category: "specialty" }
+                ],
+                procedures: [
+                    { name: "Medical Dermatology", duration: "15 Years", width: 95 },
+                    { name: "Laser Treatments", duration: "8 Years", width: 80 },
+                    { name: "Skin Tightening", duration: "3 Years", width: 45 },
+                    { name: "Hyperhidrosis", duration: "2 Years", width: 30 },
+                    { name: "Body Treatments", duration: "Planning", width: 5, isNew: true }
+                ],
+                opportunities: [
+                    { icon: "💰", text: "No body contouring despite Manhattan clientele", value: "+$450K/yr" },
+                    { icon: "🎯", text: "Missing toxin offerings - referrals only", value: "+$320K/yr" },
+                    { icon: "📈", text: "Fraxel underbooked - poor marketing", value: "+$150K/yr" }
+                ],
+                tech: [
+                    { name: "Hospital EMR", status: true },
+                    { name: "Patient Portal", status: true },
+                    { name: "Online Booking", status: false },
+                    { name: "Photo Management", status: true },
+                    { name: "Automated Recalls", status: false },
+                    { name: "Inventory Tracking", status: false }
+                ]
+            },
+            {
+                name: "Beverly Hills Plastic Surgery",
+                location: "Beverly Hills, CA",
+                devices: [
+                    { name: "InMode BodyTite", age: "2022 Model", category: "surgical" },
+                    { name: "Morpheus8 Body", age: "2023 Model", category: "RF" },
+                    { name: "Sofwave", age: "2023 Model", category: "ultrasound" },
+                    { name: "Sculptra Aesthetic", age: "High Volume", category: "biostim" },
+                    { name: "Renuva", age: "NEW - 1 month", category: "allograft" }
+                ],
+                procedures: [
+                    { name: "Surgical Procedures", duration: "20 Years", width: 95 },
+                    { name: "Energy Devices", duration: "3 Years", width: 45 },
+                    { name: "Regenerative Treatments", duration: "2 Years", width: 30 },
+                    { name: "Non-Surgical Body", duration: "1 Year", width: 20 },
+                    { name: "Combination Protocols", duration: "NEW!", width: 8, isNew: true }
+                ],
+                opportunities: [
+                    { icon: "🔬", text: "Not packaging device + surgery combos", value: "+$850K/yr" },
+                    { icon: "💎", text: "Missing prejuvenation market entirely", value: "+$275K/yr" },
+                    { icon: "🚀", text: "No maintenance programs post-surgery", value: "+$425K/yr" }
+                ],
+                tech: [
+                    { name: "Surgical Planning", status: true },
+                    { name: "3D Imaging", status: true },
+                    { name: "Concierge Platform", status: false },
+                    { name: "Recovery Tracking", status: false },
+                    { name: "Outcomes Database", status: true },
+                    { name: "AI Consultation", status: false }
+                ]
+            },
+            {
+                name: "Glow Wellness & Aesthetics",
+                location: "Austin, TX",
+                devices: [
+                    { name: "BTL Exilis Ultra", age: "2021 Model", category: "RF" },
+                    { name: "Emsculpt NEO", age: "2023 Model", category: "HIFEM" },
+                    { name: "Potenza RF", age: "NEW - 2 months", category: "microneedling" },
+                    { name: "Xeomin Only", age: "Limited", category: "toxin" },
+                    { name: "VI Peels", age: "Full Line", category: "chemical" }
+                ],
+                procedures: [
+                    { name: "Wellness Services", duration: "8 Years", width: 95 },
+                    { name: "Body Contouring", duration: "2 Years", width: 35 },
+                    { name: "Facial Rejuvenation", duration: "1 Year", width: 20 },
+                    { name: "Skin Quality", duration: "6 Months", width: 12 },
+                    { name: "Sexual Wellness", duration: "Planning", width: 5, isNew: true }
+                ],
+                opportunities: [
+                    { icon: "⚡", text: "Missing IPL for Austin sun damage market", value: "+$165K/yr" },
+                    { icon: "💰", text: "No filler services - losing combo treatments", value: "+$240K/yr" },
+                    { icon: "🎯", text: "Potenza underutilized - staff not trained", value: "+$110K/yr" }
+                ],
+                tech: [
+                    { name: "Wellness Platform", status: true },
+                    { name: "IV Management", status: true },
+                    { name: "Aesthetic EMR", status: false },
+                    { name: "Package Tracking", status: false },
+                    { name: "Commission Calc", status: true },
+                    { name: "Social Scheduler", status: false }
+                ]
+            },
+            {
+                name: "Skin Renewal Center",
+                location: "Chicago, IL",
+                devices: [
+                    { name: "Candela Vbeam Prima", age: "2022 Model", category: "vascular" },
+                    { name: "Clear + Brilliant", age: "2019 Model", category: "laser" },
+                    { name: "Ultherapy", age: "2020 Model", category: "ultrasound" },
+                    { name: "Juvederm Portfolio", age: "Select SKUs", category: "filler" },
+                    { name: "DiamondGlow", age: "2021 Model", category: "hydraderm" }
+                ],
+                procedures: [
+                    { name: "Vascular Treatments", duration: "10 Years", width: 95 },
+                    { name: "Preventative Lasers", duration: "5 Years", width: 70 },
+                    { name: "Skin Tightening", duration: "4 Years", width: 55 },
+                    { name: "Medical Facials", duration: "3 Years", width: 40 },
+                    { name: "Combination Packages", duration: "NEW!", width: 15, isNew: true }
+                ],
+                opportunities: [
+                    { icon: "🔬", text: "Vbeam only for rosacea - missing scar revision", value: "+$195K/yr" },
+                    { icon: "💎", text: "No melasma protocol despite demand", value: "+$145K/yr" },
+                    { icon: "📈", text: "Missing body skin tightening market", value: "+$225K/yr" }
+                ],
+                tech: [
+                    { name: "Legacy EMR", status: true },
+                    { name: "Paper Consents", status: true },
+                    { name: "Digital Forms", status: false },
+                    { name: "Treatment Tracker", status: false },
+                    { name: "Loyalty Program", status: true },
+                    { name: "Analytics Dashboard", status: false }
+                ]
+            },
+            {
+                name: "Elite MedSpa Miami",
+                location: "Miami Beach, FL",
+                devices: [
+                    { name: "Fotona 4D", age: "2023 Model", category: "laser" },
+                    { name: "EmFace", age: "NEW - 3 months", category: "HIFEM" },
+                    { name: "Opus Plasma", age: "2022 Model", category: "plasma" },
+                    { name: "Full Allergan", age: "Diamond Plus", category: "injectable" },
+                    { name: "Exosomes", age: "NEW - 1 month", category: "regenerative" }
+                ],
+                procedures: [
+                    { name: "Luxury Facials", duration: "12 Years", width: 95 },
+                    { name: "Advanced Lasers", duration: "5 Years", width: 70 },
+                    { name: "Facial Contouring", duration: "3 Months", width: 15, isNew: true },
+                    { name: "Regenerative Med", duration: "1 Month", width: 8, isNew: true },
+                    { name: "VIP Programs", duration: "Planning", width: 5, isNew: true }
+                ],
+                opportunities: [
+                    { icon: "🏖️", text: "No permanent hair reduction for beach market", value: "+$380K/yr" },
+                    { icon: "💰", text: "Missing Brazilian clientele protocols", value: "+$290K/yr" },
+                    { icon: "🚀", text: "Exosome pricing strategy unclear", value: "+$450K/yr" }
+                ],
+                tech: [
+                    { name: "Luxury CRM", status: true },
+                    { name: "VIP Portal", status: true },
+                    { name: "AI Scheduling", status: true },
+                    { name: "Outcome Tracking", status: false },
+                    { name: "Global Payments", status: true },
+                    { name: "Telemedicine", status: false }
+                ]
+            },
+            {
+                name: "Restore Aesthetics & Wellness",
+                location: "Nashville, TN",
+                devices: [
+                    { name: "Cynosure Icon", age: "2020 Model", category: "IPL" },
+                    { name: "truSculpt iD", age: "2021 Model", category: "RF" },
+                    { name: "Vivace Ultra", age: "2023 Model", category: "microneedling" },
+                    { name: "Dysport Only", age: "Preferred", category: "toxin" },
+                    { name: "PDO Threads", age: "Basic Training", category: "threads" }
+                ],
+                procedures: [
+                    { name: "IPL Photofacials", duration: "4 Years", width: 80 },
+                    { name: "Body Sculpting", duration: "3 Years", width: 60 },
+                    { name: "Microneedling RF", duration: "1 Year", width: 25 },
+                    { name: "Thread Lifts", duration: "6 Months", width: 15 },
+                    { name: "Hair Restoration", duration: "Planning", width: 5, isNew: true }
+                ],
+                opportunities: [
+                    { icon: "🎸", text: "Missing music industry clientele needs", value: "+$225K/yr" },
+                    { icon: "💉", text: "No filler offering limits treatment plans", value: "+$310K/yr" },
+                    { icon: "📱", text: "Poor social presence in influencer city", value: "+$185K/yr" }
+                ],
+                tech: [
+                    { name: "Basic EMR", status: true },
+                    { name: "Text Reminders", status: true },
+                    { name: "Online Reviews", status: false },
+                    { name: "Membership Site", status: false },
+                    { name: "Staff Training", status: true },
+                    { name: "Inventory Alerts", status: false }
+                ]
+            },
+            {
+                name: "Luxe Dermatology",
+                location: "San Diego, CA",
+                devices: [
+                    { name: "PicoWay", age: "2022 Model", category: "laser" },
+                    { name: "Genius RF", age: "2021 Model", category: "microneedling" },
+                    { name: "CoolTone", age: "2020 Model", category: "muscle" },
+                    { name: "Revance Portfolio", age: "Launch Partner", category: "injectable" },
+                    { name: "Qwo", age: "Discontinued", category: "cellulite" }
+                ],
+                procedures: [
+                    { name: "Pigment Correction", duration: "8 Years", width: 90 },
+                    { name: "Skin Tightening", duration: "4 Years", width: 65 },
+                    { name: "Muscle Toning", duration: "3 Years", width: 45 },
+                    { name: "Cellulite Tx", duration: "2 Years", width: 30 },
+                    { name: "Laser Hair Removal", duration: "Stopped", width: 0 }
+                ],
+                opportunities: [
+                    { icon: "☀️", text: "No sun damage prevention program", value: "+$195K/yr" },
+                    { icon: "💸", text: "Qwo inventory loss - need alternative", value: "+$165K/yr" },
+                    { icon: "🏃", text: "Military market untapped for hair removal", value: "+$285K/yr" }
+                ],
+                tech: [
+                    { name: "Cloud EMR", status: true },
+                    { name: "Telehealth", status: true },
+                    { name: "AI Diagnostics", status: false },
+                    { name: "Subscription Mgmt", status: false },
+                    { name: "Outcomes Data", status: true },
+                    { name: "Marketing Auto", status: false }
+                ]
+            },
+            {
+                name: "Vitality Med Spa",
+                location: "Denver, CO",
+                devices: [
+                    { name: "Lumenis M22", age: "2019 Model", category: "IPL" },
+                    { name: "truSculpt FLEX", age: "2021 Model", category: "muscle" },
+                    { name: "Virtue RF", age: "2022 Model", category: "microneedling" },
+                    { name: "Botox Only", age: "Allergan Loyal", category: "toxin" },
+                    { name: "SkinPen", age: "2018 Model", category: "microneedling" }
+                ],
+                procedures: [
+                    { name: "IPL Services", duration: "6 Years", width: 85 },
+                    { name: "Muscle Sculpting", duration: "3 Years", width: 50 },
+                    { name: "Microneedling", duration: "5 Years", width: 70 },
+                    { name: "PRP Treatments", duration: "2 Years", width: 35 },
+                    { name: "Wellness IV", duration: "NEW!", width: 12, isNew: true }
+                ],
+                opportunities: [
+                    { icon: "🏔️", text: "Altitude skin concerns unaddressed", value: "+$145K/yr" },
+                    { icon: "🎿", text: "No pre-ski season prep packages", value: "+$225K/yr" },
+                    { icon: "💊", text: "Two RF devices redundant - poor ROI", value: "-$85K/yr" }
+                ],
+                tech: [
+                    { name: "Practice Mgmt", status: true },
+                    { name: "Digital Intake", status: true },
+                    { name: "Photo Vault", status: false },
+                    { name: "Revenue Cycle", status: false },
+                    { name: "Staff Portal", status: true },
+                    { name: "Equipment ROI", status: false }
+                ]
+            },
+            {
+                name: "Precision Aesthetics",
+                location: "Boston, MA",
+                devices: [
+                    { name: "Picosure Pro", age: "2023 Model", category: "laser" },
+                    { name: "Thermage CPT", age: "2018 Model", category: "RF" },
+                    { name: "miraDry Fresh", age: "2022 Model", category: "sweat" },
+                    { name: "Galderma Suite", age: "Aspire Plus", category: "injectable" },
+                    { name: "Agnes RF", age: "NEW - 1 month", category: "precision" }
+                ],
+                procedures: [
+                    { name: "Tattoo Removal", duration: "12 Years", width: 95 },
+                    { name: "Skin Tightening", duration: "6 Years", width: 75 },
+                    { name: "Hyperhidrosis", duration: "3 Years", width: 45 },
+                    { name: "Injectable Artistry", duration: "8 Years", width: 85 },
+                    { name: "Precision Contouring", duration: "NEW!", width: 8, isNew: true }
+                ],
+                opportunities: [
+                    { icon: "🎓", text: "College market for prevention untapped", value: "+$275K/yr" },
+                    { icon: "⚕️", text: "Medical community referrals not optimized", value: "+$195K/yr" },
+                    { icon: "🔬", text: "Agnes training incomplete - losing cases", value: "+$145K/yr" }
+                ],
+                tech: [
+                    { name: "Hospital System", status: true },
+                    { name: "Research Database", status: true },
+                    { name: "Patient Journey", status: false },
+                    { name: "Clinical Trials", status: true },
+                    { name: "Referral Network", status: false },
+                    { name: "Outcome Metrics", status: false }
+                ]
+            },
+            {
+                name: "Fountain of Youth MedSpa",
+                location: "Phoenix, AZ",
+                devices: [
+                    { name: "Halo Pro", age: "2022 Model", category: "hybrid" },
+                    { name: "CoolSculpting", age: "2018 Model", category: "cryo" },
+                    { name: "Profound RF", age: "2020 Model", category: "microneedling" },
+                    { name: "Jeuveau", age: "Evolus Partner", category: "toxin" },
+                    { name: "Kybella", age: "Low Volume", category: "deoxy" }
+                ],
+                procedures: [
+                    { name: "Laser Resurfacing", duration: "5 Years", width: 70 },
+                    { name: "Fat Freezing", duration: "6 Years", width: 80 },
+                    { name: "Cellulite Reduction", duration: "4 Years", width: 60 },
+                    { name: "Chin Contouring", duration: "3 Years", width: 40 },
+                    { name: "Wellness Coaching", duration: "NEW!", width: 10, isNew: true }
+                ],
+                opportunities: [
+                    { icon: "🌵", text: "Desert damage protocols not marketed", value: "+$185K/yr" },
+                    { icon: "♻️", text: "Old CoolSculpting vs Elite upgrade", value: "+$165K/yr" },
+                    { icon: "🏌️", text: "Golf community aesthetics ignored", value: "+$245K/yr" }
+                ],
+                tech: [
+                    { name: "All-in-One EMR", status: true },
+                    { name: "2-Way Texting", status: true },
+                    { name: "Virtual Consults", status: true },
+                    { name: "Financing Portal", status: false },
+                    { name: "Rewards Program", status: false },
+                    { name: "Staff Efficiency", status: false }
+                ]
+            },
+            {
+                name: "The Aesthetic Institute",
+                location: "Los Angeles, CA",
+                devices: [
+                    { name: "Sofwave 2.0", age: "2023 Model", category: "ultrasound" },
+                    { name: "AviClear", age: "2023 Model", category: "acne" },
+                    { name: "Evolve X", age: "2022 Model", category: "platform" },
+                    { name: "RHA + Versa", age: "Dual Lines", category: "filler" },
+                    { name: "Accutite", age: "2021 Model", category: "minimally" }
+                ],
+                procedures: [
+                    { name: "Non-Invasive Lifting", duration: "2 Years", width: 35 },
+                    { name: "Acne Solutions", duration: "1 Year", width: 20 },
+                    { name: "Body Transformation", duration: "3 Years", width: 45 },
+                    { name: "Liquid Facelifts", duration: "10 Years", width: 90 },
+                    { name: "Minimally Invasive", duration: "2 Years", width: 30 }
+                ],
+                opportunities: [
+                    { icon: "🎬", text: "Entertainment industry quick-fix menu", value: "+$495K/yr" },
+                    { icon: "📸", text: "No Instagram-ready recovery protocols", value: "+$275K/yr" },
+                    { icon: "🏆", text: "Awards season prep packages missing", value: "+$385K/yr" }
+                ],
+                tech: [
+                    { name: "Celebrity CRM", status: true },
+                    { name: "Privacy Vault", status: true },
+                    { name: "Concierge App", status: false },
+                    { name: "Global Booking", status: true },
+                    { name: "PR Integration", status: false },
+                    { name: "Outcome Gallery", status: false }
+                ]
+            },
+            {
+                name: "Ageless Beauty Clinic",
+                location: "Tampa, FL",
+                devices: [
+                    { name: "BBL Forever Young", age: "2021 Model", category: "IPL" },
+                    { name: "SculpSure", age: "2019 Model", category: "laser lipo" },
+                    { name: "Potenza", age: "2022 Model", category: "RF micro" },
+                    { name: "Daxxify Trial", age: "NEW Launch", category: "toxin" },
+                    { name: "Bellafill", age: "Certified", category: "permanent" }
+                ],
+                procedures: [
+                    { name: "Forever Young BBL", duration: "4 Years", width: 65 },
+                    { name: "Laser Lipolysis", duration: "5 Years", width: 70 },
+                    { name: "RF Microneedling", duration: "2 Years", width: 35 },
+                    { name: "Long-Lasting Toxin", duration: "3 Months", width: 12, isNew: true },
+                    { name: "5-Year Fillers", duration: "6 Years", width: 80 }
+                ],
+                opportunities: [
+                    { icon: "🏖️", text: "Beach body maintenance programs", value: "+$325K/yr" },
+                    { icon: "💰", text: "Daxxify premium pricing strategy needed", value: "+$195K/yr" },
+                    { icon: "🎯", text: "Bellafill for acne scars undermarketed", value: "+$165K/yr" }
+                ],
+                tech: [
+                    { name: "Cloud Practice", status: true },
+                    { name: "Treatment Plans", status: true },
+                    { name: "Before/After AI", status: false },
+                    { name: "Membership Mgmt", status: false },
+                    { name: "Inventory Track", status: true },
+                    { name: "ROI Dashboard", status: false }
+                ]
+            },
+            {
+                name: "Premier Derm & Laser",
+                location: "Seattle, WA",
+                devices: [
+                    { name: "Excel V+", age: "2023 Model", category: "vascular" },
+                    { name: "enlighten III", age: "2022 Model", category: "pico" },
+                    { name: "TempSure Envi", age: "2020 Model", category: "RF" },
+                    { name: "Sculptra Master", age: "High Volume", category: "biostim" },
+                    { name: "Silhouette Instalift", age: "Certified", category: "threads" }
+                ],
+                procedures: [
+                    { name: "Vascular Excellence", duration: "15 Years", width: 95 },
+                    { name: "Pigment Perfection", duration: "10 Years", width: 90 },
+                    { name: "Skin Tightening", duration: "4 Years", width: 60 },
+                    { name: "Biostimulation", duration: "3 Years", width: 45 },
+                    { name: "Thread Artistry", duration: "2 Years", width: 30 }
+                ],
+                opportunities: [
+                    { icon: "☕", text: "Tech worker stress aesthetics untapped", value: "+$385K/yr" },
+                    { icon: "🌧️", text: "No seasonal affective beauty programs", value: "+$145K/yr" },
+                    { icon: "🚀", text: "Missing startup executive packages", value: "+$425K/yr" }
+                ],
+                tech: [
+                    { name: "Enterprise EMR", status: true },
+                    { name: "AI Scheduling", status: true },
+                    { name: "Outcome Prediction", status: false },
+                    { name: "Staff Optimizer", status: false },
+                    { name: "Revenue Intel", status: true },
+                    { name: "Patient Insights", status: false }
+                ]
+            },
+            {
+                name: "Renew Medical Aesthetics",
+                location: "Charlotte, NC",
+                devices: [
+                    { name: "LaseMD Ultra", age: "2022 Model", category: "thulium" },
+                    { name: "BodyFX", age: "2019 Model", category: "RF" },
+                    { name: "Forma", age: "2020 Model", category: "skin tight" },
+                    { name: "Alluzience", age: "Fast Botox", category: "toxin" },
+                    { name: "Profhilo", age: "NEW Import", category: "skin quality" }
+                ],
+                procedures: [
+                    { name: "Laser Treatments", duration: "6 Years", width: 75 },
+                    { name: "Body Contouring", duration: "5 Years", width: 65 },
+                    { name: "Facial Tightening", duration: "4 Years", width: 55 },
+                    { name: "Liquid Botox", duration: "1 Year", width: 20 },
+                    { name: "Skin Boosters", duration: "NEW!", width: 8, isNew: true }
+                ],
+                opportunities: [
+                    { icon: "🏦", text: "Banking executive discrete treatments", value: "+$295K/yr" },
+                    { icon: "🏘️", text: "Suburban mom group packages missing", value: "+$225K/yr" },
+                    { icon: "💉", text: "Profhilo protocols need development", value: "+$175K/yr" }
+                ],
+                tech: [
+                    { name: "Modern EMR", status: true },
+                    { name: "Marketing Suite", status: true },
+                    { name: "Loyalty Platform", status: false },
+                    { name: "Training Portal", status: false },
+                    { name: "Analytics Pro", status: true },
+                    { name: "Social Proof", status: false }
+                ]
+            },
+            {
+                name: "Luxe Medical Spa",
+                location: "Las Vegas, NV",
+                devices: [
+                    { name: "Morpheus8 Prime", age: "2023 Model", category: "RF micro" },
+                    { name: "Evoke", age: "2022 Model", category: "hands-free" },
+                    { name: "Lumecca", age: "2021 Model", category: "IPL" },
+                    { name: "Full Toxin Menu", age: "All Brands", category: "neurotoxin" },
+                    { name: "Aquagold Fine Touch", age: "Microinfusion", category: "delivery" }
+                ],
+                procedures: [
+                    { name: "Advanced RF Treatments", duration: "2 Years", width: 35 },
+                    { name: "Hands-Free Contouring", duration: "1 Year", width: 20 },
+                    { name: "IPL Treatments", duration: "3 Years", width: 45 },
+                    { name: "Toxin Bar Services", duration: "5 Years", width: 70 },
+                    { name: "Red Carpet Facials", duration: "4 Years", width: 60 }
+                ],
+                opportunities: [
+                    { icon: "🎰", text: "Convention quick-recovery menu needed", value: "+$485K/yr" },
+                    { icon: "💃", text: "Showgirl/performer specialty treatments", value: "+$325K/yr" },
+                    { icon: "🌃", text: "24-hour service for Vegas lifestyle", value: "+$565K/yr" }
+                ],
+                tech: [
+                    { name: "24/7 Booking", status: false },
+                    { name: "Instant Results", status: true },
+                    { name: "VIP Tracking", status: true },
+                    { name: "Global Payments", status: true },
+                    { name: "Privacy Controls", status: false },
+                    { name: "Express Checkout", status: false }
+                ]
+            },
+            {
+                name: "Natural Beauty Institute",
+                location: "Portland, OR",
+                devices: [
+                    { name: "Clear + Brilliant", age: "2020 Model", category: "gentle laser" },
+                    { name: "truSculpt 3D", age: "2019 Model", category: "RF" },
+                    { name: "HydraFacial Syndeo", age: "2023 Model", category: "hydraderm" },
+                    { name: "Xeomin Only", age: "Natural Choice", category: "pure toxin" },
+                    { name: "PRP System", age: "In-House", category: "regenerative" }
+                ],
+                procedures: [
+                    { name: "Natural Aesthetics", duration: "8 Years", width: 90 },
+                    { name: "Gentle Contouring", duration: "5 Years", width: 65 },
+                    { name: "Medical Facials", duration: "6 Years", width: 75 },
+                    { name: "Pure Toxin Only", duration: "7 Years", width: 85 },
+                    { name: "Regenerative Med", duration: "4 Years", width: 55 }
+                ],
+                opportunities: [
+                    { icon: "🌲", text: "Eco-conscious treatment protocols", value: "+$245K/yr" },
+                    { icon: "🚴", text: "Active lifestyle recovery treatments", value: "+$195K/yr" },
+                    { icon: "☕", text: "Minimal downtime menu for professionals", value: "+$275K/yr" }
+                ],
+                tech: [
+                    { name: "Green EMR", status: true },
+                    { name: "Sustainable Track", status: true },
+                    { name: "Virtual Wellness", status: false },
+                    { name: "Ingredient Database", status: true },
+                    { name: "Carbon Offset", status: false },
+                    { name: "Community Portal", status: false }
+                ]
+            },
+            {
+                name: "Elite Skin Center",
+                location: "Dallas, TX",
+                devices: [
+                    { name: "Picoway Resolve", age: "2023 Model", category: "fractional" },
+                    { name: "truBody", age: "2023 Platform", category: "body suite" },
+                    { name: "Sylfirm X", age: "NEW - 2 months", category: "RF micro" },
+                    { name: "Restylane Kysse", age: "Lip Specialist", category: "filler" },
+                    { name: "Cellfina", age: "2020 Model", category: "cellulite" }
+                ],
+                procedures: [
+                    { name: "Melasma Expertise", duration: "12 Years", width: 95 },
+                    { name: "Body Transformation", duration: "2 Years", width: 30 },
+                    { name: "Advanced RF", duration: "2 Months", width: 8, isNew: true },
+                    { name: "Lip Perfection", duration: "8 Years", width: 85 },
+                    { name: "Cellulite Solutions", duration: "4 Years", width: 55 }
+                ],
+                opportunities: [
+                    { icon: "🤠", text: "Texas-sized treatment packages", value: "+$425K/yr" },
+                    { icon: "🏈", text: "Sports wife aesthetic programs", value: "+$385K/yr" },
+                    { icon: "💎", text: "Sylfirm melasma protocols untested", value: "+$295K/yr" }
+                ],
+                tech: [
+                    { name: "Texas-Sized EMR", status: true },
+                    { name: "Big Data Analytics", status: true },
+                    { name: "AI Treatment Plans", status: false },
+                    { name: "Outcome Guarantee", status: false },
+                    { name: "VIP Concierge", status: true },
+                    { name: "Multi-Location", status: false }
+                ]
+            },
+            {
+                name: "Timeless Medical Spa",
+                location: "Atlanta, GA",
+                devices: [
+                    { name: "Sciton MOXI", age: "2022 Model", category: "gentle laser" },
+                    { name: "CoolTone", age: "2021 Model", category: "muscle stim" },
+                    { name: "Vivace", age: "2020 Model", category: "RF micro" },
+                    { name: "Revance Suite", age: "Full Partner", category: "next-gen" },
+                    { name: "Renuva", age: "Fat Transfer Alt", category: "volumizer" }
+                ],
+                procedures: [
+                    { name: "Prejuvenation Focus", duration: "3 Years", width: 45 },
+                    { name: "Muscle Definition", duration: "2 Years", width: 30 },
+                    { name: "Microneedling RF", duration: "4 Years", width: 60 },
+                    { name: "Next-Gen Toxins", duration: "1 Year", width: 20 },
+                    { name: "Natural Volume", duration: "6 Months", width: 12 }
+                ],
+                opportunities: [
+                    { icon: "🎬", text: "Film industry quick treatments", value: "+$345K/yr" },
+                    { icon: "✈️", text: "Airport district express services", value: "+$285K/yr" },
+                    { icon: "🏛️", text: "Political figure discrete menu", value: "+$425K/yr" }
+                ],
+                tech: [
+                    { name: "Integrated EMR", status: true },
+                    { name: "Smart Scheduling", status: true },
+                    { name: "Outcome Tracking", status: false },
+                    { name: "Influencer Portal", status: false },
+                    { name: "Revenue Optimize", status: true },
+                    { name: "Training Academy", status: false }
+                ]
+            }
+        ];
+
+        // Mode Toggle Functionality
+        function setMode(mode) {
+            const body = document.body;
+            const slider = document.getElementById('toggleSlider');
+            const logo = document.getElementById('logo');
+            const grid = document.getElementById('medicalGrid');
+            const heroHighlight = document.getElementById('heroHighlight');
+            const toggleOptions = document.querySelectorAll('.toggle-option');
+            
+            if (mode === 'dental') {
+                body.classList.add('dental-mode');
+                slider.classList.add('dental-active');
+                logo.classList.add('dental-mode');
+                grid.classList.add('dental-mode');
+                heroHighlight.classList.add('dental-mode');
+                toggleOptions[0].classList.remove('active');
+                toggleOptions[1].classList.add('active');
+                
+                // Update hero text for dental
+                document.querySelector('.sub-statement').innerHTML = 
+                    'Your competition knows they do "implants." You know it\'s single units only, ' +
+                    'no guided surgery, missing 70% of full-arch opportunities.';
+            } else {
+                body.classList.remove('dental-mode');
+                slider.classList.remove('dental-active');
+                logo.classList.remove('dental-mode');
+                grid.classList.remove('dental-mode');
+                heroHighlight.classList.remove('dental-mode');
+                toggleOptions[1].classList.remove('active');
+                toggleOptions[0].classList.add('active');
+                
+                // Reset hero text for aesthetics
+                document.querySelector('.sub-statement').innerHTML = 
+                    'Your competition knows they offer "laser." You know it\'s a Candela GentleMax Pro, ' +
+                    'purchased 2019, primarily used for hair removal, with untapped potential for skin rejuvenation.';
+            }
+            
+            // Re-trigger animations
+            restartAnimations();
+        }
+        
+        // Restart animations when switching modes
+        function restartAnimations() {
+            const animatedElements = document.querySelectorAll('.device-item, .timeline-fill, .opportunity-item');
+            animatedElements.forEach(el => {
+                el.style.animation = 'none';
+                el.offsetHeight; // Trigger reflow
+                el.style.animation = null;
+            });
+        }
+        
+        // Initialize animations on scroll
+        const observerOptions = {
+            threshold: 0.3,
+            rootMargin: '0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.timeline-step').forEach(step => {
+            observer.observe(step);
+        });
+        
+        // Dynamic data updates
+        setInterval(() => {
+            // Update opportunity values with slight variations
+            const opportunityValues = document.querySelectorAll('.opportunity-value');
+            opportunityValues.forEach(val => {
+                if (val.textContent.includes('K/yr')) {
+                    const current = parseInt(val.textContent.replace(/[^\d]/g, ''));
+                    const variation = Math.floor(Math.random() * 5) - 2;
+                    val.textContent = `+$${current + variation}K/yr`;
+                }
+            });
+        }, 3000);
+        
+        // Load random scenario on page load
+        function loadRandomScenario() {
+            const randomIndex = Math.floor(Math.random() * aestheticsScenarios.length);
+            const scenario = aestheticsScenarios[randomIndex];
+            
+            // Update analysis title
+            const analysisTitle = document.querySelector('.analysis-title .aesthetics-data');
+            if (analysisTitle) {
+                analysisTitle.textContent = `DEEP INTELLIGENCE: ${scenario.name.toUpperCase()}`;
+            }
+            
+            // Update device list
+            const deviceList = document.querySelector('.device-list .aesthetics-data');
+            if (deviceList) {
+                deviceList.innerHTML = scenario.devices.map((device, index) => `
+                    <div class="device-item" style="animation-delay: ${index * 0.2}s;">
+                        <span class="device-name">${device.name}</span>
+                        <span class="device-age">${device.age}</span>
+                    </div>
+                `).join('');
+            }
+            
+            // Update procedures timeline
+            const timeline = document.querySelector('.timeline-chart .aesthetics-data');
+            if (timeline) {
+                timeline.innerHTML = scenario.procedures.map((proc, index) => `
+                    <div class="timeline-bar">
+                        <div class="timeline-fill ${proc.isNew ? 'timeline-new' : ''}" 
+                             style="width: ${proc.width}%; animation-delay: ${index * 0.2 + 0.3}s;">
+                            ${proc.name} - ${proc.duration}
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            // Update opportunities
+            const opportunityList = document.querySelector('.opportunity-list .aesthetics-data');
+            if (opportunityList) {
+                opportunityList.innerHTML = scenario.opportunities.map((opp, index) => `
+                    <div class="opportunity-item" style="animation-delay: ${index * 0.2 + 0.3}s;">
+                        <span class="opportunity-icon">${opp.icon}</span>
+                        <span class="opportunity-text">${opp.text}</span>
+                        <span class="opportunity-value">${opp.value}</span>
+                    </div>
+                `).join('');
+            }
+            
+            // Update tech stack
+            const techGrid = document.querySelector('.tech-grid .aesthetics-data');
+            if (techGrid) {
+                techGrid.innerHTML = scenario.tech.map(tech => `
+                    <div class="tech-item ${tech.status ? 'active' : ''}">
+                        <span class="tech-name">${tech.name}</span>
+                        <span class="tech-status">${tech.status ? '✅' : '❌'}</span>
+                    </div>
+                `).join('');
+            }
+            
+            // Restart animations
+            restartAnimations();
+        }
+        
+        // Load scenario on page load
+        window.addEventListener('load', () => {
+            loadRandomScenario();
+            
+            // Auto-cycle through scenarios every 15 seconds
+            setInterval(loadRandomScenario, 15000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RepSpheres | The Quiet Revolution in Medical Sales</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bordeaux: #722F37;
+            --obsidian: #0A0A0A;
+            --champagne: #D4AF37;
+            --ivory: #FFFFF0;
+            --gunmetal: #2C3E50;
+            --glass: rgba(255,255,240,0.02);
+            --glass-border: rgba(212,175,55,0.1);
+            --text-primary: #FFFFF0;
+            --text-secondary: rgba(255,255,240,0.85);
+            --text-muted: rgba(255,255,240,0.5);
+        }
+
+        @keyframes pulseBorder {
+            0% { border-color: rgba(114,47,55,0.3); }
+            33% { border-color: rgba(212,175,55,0.3); }
+            66% { border-color: rgba(44,62,80,0.3); }
+            100% { border-color: rgba(114,47,55,0.3); }
+        }
+
+        @keyframes subtleGlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        @keyframes goldDust {
+            0% {
+                transform: translateY(0px) translateX(0px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.4;
+            }
+            90% {
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(-100px) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--obsidian);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+            cursor: none;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 1px solid var(--champagne);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transition: all 0.1s ease;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-trail {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(212,175,55,0.2);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.3s ease;
+        }
+
+        /* Ambient Particles */
+        .particle {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            background: var(--champagne);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            animation: goldDust 10s linear infinite;
+        }
+
+        /* Ultra-thin Pulsating Borders */
+        .elegant-border {
+            border: 1px solid;
+            animation: pulseBorder 8s ease-in-out infinite;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 30px 60px;
+            background: rgba(10,10,10,0.8);
+            backdrop-filter: blur(20px) saturate(150%);
+            -webkit-backdrop-filter: blur(20px) saturate(150%);
+            border-bottom: 1px solid;
+            animation: pulseBorder 8s ease-in-out infinite;
+        }
+
+        .nav-inner {
+            max-width: 1800px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: var(--ivory);
+        }
+
+        .nav-status {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 25px;
+            background: var(--glass);
+            border: 1px solid;
+            border-radius: 30px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            animation: pulseBorder 8s ease-in-out infinite;
+        }
+
+        .pulse-indicator {
+            width: 6px;
+            height: 6px;
+            background: var(--champagne);
+            border-radius: 50%;
+            animation: subtleGlow 3s ease-in-out infinite;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 140px 60px 80px;
+            z-index: 10;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero-headline {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3.5rem, 8vw, 7rem);
+            font-weight: 300;
+            line-height: 0.9;
+            letter-spacing: -0.02em;
+            margin-bottom: 40px;
+            color: var(--ivory);
+        }
+
+        .hero-headline strong {
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--champagne) 0%, var(--bordeaux) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-sub {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            margin-bottom: 80px;
+            letter-spacing: 0.02em;
+            line-height: 1.6;
+        }
+
+        /* Proof Cards */
+        .proof-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto 120px;
+        }
+
+        .proof-card {
+            background: var(--glass);
+            border: 1px solid;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+            animation: pulseBorder 8s ease-in-out infinite;
+        }
+
+        .proof-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--champagne) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            pointer-events: none;
+        }
+
+        .proof-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(212,175,55,0.1);
+        }
+
+        .proof-card:hover::before {
+            opacity: 0.05;
+        }
+
+        .proof-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--champagne);
+            margin-bottom: 10px;
+            letter-spacing: -0.02em;
+        }
+
+        .proof-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 300;
+        }
+
+        /* Timeline Section */
+        .timeline-section {
+            position: relative;
+            padding: 120px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 100px;
+        }
+
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 30px;
+            background: var(--glass);
+            border: 1px solid;
+            border-radius: 40px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 300;
+            color: var(--champagne);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 30px;
+            animation: pulseBorder 8s ease-in-out infinite;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 300;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+            color: var(--ivory);
+        }
+
+        .section-title strong {
+            font-weight: 700;
+            color: var(--champagne);
+        }
+
+        .section-subtitle {
+            font-size: 1.3rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Timeline Progress */
+        .timeline-progress {
+            position: sticky;
+            top: 100px;
+            width: 100%;
+            height: 1px;
+            background: rgba(212,175,55,0.1);
+            margin-bottom: 120px;
+            overflow: hidden;
+            z-index: 100;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--champagne) 0%, var(--bordeaux) 100%);
+            transition: width 0.8s cubic-bezier(0.23, 1, 0.320, 1);
+            box-shadow: 0 0 20px var(--champagne);
+        }
+
+        /* Timeline Steps */
+        .timeline-step {
+            margin-bottom: 200px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s cubic-bezier(0.23, 1, 0.320, 1);
+        }
+
+        .timeline-step.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .step-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 100px;
+            align-items: center;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 60px;
+        }
+
+        .step-story {
+            padding: 40px;
+        }
+
+        .step-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 8rem;
+            font-weight: 300;
+            line-height: 1;
+            color: rgba(212,175,55,0.1);
+            margin-bottom: 30px;
+        }
+
+        .step-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 30px;
+            color: var(--ivory);
+        }
+
+        .step-title span {
+            color: var(--champagne);
+        }
+
+        .step-description {
+            font-size: 1.2rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 40px;
+        }
+
+        .step-metrics {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .metric-item {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .metric-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--champagne);
+            letter-spacing: -0.02em;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 300;
+        }
+
+        /* Visual Panels */
+        .step-visual {
+            position: relative;
+            height: 600px;
+            background: var(--glass);
+            border: 1px solid;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            animation: pulseBorder 8s ease-in-out infinite;
+        }
+
+        /* Social Media Visual */
+        .social-visual {
+            padding: 40px;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .visual-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(212,175,55,0.1);
+        }
+
+        .visual-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--ivory);
+            letter-spacing: -0.02em;
+        }
+
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--champagne);
+            font-weight: 300;
+        }
+
+        .social-alert {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: slideIn 0.8s ease forwards, pulseBorder 8s ease-in-out infinite;
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .alert-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .alert-type {
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .alert-time {
+            margin-left: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 300;
+        }
+
+        .alert-content {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+        }
+
+        .alert-content strong {
+            color: var(--ivory);
+            font-weight: 600;
+        }
+
+        .alert-content .highlight {
+            color: var(--champagne);
+            font-weight: 500;
+        }
+
+        .alert-action {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--champagne);
+            font-weight: 300;
+        }
+
+        /* Registration Visual */
+        .registration-item {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards, pulseBorder 8s ease-in-out infinite;
+        }
+
+        .reg-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+        }
+
+        .reg-badge {
+            background: var(--bordeaux);
+            color: var(--ivory);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .reg-details h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--ivory);
+        }
+
+        /* Intelligence Deployment Visual */
+        .deployment-visual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            height: 100%;
+        }
+
+        .deployment-side {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .deployment-side.manual {
+            border-right: 1px solid rgba(212,175,55,0.1);
+        }
+
+        .deployment-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: var(--ivory);
+        }
+
+        .deployment-stat {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--champagne);
+            margin-bottom: 10px;
+        }
+
+        .deployment-label {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        /* Meeting Intelligence Visual */
+        .meeting-visual {
+            padding: 40px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .transcript-demo {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            text-align: left;
+            animation: pulseBorder 8s ease-in-out infinite;
+        }
+
+        .transcript-line {
+            margin-bottom: 10px;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .transcript-line.doctor {
+            color: var(--champagne);
+        }
+
+        .transcript-line.ai-insight {
+            color: var(--text-muted);
+            font-style: italic;
+            margin-left: 20px;
+        }
+
+        /* Harvey Section */
+        .harvey-visual {
+            padding: 60px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .harvey-intro {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .harvey-chat {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid;
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            animation: pulseBorder 8s ease-in-out infinite;
+        }
+
+        .chat-message {
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .chat-message.user {
+            text-align: right;
+        }
+
+        .chat-bubble {
+            display: inline-block;
+            padding: 15px 20px;
+            border-radius: 20px;
+            max-width: 80%;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .chat-bubble.user {
+            background: var(--bordeaux);
+            color: var(--ivory);
+        }
+
+        .chat-bubble.harvey {
+            background: var(--glass);
+            border: 1px solid rgba(212,175,55,0.2);
+            color: var(--text-secondary);
+        }
+
+        /* Success Message */
+        .success-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 60px;
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, rgba(212,175,55,0.05) 0%, rgba(114,47,55,0.05) 100%);
+            border: 2px solid;
+            border-radius: 30px;
+            padding: 50px;
+            max-width: 700px;
+            text-align: center;
+            animation: pulseBorder 8s ease-in-out infinite;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--champagne);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--obsidian);
+            margin: 0 auto 30px;
+        }
+
+        .success-quote {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 300;
+            line-height: 1.6;
+            color: var(--ivory);
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .success-attribution {
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 150px 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, var(--champagne) 0%, transparent 70%);
+            opacity: 0.05;
+            filter: blur(100px);
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 10;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 7vw, 6rem);
+            font-weight: 300;
+            line-height: 1;
+            margin-bottom: 30px;
+            color: var(--ivory);
+        }
+
+        .cta-title strong {
+            font-weight: 700;
+            color: var(--champagne);
+        }
+
+        .cta-subtitle {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            margin-bottom: 50px;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+            padding: 25px 60px;
+            background: linear-gradient(135deg, var(--champagne) 0%, var(--bordeaux) 100%);
+            color: var(--obsidian);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 0.05em;
+            border-radius: 60px;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 30px 60px rgba(212,175,55,0.3);
+        }
+
+        .cta-stats {
+            margin-top: 50px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        .cta-urgency {
+            margin-top: 30px;
+            font-size: 1.1rem;
+            color: var(--bordeaux);
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .step-content {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+            
+            .deployment-visual {
+                grid-template-columns: 1fr;
+            }
+            
+            .deployment-side.manual {
+                border-right: none;
+                border-bottom: 1px solid rgba(212,175,55,0.1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                padding: 20px 30px;
+            }
+            
+            .hero {
+                padding: 120px 30px 60px;
+            }
+            
+            .hero-headline {
+                font-size: 3rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .step-visual {
+                height: 400px;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--obsidian);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gunmetal);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--champagne);
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-trail"></div>
+
+    <!-- Ambient Particles -->
+    <div id="particles"></div>
+
+    <!-- Navigation -->
+    <nav class="nav elegant-border">
+        <div class="nav-inner">
+            <div class="logo">REPSPHERES</div>
+            <div class="nav-status">
+                <div class="status-item elegant-border">
+                    <div class="pulse-indicator"></div>
+                    <span>Omniscient</span>
+                </div>
+                <div class="status-item elegant-border">
+                    <span id="activeCount">12,847</span> Monitored
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-headline">
+                They Check Databases.<br>
+                <strong>We Own Them.</strong>
+            </h1>
+            <p class="hero-sub">
+                While your competition crafts one email, you've already closed three deals.<br>
+                Welcome to the quiet revolution.
+            </p>
+            
+            <!-- Proof Grid -->
+            <div class="proof-grid">
+                <div class="proof-card elegant-border">
+                    <div class="proof-value" id="practicesCount">12,847</div>
+                    <div class="proof-label">Practices Monitored</div>
+                </div>
+                <div class="proof-card elegant-border">
+                    <div class="proof-value" id="meetingsCount">47</div>
+                    <div class="proof-label">Meetings Today</div>
+                </div>
+                <div class="proof-card elegant-border">
+                    <div class="proof-value">$285K</div>
+                    <div class="proof-label">Average Deal Size</div>
+                </div>
+                <div class="proof-card elegant-border">
+                    <div class="proof-value">18-24mo</div>
+                    <div class="proof-label">Regulatory Window</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="timeline-section">
+        <div class="section-header">
+            <div class="section-badge elegant-border">
+                <span>⚜️</span>
+                <span>THE REPSPHERES ADVANTAGE</span>
+            </div>
+            <h2 class="section-title">
+                Omniscience Is<br>
+                <strong>The New Diligence</strong>
+            </h2>
+            <p class="section-subtitle">
+                RepSpheres doesn't compete. It operates in a different dimension entirely.
+            </p>
+        </div>
+
+        <!-- Timeline Progress -->
+        <div class="timeline-progress">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+
+        <!-- Timeline Container -->
+        <div class="timeline-container">
+            <!-- Step 1: Social Media Pattern Detection -->
+            <div class="timeline-step" id="step1">
+                <div class="step-content">
+                    <div class="step-story">
+                        <div class="step-number">01</div>
+                        <h3 class="step-title">Social Media<br><span>Pattern Recognition</span></h3>
+                        <p class="step-description">
+                            RepSpheres monitors every doctor's social media 24/7. 
+                            New service mentioned? Certification posted? Frustration expressed? 
+                            You know before they've finished typing.
+                        </p>
+                        <div class="step-metrics">
+                            <div class="metric-item" style="animation-delay: 0.2s;">
+                                <div class="metric-value">24/7</div>
+                                <div class="metric-label">Surveillance</div>
+                            </div>
+                            <div class="metric-item" style="animation-delay: 0.4s;">
+                                <div class="metric-value">Real-time</div>
+                                <div class="metric-label">Intelligence</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-visual elegant-border">
+                        <div class="social-visual">
+                            <div class="visual-header">
+                                <h3 class="visual-title">Social Intelligence Feed</h3>
+                                <div class="live-indicator">
+                                    <span class="pulse-indicator"></span>
+                                    <span>LIVE</span>
+                                </div>
+                            </div>
+                            <div class="social-alert" style="animation-delay: 0.2s;">
+                                <div class="alert-header">
+                                    <span>🔔</span>
+                                    <span class="alert-type">Behavior Shift</span>
+                                    <span class="alert-time">2 hours ago</span>
+                                </div>
+                                <div class="alert-content">
+                                    <strong>Dr. Rodriguez</strong> mentioned <span class="highlight">breast implant consultations</span> – 
+                                    first time in 5 years of monitoring.
+                                </div>
+                                <div class="alert-action">
+                                    Revenue opportunity: $280K annually
+                                </div>
+                            </div>
+                            <div class="social-alert" style="animation-delay: 0.4s;">
+                                <div class="alert-header">
+                                    <span>📈</span>
+                                    <span class="alert-type">Interest Spike</span>
+                                    <span class="alert-time">Yesterday</span>
+                                </div>
+                                <div class="alert-content">
+                                    <strong>Brooklyn Aesthetics</strong> – 3 posts about <span class="highlight">body contouring</span> 
+                                    this week. Previously zero mentions.
+                                </div>
+                                <div class="alert-action">
+                                    Perfect timing for equipment proposal
+                                </div>
+                            </div>
+                            <div class="social-alert" style="animation-delay: 0.6s;">
+                                <div class="alert-header">
+                                    <span>🎓</span>
+                                    <span class="alert-type">New Capability</span>
+                                    <span class="alert-time">3 days ago</span>
+                                </div>
+                                <div class="alert-content">
+                                    <strong>Dr. Chen</strong> completed <span class="highlight">advanced thread lift certification</span> – 
+                                    currently has no supplier.
+                                </div>
+                                <div class="alert-action">
+                                    Immediate need identified
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: New Practice Registration Scanner -->
+            <div class="timeline-step" id="step2">
+                <div class="step-content">
+                    <div class="step-visual elegant-border">
+                        <div class="social-visual">
+                            <div class="visual-header">
+                                <h3 class="visual-title">Registration Intelligence</h3>
+                                <div class="live-indicator">
+                                    <span class="pulse-indicator"></span>
+                                    <span>SCANNING</span>
+                                </div>
+                            </div>
+                            <div class="registration-item" style="animation-delay: 0.1s;">
+                                <div class="reg-header">
+                                    <span class="reg-badge">PRIORITY</span>
+                                    <span style="color: var(--text-muted);">3 days ago</span>
+                                    <span style="margin-left: auto; color: var(--champagne);">Miami, FL</span>
+                                </div>
+                                <div class="reg-details">
+                                    <h4>Biscayne Aesthetic Institute</h4>
+                                    <p style="color: var(--text-secondary); margin-bottom: 15px;">Dr. Maria Gonzalez (ex-University of Miami)</p>
+                                    <div style="display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.9rem;">
+                                        <span>💰 $2.3M build-out</span>
+                                        <span>📐 4,200 sq ft</span>
+                                        <span>⏱️ Opens in 45 days</span>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(212,175,55,0.1); font-size: 0.95rem; color: var(--text-secondary);">
+                                    <strong style="color: var(--champagne);">Intelligence:</strong> High-budget practice, academic background. 
+                                    Equipment decisions happening now.
+                                </div>
+                            </div>
+                            <div class="registration-item" style="animation-delay: 0.3s;">
+                                <div class="reg-header">
+                                    <span class="reg-badge">NEW</span>
+                                    <span style="color: var(--text-muted);">This week</span>
+                                    <span style="margin-left: auto; color: var(--champagne);">Scottsdale, AZ</span>
+                                </div>
+                                <div class="reg-details">
+                                    <h4>Desert Bloom Medical Spa</h4>
+                                    <p style="color: var(--text-secondary); margin-bottom: 15px;">Sarah Mitchell, NP (former Scottsdale Skin partner)</p>
+                                    <div style="display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.9rem;">
+                                        <span>🔄 Non-compete expired</span>
+                                        <span>👥 3 providers joining</span>
+                                        <span>📱 1.2K followers</span>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(212,175,55,0.1); font-size: 0.95rem; color: var(--text-secondary);">
+                                    <strong style="color: var(--champagne);">Intelligence:</strong> Experienced operator with existing patient base. 
+                                    Competitive financing will be key.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-story">
+                        <div class="step-number">02</div>
+                        <h3 class="step-title">Practice Registration<br><span>Pre-Cognition</span></h3>
+                        <p class="step-description">
+                            State databases, business registrations, building permits—RepSpheres 
+                            catches every new practice before they open. First contact isn't an advantage. 
+                            It's domination.
+                        </p>
+                        <div class="step-metrics">
+                            <div class="metric-item" style="animation-delay: 0.2s;">
+                                <div class="metric-value">45 Days</div>
+                                <div class="metric-label">Before Opening</div>
+                            </div>
+                            <div class="metric-item" style="animation-delay: 0.4s;">
+                                <div class="metric-value">First</div>
+                                <div class="metric-label">Always First</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Deep Intelligence Extraction -->
+            <div class="timeline-step" id="step3">
+                <div class="step-content">
+                    <div class="step-story">
+                        <div class="step-number">03</div>
+                        <h3 class="step-title">Intelligence<br><span>Extraction</span></h3>
+                        <p class="step-description">
+                            While others see "they do lasers," RepSpheres identifies exact models, 
+                            purchase dates, utilization rates, and untapped revenue. Every detail. 
+                            Every opportunity. Every advantage.
+                        </p>
+                        <div class="step-metrics">
+                            <div class="metric-item" style="animation-delay: 0.2s;">
+                                <div class="metric-value">27</div>
+                                <div class="metric-label">Data Points</div>
+                            </div>
+                            <div class="metric-item" style="animation-delay: 0.4s;">
+                                <div class="metric-value">94%</div>
+                                <div class="metric-label">Precision</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-visual elegant-border">
+                        <div class="social-visual">
+                            <div class="visual-header">
+                                <h3 class="visual-title">Deep Intelligence Analysis</h3>
+                                <div class="live-indicator">
+                                    <span class="pulse-indicator"></span>
+                                    <span>ANALYZING</span>
+                                </div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div style="background: rgba(0,0,0,0.5); border: 1px solid rgba(212,175,55,0.1); border-radius: 15px; padding: 25px;">
+                                    <h4 style="font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 20px; color: var(--ivory);">
+                                        <span style="margin-right: 10px;">🔬</span>Device Detection
+                                    </h4>
+                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;">
+                                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(212,175,55,0.05);">
+                                            <span>Candela GentleMax Pro</span>
+                                            <span style="color: var(--champagne);">2019</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(212,175,55,0.05);">
+                                            <span>Sciton HALO</span>
+                                            <span style="color: var(--champagne);">2021</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(212,175,55,0.05);">
+                                            <span>InMode Morpheus8</span>
+                                            <span style="color: var(--champagne);">NEW</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; padding: 10px 0;">
+                                            <span>Primary: Allergan</span>
+                                            <span style="color: var(--champagne);">✓</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="background: rgba(0,0,0,0.5); border: 1px solid rgba(212,175,55,0.1); border-radius: 15px; padding: 25px;">
+                                    <h4 style="font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 20px; color: var(--ivory);">
+                                        <span style="margin-right: 10px;">💰</span>Revenue Gaps
+                                    </h4>
+                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;">
+                                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(212,175,55,0.05);">
+                                            <span>Laser underutilized</span>
+                                            <span style="color: var(--champagne);">+$85K</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(212,175,55,0.05);">
+                                            <span>No body contouring</span>
+                                            <span style="color: var(--champagne);">+$120K</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(212,175,55,0.05);">
+                                            <span>Missing PDO threads</span>
+                                            <span style="color: var(--champagne);">+$65K</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; padding: 10px 0;">
+                                            <span>Total opportunity</span>
+                                            <span style="color: var(--champagne);">+$270K</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Intelligence Deployment -->
+            <div class="timeline-step" id="step4">
+                <div class="step-content">
+                    <div class="step-story">
+                        <div class="step-number">04</div>
+                        <h3 class="step-title">The Art of<br><span>Inevitable Victory</span></h3>
+                        <p class="step-description">
+                            The motivated rep checks databases weekly. The RepSpheres user? 
+                            Has already met with every new practice before competitors know they exist. 
+                            This isn't efficiency. It's omnipresence.
+                        </p>
+                        <div class="step-metrics">
+                            <div class="metric-item" style="animation-delay: 0.2s;">
+                                <div class="metric-value">12 Sec</div>
+                                <div class="metric-label">To Domination</div>
+                            </div>
+                            <div class="metric-item" style="animation-delay: 0.4s;">
+                                <div class="metric-value">47:1</div>
+                                <div class="metric-label">Leverage Ratio</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-visual elegant-border">
+                        <div class="deployment-visual">
+                            <div class="deployment-side manual">
+                                <div class="deployment-title">Their Reality</div>
+                                <div class="deployment-stat">1</div>
+                                <div class="deployment-label">Email crafted</div>
+                                <div class="deployment-stat" style="font-size: 2rem;">20min</div>
+                                <div class="deployment-label">Time invested</div>
+                                <div style="margin-top: 30px; font-size: 0.95rem; color: var(--text-muted);">
+                                    "Doing everything right"
+                                </div>
+                            </div>
+                            <div class="deployment-side">
+                                <div class="deployment-title">Your Dimension</div>
+                                <div class="deployment-stat">188</div>
+                                <div class="deployment-label">Messages deployed</div>
+                                <div class="deployment-stat" style="font-size: 2rem;">12sec</div>
+                                <div class="deployment-label">Time elapsed</div>
+                                <div style="margin-top: 30px;">
+                                    <div style="font-size: 0.85rem; margin-bottom: 20px; color: var(--text-secondary);">Choose your mode:</div>
+                                    <div style="padding: 15px; background: rgba(212,175,55,0.05); border: 1px solid rgba(212,175,55,0.2); border-radius: 10px; margin-bottom: 10px;">
+                                        <strong style="color: var(--champagne);">Precision Strike:</strong> Human-in-loop
+                                    </div>
+                                    <div style="padding: 15px; background: rgba(212,175,55,0.05); border: 1px solid rgba(212,175,55,0.2); border-radius: 10px;">
+                                        <strong style="color: var(--champagne);">Full Auto:</strong> Set and forget
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5: Meeting Intelligence -->
+            <div class="timeline-step" id="step5">
+                <div class="step-content">
+                    <div class="step-visual elegant-border">
+                        <div class="meeting-visual">
+                            <h3 style="font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 20px; color: var(--ivory);">
+                                Perfect Recall.<br>Perfect Response.
+                            </h3>
+                            <p style="font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 30px;">
+                                Every word captured. Every objection anticipated.<br>
+                                Five follow-up options generated before you reach the parking lot.
+                            </p>
+                            <div class="transcript-demo elegant-border">
+                                <div class="transcript-line doctor" style="animation-delay: 0.2s;">
+                                    Dr. Chen: "We're happy with our current laser..."
+                                </div>
+                                <div class="transcript-line ai-insight" style="animation-delay: 0.4s;">
+                                    → Detected: Price objection masking capability gap
+                                </div>
+                                <div class="transcript-line doctor" style="animation-delay: 0.6s;">
+                                    Dr. Chen: "...but struggling with pigmentation cases."
+                                </div>
+                                <div class="transcript-line ai-insight" style="animation-delay: 0.8s;">
+                                    → Opportunity: PicoWay demonstration, 93% close rate
+                                </div>
+                            </div>
+                            <div style="margin-top: 30px; padding: 20px; background: rgba(212,175,55,0.05); border: 1px solid rgba(212,175,55,0.2); border-radius: 15px;">
+                                <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 10px;">Post-meeting intelligence:</div>
+                                <div style="font-size: 1rem; color: var(--text-secondary);">
+                                    • 5 personalized follow-ups ready<br>
+                                    • Key objections addressed<br>
+                                    • Next steps optimized<br>
+                                    • CRM automatically updated
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-story">
+                        <div class="step-number">05</div>
+                        <h3 class="step-title">Meeting<br><span>Intelligence</span></h3>
+                        <p class="step-description">
+                            When they throw an objection you've never heard. When the conversation 
+                            takes an unexpected turn. RepSpheres captures every nuance, analyzes every moment, 
+                            and arms you with perfect responses. Instantly.
+                        </p>
+                        <div class="step-metrics">
+                            <div class="metric-item" style="animation-delay: 0.2s;">
+                                <div class="metric-value">100%</div>
+                                <div class="metric-label">Capture Rate</div>
+                            </div>
+                            <div class="metric-item" style="animation-delay: 0.4s;">
+                                <div class="metric-value">5</div>
+                                <div class="metric-label">Follow-ups Ready</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 6: Harvey -->
+            <div class="timeline-step" id="step6">
+                <div class="step-content">
+                    <div class="step-story">
+                        <div class="step-number">06</div>
+                        <h3 class="step-title">Meet Harvey:<br><span>Your Brilliant Second Mind</span></h3>
+                        <p class="step-description">
+                            For those times when your boss isn't available... or just doesn't want to help. 
+                            Harvey knows more about any aesthetic procedure and market condition than any human alive. 
+                            Available 24/7. Never condescending. Always brilliant.
+                        </p>
+                        <div class="step-metrics">
+                            <div class="metric-item" style="animation-delay: 0.2s;">
+                                <div class="metric-value">24/7</div>
+                                <div class="metric-label">Availability</div>
+                            </div>
+                            <div class="metric-item" style="animation-delay: 0.4s;">
+                                <div class="metric-value">∞</div>
+                                <div class="metric-label">Knowledge</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-visual elegant-border">
+                        <div class="harvey-visual">
+                            <div class="harvey-intro">
+                                <h3 style="font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 20px; color: var(--ivory);">
+                                    Your AI Director of Sales
+                                </h3>
+                                <p style="font-size: 1.1rem; color: var(--text-secondary);">
+                                    Ask Harvey anything. He never sleeps.
+                                </p>
+                            </div>
+                            <div class="harvey-chat elegant-border">
+                                <div class="chat-message user" style="animation-delay: 0.2s;">
+                                    <div class="chat-bubble user">
+                                        Harvey, what's the profit margin on PDO threads vs traditional fillers?
+                                    </div>
+                                </div>
+                                <div class="chat-message" style="animation-delay: 0.6s;">
+                                    <div class="chat-bubble harvey">
+                                        PDO threads offer 68% margins vs 42% for fillers. But here's what matters: 
+                                        threads create recurring revenue through maintenance every 12-18 months, 
+                                        while attracting a younger demographic willing to pay premium prices...
+                                    </div>
+                                </div>
+                                <div class="chat-message user" style="animation-delay: 1s;">
+                                    <div class="chat-bubble user">
+                                        How do I position against a competitor offering 0% financing?
+                                    </div>
+                                </div>
+                                <div class="chat-message" style="animation-delay: 1.4s;">
+                                    <div class="chat-bubble harvey">
+                                        Focus on total cost of ownership. Their 0% comes with mandatory service contracts 
+                                        that increase costs by 31% over 5 years. I'll draft you a comparison showing...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 7: Success -->
+            <div class="timeline-step" id="step7">
+                <div class="step-content">
+                    <div class="step-visual elegant-border">
+                        <div class="success-visual">
+                            <div class="success-message elegant-border">
+                                <div class="success-icon">✓</div>
+                                <div class="success-quote">
+                                    "How did you know we were looking at body contouring? 
+                                    Your timing is uncanny. When can we meet?"
+                                </div>
+                                <div class="success-attribution">
+                                    — Dr. Rodriguez, Brooklyn Aesthetics
+                                </div>
+                                <div style="margin-top: 30px; padding-top: 30px; border-top: 1px solid rgba(212,175,55,0.1);">
+                                    <div style="font-size: 1.2rem; color: var(--champagne); font-weight: 500;">
+                                        Meeting scheduled. $285K opportunity secured.
+                                    </div>
+                                    <div style="margin-top: 10px; font-size: 0.95rem; color: var(--text-muted);">
+                                        While they wondered how, you already knew why.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-story">
+                        <div class="step-number">07</div>
+                        <h3 class="step-title">The Result?<br><span>Inevitable.</span></h3>
+                        <p class="step-description">
+                            This isn't about working harder or smarter. It's about operating in a 
+                            completely different reality. One where you've already won before the 
+                            competition knows there's a game.
+                        </p>
+                        <div class="step-metrics">
+                            <div class="metric-item" style="animation-delay: 0.2s;">
+                                <div class="metric-value">84%</div>
+                                <div class="metric-label">Close Rate</div>
+                            </div>
+                            <div class="metric-item" style="animation-delay: 0.4s;">
+                                <div class="metric-value">3.2x</div>
+                                <div class="metric-label">Revenue Multiple</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-bg"></div>
+        <div class="cta-content">
+            <h2 class="cta-title">
+                The Playing Field<br>
+                <strong>Won't Stay Uneven Forever</strong>
+            </h2>
+            <p class="cta-subtitle">
+                18-24 months until AI disclosure becomes mandatory.<br>
+                Your window to build an insurmountable lead is now.
+            </p>
+            <a href="#activate" class="cta-button">
+                <span>Claim What's Already Yours</span>
+                <span style="font-size: 1.5rem;">→</span>
+            </a>
+            <div class="cta-stats">
+                <span id="repCount">327</span> reps activated RepSpheres this week
+            </div>
+            <div class="cta-urgency">
+                Every day you wait, your territory shrinks.
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Custom cursor
+        const cursor = document.querySelector('.cursor');
+        const cursorTrail = document.querySelector('.cursor-trail');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX - 10 + 'px';
+            cursor.style.top = e.clientY - 10 + 'px';
+            
+            setTimeout(() => {
+                cursorTrail.style.left = e.clientX - 20 + 'px';
+                cursorTrail.style.top = e.clientY - 20 + 'px';
+            }, 100);
+        });
+
+        // Create ambient particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            particle.style.top = Math.random() * window.innerHeight + 'px';
+            particle.style.animationDelay = Math.random() * 10 + 's';
+            particle.style.animationDuration = (Math.random() * 20 + 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Live counters
+        let practices = 12847;
+        let meetings = 47;
+        let reps = 327;
+
+        setInterval(() => {
+            practices += Math.floor(Math.random() * 10) + 5;
+            document.getElementById('practicesCount').textContent = practices.toLocaleString();
+            document.getElementById('activeCount').textContent = practices.toLocaleString();
+            
+            if (Math.random() > 0.7) {
+                meetings += 1;
+                document.getElementById('meetingsCount').textContent = meetings.toLocaleString();
+            }
+            
+            if (Math.random() > 0.9) {
+                reps += 1;
+                document.getElementById('repCount').textContent = reps.toLocaleString();
+            }
+        }, 3000);
+
+        // Timeline scroll animation
+        const observerOptions = {
+            threshold: 0.3,
+            rootMargin: '0px'
+        };
+
+        let currentStep = 0;
+        const totalSteps = 7;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    
+                    // Update progress bar
+                    const stepNumber = parseInt(entry.target.id.replace('step', ''));
+                    if (stepNumber > currentStep) {
+                        currentStep = stepNumber;
+                        const progress = (currentStep / totalSteps) * 100;
+                        document.getElementById('progressBar').style.width = progress + '%';
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Observe all steps
+        document.querySelectorAll('.timeline-step').forEach(step => {
+            observer.observe(step);
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Parallax effect
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = scrolled * 0.5;
+            
+            document.querySelectorAll('.proof-card').forEach((card, index) => {
+                card.style.transform = `translateY(${parallax * (0.1 + index * 0.05)}px)`;
+            });
+        });
+    </script>
+</body>
+</html>

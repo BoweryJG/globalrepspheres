@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RepSpheres | Deep Intelligence That Never Sleeps</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Bebas+Neue&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --medical-blue: #0891b2;
+            --medical-teal: #06b6d4;
+            --medical-dark: #164e63;
+            --surgery-green: #10b981;
+            --alert-red: #ef4444;
+            --premium-gold: #fbbf24;
+            --deep-black: #000000;
+            --pure-white: #ffffff;
+            --glass: rgba(255,255,255,0.02);
+            --glass-border: rgba(255,255,255,0.06);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255,255,255,0.85);
+            --text-muted: rgba(255,255,255,0.5);
+        }
+
+        @keyframes subtleFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--deep-black);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Noise Texture */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            z-index: 1;
+            pointer-events: none;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgbnVtT2N0YXZlcz0iNCIgc3RpdGNoVGlsZXM9InN0aXRjaCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNhKSIgb3BhY2l0eT0iMC4wNSIvPjwvc3ZnPg==');
+        }
+
+        /* Medical Grid Pattern */
+        .medical-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(var(--medical-teal) 1px, transparent 1px),
+                linear-gradient(90deg, var(--medical-teal) 1px, transparent 1px);
+            background-size: 100px 100px;
+            opacity: 0.02;
+            pointer-events: none;
+            z-index: 1;
+            animation: gridPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes gridPulse {
+            0%, 100% { opacity: 0.02; }
+            50% { opacity: 0.04; }
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 20px 40px;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border-bottom: 1px solid rgba(6,182,212,0.2);
+        }
+
+        .nav-inner {
+            max-width: 1800px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--medical-teal) 0%, var(--surgery-green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-status {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 20px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        .pulse-indicator {
+            width: 8px;
+            height: 8px;
+            background: var(--surgery-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 var(--surgery-green); }
+            70% { box-shadow: 0 0 0 10px rgba(16,185,129,0); }
+            100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 40px 60px;
+            z-index: 10;
+        }
+
+        /* Opening Statement */
+        .opening-statement {
+            text-align: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .contrast-headline {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(3rem, 8vw, 7rem);
+            font-weight: 700;
+            line-height: 0.9;
+            letter-spacing: -0.03em;
+            text-transform: uppercase;
+            margin-bottom: 60px;
+        }
+
+        .highlight-number {
+            color: var(--alert-red);
+            text-shadow: 0 0 40px var(--alert-red);
+        }
+
+        .highlight-success {
+            background: linear-gradient(90deg, var(--medical-teal) 0%, var(--surgery-green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 60px var(--medical-teal);
+        }
+
+        .sub-statement {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 80px;
+            font-weight: 300;
+            letter-spacing: 0.02em;
+        }
+
+        /* Live Proof Section */
+        .live-proof {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto 100px;
+        }
+
+        .proof-card {
+            background: linear-gradient(135deg, var(--glass) 0%, rgba(6,182,212,0.05) 100%);
+            border: 1px solid rgba(6,182,212,0.2);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .proof-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--medical-teal), transparent);
+            animation: scanLine 3s linear infinite;
+        }
+
+        @keyframes scanLine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .proof-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--medical-teal);
+            box-shadow: 0 20px 40px rgba(6,182,212,0.2);
+        }
+
+        .proof-value {
+            font-family: 'Oswald', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--medical-teal) 0%, var(--surgery-green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .proof-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Demo Section */
+        .demo-section {
+            position: relative;
+            padding: 100px 0;
+            background: radial-gradient(ellipse at center, rgba(6,182,212,0.1) 0%, transparent 50%);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 25px;
+            background: rgba(6,182,212,0.1);
+            border: 1px solid var(--medical-teal);
+            border-radius: 40px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--medical-teal);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 700;
+            line-height: 1;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+        }
+
+        .section-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Timeline Container */
+        .timeline-container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 0 40px;
+            position: relative;
+        }
+
+        /* Timeline Progress */
+        .timeline-progress {
+            position: sticky;
+            top: 100px;
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            margin-bottom: 100px;
+            overflow: hidden;
+            z-index: 100;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--medical-teal) 0%, var(--surgery-green) 100%);
+            border-radius: 4px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 20px var(--medical-teal);
+        }
+
+        /* Timeline Steps */
+        .timeline-step {
+            margin-bottom: 200px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .timeline-step.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .step-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .step-story {
+            padding: 40px;
+        }
+
+        .step-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 8rem;
+            line-height: 1;
+            color: rgba(6,182,212,0.1);
+            margin-bottom: 20px;
+        }
+
+        .step-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .step-description {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .step-metrics {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .metric-item {
+            animation: countUp 1s ease-out;
+        }
+
+        @keyframes countUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .metric-value {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--medical-teal);
+            text-shadow: 0 0 20px var(--medical-teal);
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Visual Elements */
+        .step-visual {
+            position: relative;
+            height: 600px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        }
+
+        /* Social Media Visual */
+        .social-visual {
+            padding: 40px;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .social-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .social-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--surgery-green);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--surgery-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .social-alert {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .social-alert.new-pattern {
+            border-color: var(--alert-red);
+            background: rgba(239,68,68,0.05);
+        }
+
+        .social-alert.trending {
+            border-color: var(--premium-gold);
+            background: rgba(251,191,36,0.05);
+        }
+
+        .social-alert.certification {
+            border-color: var(--medical-teal);
+            background: rgba(6,182,212,0.05);
+        }
+
+        .alert-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .alert-icon {
+            font-size: 1.2rem;
+        }
+
+        .alert-type {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .alert-time {
+            margin-left: auto;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .alert-content {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .alert-content strong {
+            color: var(--text-primary);
+        }
+
+        .alert-content .highlight {
+            color: var(--medical-teal);
+            font-weight: 600;
+            border-bottom: 1px dashed var(--medical-teal);
+        }
+
+        .alert-action {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--surgery-green);
+        }
+
+        /* Registration Visual */
+        .registration-visual {
+            padding: 40px;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .scanner-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .scanner-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .scanner-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            color: var(--medical-teal);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .scan-animation {
+            width: 20px;
+            height: 2px;
+            background: var(--medical-teal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scan-animation::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--medical-teal), transparent);
+            animation: scanning 1.5s linear infinite;
+        }
+
+        @keyframes scanning {
+            to { left: 100%; }
+        }
+
+        .registration-item {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .registration-item.priority {
+            border-color: var(--alert-red);
+            background: rgba(239,68,68,0.05);
+            box-shadow: 0 10px 30px rgba(239,68,68,0.1);
+        }
+
+        .reg-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+        }
+
+        .reg-badge {
+            background: var(--alert-red);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .reg-date {
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .reg-location {
+            margin-left: auto;
+            color: var(--medical-teal);
+            font-weight: 600;
+        }
+
+        .reg-details h4 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .reg-details p {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+
+        .reg-insights {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .insight-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .reg-opportunity {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--glass-border);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .reg-opportunity strong {
+            color: var(--surgery-green);
+        }
+
+        /* Deep Intelligence Visual */
+        .intelligence-visual {
+            padding: 40px;
+            height: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .intel-panel {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 25px;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .panel-icon {
+            font-size: 1.5rem;
+        }
+
+        .panel-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* Device List */
+        .device-list {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        .device-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 8px;
+            background: rgba(6,182,212,0.05);
+            border-left: 3px solid var(--medical-teal);
+            border-radius: 5px;
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        .device-name {
+            color: var(--text-primary);
+        }
+
+        .device-age {
+            color: var(--medical-teal);
+            font-size: 0.75rem;
+        }
+
+        /* Success Message */
+        .success-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 60px;
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(16,185,129,0.05) 100%);
+            border: 2px solid var(--surgery-green);
+            border-radius: 30px;
+            padding: 40px;
+            max-width: 600px;
+            box-shadow: 0 30px 60px rgba(16,185,129,0.2);
+            animation: successPulse 2s ease infinite;
+        }
+
+        @keyframes successPulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 30px 60px rgba(16,185,129,0.2);
+            }
+            50% {
+                transform: scale(1.02);
+                box-shadow: 0 40px 80px rgba(16,185,129,0.3);
+            }
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, var(--medical-teal) 0%, var(--surgery-green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 150px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, var(--medical-teal) 0%, transparent 70%);
+            opacity: 0.1;
+            filter: blur(100px);
+            animation: ctaPulse 4s ease infinite;
+        }
+
+        @keyframes ctaPulse {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 10;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(3rem, 7vw, 6rem);
+            font-weight: 700;
+            line-height: 0.9;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+            padding: 30px 60px;
+            background: linear-gradient(135deg, var(--medical-teal) 0%, var(--medical-dark) 100%);
+            color: white;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 60px;
+            box-shadow: 0 30px 60px rgba(6,182,212,0.4);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 40px 80px rgba(6,182,212,0.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .step-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .step-visual {
+                height: 400px;
+            }
+            
+            .intelligence-visual {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .contrast-headline {
+                font-size: 3rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Medical Grid -->
+    <div class="medical-grid"></div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <div class="logo">REPSPHERES</div>
+            <div class="nav-status">
+                <div class="status-item">
+                    <div class="pulse-indicator"></div>
+                    <span>Deep Intel Active</span>
+                </div>
+                <div class="status-item">
+                    <span id="activeDetections">847</span> Detections Today
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="opening-statement">
+            <h1 class="contrast-headline">
+                Surface-Level Intel Loses Deals.<br>
+                <span class="highlight-success">Deep Intelligence Wins.</span>
+            </h1>
+            <p class="sub-statement">
+                Your competition knows they offer "laser." You know it's a Candela GentleMax Pro, 
+                purchased 2019, primarily used for hair removal, with untapped potential for skin rejuvenation.
+            </p>
+            
+            <!-- Live Proof -->
+            <div class="live-proof">
+                <div class="proof-card">
+                    <div class="proof-value" id="practicesScanned">12,847</div>
+                    <div class="proof-label">Practices Monitored</div>
+                </div>
+                <div class="proof-card">
+                    <div class="proof-value" id="patternsDetected">3,421</div>
+                    <div class="proof-label">Behavior Changes Today</div>
+                </div>
+                <div class="proof-card">
+                    <div class="proof-value">94%</div>
+                    <div class="proof-label">Intelligence Accuracy</div>
+                </div>
+                <div class="proof-card">
+                    <div class="proof-value">$285K</div>
+                    <div class="proof-label">Avg Opportunity Value</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="demo-section">
+        <div class="section-header">
+            <div class="section-badge">
+                <span>🔍</span>
+                <span>DEEP INTELLIGENCE DEMONSTRATION</span>
+            </div>
+            <h2 class="section-title">
+                Intelligence That<br>
+                <span class="gradient-text">Sees Everything</span>
+            </h2>
+            <p class="section-subtitle">
+                While others see "new practice," your RepSphere extracts military-grade intelligence: 
+                exact device models, procedure evolution, competitive gaps, and expansion opportunities.
+            </p>
+        </div>
+
+        <!-- Timeline Progress -->
+        <div class="timeline-container">
+            <div class="timeline-progress">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+
+            <!-- Step 1: Social Media Monitoring -->
+            <div class="timeline-step" id="step1">
+                <div class="step-content">
+                    <div class="step-story">
+                        <div class="step-number">01</div>
+                        <h3 class="step-title">Social Media<br><span style="color: var(--medical-teal);">Pattern Detection</span></h3>
+                        <p class="step-description">
+                            Your RepSphere monitors every doctor's social media 24/7. 
+                            New service mentioned? Certification posted? Frustration expressed? 
+                            You're instantly alerted to behavior changes that signal opportunity.
+                        </p>
+                        <div class="step-metrics">
+                            <div class="metric-item">
+                                <div class="metric-value">24/7</div>
+                                <div class="metric-label">Monitoring</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">Real-time</div>
+                                <div class="metric-label">Alerts</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-visual">
+                        <div class="social-visual">
+                            <div class="social-header">
+                                <h3 class="social-title">Social Media Intelligence Feed</h3>
+                                <div class="live-indicator">
+                                    <span class="pulse-dot"></span>
+                                    <span>LIVE MONITORING</span>
+                                </div>
+                            </div>
+                            <div class="social-alert new-pattern" style="animation-delay: 0.2s;">
+                                <div class="alert-header">
+                                    <span class="alert-icon">🔔</span>
+                                    <span class="alert-type">NEW BEHAVIOR PATTERN</span>
+                                    <span class="alert-time">2 hours ago</span>
+                                </div>
+                                <div class="alert-content">
+                                    <strong>Dr. Rodriguez</strong> posted about <span class="highlight">breast implant consultations</span> - 
+                                    First mention ever. Previously only facial aesthetics.
+                                </div>
+                                <div class="alert-action">
+                                    <span class="revenue-impact">Potential: $280K/yr in implant procedures</span>
+                                </div>
+                            </div>
+                            <div class="social-alert trending" style="animation-delay: 0.4s;">
+                                <div class="alert-header">
+                                    <span class="alert-icon">📈</span>
+                                    <span class="alert-type">TRENDING INTEREST</span>
+                                    <span class="alert-time">Yesterday</span>
+                                </div>
+                                <div class="alert-content">
+                                    <strong>Brooklyn Aesthetics</strong> - 3 posts about <span class="highlight">body contouring</span> 
+                                    this week vs. 0 mentions in past 6 months.
+                                </div>
+                                <div class="alert-action">
+                                    <span class="revenue-impact">Market timing: Optimal for CoolSculpting Elite pitch</span>
+                                </div>
+                            </div>
+                            <div class="social-alert certification" style="animation-delay: 0.6s;">
+                                <div class="alert-header">
+                                    <span class="alert-icon">🎓</span>
+                                    <span class="alert-type">NEW CERTIFICATION</span>
+                                    <span class="alert-time">3 days ago</span>
+                                </div>
+                                <div class="alert-content">
+                                    <strong>Dr. Chen</strong> completed <span class="highlight">advanced thread lift training</span> - 
+                                    Now certified but has no PDO thread supplier.
+                                </div>
+                                <div class="alert-action">
+                                    <span class="revenue-impact">Immediate need: Thread portfolio + training support</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: New Practice Registration -->
+            <div class="timeline-step" id="step2">
+                <div class="step-content">
+                    <div class="step-visual">
+                        <div class="registration-visual">
+                            <div class="scanner-header">
+                                <h3 class="scanner-title">New Practice Registration Scanner</h3>
+                                <div class="scanner-status">
+                                    <span class="scan-animation"></span>
+                                    <span>SCANNING STATE DATABASES</span>
+                                </div>
+                            </div>
+                            <div class="registration-item priority" style="animation-delay: 0.1s;">
+                                <div class="reg-header">
+                                    <span class="reg-badge">NEW</span>
+                                    <span class="reg-date">Registered 3 days ago</span>
+                                    <span class="reg-location">Miami, FL</span>
+                                </div>
+                                <div class="reg-details">
+                                    <h4>Biscayne Aesthetic Institute</h4>
+                                    <p>Owner: Dr. Maria Gonzalez (Previously at University of Miami)</p>
+                                    <div class="reg-insights">
+                                        <span class="insight-item">💰 $2.3M build-out permit filed</span>
+                                        <span class="insight-item">📍 4,200 sq ft space</span>
+                                        <span class="insight-item">🎯 Opening in 45 days</span>
+                                    </div>
+                                </div>
+                                <div class="reg-opportunity">
+                                    <strong>Intelligence:</strong> High-budget practice, academic background suggests evidence-based approach. 
+                                    Perfect timing for equipment decisions.
+                                </div>
+                            </div>
+                            <div class="registration-item" style="animation-delay: 0.3s;">
+                                <div class="reg-header">
+                                    <span class="reg-badge">NEW</span>
+                                    <span class="reg-date">Registered this week</span>
+                                    <span class="reg-location">Scottsdale, AZ</span>
+                                </div>
+                                <div class="reg-details">
+                                    <h4>Desert Bloom Medical Spa</h4>
+                                    <p>Owner: Sarah Mitchell, NP (Former partner at Scottsdale Skin)</p>
+                                    <div class="reg-insights">
+                                        <span class="insight-item">🔄 Non-compete expired</span>
+                                        <span class="insight-item">👥 Bringing 3 providers</span>
+                                        <span class="insight-item">📱 1.2K Instagram followers already</span>
+                                    </div>
+                                </div>
+                                <div class="reg-opportunity">
+                                    <strong>Intelligence:</strong> Experienced operator with existing patient base. 
+                                    Will need competitive financing to win from previous vendors.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-story">
+                        <div class="step-number">02</div>
+                        <h3 class="step-title">New Practice<br><span style="color: var(--surgery-green);">Registration Scanner</span></h3>
+                        <p class="step-description">
+                            State databases, business registrations, building permits—your RepSphere 
+                            catches every new practice before they even open. First contact advantage 
+                            means you shape their entire equipment strategy.
+                        </p>
+                        <div class="step-metrics">
+                            <div class="metric-item">
+                                <div class="metric-value">45 Days</div>
+                                <div class="metric-label">Before Opening</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">First</div>
+                                <div class="metric-label">Contact Advantage</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Deep Intelligence Analysis -->
+            <div class="timeline-step" id="step3">
+                <div class="step-content">
+                    <div class="step-story">
+                        <div class="step-number">03</div>
+                        <h3 class="step-title">Deep Intelligence<br><span style="color: var(--medical-teal);">Extraction</span></h3>
+                        <p class="step-description">
+                            While others see "they do lasers," your RepSphere identifies exact models, 
+                            purchase dates, utilization rates, and untapped revenue opportunities. 
+                            Military-grade intelligence on every aspect of their practice.
+                        </p>
+                        <div class="step-metrics">
+                            <div class="metric-item">
+                                <div class="metric-value">27</div>
+                                <div class="metric-label">Data Points</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">94%</div>
+                                <div class="metric-label">Accuracy</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-visual">
+                        <div class="intelligence-visual">
+                            <div class="intel-panel">
+                                <div class="panel-header">
+                                    <div class="panel-icon">🔬</div>
+                                    <h4 class="panel-title">Device Detection</h4>
+                                </div>
+                                <div class="device-list">
+                                    <div class="device-item" style="animation-delay: 0.2s;">
+                                        <span class="device-name">Candela GentleMax Pro</span>
+                                        <span class="device-age">2019 Model</span>
+                                    </div>
+                                    <div class="device-item" style="animation-delay: 0.4s;">
+                                        <span class="device-name">Sciton HALO Hybrid</span>
+                                        <span class="device-age">2021 Model</span>
+                                    </div>
+                                    <div class="device-item" style="animation-delay: 0.6s;">
+                                        <span class="device-name">InMode Morpheus8</span>
+                                        <span class="device-age">NEW - 2 months</span>
+                                    </div>
+                                    <div class="device-item" style="animation-delay: 0.8s;">
+                                        <span class="device-name">Allergan Botox</span>
+                                        <span class="device-age">Primary Injectable</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="intel-panel">
+                                <div class="panel-header">
+                                    <div class="panel-icon">🎯</div>
+                                    <h4 class="panel-title">Revenue Opportunities</h4>
+                                </div>
+                                <div class="device-list">
+                                    <div class="device-item" style="animation-delay: 0.3s;">
+                                        <span class="device-name">GentleMax underutilized</span>
+                                        <span class="device-age">+$85K/yr</span>
+                                    </div>
+                                    <div class="device-item" style="animation-delay: 0.5s;">
+                                        <span class="device-name">No body contouring</span>
+                                        <span class="device-age">+$120K/yr</span>
+                                    </div>
+                                    <div class="device-item" style="animation-delay: 0.7s;">
+                                        <span class="device-name">Missing PDO threads</span>
+                                        <span class="device-age">+$65K/yr</span>
+                                    </div>
+                                    <div class="device-item" style="animation-delay: 0.9s;">
+                                        <span class="device-name">No virtual consults</span>
+                                        <span class="device-age">+$45K/yr</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Success -->
+            <div class="timeline-step" id="step4">
+                <div class="step-content">
+                    <div class="step-visual">
+                        <div class="success-visual">
+                            <div class="success-message">
+                                <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
+                                    <div style="width: 60px; height: 60px; background: var(--surgery-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white;">✓</div>
+                                    <div>
+                                        <h4 style="margin: 0; font-size: 1.5rem;">Intelligence → Action → Results</h4>
+                                        <p style="margin: 0; color: var(--text-muted);">RepSphere delivers precision targeting</p>
+                                    </div>
+                                </div>
+                                <div style="font-size: 1.2rem; line-height: 1.6; color: var(--text-secondary);">
+                                    <strong>Dr. Rodriguez:</strong><br><br>
+                                    "How did you know we were looking at body contouring? 
+                                    Your timing is perfect. We've been frustrated with our 
+                                    current laser utilization. Let's meet Tuesday."<br><br>
+                                    <span style="color: var(--surgery-green);">Meeting value: $285K opportunity</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-story">
+                        <div class="step-number">04</div>
+                        <h3 class="step-title">The Result?<br><span style="color: var(--surgery-green);">Precision Wins.</span></h3>
+                        <p class="step-description">
+                            Deep intelligence turns cold outreach into warm conversations. 
+                            Your RepSphere doesn't just find leads—it delivers surgical precision 
+                            on exactly what they need, when they need it, how they want to hear it.
+                        </p>
+                        <div class="step-metrics">
+                            <div class="metric-item">
+                                <div class="metric-value">84%</div>
+                                <div class="metric-label">Response Rate</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">$285K</div>
+                                <div class="metric-label">Avg Opportunity</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-bg"></div>
+        <div class="cta-content">
+            <h2 class="cta-title">
+                Ready for<br>
+                <span class="gradient-text">Deep Intelligence?</span>
+            </h2>
+            <p style="font-size: 1.5rem; color: var(--text-secondary); margin-bottom: 50px;">
+                Your competition is using surface-level data. You'll have military-grade intelligence.
+            </p>
+            <a href="#activate" class="cta-button">
+                <span>Activate Deep Intelligence</span>
+                <span style="font-size: 2rem;">→</span>
+            </a>
+        </div>
+    </section>
+
+    <script>
+        // Live counters
+        let practices = 12847;
+        let patterns = 3421;
+        let detections = 847;
+
+        setInterval(() => {
+            practices += Math.floor(Math.random() * 10) + 5;
+            document.getElementById('practicesScanned').textContent = practices.toLocaleString();
+            
+            if (Math.random() > 0.7) {
+                patterns += Math.floor(Math.random() * 5) + 1;
+                document.getElementById('patternsDetected').textContent = patterns.toLocaleString();
+            }
+            
+            if (Math.random() > 0.8) {
+                detections += Math.floor(Math.random() * 3) + 1;
+                document.getElementById('activeDetections').textContent = detections.toLocaleString();
+            }
+        }, 3000);
+
+        // Timeline scroll animation
+        const observerOptions = {
+            threshold: 0.3,
+            rootMargin: '0px'
+        };
+
+        let currentStep = 0;
+        const totalSteps = 4;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    
+                    // Update progress bar
+                    const stepNumber = parseInt(entry.target.id.replace('step', ''));
+                    if (stepNumber > currentStep) {
+                        currentStep = stepNumber;
+                        const progress = (currentStep / totalSteps) * 100;
+                        document.getElementById('progressBar').style.width = progress + '%';
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Observe all steps
+        document.querySelectorAll('.timeline-step').forEach(step => {
+            observer.observe(step);
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

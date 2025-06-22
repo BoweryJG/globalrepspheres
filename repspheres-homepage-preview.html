@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RepSpheres - The Future of Medical Sales Intelligence</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #0a1628;
+            --deep-blue: #1e3a5f;
+            --accent-gold: #f4d03f;
+            --text-light: #e8e8e8;
+            --text-muted: #a8b2c1;
+            --section-padding: 100px 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--primary-blue);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: radial-gradient(ellipse at center, #1e3a5f 0%, #0a1628 100%);
+            overflow: hidden;
+        }
+
+        /* Animated Orb */
+        .orb-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0;
+            animation: orbFadeIn 3s ease-out 2s forwards;
+            z-index: 1;
+        }
+
+        .orb {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(244, 208, 63, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            position: relative;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        .orb::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: conic-gradient(from 0deg, transparent, var(--accent-gold), transparent);
+            border-radius: 50%;
+            animation: rotate 10s linear infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes orbFadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes rotate {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Hero Content */
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            position: relative;
+            max-width: 800px;
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+        .hero-content h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            line-height: 1.4;
+            letter-spacing: 0.02em;
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+            animation: fadeIn 1s ease-out 0.5s both;
+        }
+
+        .hero-content .emphasis {
+            color: var(--accent-gold);
+            font-weight: 500;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* CTA Button */
+        .cta-button {
+            display: inline-block;
+            padding: 18px 40px;
+            background: linear-gradient(135deg, var(--accent-gold), #e6c02e);
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+            animation: fadeIn 1s ease-out 1s both;
+            box-shadow: 0 4px 20px rgba(244, 208, 63, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(244, 208, 63, 0.4);
+        }
+
+        /* Section Styles */
+        .section {
+            padding: var(--section-padding);
+            position: relative;
+        }
+
+        .section-dark {
+            background: linear-gradient(180deg, var(--primary-blue) 0%, #0d1e35 100%);
+        }
+
+        .section-light {
+            background: linear-gradient(180deg, #0d1e35 0%, var(--primary-blue) 100%);
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 3rem;
+            text-align: center;
+            letter-spacing: 0.02em;
+        }
+
+        /* Revelation Section */
+        .revelation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .insight-card {
+            background: rgba(30, 58, 95, 0.3);
+            border: 1px solid rgba(244, 208, 63, 0.2);
+            padding: 2rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .insight-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-gold);
+            background: rgba(30, 58, 95, 0.5);
+        }
+
+        .insight-card h3 {
+            color: var(--accent-gold);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        /* Transformation Section */
+        .transformation-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-top: 3rem;
+        }
+
+        .before-after {
+            background: rgba(30, 58, 95, 0.2);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(244, 208, 63, 0.1);
+        }
+
+        .before-after h3 {
+            color: var(--accent-gold);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .before-after ul {
+            list-style: none;
+        }
+
+        .before-after li {
+            padding: 0.5rem 0;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .before-after li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-gold);
+        }
+
+        /* Demo Section */
+        .demo-container {
+            background: rgba(30, 58, 95, 0.2);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-top: 3rem;
+            text-align: center;
+            border: 1px solid rgba(244, 208, 63, 0.2);
+        }
+
+        .demo-search {
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+
+        .demo-search input {
+            width: 100%;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            background: rgba(10, 22, 40, 0.8);
+            border: 2px solid rgba(244, 208, 63, 0.3);
+            border-radius: 50px;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+        }
+
+        .demo-search input:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 20px rgba(244, 208, 63, 0.2);
+        }
+
+        .demo-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .demo-results.show {
+            opacity: 1;
+        }
+
+        .result-card {
+            background: rgba(10, 22, 40, 0.6);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(244, 208, 63, 0.2);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideUp 0.5s ease forwards;
+        }
+
+        .result-card:nth-child(1) { animation-delay: 0.1s; }
+        .result-card:nth-child(2) { animation-delay: 0.2s; }
+        .result-card:nth-child(3) { animation-delay: 0.3s; }
+        .result-card:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes slideUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Certification Section */
+        .certification-timeline {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .timeline-item {
+            text-align: center;
+            position: relative;
+        }
+
+        .timeline-item .week {
+            display: inline-block;
+            background: var(--accent-gold);
+            color: var(--primary-blue);
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* Movement Section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            background: rgba(30, 58, 95, 0.3);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(244, 208, 63, 0.2);
+        }
+
+        .stat-item .number {
+            font-size: 2.5rem;
+            color: var(--accent-gold);
+            font-weight: 700;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Choice Cards */
+        .choice-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .choice-card {
+            background: linear-gradient(135deg, rgba(30, 58, 95, 0.4), rgba(30, 58, 95, 0.2));
+            border: 1px solid rgba(244, 208, 63, 0.3);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .choice-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-gold);
+            box-shadow: 0 20px 40px rgba(244, 208, 63, 0.2);
+        }
+
+        .choice-card h3 {
+            color: var(--accent-gold);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .choice-card .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .choice-card ul {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+
+        .choice-card li {
+            padding: 0.5rem 0;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .choice-card li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent-gold);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary-blue);
+            padding: 50px 0;
+            text-align: center;
+            border-top: 1px solid rgba(244, 208, 63, 0.1);
+        }
+
+        .footer p {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        /* Live Counter Animation */
+        .counter {
+            display: inline-block;
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+
+            .transformation-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .choice-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 60px 0;
+            }
+
+            .orb-container {
+                width: 200px;
+                height: 200px;
+            }
+        }
+
+        /* Floating particles background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(244, 208, 63, 0.3);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            from {
+                transform: translateY(100vh) translateX(0);
+            }
+            to {
+                transform: translateY(-100px) translateX(100px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="orb-container">
+            <div class="orb"></div>
+        </div>
+        <div class="container">
+            <div class="hero-content">
+                <h1>In medical sales, there's a moment of truth.</h1>
+                <p>The moment when a doctor looks at you and decides:<br>
+                <em>Is this person worth my time?</em></p>
+                <p>For 15 years, I lived for that moment.<br>
+                I learned that doctors don't buy products.<br>
+                <span class="emphasis">They buy understanding.</span></p>
+                <p>RepSpheres was born from a simple question:<br>
+                What if every rep could walk into every meeting<br>
+                with the deep understanding that takes decades to build?</p>
+                <p>Not through shortcuts or scripts.<br>
+                But through intelligence that learns the way humans do—<br>
+                through pattern recognition, relationship dynamics, and contextual wisdom.</p>
+                <p><strong>This is the first sales intelligence that truly thinks.<br>
+                And it's about to change everything.</strong></p>
+                <a href="#demo" class="cta-button">Experience Augmented Intelligence</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Revelation Section -->
+    <section class="section section-dark">
+        <div class="container">
+            <h2>Here's what 15 years in the field taught me:</h2>
+            <p style="text-align: center; font-size: 1.25rem; margin-bottom: 3rem; color: var(--text-muted);">
+                The difference between a good rep and a great one<br>
+                isn't what they know—it's what they <span class="emphasis">understand</span>.
+            </p>
+            <div class="revelation-grid">
+                <div class="insight-card">
+                    <h3>Hidden Patterns</h3>
+                    <p>Why Dr. Chen always books procedures on Tuesdays</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Decoded Objections</h3>
+                    <p>Which objection means 'yes' in disguise</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Strategic Silence</h3>
+                    <p>When silence is more powerful than any pitch</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Room Reading</h3>
+                    <p>How to read the room before you enter it</p>
+                </div>
+            </div>
+            <p style="text-align: center; margin-top: 3rem; font-size: 1.3rem;">
+                This isn't data. It's <span class="emphasis">wisdom</span>.<br>
+                And for the first time in history, it can be shared.
+            </p>
+        </div>
+    </section>
+
+    <!-- Transformation Section -->
+    <section class="section section-light">
+        <div class="container">
+            <h2>Welcome to the Age of the Augmented Sales Professional</h2>
+            <div class="transformation-container">
+                <div class="before-after">
+                    <h3>Before RepSpheres:</h3>
+                    <ul>
+                        <li>Hours researching each doctor</li>
+                        <li>Generic pitch decks</li>
+                        <li>Gut feelings and guesswork</li>
+                        <li>Learning from your mistakes</li>
+                    </ul>
+                </div>
+                <div class="before-after">
+                    <h3>With RepSpheres:</h3>
+                    <ul>
+                        <li>Instant contextual intelligence</li>
+                        <li>Personalized conversation flows</li>
+                        <li>Pattern-based predictions</li>
+                        <li>Learning from everyone's success</li>
+                    </ul>
+                </div>
+            </div>
+            <p style="text-align: center; margin-top: 3rem; font-size: 1.2rem;">
+                <span class="counter" data-target="3847">0</span> successful conversations analyzed today
+            </p>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="section section-dark" id="demo">
+        <div class="container">
+            <h2>See RepSpheres Think in Real Time</h2>
+            <div class="demo-container">
+                <div class="demo-search">
+                    <input type="text" placeholder="Try 'Dr. Sarah Martinez, Miami Aesthetics'" id="demoInput">
+                </div>
+                <div class="demo-results" id="demoResults">
+                    <div class="result-card">
+                        <h4 style="color: var(--accent-gold);">Conversation Style</h4>
+                        <p>Prefers data-driven discussions</p>
+                    </div>
+                    <div class="result-card">
+                        <h4 style="color: var(--accent-gold);">Decision Pattern</h4>
+                        <p>Quick adopter of proven tech</p>
+                    </div>
+                    <div class="result-card">
+                        <h4 style="color: var(--accent-gold);">Optimal Approach</h4>
+                        <p>Lead with clinical studies</p>
+                    </div>
+                    <div class="result-card">
+                        <h4 style="color: var(--accent-gold);">Hidden Opportunity</h4>
+                        <p>Expanding second location</p>
+                    </div>
+                </div>
+                <p style="margin-top: 2rem; color: var(--text-muted);">
+                    This isn't a database. It's understanding in action.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certification Section -->
+    <section class="section section-light">
+        <div class="container">
+            <h2>Become One of the First 1,000<br>Augmented Sales Professionals (ASP)</h2>
+            <p style="text-align: center; font-size: 1.25rem; margin-bottom: 3rem; color: var(--text-muted);">
+                The ASP Certification isn't just training.<br>
+                It's <span class="emphasis">transformation</span>.
+            </p>
+            <div class="certification-timeline">
+                <div class="timeline-item">
+                    <span class="week">Week 1-2</span>
+                    <h3>Foundation</h3>
+                    <p>Understanding the marriage of wisdom and AI</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="week">Week 3-4</span>
+                    <h3>Integration</h3>
+                    <p>Learning to think with augmented intelligence</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="week">Week 5-6</span>
+                    <h3>Mastery</h3>
+                    <p>Becoming fluent in the new language of sales</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="week">Week 7-8</span>
+                    <h3>Certification</h3>
+                    <p>Joining an elite network of ASP professionals</p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="#" class="cta-button" style="margin-right: 1rem;">Start Free Assessment</a>
+                <a href="#" class="cta-button">View Certification Roadmap</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Movement Section -->
+    <section class="section section-dark">
+        <div class="container">
+            <h2>The Future is Already Here</h2>
+            <p style="text-align: center; font-size: 1.25rem; margin-bottom: 3rem; color: var(--text-muted);">This Week:</p>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="number counter" data-target="426">0</span>
+                    <p>ASP Applications</p>
+                </div>
+                <div class="stat-item">
+                    <span class="number counter" data-target="12847">0</span>
+                    <p>Conversations Facilitated</p>
+                </div>
+                <div class="stat-item">
+                    <span class="number">3</span>
+                    <p>Fortune 500 Companies</p>
+                </div>
+                <div class="stat-item">
+                    <span class="number">$6.2M</span>
+                    <p>Pipeline Optimized</p>
+                </div>
+            </div>
+            <p style="text-align: center; margin-top: 3rem; font-size: 1.3rem; color: var(--accent-gold);">
+                Your competitors aren't waiting.<br>
+                Neither should you.
+            </p>
+        </div>
+    </section>
+
+    <!-- Choice Section -->
+    <section class="section section-light">
+        <div class="container">
+            <h2>Choose Your Path</h2>
+            <div class="choice-grid">
+                <div class="choice-card">
+                    <h3>For Individual Reps</h3>
+                    <p class="subtitle">Augment Your Ability</p>
+                    <ul>
+                        <li>8-week ASP program</li>
+                        <li>Live AI coaching</li>
+                        <li>Lifetime platform access</li>
+                    </ul>
+                    <a href="#" class="cta-button">Get Certified</a>
+                </div>
+                <div class="choice-card">
+                    <h3>For Medical Practices</h3>
+                    <p class="subtitle">Meet Smarter Reps</p>
+                    <ul>
+                        <li>See your rep quality</li>
+                        <li>Communication audit</li>
+                        <li>Optimization report</li>
+                    </ul>
+                    <a href="#" class="cta-button">Get Analysis</a>
+                </div>
+                <div class="choice-card">
+                    <h3>For Enterprises</h3>
+                    <p class="subtitle">Transform Your Force</p>
+                    <ul>
+                        <li>Team-wide deployment</li>
+                        <li>ROI modeling</li>
+                        <li>Dedicated success team</li>
+                    </ul>
+                    <a href="#" class="cta-button">Book Strategy Call</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Closing Section -->
+    <section class="section section-dark">
+        <div class="container">
+            <h2 style="font-size: 2rem;">In five years, every medical sales conversation<br>
+            will be augmented by intelligence.</h2>
+            <p style="text-align: center; font-size: 1.5rem; margin: 2rem 0; color: var(--text-muted);">
+                The only question is:<br>
+                Will you help lead this transformation,<br>
+                or spend those years trying to catch up?
+            </p>
+            <div style="text-align: center;">
+                <a href="#" class="cta-button" style="font-size: 1.3rem; padding: 20px 50px;">
+                    Join the Intelligence Revolution
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>Built by Jason Golden, 13-year medical device sales veteran who transformed<br>
+            communication into code, relationships into algorithms, and wisdom into intelligence.</p>
+            <p style="margin-top: 2rem; color: var(--text-muted);">
+                © 2025 RepSpheres. All rights reserved. | Privacy Policy | Terms of Service
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Create floating particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (20 + Math.random() * 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Demo interaction
+        const demoInput = document.getElementById('demoInput');
+        const demoResults = document.getElementById('demoResults');
+
+        demoInput.addEventListener('input', function() {
+            if (this.value.length > 3) {
+                demoResults.classList.add('show');
+            } else {
+                demoResults.classList.remove('show');
+            }
+        });
+
+        // Counter animation
+        const counters = document.querySelectorAll('.counter');
+        const speed = 200;
+
+        counters.forEach(counter => {
+            const animate = () => {
+                const value = +counter.getAttribute('data-target');
+                const data = +counter.innerText;
+                const time = value / speed;
+                
+                if (data < value) {
+                    counter.innerText = Math.ceil(data + time);
+                    setTimeout(animate, 1);
+                } else {
+                    counter.innerText = value.toLocaleString();
+                }
+            }
+            
+            // Start animation when element is in viewport
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animate();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            });
+            
+            observer.observe(counter);
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections
+        document.querySelectorAll('.section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(50px)';
+            section.style.transition = 'all 0.8s ease-out';
+            scrollObserver.observe(section);
+        });
+    </script>
+</body>
+</html>

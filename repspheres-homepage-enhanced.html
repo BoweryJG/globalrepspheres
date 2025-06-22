@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RepSpheres - The Future of Medical Sales Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&family=Montserrat+Alternates:wght@300;400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-dark: #18182b;
+            --accent-cyan: #00ffc6;
+            --accent-blue: #3a86ff;
+            --accent-purple: #7B42F6;
+            --accent-pink: #ff006e;
+            --text-light: #fff;
+            --text-muted: rgba(255,255,255,0.7);
+        }
+
+        body {
+            font-family: 'DM Sans', Arial, sans-serif;
+            background: var(--primary-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Animated Background Stars */
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        /* Animated Orb Background */
+        .orb-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.4;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .orb1 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--accent-cyan), transparent);
+            top: 10%;
+            left: 10%;
+        }
+
+        .orb2 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--accent-purple), transparent);
+            top: 60%;
+            right: 10%;
+            animation-delay: -5s;
+        }
+
+        .orb3 {
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, var(--accent-blue), transparent);
+            bottom: 20%;
+            left: 30%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            33% {
+                transform: translate(30px, -30px) scale(1.1);
+            }
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            padding: 120px 0 80px;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+        }
+
+        .hero h1 {
+            font-family: 'Space Grotesk', 'Montserrat Alternates', Arial, sans-serif;
+            font-weight: 900;
+            font-size: clamp(2.5rem, 8vw, 5.5rem);
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            letter-spacing: -0.03em;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 25%, var(--accent-purple) 50%, var(--accent-pink) 75%, var(--accent-cyan) 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 8s ease infinite;
+            filter: drop-shadow(0 4px 16px rgba(0,255,198,0.4));
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            margin-bottom: 3rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-stats {
+            font-family: 'Space Grotesk', Arial, sans-serif;
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            font-weight: 600;
+            margin-bottom: 3rem;
+        }
+
+        .stat-item {
+            display: inline-block;
+            margin: 0 1rem;
+            white-space: nowrap;
+        }
+
+        .stat-number {
+            font-weight: 800;
+            text-shadow: 0 0 20px currentColor;
+            animation: numberGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes numberGlow {
+            0% { text-shadow: 0 0 20px currentColor; }
+            100% { text-shadow: 0 0 30px currentColor, 0 0 40px currentColor; }
+        }
+
+        /* CTA Buttons */
+        .cta-container {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+
+        .cta-primary {
+            padding: 20px 50px;
+            font-family: 'Space Grotesk', Arial, sans-serif;
+            font-weight: 900;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 50%, var(--accent-purple) 100%);
+            background-size: 200% 200%;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0,255,198,0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-primary:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 48px rgba(0,255,198,0.5);
+            background-position: 100% 50%;
+        }
+
+        .cta-secondary {
+            padding: 19px 40px;
+            font-family: 'Space Grotesk', Arial, sans-serif;
+            font-weight: 800;
+            font-size: 1.15rem;
+            letter-spacing: 0.04em;
+            border: 3px solid transparent;
+            border-radius: 50px;
+            background: rgba(24,24,43,0.4);
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            position: relative;
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .cta-secondary::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50px;
+            padding: 3px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue), var(--accent-purple));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+        }
+
+        .cta-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 32px rgba(0,255,198,0.3);
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 100px 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', 'Montserrat Alternates', Arial, sans-serif;
+            font-weight: 700;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(90deg, var(--accent-cyan) 0%, var(--accent-blue) 70%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* New Hero Content */
+        .transformation-story {
+            background: linear-gradient(180deg, rgba(24,24,43,0.6) 0%, rgba(24,24,43,0.95) 100%);
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .story-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .story-title {
+            font-family: 'Space Grotesk', Arial, sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--accent-cyan);
+        }
+
+        .story-text {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .story-highlight {
+            color: var(--accent-purple);
+            font-weight: 600;
+        }
+
+        /* Intelligence Demo */
+        .demo-section {
+            background: rgba(24,24,43,0.4);
+            border-radius: 30px;
+            padding: 60px;
+            margin: 60px auto;
+            max-width: 1000px;
+            border: 1px solid rgba(0,255,198,0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0,255,198,0.1);
+            padding: 8px 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(0,255,198,0.3);
+            margin-bottom: 20px;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* ASP Certification */
+        .certification-section {
+            background: linear-gradient(135deg, rgba(123,66,246,0.1) 0%, rgba(0,255,198,0.05) 100%);
+            border-radius: 30px;
+            padding: 60px;
+            margin: 60px 0;
+            text-align: center;
+            border: 1px solid rgba(123,66,246,0.3);
+        }
+
+        .cert-badge {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Grotesk', Arial, sans-serif;
+            font-weight: 900;
+            font-size: 2.5rem;
+            color: white;
+            box-shadow: 0 20px 40px rgba(123,66,246,0.4);
+            animation: rotateBadge 20s linear infinite;
+        }
+
+        @keyframes rotateBadge {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Timeline */
+        .timeline-container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .timeline-line {
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--accent-cyan), var(--accent-purple));
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0.3;
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            width: 45%;
+            background: rgba(24,24,43,0.6);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(0,255,198,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+            border-color: var(--accent-cyan);
+        }
+
+        .timeline-dot {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            left: 50%;
+            top: 30px;
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px rgba(0,255,198,0.8);
+        }
+
+        /* Final CTA */
+        .final-cta {
+            text-align: center;
+            padding: 100px 0;
+            background: radial-gradient(ellipse at center, rgba(123,66,246,0.2) 0%, transparent 70%);
+        }
+
+        .final-cta h2 {
+            font-family: 'Space Grotesk', Arial, sans-serif;
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            font-weight: 700;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .stat-item {
+                display: block;
+                margin: 0.5rem 0;
+            }
+
+            .cta-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .timeline-item,
+            .timeline-item:nth-child(even) {
+                flex-direction: column;
+            }
+
+            .timeline-content {
+                width: 100%;
+            }
+
+            .timeline-line {
+                display: none;
+            }
+
+            .demo-section {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Stars Background -->
+    <div class="stars-container" id="stars"></div>
+
+    <!-- Animated Orb Background -->
+    <div class="orb-background">
+        <div class="orb orb1"></div>
+        <div class="orb orb2"></div>
+        <div class="orb orb3"></div>
+    </div>
+
+    <!-- Hero Section - Enhanced with Sales Transformation Story -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>
+                    <span class="gradient-text">The Intelligence Revolution</span><br>
+                    <span style="color: white;">Has Arrived.</span><br>
+                    <span style="font-size: 0.7em; color: var(--accent-purple);">Which Side Are You On?</span>
+                </h1>
+                
+                <p class="hero-subtitle">
+                    For 15 years, I watched brilliant products fail because of broken communication. 
+                    Today, that changes forever.
+                </p>
+                
+                <div class="hero-stats">
+                    <span class="stat-item">
+                        <span class="stat-number" style="color: var(--accent-cyan);">300+ AI models</span>
+                    </span>
+                    <span style="color: var(--text-muted);">•</span>
+                    <span class="stat-item">
+                        <span class="stat-number" style="color: var(--accent-blue);">15 years of pattern recognition</span>
+                    </span>
+                    <span style="color: var(--text-muted);">•</span>
+                    <span class="stat-item">
+                        <span class="stat-number" style="color: var(--accent-purple);">One system that understands</span>
+                    </span>
+                </div>
+
+                <div class="cta-container">
+                    <a href="#demo" class="cta-primary">
+                        Experience Augmented Intelligence →
+                    </a>
+                    <a href="#certification" class="cta-secondary">
+                        Become ASP Certified
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Transformation Story -->
+    <section class="transformation-story">
+        <div class="container">
+            <div class="story-content">
+                <h2 class="story-title">The Moment Everything Changed</h2>
+                <p class="story-text">
+                    Picture this: You're in the parking lot before a crucial meeting. 
+                    You know your product inside out. But you don't know if Dr. Martinez 
+                    prefers clinical data or patient stories. You don't know her unspoken concerns. 
+                    You don't know what will make her <span class="story-highlight">care</span>.
+                </p>
+                <p class="story-text">
+                    After 15 years in medical sales—from launching CoolSculpting at Zeltiq to 
+                    introducing robotic surgery with Neocis—I realized success isn't about 
+                    what you know. It's about what you <span class="story-highlight">understand</span>.
+                </p>
+                <p class="story-text" style="font-size: 1.5rem; margin-top: 3rem; color: var(--accent-cyan);">
+                    RepSpheres is that understanding, amplified by AI.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Intelligence Demo -->
+    <section class="section" id="demo">
+        <div class="container">
+            <h2 class="section-title">See RepSpheres Think</h2>
+            
+            <div class="demo-section">
+                <div class="demo-header">
+                    <div class="live-indicator">
+                        <div class="live-dot"></div>
+                        <span>Live Intelligence Engine</span>
+                    </div>
+                    <h3 style="font-family: 'Space Grotesk', Arial, sans-serif; font-size: 2rem; margin-bottom: 1rem;">
+                        Watch AI Understand Context in Real-Time
+                    </h3>
+                    <p style="color: var(--text-muted); font-size: 1.2rem;">
+                        This isn't pattern matching. It's pattern <em>understanding</em>.
+                    </p>
+                </div>
+
+                <!-- Demo visualization would go here -->
+                <div style="background: rgba(0,0,0,0.3); border-radius: 20px; padding: 40px; text-align: center; min-height: 300px; display: flex; align-items: center; justify-content: center;">
+                    <p style="font-size: 1.5rem; color: var(--accent-cyan);">
+                        [Live Demo Interface]<br>
+                        <span style="font-size: 1rem; color: var(--text-muted);">
+                            Type any doctor's name to see instant intelligence synthesis
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ASP Certification -->
+    <section class="section" id="certification">
+        <div class="container">
+            <div class="certification-section">
+                <div class="cert-badge">ASP</div>
+                <h2 class="section-title">Become an Augmented Sales Professional</h2>
+                <p style="font-size: 1.3rem; margin-bottom: 2rem; max-width: 700px; margin-left: auto; margin-right: auto;">
+                    The ASP Certification isn't just training. It's transformation. 
+                    Join the first 1,000 professionals defining the future of medical sales.
+                </p>
+                <p style="font-size: 1.5rem; color: var(--accent-purple); font-weight: 600; margin-bottom: 3rem;">
+                    By 2030, practices will only meet with ASP-certified reps.
+                </p>
+                <a href="#" class="cta-primary">Start Your Certification Journey</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Evolution Timeline -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">From Pattern Recognition to Autonomous Intelligence</h2>
+            
+            <div class="timeline-container">
+                <div class="timeline-line"></div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">2010: The Beginning</h3>
+                        <p>Joined Zeltiq's foundational team, launching CoolSculpting and discovering the power of understanding market dynamics.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3 style="color: var(--accent-blue); margin-bottom: 1rem;">2015: Pattern Recognition</h3>
+                        <p>After thousands of interactions, the patterns became clear: success wasn't random—it was predictable.</p>
+                    </div>
+                    <div class="timeline-dot" style="background: var(--accent-blue);"></div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">2020: The Vision</h3>
+                        <p>Began encoding 15 years of field wisdom into systems that could learn and adapt.</p>
+                    </div>
+                    <div class="timeline-dot" style="background: var(--accent-purple);"></div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3 style="color: var(--accent-pink); margin-bottom: 1rem;">2025: RepSpheres Launch</h3>
+                        <p>The first truly autonomous medical sales intelligence goes live, forever changing how relationships are built.</p>
+                    </div>
+                    <div class="timeline-dot" style="background: var(--accent-pink);"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta">
+        <div class="container">
+            <h2 class="gradient-text">
+                In five years, every medical sales conversation<br>
+                will be augmented by intelligence.
+            </h2>
+            <p style="font-size: 1.5rem; margin: 2rem 0; color: var(--text-muted);">
+                The only question is:<br>
+                Will you lead this transformation, or watch it happen?
+            </p>
+            <a href="#" class="cta-primary" style="font-size: 1.4rem; padding: 25px 60px;">
+                Join the Intelligence Revolution
+            </a>
+        </div>
+    </section>
+
+    <script>
+        // Create stars
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Parallax effect on scroll
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const orbs = document.querySelectorAll('.orb');
+            
+            orbs.forEach((orb, index) => {
+                const speed = 0.5 + (index * 0.2);
+                orb.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>

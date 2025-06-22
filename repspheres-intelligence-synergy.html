@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RepSpheres | Two Minds. One Mission. Infinite Reach.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-darker: #050507;
+            --accent-cyan: #00ffc6;
+            --accent-blue: #3a86ff;
+            --accent-purple: #7B42F6;
+            --accent-pink: #FF006E;
+            --accent-amber: #FFA500;
+            --accent-green: #10B981;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255,255,255,0.9);
+            --text-muted: rgba(255,255,255,0.6);
+            --glass: rgba(255,255,255,0.03);
+            --glass-border: rgba(255,255,255,0.08);
+            --neural-blue: #2563eb;
+            --neural-purple: #7c3aed;
+        }
+
+        body {
+            font-family: 'DM Sans', Arial, sans-serif;
+            background: var(--bg-darker);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        /* Neural Network Background */
+        .neural-network {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.15;
+            z-index: 1;
+        }
+
+        .neural-node {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--neural-blue);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--neural-blue);
+        }
+
+        .neural-connection {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neural-purple), transparent);
+            transform-origin: left center;
+            animation: neuralPulse 3s infinite;
+        }
+
+        @keyframes neuralPulse {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 20px 40px;
+            background: rgba(5,5,7,0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .intelligence-indicator {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 20px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+        }
+
+        .ai-status {
+            width: 10px;
+            height: 10px;
+            background: var(--accent-purple);
+            border-radius: 50%;
+            position: relative;
+            animation: aiPulse 2s infinite;
+        }
+
+        @keyframes aiPulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 var(--accent-purple);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(123,66,246,0);
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            padding-top: 100px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            width: 100%;
+        }
+
+        /* Split Brain Visualization */
+        .split-brain-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .brain-side {
+            padding: 40px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .brain-side:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 20px 40px rgba(0,255,198,0.1);
+        }
+
+        .human-side {
+            border-color: rgba(0,255,198,0.2);
+        }
+
+        .ai-side {
+            border-color: rgba(123,66,246,0.2);
+        }
+
+        .side-label {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.7;
+            margin-bottom: 20px;
+        }
+
+        .side-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .human-side .side-title {
+            color: var(--accent-cyan);
+        }
+
+        .ai-side .side-title {
+            color: var(--accent-purple);
+        }
+
+        .activity-feed {
+            space-y: 16px;
+        }
+
+        .activity-item {
+            padding: 16px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            position: relative;
+            overflow: hidden;
+            animation: slideIn 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .activity-time {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .activity-content {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        /* Center Connection */
+        .connection-symbol {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 0 60px rgba(123,66,246,0.6);
+            z-index: 10;
+            animation: connectionPulse 2s infinite;
+        }
+
+        @keyframes connectionPulse {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+        }
+
+        /* Main Headline */
+        .main-headline {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .headline-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: rgba(123,66,246,0.1);
+            border: 1px solid rgba(123,66,246,0.3);
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--accent-purple);
+            margin-bottom: 20px;
+        }
+
+        .headline-main {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 30px;
+            letter-spacing: -0.02em;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, var(--accent-cyan) 0%, var(--accent-purple) 50%, var(--accent-pink) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% 100%;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .headline-sub {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Live Intelligence Demo */
+        .intelligence-demo {
+            background: linear-gradient(135deg, var(--glass) 0%, rgba(123,66,246,0.05) 100%);
+            border: 2px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 60px;
+            margin: 60px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .demo-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .analysis-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .analysis-panel {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 30px;
+            position: relative;
+        }
+
+        .panel-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .analysis-content {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: var(--accent-cyan);
+        }
+
+        .insight-item {
+            padding: 12px;
+            background: rgba(123,66,246,0.1);
+            border-left: 3px solid var(--accent-purple);
+            margin-bottom: 12px;
+            border-radius: 8px;
+            animation: fadeInUp 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+        }
+
+        /* Pattern Recognition Visual */
+        .pattern-visual {
+            height: 200px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .pattern-wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(0,255,198,0.3) 25%, 
+                transparent 50%, 
+                rgba(123,66,246,0.3) 75%, 
+                transparent);
+            animation: waveFlow 4s linear infinite;
+        }
+
+        @keyframes waveFlow {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        .primary-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 24px 48px;
+            background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-blue) 100%);
+            color: white;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 60px;
+            box-shadow: 0 20px 40px rgba(123,66,246,0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .primary-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .primary-cta:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(123,66,246,0.4);
+        }
+
+        .primary-cta:hover::before {
+            left: 100%;
+        }
+
+        /* Synergy Stats */
+        .synergy-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+        }
+
+        .stat-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .split-brain-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .connection-symbol {
+                display: none;
+            }
+            
+            .analysis-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .headline-main {
+                font-size: 2.5rem;
+            }
+            
+            .hero-content {
+                padding: 0 20px;
+            }
+        }
+
+        /* Floating Particles */
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        /* Loading States */
+        .typing-indicator {
+            display: inline-flex;
+            gap: 4px;
+            margin-left: 10px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-purple);
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.7;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Neural Network Background -->
+    <div class="neural-network" id="neuralNetwork"></div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="logo">RepSpheres</div>
+            <div class="intelligence-indicator">
+                <div class="ai-status"></div>
+                <span>AI Active</span>
+                <span style="color: var(--accent-purple);">•</span>
+                <span id="activeAnalysis">847,293</span>
+                <span style="font-size: 0.8rem; opacity: 0.7;">patterns analyzed</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <!-- Main Headline -->
+            <div class="main-headline">
+                <div class="headline-badge">
+                    <span>🧠</span>
+                    <span>AUTONOMOUS INTELLIGENCE</span>
+                </div>
+                <h1 class="headline-main">
+                    <span class="gradient-text">Two Minds. One Mission.</span><br>
+                    <span style="font-size: 0.7em; opacity: 0.9;">Infinite Reach.</span>
+                </h1>
+                <p class="headline-sub">
+                    While you build relationships in surgery, your AI builds your pipeline. 
+                    <strong>True synergy</strong> between human expertise and machine intelligence.
+                </p>
+            </div>
+
+            <!-- Split Brain Visualization -->
+            <div class="split-brain-container">
+                <!-- Human Side -->
+                <div class="brain-side human-side">
+                    <div class="side-label">YOU • IN THE FIELD</div>
+                    <h2 class="side-title">Building Trust.<br>Closing Deals.</h2>
+                    
+                    <div class="activity-feed" id="humanActivities">
+                        <div class="activity-item" style="animation-delay: 0.1s;">
+                            <div class="activity-time">9:47 AM</div>
+                            <div class="activity-content">In surgery with Dr. Martinez, demonstrating new technique</div>
+                        </div>
+                        <div class="activity-item" style="animation-delay: 0.3s;">
+                            <div class="activity-time">11:15 AM</div>
+                            <div class="activity-content">Coffee with practice manager, discussing Q4 plans</div>
+                        </div>
+                        <div class="activity-item" style="animation-delay: 0.5s;">
+                            <div class="activity-time">2:30 PM</div>
+                            <div class="activity-content">Training session at Bella Aesthetics</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Connection Symbol -->
+                <div class="connection-symbol">∞</div>
+
+                <!-- AI Side -->
+                <div class="brain-side ai-side">
+                    <div class="side-label">YOUR AI • ALWAYS WORKING</div>
+                    <h2 class="side-title">Finding Leads.<br>Crafting Messages.</h2>
+                    
+                    <div class="activity-feed" id="aiActivities">
+                        <div class="activity-item" style="animation-delay: 0.2s;">
+                            <div class="activity-time">9:47 AM</div>
+                            <div class="activity-content">Identified 12 new practices in territory, analyzing profiles...</div>
+                        </div>
+                        <div class="activity-item" style="animation-delay: 0.4s;">
+                            <div class="activity-time">11:15 AM</div>
+                            <div class="activity-content">Generated personalized outreach for Dr. Chen based on recent publications</div>
+                        </div>
+                        <div class="activity-item" style="animation-delay: 0.6s;">
+                            <div class="activity-time">2:30 PM</div>
+                            <div class="activity-content">Scheduled 3 follow-ups, qualified 7 warm leads</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Intelligence Demo -->
+            <div class="intelligence-demo">
+                <div class="demo-header">
+                    <h2 class="demo-title">Watch Intelligence at Work</h2>
+                    <p style="font-size: 1.2rem; color: var(--text-secondary);">
+                        Real-time pattern recognition from 847,000 interactions
+                    </p>
+                </div>
+
+                <!-- Pattern Recognition Visual -->
+                <div class="pattern-visual">
+                    <div class="pattern-wave"></div>
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 10;">
+                        <div style="font-family: 'JetBrains Mono', monospace; color: var(--accent-cyan); font-size: 0.9rem;">
+                            ANALYZING BEHAVIORAL PATTERNS
+                        </div>
+                        <div class="typing-indicator">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analysis-container">
+                    <!-- Input Analysis -->
+                    <div class="analysis-panel">
+                        <h3 class="panel-title">
+                            <span style="color: var(--accent-cyan);">📊</span>
+                            Pattern Recognition
+                        </h3>
+                        <div class="analysis-content" id="patternAnalysis">
+                            <div>Doctor Profile: Dr. Sarah Chen</div>
+                            <div>Specialty: Dermatology</div>
+                            <div>Location: San Francisco, CA</div>
+                            <div>Years in Practice: 12</div>
+                            <div style="margin-top: 10px; color: var(--text-secondary);">
+                                Analyzing communication preferences...<br>
+                                Identifying decision patterns...<br>
+                                Matching successful approaches...
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Generated Intelligence -->
+                    <div class="analysis-panel">
+                        <h3 class="panel-title">
+                            <span style="color: var(--accent-purple);">🎯</span>
+                            Tailored Approach Generated
+                        </h3>
+                        <div id="generatedInsights">
+                            <div class="insight-item" style="animation-delay: 0.5s;">
+                                <strong>Optimal Contact Time:</strong> Tuesday 2-4 PM (67% response rate)
+                            </div>
+                            <div class="insight-item" style="animation-delay: 0.7s;">
+                                <strong>Key Interest:</strong> Minimally invasive techniques, patient comfort
+                            </div>
+                            <div class="insight-item" style="animation-delay: 0.9s;">
+                                <strong>Personalized Hook:</strong> "Dr. Chen, saw your recent paper on reducing bruising..."
+                            </div>
+                            <div class="insight-item" style="animation-delay: 1.1s;">
+                                <strong>Success Predictor:</strong> 84% likelihood of engagement
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Synergy Stats -->
+            <div class="synergy-stats">
+                <div class="stat-card">
+                    <div class="stat-value">24/7</div>
+                    <div class="stat-label">Intelligence Working</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">12 Sec</div>
+                    <div class="stat-label">To Generate Insights</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">84%</div>
+                    <div class="stat-label">Accuracy Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">∞</div>
+                    <div class="stat-label">Learning & Improving</div>
+                </div>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="cta-section">
+                <a href="#demo" class="primary-cta">
+                    <span>Experience the Synergy</span>
+                    <span>→</span>
+                </a>
+                <p style="margin-top: 20px; color: var(--text-muted);">
+                    Join 261 medical aesthetics professionals already multiplying their impact
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Neural Network Animation
+        function createNeuralNetwork() {
+            const network = document.getElementById('neuralNetwork');
+            const nodes = [];
+            
+            // Create nodes
+            for (let i = 0; i < 20; i++) {
+                const node = document.createElement('div');
+                node.className = 'neural-node';
+                node.style.left = `${Math.random() * 100}%`;
+                node.style.top = `${Math.random() * 100}%`;
+                network.appendChild(node);
+                nodes.push(node);
+            }
+            
+            // Create connections
+            for (let i = 0; i < 15; i++) {
+                const connection = document.createElement('div');
+                connection.className = 'neural-connection';
+                const startNode = nodes[Math.floor(Math.random() * nodes.length)];
+                const endNode = nodes[Math.floor(Math.random() * nodes.length)];
+                
+                if (startNode !== endNode) {
+                    const startRect = startNode.getBoundingClientRect();
+                    const endRect = endNode.getBoundingClientRect();
+                    
+                    const deltaX = endRect.left - startRect.left;
+                    const deltaY = endRect.top - startRect.top;
+                    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                    const angle = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
+                    
+                    connection.style.width = `${distance}px`;
+                    connection.style.left = `${startRect.left}px`;
+                    connection.style.top = `${startRect.top}px`;
+                    connection.style.transform = `rotate(${angle}deg)`;
+                    connection.style.animationDelay = `${Math.random() * 3}s`;
+                    
+                    network.appendChild(connection);
+                }
+            }
+        }
+
+        // Pattern Analysis Counter
+        let analysisCount = 847293;
+        setInterval(() => {
+            analysisCount += Math.floor(Math.random() * 10) + 5;
+            document.getElementById('activeAnalysis').textContent = analysisCount.toLocaleString();
+        }, 2000);
+
+        // Dynamic Activity Updates
+        const humanActivities = [
+            { time: '3:45 PM', content: 'Closing deal at Marina MedSpa - $47K order' },
+            { time: '4:20 PM', content: 'Product demo scheduled with Dr. Rodriguez' },
+            { time: '5:00 PM', content: 'Territory review meeting with manager' }
+        ];
+
+        const aiActivities = [
+            { time: '3:45 PM', content: 'Analyzed 23 practice websites for expansion signals' },
+            { time: '4:20 PM', content: 'Generated 47 personalized messages, 12 responses already' },
+            { time: '5:00 PM', content: 'Identified 3 high-value opportunities for tomorrow' }
+        ];
+
+        let activityIndex = 0;
+        setInterval(() => {
+            const humanFeed = document.getElementById('humanActivities');
+            const aiFeed = document.getElementById('aiActivities');
+            
+            if (activityIndex < humanActivities.length) {
+                // Add new activities
+                const humanItem = createActivityItem(humanActivities[activityIndex]);
+                const aiItem = createActivityItem(aiActivities[activityIndex]);
+                
+                humanFeed.appendChild(humanItem);
+                aiFeed.appendChild(aiItem);
+                
+                // Remove old activities if too many
+                if (humanFeed.children.length > 4) {
+                    humanFeed.removeChild(humanFeed.firstChild);
+                    aiFeed.removeChild(aiFeed.firstChild);
+                }
+                
+                activityIndex++;
+            }
+        }, 5000);
+
+        function createActivityItem(activity) {
+            const item = document.createElement('div');
+            item.className = 'activity-item';
+            item.style.animationDelay = '0s';
+            item.innerHTML = `
+                <div class="activity-time">${activity.time}</div>
+                <div class="activity-content">${activity.content}</div>
+            `;
+            return item;
+        }
+
+        // Floating Particles
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.top = `${Math.random() * 100}%`;
+            document.body.appendChild(particle);
+            
+            const duration = Math.random() * 20 + 10;
+            particle.style.animation = `float ${duration}s infinite`;
+            
+            setTimeout(() => particle.remove(), duration * 1000);
+        }
+
+        // Initialize
+        createNeuralNetwork();
+        setInterval(createParticle, 3000);
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

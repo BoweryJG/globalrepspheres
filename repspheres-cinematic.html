@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RepSpheres | In 12 Seconds, Everything Changes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-darker: #050507;
+            --accent-cyan: #00ffc6;
+            --accent-blue: #3a86ff;
+            --accent-purple: #7B42F6;
+            --accent-red: #ff6b6b;
+            --accent-amber: #FFA500;
+            --accent-green: #10B981;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255,255,255,0.9);
+            --text-muted: rgba(255,255,255,0.6);
+            --glass: rgba(255,255,255,0.05);
+            --glass-border: rgba(255,255,255,0.1);
+        }
+
+        body {
+            font-family: 'DM Sans', Arial, sans-serif;
+            background: var(--bg-darker);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+            cursor: default;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--accent-cyan);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.1s ease;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-grow {
+            transform: scale(2);
+            background: var(--accent-cyan);
+            opacity: 0.5;
+        }
+
+        /* Particle System */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleFloat 10s infinite;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) scale(0);
+            }
+            10% {
+                opacity: 1;
+                transform: translateY(80vh) scale(1);
+            }
+            90% {
+                opacity: 1;
+                transform: translateY(20vh) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(0) scale(0);
+            }
+        }
+
+        /* Cinema Letterbox */
+        .letterbox {
+            position: fixed;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: var(--bg-darker);
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .letterbox-top {
+            top: 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        .letterbox-bottom {
+            bottom: 0;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.8);
+        }
+
+        /* Navigation - Minimal */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 30px 50px;
+            background: linear-gradient(180deg, rgba(10,10,15,0.9) 0%, transparent 100%);
+            backdrop-filter: blur(20px);
+        }
+
+        .nav-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 800;
+            font-size: 24px;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-cta {
+            padding: 12px 30px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            color: var(--text-primary);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-cta:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-darker);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,255,198,0.3);
+        }
+
+        /* Hero Section - Cinematic */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 10;
+            padding: 0;
+            background: radial-gradient(ellipse at center bottom, rgba(123,66,246,0.1) 0%, transparent 70%);
+        }
+
+        /* Timestamp Opening */
+        .timestamp-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 20;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -40%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .timestamp {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(4rem, 10vw, 8rem);
+            font-weight: 700;
+            color: var(--accent-amber);
+            text-shadow: 0 0 30px rgba(255,165,0,0.5);
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+        }
+
+        .location {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .location-pin {
+            color: var(--accent-red);
+        }
+
+        /* Split Screen Effect */
+        .split-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: none;
+            opacity: 0;
+        }
+
+        .split-screen.active {
+            display: flex;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .split-side {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .split-left {
+            background: rgba(255,107,107,0.02);
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .split-right {
+            background: rgba(0,255,198,0.02);
+        }
+
+        .split-content {
+            text-align: center;
+            padding: 40px;
+            max-width: 500px;
+        }
+
+        .split-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+
+        .split-visual {
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+
+        /* Before State - Chaos */
+        .chaos-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .chaos-line {
+            position: absolute;
+            height: 1px;
+            background: rgba(255,107,107,0.3);
+            transform-origin: center;
+            animation: chaosMove 3s infinite;
+        }
+
+        @keyframes chaosMove {
+            0%, 100% { transform: rotate(0deg) scale(1); opacity: 0.3; }
+            50% { transform: rotate(180deg) scale(1.2); opacity: 1; }
+        }
+
+        /* After State - Clarity */
+        .clarity-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .insight-node {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(0,255,198,0.1);
+            border: 2px solid var(--accent-cyan);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            animation: pulse 2s infinite;
+        }
+
+        .insight-connection {
+            position: absolute;
+            height: 1px;
+            background: var(--accent-cyan);
+            opacity: 0.5;
+        }
+
+        /* Main Story Content */
+        .story-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+            z-index: 30;
+        }
+
+        .story-container.active {
+            display: flex;
+        }
+
+        .story-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 40px;
+            max-width: 1000px;
+        }
+
+        .typewriter {
+            overflow: hidden;
+            white-space: nowrap;
+            animation: typewriter 2s steps(50, end);
+        }
+
+        @keyframes typewriter {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        .highlight-number {
+            color: var(--accent-amber);
+            font-family: 'JetBrains Mono', monospace;
+            text-shadow: 0 0 20px rgba(255,165,0,0.5);
+        }
+
+        .highlight-action {
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Live Analysis Demo */
+        .analysis-demo {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 40px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .analysis-demo.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .analysis-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .analysis-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent-cyan);
+        }
+
+        .analysis-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .analysis-content {
+            display: grid;
+            gap: 20px;
+        }
+
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--glass-border);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+        }
+
+        .data-label {
+            color: var(--text-muted);
+        }
+
+        .data-value {
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        /* CTA Section */
+        .hero-cta-container {
+            margin-top: 60px;
+            animation: fadeInUp 1s ease-out 0.5s backwards;
+        }
+
+        .cta-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 25px 50px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: var(--bg-darker);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 40px rgba(0,255,198,0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: translateY(-50%);
+            transition: left 0.5s ease;
+        }
+
+        .cta-primary:hover::before {
+            left: 100%;
+        }
+
+        .cta-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(0,255,198,0.5);
+        }
+
+        .cta-secondary {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .cta-secondary:hover {
+            color: var(--accent-purple);
+        }
+
+        /* Pattern Recognition Section */
+        .pattern-section {
+            padding: 150px 40px;
+            position: relative;
+            z-index: 10;
+            background: linear-gradient(180deg, var(--bg-darker) 0%, rgba(24,24,43,0.5) 100%);
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-label {
+            display: inline-block;
+            padding: 10px 25px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--accent-purple);
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .gradient-title {
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Intelligence Cards */
+        .intelligence-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-top: 80px;
+        }
+
+        .intel-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .intel-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--accent-cyan), var(--accent-purple), var(--accent-cyan));
+            border-radius: 20px;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.4s ease;
+        }
+
+        .intel-card:hover::before {
+            opacity: 1;
+            animation: borderGlow 2s linear infinite;
+        }
+
+        @keyframes borderGlow {
+            to { transform: rotate(360deg); }
+        }
+
+        .intel-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .intel-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .icon-gradient-1 { background: linear-gradient(135deg, var(--accent-cyan), #00a896); }
+        .icon-gradient-2 { background: linear-gradient(135deg, var(--accent-blue), #2563eb); }
+        .icon-gradient-3 { background: linear-gradient(135deg, var(--accent-purple), #6d28d9); }
+
+        .intel-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .intel-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .intel-stats {
+            display: flex;
+            gap: 30px;
+        }
+
+        .intel-stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Transformation Results */
+        .results-section {
+            padding: 150px 40px;
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            background: radial-gradient(ellipse at center, rgba(0,255,198,0.1) 0%, transparent 70%);
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            max-width: 1000px;
+            margin: 80px auto;
+        }
+
+        .result-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px 30px;
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+        }
+
+        .result-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 15px 40px rgba(0,255,198,0.2);
+        }
+
+        .result-before {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.2rem;
+            color: var(--accent-red);
+            text-decoration: line-through;
+            opacity: 0.6;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .result-after {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .result-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Final CTA Section */
+        .final-cta {
+            padding: 150px 40px 100px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .final-headline {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(3rem, 7vw, 5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 30px;
+        }
+
+        .counter-display {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(4rem, 8vw, 6rem);
+            font-weight: 700;
+            color: var(--accent-amber);
+            text-shadow: 0 0 40px rgba(255,165,0,0.5);
+            margin: 40px 0;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 60px 40px;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            background: var(--bg-darker);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .timestamp {
+                font-size: 4rem;
+            }
+
+            .split-screen {
+                flex-direction: column;
+            }
+
+            .split-left {
+                border-right: none;
+                border-bottom: 1px solid var(--glass-border);
+            }
+
+            .story-text {
+                font-size: 2rem;
+            }
+
+            .letterbox {
+                height: 40px;
+            }
+
+            .intelligence-grid,
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+
+    <!-- Particle System -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Cinema Letterbox -->
+    <div class="letterbox letterbox-top"></div>
+    <div class="letterbox letterbox-bottom"></div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="logo">REPSPHERES</div>
+            <a href="#demo" class="nav-cta">Get Your 12 Seconds</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <!-- Opening Timestamp -->
+        <div class="timestamp-container" id="timestamp-container">
+            <div class="timestamp">8:47 AM</div>
+            <div class="location">
+                <span class="location-pin">📍</span>
+                Outside Dr. Martinez's Office, San Francisco
+            </div>
+        </div>
+
+        <!-- Split Screen Visualization -->
+        <div class="split-screen" id="split-screen">
+            <div class="split-side split-left">
+                <div class="split-content">
+                    <div class="split-label">BEFORE</div>
+                    <div class="split-visual">
+                        <div class="chaos-container">
+                            <div class="chaos-line" style="width: 150px; top: 20%; left: 10%; transform: rotate(45deg);"></div>
+                            <div class="chaos-line" style="width: 100px; top: 40%; right: 20%; transform: rotate(-30deg); animation-delay: -0.5s;"></div>
+                            <div class="chaos-line" style="width: 120px; bottom: 30%; left: 25%; transform: rotate(75deg); animation-delay: -1s;"></div>
+                            <div class="chaos-line" style="width: 80px; top: 60%; right: 15%; transform: rotate(-60deg); animation-delay: -1.5s;"></div>
+                        </div>
+                    </div>
+                    <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; color: var(--accent-red); margin-bottom: 15px;">Uncertainty</h3>
+                    <p style="color: var(--text-muted); line-height: 1.6;">
+                        Generic notes. No context. Hope for the best.
+                    </p>
+                </div>
+            </div>
+
+            <div class="split-side split-right">
+                <div class="split-content">
+                    <div class="split-label">AFTER</div>
+                    <div class="split-visual">
+                        <div class="clarity-container">
+                            <div class="insight-node" style="top: 20%; left: 20%;">93%</div>
+                            <div class="insight-node" style="top: 20%; right: 20%;">ROI</div>
+                            <div class="insight-node" style="bottom: 20%; left: 30%;">2.7s</div>
+                            <div class="insight-connection" style="width: 100px; top: 35%; left: 35%; transform: rotate(45deg);"></div>
+                            <div class="insight-connection" style="width: 80px; top: 35%; right: 35%; transform: rotate(-45deg);"></div>
+                        </div>
+                    </div>
+                    <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; color: var(--accent-cyan); margin-bottom: 15px;">Clarity</h3>
+                    <p style="color: var(--text-muted); line-height: 1.6;">
+                        Complete intelligence. Perfect approach. Guaranteed results.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Story Content -->
+        <div class="story-container" id="story-container">
+            <div class="story-text">
+                <div class="typewriter">
+                    You've been here before.
+                </div>
+            </div>
+
+            <div class="story-text" style="display: none;" id="story-2">
+                Last month, <span class="highlight-number">627 top performers</span><br>
+                sat exactly where you're sitting.
+            </div>
+
+            <div class="story-text" style="display: none;" id="story-3">
+                Only one walked in <span class="highlight-action">knowing exactly what to say</span>.
+            </div>
+
+            <!-- Live Analysis Demo -->
+            <div class="analysis-demo" id="analysis-demo">
+                <div class="analysis-header">
+                    <div class="analysis-title">PATTERN RECOGNITION ENGINE</div>
+                    <div class="analysis-status">
+                        <div class="status-dot"></div>
+                        <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent-green);">ANALYZING</span>
+                    </div>
+                </div>
+                <div class="analysis-content">
+                    <div class="data-row">
+                        <span class="data-label">Physician Profile</span>
+                        <span class="data-value">Dr. Elena Martinez, MD</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Communication Style</span>
+                        <span class="data-value">Data-Driven, Visual</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Decision Pattern</span>
+                        <span class="data-value">2.7 Meetings Average</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Key Interests</span>
+                        <span class="data-value">ROI, Patient Outcomes</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Optimal Approach</span>
+                        <span class="data-value">Lead with Case Study #847</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="story-text" style="display: none;" id="story-4">
+                In <span class="highlight-number">12 seconds</span>, RepSpheres analyzed<br>
+                <span class="highlight-action">847,000 similar interactions</span>.
+            </div>
+
+            <div class="story-text" style="display: none;" id="story-5">
+                <span style="font-size: 1.5em; line-height: 1.3;">This is your 12 seconds.</span>
+            </div>
+
+            <div class="hero-cta-container" style="display: none;" id="cta-container">
+                <a href="#demo" class="cta-primary">
+                    Get Your 12 Seconds →
+                </a>
+                <a href="#results" class="cta-secondary">
+                    See what 627 reps discovered
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pattern Recognition Section -->
+    <section class="pattern-section">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-label">PATTERN RECOGNITION</div>
+                <h2 class="section-title gradient-title">
+                    Success Isn't Random.<br>It's a Pattern.
+                </h2>
+                <p style="font-size: 1.3rem; color: var(--text-secondary); max-width: 800px; margin: 0 auto; line-height: 1.6;">
+                    After analyzing <strong style="color: var(--accent-cyan);">847,000 sales interactions</strong> across 15 years, 
+                    we discovered something profound: every successful interaction follows recognizable patterns.
+                </p>
+            </div>
+
+            <div class="intelligence-grid">
+                <div class="intel-card">
+                    <div class="intel-icon icon-gradient-1">📊</div>
+                    <h3 class="intel-title">Market Intelligence</h3>
+                    <p class="intel-description">
+                        Real-time market data with city-level precision. Know exactly what's trending, 
+                        who's buying, and why they're choosing competitors.
+                    </p>
+                    <div class="intel-stats">
+                        <div class="intel-stat">
+                            <span class="stat-value">261</span>
+                            <span class="stat-label">Procedures</span>
+                        </div>
+                        <div class="intel-stat">
+                            <span class="stat-value">0.3s</span>
+                            <span class="stat-label">Response</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="intel-card">
+                    <div class="intel-icon icon-gradient-2">🧠</div>
+                    <h3 class="intel-title">AI Sales Canvas</h3>
+                    <p class="intel-description">
+                        Generate perfect sales briefs in seconds. Our AI analyzes communication styles, 
+                        decision patterns, and optimal approaches for each physician.
+                    </p>
+                    <div class="intel-stats">
+                        <div class="intel-stat">
+                            <span class="stat-value">12s</span>
+                            <span class="stat-label">Brief Time</span>
+                        </div>
+                        <div class="intel-stat">
+                            <span class="stat-value">93%</span>
+                            <span class="stat-label">Accuracy</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="intel-card">
+                    <div class="intel-icon icon-gradient-3">📱</div>
+                    <h3 class="intel-title">Autonomous OS</h3>
+                    <p class="intel-description">
+                        Your 24/7 sales assistant. Automated campaigns, call transcription, 
+                        and psychological insights that work while you sleep.
+                    </p>
+                    <div class="intel-stats">
+                        <div class="intel-stat">
+                            <span class="stat-value">10K</span>
+                            <span class="stat-label">Messages/Day</span>
+                        </div>
+                        <div class="intel-stat">
+                            <span class="stat-value">24/7</span>
+                            <span class="stat-label">Active</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="results-section" id="results">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-label">REAL RESULTS</div>
+                <h2 class="section-title gradient-title">
+                    What 627 Reps Discovered
+                </h2>
+            </div>
+
+            <div class="results-grid">
+                <div class="result-card">
+                    <span class="result-before">3.2%</span>
+                    <span class="result-after">24.7%</span>
+                    <span class="result-label">Response Rate</span>
+                </div>
+                <div class="result-card">
+                    <span class="result-before">4 hours</span>
+                    <span class="result-after">12 seconds</span>
+                    <span class="result-label">Research Time</span>
+                </div>
+                <div class="result-card">
+                    <span class="result-before">$8.4K</span>
+                    <span class="result-after">$151K</span>
+                    <span class="result-label">Monthly Revenue</span>
+                </div>
+                <div class="result-card">
+                    <span class="result-before">20 hrs/week</span>
+                    <span class="result-after">2 hrs/week</span>
+                    <span class="result-label">Admin Time</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta">
+        <h2 class="final-headline gradient-title">
+            Your Next Conversation is Worth
+        </h2>
+        <div class="counter-display" id="revenue-counter">$2,473,891</div>
+        <p style="font-size: 1.5rem; color: var(--text-secondary); margin-bottom: 50px;">
+            You just don't know it yet.
+        </p>
+        <div class="hero-cta-container">
+            <a href="#" class="cta-primary">
+                Get Your 12 Seconds →
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2025 RepSpheres | Where Pattern Recognition Meets Autonomous Intelligence</p>
+    </footer>
+
+    <script>
+        // Custom cursor
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // Add hover effect to interactive elements
+        const interactiveElements = document.querySelectorAll('a, button, .intel-card, .result-card');
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('cursor-grow'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('cursor-grow'));
+        });
+
+        // Particle system
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 10 + 's';
+            particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Story sequence
+        const storySequence = async () => {
+            await sleep(2000);
+            
+            // Fade out timestamp
+            document.getElementById('timestamp-container').style.opacity = '0';
+            await sleep(1000);
+            document.getElementById('timestamp-container').style.display = 'none';
+            
+            // Show split screen
+            document.getElementById('split-screen').classList.add('active');
+            await sleep(3000);
+            
+            // Fade to story
+            document.getElementById('split-screen').style.opacity = '0';
+            await sleep(1000);
+            document.getElementById('split-screen').style.display = 'none';
+            
+            // Show story container
+            document.getElementById('story-container').classList.add('active');
+            
+            // Story progression
+            await sleep(2000);
+            document.getElementById('story-2').style.display = 'block';
+            
+            await sleep(3000);
+            document.getElementById('story-3').style.display = 'block';
+            
+            await sleep(2000);
+            document.getElementById('analysis-demo').classList.add('active');
+            
+            await sleep(3000);
+            document.getElementById('story-4').style.display = 'block';
+            
+            await sleep(3000);
+            document.getElementById('story-5').style.display = 'block';
+            
+            await sleep(1000);
+            document.getElementById('cta-container').style.display = 'block';
+        };
+
+        const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+        // Start story sequence on load
+        window.addEventListener('load', storySequence);
+
+        // Revenue counter animation
+        const revenueCounter = document.getElementById('revenue-counter');
+        let revenue = 2473891;
+        setInterval(() => {
+            revenue += Math.floor(Math.random() * 1000) + 500;
+            revenueCounter.textContent = '$' + revenue.toLocaleString();
+        }, 2000);
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Parallax effect on scroll
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.particle');
+            
+            parallaxElements.forEach((el, index) => {
+                const speed = 0.5 + (index % 3) * 0.2;
+                el.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+
+        // Add glitch effect on hover for certain elements
+        const glitchElements = document.querySelectorAll('.gradient-title');
+        glitchElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                el.style.animation = 'glitch 0.3s ease';
+                setTimeout(() => {
+                    el.style.animation = '';
+                }, 300);
+            });
+        });
+
+        // Glitch animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes glitch {
+                0%, 100% { transform: translate(0); }
+                20% { transform: translate(-2px, 2px); }
+                40% { transform: translate(-2px, -2px); }
+                60% { transform: translate(2px, 2px); }
+                80% { transform: translate(2px, -2px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

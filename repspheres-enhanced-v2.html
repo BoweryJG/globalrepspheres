@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RepSpheres | Where Pattern Recognition Meets Autonomous Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #18182b;
+            --accent-cyan: #00ffc6;
+            --accent-blue: #3a86ff;
+            --accent-purple: #7B42F6;
+            --accent-red: #ff6b6b;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255,255,255,0.9);
+            --text-muted: rgba(255,255,255,0.7);
+        }
+
+        body {
+            font-family: 'DM Sans', Arial, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Starry Background */
+        .stars-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        /* Animated Orb */
+        .orb-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .orb {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, 
+                rgba(0,255,198,0.2) 0%, 
+                rgba(58,134,255,0.15) 30%,
+                rgba(123,66,246,0.1) 60%,
+                transparent 100%);
+            filter: blur(40px);
+            animation: orbFloat 20s infinite ease-in-out;
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: scale(1) translate(0, 0); }
+            33% { transform: scale(1.1) translate(30px, -30px); }
+            66% { transform: scale(0.95) translate(-20px, 20px); }
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 20px 40px;
+            background: rgba(24,24,43,0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 800;
+            font-size: 28px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .nav-link {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-cyan);
+        }
+
+        /* Hero Section - Enhanced MapQuest Story */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 10;
+            padding: 120px 40px 80px;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            text-align: center;
+        }
+
+        .live-counter {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 24px;
+            background: rgba(0,255,198,0.1);
+            border: 1px solid rgba(0,255,198,0.3);
+            border-radius: 30px;
+            margin-bottom: 40px;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .counter-number {
+            font-weight: 600;
+            color: var(--accent-cyan);
+        }
+
+        .hero-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 800;
+            font-size: clamp(3rem, 8vw, 6rem);
+            line-height: 1.1;
+            margin-bottom: 30px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, var(--accent-cyan) 0%, var(--accent-blue) 50%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 4px 20px rgba(0,255,198,0.3));
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.3rem, 3vw, 2rem);
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto 50px;
+            line-height: 1.6;
+        }
+
+        .highlight {
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        /* Trust Badges */
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .trust-badge {
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 25px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* CTAs */
+        .cta-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-primary {
+            padding: 20px 40px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: var(--bg-dark);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 30px rgba(0,255,198,0.3);
+        }
+
+        .cta-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0,255,198,0.4);
+        }
+
+        .cta-secondary {
+            padding: 20px 40px;
+            background: transparent;
+            color: var(--text-primary);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-decoration: none;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .cta-secondary:hover {
+            border-color: var(--accent-purple);
+            background: rgba(123,66,246,0.1);
+        }
+
+        /* Transformation Visual */
+        .transformation {
+            padding: 100px 40px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .transformation-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-chip {
+            display: inline-block;
+            padding: 8px 20px;
+            background: rgba(123,66,246,0.1);
+            border: 1px solid rgba(123,66,246,0.3);
+            border-radius: 20px;
+            color: var(--accent-purple);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 40px;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+
+        .before-box, .after-box {
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .before-box {
+            background: rgba(255,107,107,0.1);
+            border: 1px solid rgba(255,107,107,0.3);
+        }
+
+        .after-box {
+            background: rgba(0,255,198,0.1);
+            border: 1px solid rgba(0,255,198,0.3);
+        }
+
+        .before-box:hover, .after-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .box-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .before-box .box-title {
+            color: var(--accent-red);
+        }
+
+        .after-box .box-title {
+            color: var(--accent-cyan);
+        }
+
+        .metric-item {
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .arrow-container {
+            font-size: 3rem;
+            color: var(--accent-purple);
+            animation: arrowPulse 2s infinite;
+        }
+
+        @keyframes arrowPulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        /* Intelligence Trinity Section */
+        .trinity {
+            padding: 100px 40px;
+            background: linear-gradient(180deg, rgba(24,24,43,0.95) 0%, rgba(24,24,43,1) 100%);
+            position: relative;
+            z-index: 10;
+        }
+
+        .trinity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .trinity-card {
+            background: rgba(24,24,43,0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .trinity-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            padding: 2px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+        }
+
+        .trinity-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .trinity-card:hover::before {
+            background: var(--card-gradient);
+        }
+
+        .card-market::before { --card-gradient: linear-gradient(135deg, var(--accent-cyan) 0%, #00d4a8 100%); }
+        .card-canvas::before { --card-gradient: linear-gradient(135deg, var(--accent-blue) 0%, #2968db 100%); }
+        .card-os::before { --card-gradient: linear-gradient(135deg, var(--accent-red) 0%, #ee5a24 100%); }
+
+        .trinity-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+
+        .icon-market { background: linear-gradient(135deg, var(--accent-cyan) 0%, #00d4a8 100%); }
+        .icon-canvas { background: linear-gradient(135deg, var(--accent-blue) 0%, #2968db 100%); }
+        .icon-os { background: linear-gradient(135deg, var(--accent-red) 0%, #ee5a24 100%); }
+
+        .trinity-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .trinity-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .trinity-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .trinity-features {
+            list-style: none;
+        }
+
+        .trinity-feature {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .feature-dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .dot-market { background: var(--accent-cyan); box-shadow: 0 0 8px rgba(0,255,198,0.6); }
+        .dot-canvas { background: var(--accent-blue); box-shadow: 0 0 8px rgba(58,134,255,0.6); }
+        .dot-os { background: var(--accent-red); box-shadow: 0 0 8px rgba(255,107,107,0.6); }
+
+        /* Pattern Recognition Section */
+        .pattern-recognition {
+            padding: 100px 40px;
+            position: relative;
+            z-index: 10;
+            text-align: center;
+        }
+
+        .pattern-visual {
+            max-width: 800px;
+            margin: 0 auto 60px;
+            position: relative;
+            height: 400px;
+        }
+
+        .pattern-node {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(123,66,246,0.2);
+            border: 2px solid var(--accent-purple);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 2rem;
+            color: var(--accent-purple);
+            animation: nodeFloat 4s infinite ease-in-out;
+        }
+
+        @keyframes nodeFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .pattern-node:nth-child(1) { top: 0; left: 50%; transform: translateX(-50%); }
+        .pattern-node:nth-child(2) { top: 30%; left: 10%; animation-delay: -1s; }
+        .pattern-node:nth-child(3) { top: 30%; right: 10%; animation-delay: -2s; }
+        .pattern-node:nth-child(4) { bottom: 0; left: 30%; animation-delay: -3s; }
+        .pattern-node:nth-child(5) { bottom: 0; right: 30%; animation-delay: -4s; }
+
+        .pattern-line {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-purple), transparent);
+            transform-origin: left center;
+            animation: lineGlow 3s infinite;
+        }
+
+        @keyframes lineGlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .pattern-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .pattern-stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ASP Certification */
+        .asp-section {
+            padding: 100px 40px;
+            background: linear-gradient(135deg, rgba(123,66,246,0.1) 0%, rgba(0,255,198,0.05) 100%);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .asp-badge {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 40px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 900;
+            font-size: 3rem;
+            color: white;
+            box-shadow: 0 20px 40px rgba(123,66,246,0.4);
+            animation: badgeRotate 20s linear infinite;
+            position: relative;
+        }
+
+        @keyframes badgeRotate {
+            to { transform: rotate(360deg); }
+        }
+
+        .asp-badge span {
+            animation: badgeCounterRotate 20s linear infinite;
+        }
+
+        @keyframes badgeCounterRotate {
+            to { transform: rotate(-360deg); }
+        }
+
+        .asp-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .asp-subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .asp-description {
+            font-size: 1.2rem;
+            color: var(--accent-purple);
+            font-weight: 600;
+            margin-bottom: 40px;
+        }
+
+        .asp-slots {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-top: 30px;
+        }
+
+        .slots-remaining {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            color: var(--accent-red);
+            font-size: 1.5rem;
+        }
+
+        /* Final CTA */
+        .final-cta {
+            padding: 120px 40px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            background: radial-gradient(ellipse at center, rgba(123,66,246,0.2) 0%, transparent 70%);
+        }
+
+        .final-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+
+        .final-subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 50px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 60px 40px;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .arrow-container {
+                transform: rotate(90deg);
+            }
+
+            .trinity-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pattern-visual {
+                height: 300px;
+            }
+
+            .cta-group {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .cta-primary, .cta-secondary {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Starry Background -->
+    <div class="stars-bg" id="stars"></div>
+
+    <!-- Animated Orb -->
+    <div class="orb-container">
+        <div class="orb"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="logo">REPSPHERES</div>
+            <div class="nav-links">
+                <a href="#trinity" class="nav-link">Intelligence Trinity</a>
+                <a href="#asp" class="nav-link">ASP Certification</a>
+                <a href="#pricing" class="nav-link">Pricing</a>
+                <a href="#demo" class="nav-link">Demo</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="live-counter">
+                <div class="pulse-dot"></div>
+                <span><span class="counter-number" id="message-count">2,847</span> messages sent by RepSphere users today</span>
+            </div>
+
+            <h1 class="hero-title">
+                <span class="gradient-text">Remember MapQuest?</span>
+            </h1>
+            
+            <h2 class="hero-subtitle">
+                The Same Revolution is Happening in <span class="highlight">Medical Sales</span>
+            </h2>
+            
+            <p class="hero-description">
+                From printing directions to GPS. From cold calling to warm intelligence.<br>
+                <strong class="highlight">Join 500+ top performers</strong> who've already made the jump.
+            </p>
+
+            <div class="trust-badges">
+                <div class="trust-badge">15 Years Field Experience</div>
+                <div class="trust-badge">261 Procedures Mastered</div>
+                <div class="trust-badge">847K Patterns Analyzed</div>
+            </div>
+
+            <div class="cta-group">
+                <a href="#asp" class="cta-primary">
+                    Claim Your ASP Certification →
+                </a>
+                <a href="#demo" class="cta-secondary">
+                    Watch 2-Minute Demo
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Transformation Section -->
+    <section class="transformation">
+        <div class="transformation-container">
+            <div class="section-header">
+                <div class="section-chip">THE TRANSFORMATION</div>
+                <h2 class="section-title">From Guessing to Knowing</h2>
+            </div>
+
+            <div class="comparison-grid">
+                <div class="before-box">
+                    <h3 class="box-title">Before RepSphere</h3>
+                    <div class="metric-item">• 4+ hours of research per prospect</div>
+                    <div class="metric-item">• Outdated contact information</div>
+                    <div class="metric-item">• Generic, ineffective outreach</div>
+                    <div class="metric-item">• 3.2% response rate</div>
+                    <div class="metric-item">• 20 hours per week on admin</div>
+                </div>
+
+                <div class="arrow-container">→</div>
+
+                <div class="after-box">
+                    <h3 class="box-title">With RepSphere</h3>
+                    <div class="metric-item">• 12 seconds to complete intelligence</div>
+                    <div class="metric-item">• Verified, real-time data</div>
+                    <div class="metric-item">• AI-powered personalization</div>
+                    <div class="metric-item">• 24.7% response rate</div>
+                    <div class="metric-item">• 2 hours per week, max</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Intelligence Trinity Section -->
+    <section class="trinity" id="trinity">
+        <div class="section-header">
+            <div class="section-chip">THE INTELLIGENCE TRINITY</div>
+            <h2 class="section-title">Three AI Modules. One Unified System.</h2>
+        </div>
+
+        <div class="trinity-grid">
+            <div class="trinity-card card-market">
+                <div class="trinity-icon icon-market">📈</div>
+                <h3 class="trinity-title">Market Insights</h3>
+                <p class="trinity-subtitle">Real-Time Intelligence Engine</p>
+                <p class="trinity-description">
+                    Track market sizes, growth percentages, and breaking news with city-level granularity. 
+                    15 years of proprietary patterns at your fingertips.
+                </p>
+                <ul class="trinity-features">
+                    <li class="trinity-feature">
+                        <span class="feature-dot dot-market"></span>
+                        Real-time market data
+                    </li>
+                    <li class="trinity-feature">
+                        <span class="feature-dot dot-market"></span>
+                        City-level insights
+                    </li>
+                    <li class="trinity-feature">
+                        <span class="feature-dot dot-market"></span>
+                        Competitive analysis
+                    </li>
+                    <li class="trinity-feature">
+                        <span class="feature-dot dot-market"></span>
+                        Territory optimization
+                    </li>
+                </ul>
+            </div>
+
+            <div class="trinity-card card-canvas">
+                <div class="trinity-icon icon-canvas">🧠</div>
+                <h3 class="trinity-title">Canvas</h3>
+                <p class="trinity-subtitle">AI-Powered Sales Intelligence</p>
+                <p class="trinity-description">
+                    Instant doctor verification and intelligent sales briefs. Generate targeted insights 
+                    with real-time market data and personalized strategies.
+                </p>
+                <ul class="trinity-features">
+                    <li class="trinity-feature">
+                        <span class="feature-dot dot-canvas"></span>
+                        Doctor verification
+                    </li>
+                    <li class="trinity-feature">
+                        <span class="feature-dot dot-canvas"></span>
+                        Sales brief generation
+                    </li>
+                    <li class="trinity-feature">
+                        <span class="feature-dot dot-canvas"></span>
+                        Real-time insights
+                    </li>
+                    <li class="trinity-feature">
+                        <span class="feature-dot dot-canvas"></span>
+                        Custom AI prompts
+                    </li>
+                </ul>
+            </div>
+
+            <div class="trinity-card card-os">
+                <div class="trinity-icon icon-os">📱</div>
+                <h3 class="trinity-title">RepSphere OS</h3>
+                <p class="trinity-subtitle">Your 24/7 AI Sales Assistant</p>
+                <p class="trinity-description">
+                    The CRM that never sleeps. Automated Twilio campaigns, call transcription with 
+                    psychological insights, and seamless workflow management.
+                </p>
+                <ul class="trinity-features">
+                    <li class="trinity-feature">
+                        <span class="feature-dot dot-os"></span>
+                        Twilio automation
+                    </li>
+                    <li class="trinity-feature">
+                        <span class="feature-dot dot-os"></span>
+                        Call transcription & AI
+                    </li>
+                    <li class="trinity-feature">
+                        <span class="feature-dot dot-os"></span>
+                        Professional phone line
+                    </li>
+                    <li class="trinity-feature">
+                        <span class="feature-dot dot-os"></span>
+                        150+ psychological indicators
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pattern Recognition Section -->
+    <section class="pattern-recognition">
+        <div class="section-header">
+            <div class="section-chip">PATTERN RECOGNITION ENGINE</div>
+            <h2 class="section-title">Success Isn't Random. It's a Pattern.</h2>
+        </div>
+
+        <div class="pattern-visual">
+            <div class="pattern-node">15</div>
+            <div class="pattern-node">847K</div>
+            <div class="pattern-node">261</div>
+            <div class="pattern-node">∞</div>
+            <div class="pattern-node">1</div>
+            <div class="pattern-line" style="width: 200px; top: 50px; left: 45%; transform: rotate(35deg);"></div>
+            <div class="pattern-line" style="width: 250px; top: 100px; left: 20%; transform: rotate(-30deg);"></div>
+            <div class="pattern-line" style="width: 180px; bottom: 100px; right: 25%; transform: rotate(45deg);"></div>
+            <div class="pattern-line" style="width: 220px; bottom: 50px; left: 30%; transform: rotate(-20deg);"></div>
+        </div>
+
+        <p style="font-size: 1.5rem; color: var(--text-secondary); max-width: 800px; margin: 0 auto 60px; line-height: 1.6;">
+            After analyzing <strong style="color: var(--accent-cyan);">847,000 sales interactions</strong> across 15 years, 
+            we discovered something profound: every successful interaction follows recognizable patterns. 
+            <strong style="color: var(--accent-purple);">RepSpheres is those patterns, evolved into autonomous intelligence.</strong>
+        </p>
+
+        <div class="pattern-stats">
+            <div class="pattern-stat">
+                <span class="stat-value">2.7s</span>
+                <span class="stat-label">Average Decision Time</span>
+            </div>
+            <div class="pattern-stat">
+                <span class="stat-value">87%</span>
+                <span class="stat-label">Pattern Match Accuracy</span>
+            </div>
+            <div class="pattern-stat">
+                <span class="stat-value">10x</span>
+                <span class="stat-label">Faster Than Manual</span>
+            </div>
+            <div class="pattern-stat">
+                <span class="stat-value">24/7</span>
+                <span class="stat-label">Always Learning</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ASP Certification Section -->
+    <section class="asp-section" id="asp">
+        <div class="asp-badge">
+            <span>ASP</span>
+        </div>
+        
+        <h2 class="asp-title">Become an Augmented Sales Professional</h2>
+        
+        <p class="asp-subtitle">
+            The ASP Certification isn't just training. It's transformation.
+        </p>
+        
+        <p class="asp-description">
+            By 2027, practices will only meet with ASP-certified representatives.
+        </p>
+        
+        <div class="cta-group">
+            <a href="#" class="cta-primary">
+                Start Your ASP Journey →
+            </a>
+        </div>
+        
+        <p class="asp-slots">
+            Only 1,000 spots available for founding ASP cohort<br>
+            <span class="slots-remaining">389</span> remaining
+        </p>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta">
+        <h2 class="final-title gradient-text">
+            In 5 Years, Every Medical Sales Conversation<br>
+            Will Be Augmented by Intelligence.
+        </h2>
+        
+        <p class="final-subtitle">
+            The only question is:<br>
+            Will you lead this transformation, or watch it happen?
+        </p>
+        
+        <div class="cta-group">
+            <a href="#" class="cta-primary" style="font-size: 1.3rem; padding: 25px 50px;">
+                Join the Intelligence Revolution →
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2025 RepSpheres | The Future of Medical Sales Intelligence</p>
+    </footer>
+
+    <script>
+        // Create stars
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 150; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
+
+        // Message counter animation
+        let messageCount = 2847;
+        setInterval(() => {
+            messageCount += Math.floor(Math.random() * 5) + 1;
+            document.getElementById('message-count').textContent = messageCount.toLocaleString();
+        }, 3000);
+
+        // ASP slots countdown
+        let slots = 389;
+        setInterval(() => {
+            if (slots > 0 && Math.random() > 0.8) {
+                slots--;
+                document.querySelector('.slots-remaining').textContent = slots;
+            }
+        }, 8000);
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Parallax effect
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const orb = document.querySelector('.orb');
+            
+            if (orb) {
+                orb.style.transform = `scale(${1 + scrolled * 0.0002}) translate(${scrolled * 0.1}px, ${scrolled * 0.05}px)`;
+            }
+        });
+    </script>
+</body>
+</html>

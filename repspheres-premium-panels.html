@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RepSpheres | The Collaborative AI Sales Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-darker: #050505;
+            --panel-dark: #1a1a1a;
+            --panel-darker: #141414;
+            --purple-primary: #9f58fa;
+            --purple-dark: #7e22ce;
+            --purple-light: #a855f7;
+            --blue-accent: #4B96DC;
+            --blue-light: #60a5fa;
+            --green-accent: #4bd48e;
+            --green-neon: #00ff88;
+            --pink-accent: #f53969;
+            --orange-accent: #ff6b35;
+            --cyan-accent: #00d4ff;
+            --yellow-accent: #ffd93d;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --metal-light: #e8e8e8;
+            --metal-mid: #999;
+            --metal-dark: #555;
+            --metal-shadow: #222;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-hover: rgba(255, 255, 255, 0.08);
+            --matrix-green: #00ff41;
+            --warning-red: #ff0040;
+            --amber-neutral: #ffaa00;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, "system-ui", "Segoe UI", Helvetica, Arial, sans-serif;
+            background: var(--bg-darker);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Premium Panel Styles */
+        @keyframes pulseGlow {
+            0%, 100% {
+                opacity: 0.6;
+                box-shadow: 0 0 10px currentColor;
+            }
+            50% {
+                opacity: 1;
+                box-shadow: 0 0 20px currentColor, 0 0 40px currentColor;
+            }
+        }
+
+        @keyframes ledFlicker {
+            0%, 100% { opacity: 1; }
+            95% { opacity: 0.8; }
+        }
+
+        @keyframes dataFlow {
+            0% { transform: translateY(100%); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100%); opacity: 0; }
+        }
+
+        .premium-panel {
+            position: relative;
+            background: 
+                linear-gradient(135deg, #1a1a1a 0%, #252525 20%, #1e1e1e 40%, #2a2a2a 60%, #1f1f1f 80%, #1a1a1a 100%),
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 1px,
+                    rgba(255,255,255,0.01) 1px,
+                    rgba(255,255,255,0.01) 2px
+                ),
+                repeating-linear-gradient(
+                    -45deg,
+                    transparent,
+                    transparent 1px,
+                    rgba(0,0,0,0.02) 1px,
+                    rgba(0,0,0,0.02) 2px
+                ),
+                radial-gradient(ellipse at top left, rgba(255,255,255,0.03) 0%, transparent 40%),
+                radial-gradient(ellipse at bottom right, rgba(0,0,0,0.1) 0%, transparent 40%);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #2a2a2a;
+            box-shadow: 
+                inset 0 2px 4px rgba(255,255,255,0.05),
+                inset 0 -2px 6px rgba(0,0,0,0.6),
+                inset 2px 0 4px rgba(0,0,0,0.3),
+                inset -2px 0 4px rgba(0,0,0,0.3),
+                0 4px 12px rgba(0,0,0,0.5),
+                0 8px 24px rgba(0,0,0,0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .premium-panel::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-conic-gradient(
+                    from 0deg at 50% 50%,
+                    transparent 0deg,
+                    transparent 0.25deg,
+                    rgba(255,255,255,0.01) 0.25deg,
+                    rgba(255,255,255,0.01) 0.5deg
+                );
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Top accent line */
+        .panel-accent-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-color, var(--purple-primary)), transparent);
+            animation: pulseGlow 3s ease-in-out infinite;
+            z-index: 5;
+        }
+
+        .premium-panel:hover {
+            transform: translateY(-4px);
+            box-shadow: 
+                inset 0 2px 6px rgba(255,255,255,0.08),
+                inset 0 -2px 8px rgba(0,0,0,0.7),
+                inset 2px 0 6px rgba(0,0,0,0.4),
+                inset -2px 0 6px rgba(0,0,0,0.4),
+                0 12px 24px rgba(0,0,0,0.6),
+                0 24px 48px rgba(0,0,0,0.4),
+                inset 0 0 30px rgba(159, 88, 250, 0.15);
+        }
+        
+        /* Metallic Border Frame */
+        .premium-panel::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: 
+                linear-gradient(45deg, #444 0%, #666 25%, #444 50%, #666 75%, #444 100%);
+            border-radius: 16px;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        /* Enhanced Metal Corner Screws */
+        .corner-screw {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: 
+                radial-gradient(circle at 30% 30%, #d0d0d0 0%, #aaa 10%, #888 30%, #666 50%, #444 70%, #222 100%),
+                conic-gradient(from 45deg, #999 0%, #666 25%, #999 50%, #666 75%, #999 100%);
+            border-radius: 50%;
+            box-shadow:
+                inset 0 2px 3px rgba(255,255,255,0.4),
+                inset 0 -2px 3px rgba(0,0,0,0.8),
+                inset 2px 0 3px rgba(0,0,0,0.4),
+                0 1px 2px rgba(255,255,255,0.1),
+                0 2px 4px rgba(0,0,0,0.6),
+                0 4px 8px rgba(0,0,0,0.3);
+            z-index: 10;
+            transform: rotate(12deg);
+        }
+
+        .corner-screw::after {
+            content: '';
+            position: absolute;
+            width: 7px;
+            height: 1px;
+            background: linear-gradient(to bottom, 
+                rgba(0,0,0,0.8) 0%, 
+                rgba(0,0,0,1) 50%, 
+                rgba(0,0,0,0.8) 100%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            box-shadow: 
+                inset 0 1px 1px rgba(0,0,0,0.9),
+                0 1px 0.5px rgba(255,255,255,0.2);
+        }
+
+        .corner-screw::before {
+            content: '';
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: radial-gradient(circle at 40% 40%, rgba(255,255,255,0.3), transparent);
+            top: 2px;
+            left: 2px;
+            border-radius: 50%;
+        }
+
+        /* Enhanced SVG Icon Definitions */
+        .icon-defs {
+            position: absolute;
+            width: 0;
+            height: 0;
+            overflow: hidden;
+        }
+
+        /* Advanced Icon Container */
+        .icon-container {
+            width: 80px;
+            height: 80px;
+            background: var(--glass);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .icon-container::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(45deg, var(--icon-primary, var(--purple-primary)), var(--icon-secondary, var(--blue-accent)));
+            border-radius: 20px;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+        }
+
+        .icon-container:hover {
+            transform: translateY(-5px) scale(1.05);
+            border-color: transparent;
+        }
+
+        .icon-container:hover::before {
+            opacity: 0.2;
+        }
+
+        .custom-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .custom-icon svg {
+            width: 100%;
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+
+        /* Animated Starfield Background */
+        .starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle linear infinite;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0; transform: translateY(0); }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(-100vh); }
+        }
+
+        /* Data Grid Pattern */
+        .data-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(159, 88, 250, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(159, 88, 250, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 20px 40px;
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 40px 80px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Timeline Section */
+        .timeline-section {
+            padding: 120px 40px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .timeline-step {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 120px;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .timeline-step.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* LED Indicators */
+        .led-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            box-shadow: inset 0 0 3px rgba(0,0,0,0.5);
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+
+        .led-green {
+            background: var(--matrix-green);
+            box-shadow: 0 0 10px var(--matrix-green), inset 0 0 3px rgba(0,0,0,0.5);
+        }
+
+        .led-blue {
+            background: var(--cyan-accent);
+            box-shadow: 0 0 10px var(--cyan-accent), inset 0 0 3px rgba(0,0,0,0.5);
+        }
+
+        .led-orange {
+            background: var(--orange-accent);
+            box-shadow: 0 0 10px var(--orange-accent), inset 0 0 3px rgba(0,0,0,0.5);
+        }
+
+        /* Digital Display */
+        .digital-display {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Orbitron', monospace;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .digital-display::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 255, 255, 0.03) 2px,
+                rgba(0, 255, 255, 0.03) 4px
+            );
+            pointer-events: none;
+        }
+
+        /* Value Display */
+        .value-display {
+            font-size: 3rem;
+            font-weight: 800;
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 2px;
+            background: linear-gradient(180deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: ledFlicker 10s ease-in-out infinite;
+        }
+
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(to right, var(--purple-primary), var(--blue-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Primary Button */
+        .primary-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, var(--purple-primary), var(--blue-accent));
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .primary-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(159, 88, 250, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- SVG Icon Definitions -->
+    <svg class="icon-defs">
+        <defs>
+            <!-- Gradient Definitions -->
+            <linearGradient id="gradient-purple-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#9f58fa;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#4B96DC;stop-opacity:1" />
+            </linearGradient>
+            
+            <linearGradient id="gradient-green-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#4bd48e;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#00d4ff;stop-opacity:1" />
+            </linearGradient>
+            
+            <linearGradient id="gradient-orange-yellow" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#ff6b35;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#ffd93d;stop-opacity:1" />
+            </linearGradient>
+            
+            <linearGradient id="gradient-pink-purple" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#f53969;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#9f58fa;stop-opacity:1" />
+            </linearGradient>
+
+            <!-- Enhanced Social Intelligence Icon -->
+            <symbol id="social-intelligence" viewBox="0 0 48 48">
+                <circle cx="24" cy="12" r="8" stroke="url(#gradient-purple-blue)" stroke-width="1.5" fill="none"/>
+                <path d="M36 36c0-6.627-5.373-12-12-12s-12 5.373-12 12" stroke="url(#gradient-purple-blue)" stroke-width="1.5" fill="none"/>
+                <circle cx="40" cy="16" r="4" stroke="url(#gradient-purple-blue)" stroke-width="1.5" fill="none"/>
+                <circle cx="8" cy="16" r="4" stroke="url(#gradient-purple-blue)" stroke-width="1.5" fill="none"/>
+                <path d="M32 12l6 3M16 12l-6 3" stroke="url(#gradient-purple-blue)" stroke-width="1.5"/>
+                <circle cx="24" cy="12" r="3" fill="#9f58fa" opacity="0.3"/>
+                <circle cx="40" cy="16" r="2" fill="#4B96DC" opacity="0.5"/>
+                <circle cx="8" cy="16" r="2" fill="#4B96DC" opacity="0.5"/>
+            </symbol>
+
+            <!-- Enhanced Practice Scanner Icon -->
+            <symbol id="practice-scanner" viewBox="0 0 48 48">
+                <rect x="8" y="8" width="32" height="32" rx="4" stroke="url(#gradient-green-cyan)" stroke-width="1.5" fill="none"/>
+                <path d="M8 16h32M16 8v8M32 8v8" stroke="url(#gradient-green-cyan)" stroke-width="1.5"/>
+                <path d="M16 24h16M16 32h8" stroke="url(#gradient-green-cyan)" stroke-width="1.5" opacity="0.7"/>
+                <circle cx="36" cy="36" r="8" fill="url(#gradient-green-cyan)"/>
+                <path d="M36 32v8M32 36h8" stroke="white" stroke-width="2"/>
+                <rect x="12" y="20" width="24" height="16" rx="2" fill="url(#gradient-green-cyan)" opacity="0.1"/>
+            </symbol>
+
+            <!-- Enhanced AI Deployment Icon -->
+            <symbol id="ai-deployment" viewBox="0 0 48 48">
+                <path d="M24 4l16 8v16l-16 8-16-8V12z" stroke="url(#gradient-orange-yellow)" stroke-width="1.5" fill="none"/>
+                <path d="M24 20v16M8 12l16 8 16-8M16 16v16l8 4 8-4V16" stroke="url(#gradient-orange-yellow)" stroke-width="1.5" opacity="0.7"/>
+                <circle cx="24" cy="20" r="4" fill="url(#gradient-orange-yellow)"/>
+                <circle cx="24" cy="20" r="6" stroke="url(#gradient-orange-yellow)" stroke-width="0.5" fill="none" opacity="0.5"/>
+                <path d="M20 40l4-4 4 4" stroke="url(#gradient-orange-yellow)" stroke-width="2"/>
+            </symbol>
+
+            <!-- Enhanced Meeting Intelligence Icon -->
+            <symbol id="meeting-intelligence" viewBox="0 0 48 48">
+                <rect x="6" y="10" width="36" height="28" rx="4" stroke="url(#gradient-pink-purple)" stroke-width="1.5" fill="none"/>
+                <path d="M18 10v28M30 10v28" stroke="url(#gradient-pink-purple)" stroke-width="1.5" opacity="0.5"/>
+                <circle cx="12" cy="24" r="3" stroke="url(#gradient-pink-purple)" stroke-width="1.5" fill="none"/>
+                <circle cx="36" cy="24" r="3" stroke="url(#gradient-pink-purple)" stroke-width="1.5" fill="none"/>
+                <path d="M6 18h36M6 30h36" stroke="url(#gradient-pink-purple)" stroke-width="1.5" opacity="0.3"/>
+                <path d="M22 20l4 4-4 4M26 24h-8" stroke="url(#gradient-pink-purple)" stroke-width="2"/>
+                <rect x="10" y="14" width="28" height="20" rx="2" fill="url(#gradient-pink-purple)" opacity="0.1"/>
+            </symbol>
+
+            <!-- Enhanced Alexis Sterling AI Icon -->
+            <symbol id="alexis-sterling-ai" viewBox="0 0 48 48">
+                <circle cx="24" cy="20" r="12" stroke="url(#gradient-purple-blue)" stroke-width="1.5" fill="none"/>
+                <path d="M24 32v8M16 36h16" stroke="url(#gradient-purple-blue)" stroke-width="1.5"/>
+                <circle cx="19" cy="18" r="2" fill="#9f58fa"/>
+                <circle cx="29" cy="18" r="2" fill="#9f58fa"/>
+                <path d="M19 24c0 2.761 2.239 5 5 5s5-2.239 5-5" stroke="url(#gradient-purple-blue)" stroke-width="1.5"/>
+                <circle cx="24" cy="20" r="10" stroke="url(#gradient-purple-blue)" stroke-width="0.5" fill="none" opacity="0.3"/>
+                <path d="M12 8l4 4M36 8l-4 4M8 20h4M36 20h4" stroke="url(#gradient-purple-blue)" stroke-width="1.5" opacity="0.5"/>
+                <circle cx="24" cy="8" r="2" fill="#4B96DC"/>
+            </symbol>
+
+            <!-- Enhanced Data Control Icon -->
+            <symbol id="data-control" viewBox="0 0 48 48">
+                <rect x="4" y="8" width="16" height="32" rx="2" stroke="url(#gradient-green-cyan)" stroke-width="1.5" fill="none"/>
+                <rect x="28" y="8" width="16" height="32" rx="2" stroke="url(#gradient-green-cyan)" stroke-width="1.5" fill="none"/>
+                <path d="M20 24h8M24 20v8" stroke="url(#gradient-green-cyan)" stroke-width="2"/>
+                <circle cx="12" cy="16" r="2" fill="#4bd48e"/>
+                <circle cx="12" cy="24" r="2" fill="#4bd48e"/>
+                <circle cx="12" cy="32" r="2" fill="#4bd48e"/>
+                <path d="M32 16h8M32 24h8M32 32h8" stroke="url(#gradient-green-cyan)" stroke-width="1.5"/>
+                <rect x="8" y="12" width="8" height="24" rx="1" fill="url(#gradient-green-cyan)" opacity="0.1"/>
+                <rect x="32" y="12" width="8" height="24" rx="1" fill="url(#gradient-green-cyan)" opacity="0.1"/>
+            </symbol>
+
+            <!-- Enhanced Regulatory Window Icon -->
+            <symbol id="regulatory-window" viewBox="0 0 48 48">
+                <circle cx="24" cy="24" r="20" stroke="url(#gradient-pink-purple)" stroke-width="1.5" fill="none"/>
+                <path d="M24 12v12l8 8" stroke="url(#gradient-pink-purple)" stroke-width="2"/>
+                <circle cx="24" cy="24" r="16" stroke="url(#gradient-pink-purple)" stroke-width="0.5" fill="none" opacity="0.3"/>
+                <path d="M12 4l4 4M36 4l-4 4" stroke="#f53969" stroke-width="1.5"/>
+                <path d="M16 38h16" stroke="#f53969" stroke-width="2"/>
+                <text x="24" y="28" text-anchor="middle" font-size="8" fill="#f53969" font-weight="bold">18-24</text>
+                <circle cx="24" cy="24" r="3" fill="url(#gradient-pink-purple)"/>
+            </symbol>
+
+            <!-- Enhanced Market Intelligence Icon -->
+            <symbol id="market-intelligence" viewBox="0 0 48 48">
+                <rect x="4" y="4" width="40" height="36" rx="4" stroke="url(#gradient-orange-yellow)" stroke-width="1.5" fill="none"/>
+                <path d="M8 32l8-12 8 8 8-16 8 12" stroke="url(#gradient-orange-yellow)" stroke-width="2"/>
+                <circle cx="8" cy="32" r="3" fill="#ff6b35"/>
+                <circle cx="16" cy="20" r="3" fill="#ff6b35"/>
+                <circle cx="24" cy="28" r="3" fill="#ffd93d"/>
+                <circle cx="32" cy="12" r="3" fill="#ffd93d"/>
+                <circle cx="40" cy="24" r="3" fill="#ff6b35"/>
+                <path d="M4 10h40" stroke="url(#gradient-orange-yellow)" stroke-width="1.5" opacity="0.5"/>
+                <rect x="8" y="8" width="32" height="28" rx="2" fill="url(#gradient-orange-yellow)" opacity="0.05"/>
+            </symbol>
+        </defs>
+    </svg>
+
+    <!-- Animated Starfield -->
+    <div class="starfield" id="starfield"></div>
+    
+    <!-- Data Grid -->
+    <div class="data-grid"></div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em;">
+                <span class="gradient-text">RepSpheres</span>
+            </div>
+            <button class="primary-button">
+                <svg width="20" height="20" viewBox="0 0 48 48" fill="none">
+                    <use href="#regulatory-window"/>
+                </svg>
+                SECURE MY TERRITORY NOW
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div style="max-width: 1400px; margin: 0 auto; text-align: center;">
+            <div style="display: inline-flex; align-items: center; gap: 10px; padding: 10px 24px; background: var(--glass); border: 1px solid var(--purple-primary); border-radius: 30px; font-size: 0.85rem; font-weight: 600; color: var(--purple-primary); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 30px;">
+                <svg width="20" height="20" viewBox="0 0 48 48" fill="none">
+                    <use href="#social-intelligence"/>
+                </svg>
+                HELPING TEAMS DOMINATE 10X FASTER
+            </div>
+            <h1 style="font-size: clamp(3rem, 6vw, 5rem); font-weight: 800; line-height: 1.1; margin-bottom: 30px;">
+                They Check Databases.<br>
+                <span class="gradient-text">We Own Them.</span>
+            </h1>
+            <p style="font-size: 1.25rem; line-height: 1.8; color: var(--text-secondary); max-width: 800px; margin: 0 auto 40px;">
+                While your competition manually monitors new business openings, 
+                RepSpheres autonomously tracks 12,847 practices, analyzes social patterns, 
+                and deploys personalized outreach at scale. The gap is already insurmountable.
+            </p>
+
+            <!-- Premium Stats Grid -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; max-width: 1200px; margin: 60px auto 0;">
+                <!-- Stat Card 1 -->
+                <div class="premium-panel" style="--accent-color: #00ff88; padding: 30px;">
+                    <div class="panel-accent-line"></div>
+                    <div class="corner-screw" style="top: 10px; left: 10px;"></div>
+                    <div class="corner-screw" style="top: 10px; right: 10px;"></div>
+                    <div class="corner-screw" style="bottom: 10px; left: 10px;"></div>
+                    <div class="corner-screw" style="bottom: 10px; right: 10px;"></div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+                        <div style="color: #999; text-transform: uppercase; letter-spacing: 1.5px; font-size: 0.7rem; font-family: 'JetBrains Mono', monospace;">
+                            Practices Monitored
+                        </div>
+                        <div class="led-indicator led-green"></div>
+                    </div>
+                    
+                    <div class="value-display" style="--accent-primary: #00ff88; --accent-secondary: #00ff41;">
+                        12,847
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 10px; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.05);">
+                        <div style="font-size: 0.75rem; color: #00ff88; font-family: 'JetBrains Mono', monospace;">
+                            +3.8% vs last period
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stat Card 2 -->
+                <div class="premium-panel" style="--accent-color: #00d4ff; padding: 30px;">
+                    <div class="panel-accent-line"></div>
+                    <div class="corner-screw" style="top: 10px; left: 10px;"></div>
+                    <div class="corner-screw" style="top: 10px; right: 10px;"></div>
+                    <div class="corner-screw" style="bottom: 10px; left: 10px;"></div>
+                    <div class="corner-screw" style="bottom: 10px; right: 10px;"></div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+                        <div style="color: #999; text-transform: uppercase; letter-spacing: 1.5px; font-size: 0.7rem; font-family: 'JetBrains Mono', monospace;">
+                            Response Time
+                        </div>
+                        <div class="led-indicator led-blue"></div>
+                    </div>
+                    
+                    <div class="value-display" style="--accent-primary: #00d4ff; --accent-secondary: #0099ff;">
+                        12 sec
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 10px; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.05);">
+                        <div style="font-size: 0.75rem; color: #00d4ff; font-family: 'JetBrains Mono', monospace;">
+                            From detection to outreach
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stat Card 3 -->
+                <div class="premium-panel" style="--accent-color: #ff6b35; padding: 30px;">
+                    <div class="panel-accent-line"></div>
+                    <div class="corner-screw" style="top: 10px; left: 10px;"></div>
+                    <div class="corner-screw" style="top: 10px; right: 10px;"></div>
+                    <div class="corner-screw" style="bottom: 10px; left: 10px;"></div>
+                    <div class="corner-screw" style="bottom: 10px; right: 10px;"></div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+                        <div style="color: #999; text-transform: uppercase; letter-spacing: 1.5px; font-size: 0.7rem; font-family: 'JetBrains Mono', monospace;">
+                            Success Rate
+                        </div>
+                        <div class="led-indicator led-orange"></div>
+                    </div>
+                    
+                    <div class="value-display" style="--accent-primary: #ff6b35; --accent-secondary: #ff8c00;">
+                        84%
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 10px; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.05);">
+                        <div style="font-size: 0.75rem; color: #ff6b35; font-family: 'JetBrains Mono', monospace;">
+                            Industry leading conversion
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Intelligence Timeline -->
+    <section class="timeline-section">
+        <div style="text-align: center; max-width: 800px; margin: 0 auto 80px;">
+            <div style="display: inline-block; padding: 8px 20px; background: var(--glass); border: 1px solid var(--border-color); border-radius: 30px; font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 30px;">
+                OMNISCIENT INTELLIGENCE
+            </div>
+            <h2 style="font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.2; margin-bottom: 20px;">
+                Your <span class="gradient-text">Unfair Advantage</span> Stack
+            </h2>
+        </div>
+
+        <div style="max-width: 1400px; margin: 0 auto;">
+            <!-- Step 1: Social Intelligence -->
+            <div class="timeline-step active">
+                <div style="padding: 40px;">
+                    <div class="icon-container" style="--icon-primary: #9f58fa; --icon-secondary: #4B96DC; margin-bottom: 30px;">
+                        <div class="custom-icon">
+                            <svg><use href="#social-intelligence"/></svg>
+                        </div>
+                    </div>
+                    <h3 style="font-size: 2rem; font-weight: 700; margin-bottom: 20px;">Social Media Pattern Recognition</h3>
+                    <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-secondary);">
+                        RepSpheres monitors every doctor's social media 24/7. New service mentioned? 
+                        Certification posted? Frustration expressed? You're instantly alerted to 
+                        behavior changes that signal opportunity.
+                    </p>
+                </div>
+                <div class="premium-panel digital-display" style="padding: 30px;">
+                    <h4 style="color: var(--purple-primary); margin-bottom: 20px; font-family: 'Orbitron', monospace;">LIVE INTELLIGENCE FEED</h4>
+                    <div style="space-y: 15px;">
+                        <div style="padding: 15px; background: rgba(0,0,0,0.5); border-radius: 8px; border-left: 3px solid var(--matrix-green); margin-bottom: 10px;">
+                            <strong style="color: var(--matrix-green);">🔔 BEHAVIOR SHIFT</strong><br>
+                            Dr. Rodriguez posted about breast implants - first mention in 5 years<br>
+                            <span style="color: var(--green-accent);">→ Revenue opportunity: $280K/year</span>
+                        </div>
+                        <div style="padding: 15px; background: rgba(0,0,0,0.5); border-radius: 8px; border-left: 3px solid var(--cyan-accent); margin-bottom: 10px;">
+                            <strong style="color: var(--cyan-accent);">📈 INTEREST SPIKE</strong><br>
+                            Brooklyn Aesthetics - 3 posts about body contouring this week<br>
+                            <span style="color: var(--green-accent);">→ Perfect timing for equipment proposal</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Practice Scanner -->
+            <div class="timeline-step">
+                <div class="premium-panel digital-display" style="padding: 30px;">
+                    <h4 style="color: var(--green-accent); margin-bottom: 20px; font-family: 'Orbitron', monospace;">NEW REGISTRATIONS DETECTED</h4>
+                    <div style="background: rgba(0,0,0,0.5); padding: 20px; border-radius: 12px; margin-bottom: 15px; border: 1px solid var(--green-accent);">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <strong>Biscayne Aesthetic Institute</strong>
+                            <span style="color: var(--pink-accent);">HIGH PRIORITY</span>
+                        </div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">
+                            Miami, FL • Dr. Maria Gonzalez • $2.3M build-out<br>
+                            <span style="color: var(--green-accent);">Opens in 45 days - equipment decisions NOW</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding: 40px;">
+                    <div class="icon-container" style="--icon-primary: #4bd48e; --icon-secondary: #00d4ff; margin-bottom: 30px;">
+                        <div class="custom-icon">
+                            <svg><use href="#practice-scanner"/></svg>
+                        </div>
+                    </div>
+                    <h3 style="font-size: 2rem; font-weight: 700; margin-bottom: 20px;">New Practice Pre-Cognition</h3>
+                    <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-secondary);">
+                        State databases, business registrations, building permits—RepSpheres catches 
+                        every new practice before they open. You have first contact advantage. 
+                        Every. Single. Time.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Step 3: AI Deployment -->
+            <div class="timeline-step">
+                <div style="padding: 40px;">
+                    <div class="icon-container" style="--icon-primary: #ff6b35; --icon-secondary: #ffd93d; margin-bottom: 30px;">
+                        <div class="custom-icon">
+                            <svg><use href="#ai-deployment"/></svg>
+                        </div>
+                    </div>
+                    <h3 style="font-size: 2rem; font-weight: 700; margin-bottom: 20px;">The Art of Inevitable Victory</h3>
+                    <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-secondary);">
+                        The motivated rep checks databases weekly. The RepSpheres user? 
+                        Has already met with every new practice before competitors know they exist. 
+                        Choose your mode: Precision Strike (human-in-loop) or Full Auto campaigns.
+                    </p>
+                </div>
+                <div class="premium-panel" style="padding: 30px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div style="text-align: center;">
+                            <h4 style="color: var(--text-muted); margin-bottom: 20px;">Their Reality</h4>
+                            <div class="value-display" style="--accent-primary: #666; --accent-secondary: #444; font-size: 2.5rem;">1</div>
+                            <div style="color: var(--text-muted);">Email crafted</div>
+                        </div>
+                        <div style="text-align: center; border-left: 1px solid var(--border-color); padding-left: 20px;">
+                            <h4 style="color: var(--orange-accent); margin-bottom: 20px;">Your Dimension</h4>
+                            <div class="value-display" style="--accent-primary: #ff6b35; --accent-secondary: #ffd93d; font-size: 2.5rem;">188</div>
+                            <div style="color: var(--text-primary);">Messages deployed</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Data Control -->
+            <div class="timeline-step">
+                <div class="premium-panel digital-display" style="padding: 30px;">
+                    <h4 style="font-size: 1.5rem; margin-bottom: 20px; color: var(--green-accent);">Complete Intelligence Autonomy</h4>
+                    <div style="background: rgba(0,0,0,0.5); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                        <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;">
+                            <div style="color: var(--green-accent); margin-bottom: 15px;">
+                                <strong>YOUR STRATEGIC ARSENAL</strong>
+                            </div>
+                            <div style="color: var(--text-secondary); line-height: 1.8;">
+                                • Complete 5-year purchase history<br>
+                                • Every social media interaction<br>
+                                • All competitor relationships<br>
+                                • Full staff changes & dynamics<br>
+                                • Revenue patterns & projections<br>
+                                • Personal preferences & triggers
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background: linear-gradient(135deg, rgba(75, 216, 142, 0.1), rgba(0, 212, 255, 0.1)); padding: 20px; border-radius: 12px; border: 1px solid var(--green-accent);">
+                        <div style="font-size: 0.9rem; color: var(--text-primary); margin-bottom: 10px;">
+                            <strong>SEAMLESS INTEGRATION</strong>
+                        </div>
+                        <div style="display: flex; gap: 15px; justify-content: center;">
+                            <span style="padding: 8px 16px; background: rgba(0,0,0,0.3); border-radius: 8px;">HubSpot</span>
+                            <span style="padding: 8px 16px; background: rgba(0,0,0,0.3); border-radius: 8px;">Salesforce</span>
+                            <span style="padding: 8px 16px; background: rgba(0,0,0,0.3); border-radius: 8px;">Your CRM</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding: 40px;">
+                    <div class="icon-container" style="--icon-primary: #4bd48e; --icon-secondary: #00d4ff; margin-bottom: 30px;">
+                        <div class="custom-icon">
+                            <svg><use href="#data-control"/></svg>
+                        </div>
+                    </div>
+                    <h3 style="font-size: 2rem; font-weight: 700; margin-bottom: 20px;">Strategic Intelligence Command</h3>
+                    <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-secondary);">
+                        RepSpheres delivers the most comprehensive intelligence platform in the industry. 
+                        Complete visibility, perfect timing, flawless execution. You maintain full control 
+                        while AI handles the heavy lifting. Every insight, every opportunity, every advantage—yours.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Step 5: Harvey AI -->
+            <div class="timeline-step">
+                <div style="padding: 40px;">
+                    <div class="icon-container" style="--icon-primary: #9f58fa; --icon-secondary: #4B96DC; margin-bottom: 30px;">
+                        <div class="custom-icon">
+                            <svg><use href="#alexis-sterling-ai"/></svg>
+                        </div>
+                    </div>
+                    <h3 style="font-size: 2rem; font-weight: 700; margin-bottom: 20px;">Meet Alexis Sterling: Your AI Director of Sales</h3>
+                    <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-secondary);">
+                        For those times when your boss isn't available... or just doesn't want to help. 
+                        Alexis Sterling knows more about any aesthetic procedure and market condition than any 
+                        human alive. Available 24/7. Never condescending. Always brilliant.
+                    </p>
+                </div>
+                <div class="premium-panel" style="padding: 30px; background: linear-gradient(135deg, rgba(159, 88, 250, 0.05), rgba(75, 150, 220, 0.05));">
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">
+                        <div style="padding: 15px; background: rgba(0,0,0,0.3); border-radius: 8px; margin-bottom: 15px; border-left: 3px solid var(--purple-primary);">
+                            <strong style="color: var(--text-primary);">You:</strong> Alexis, what's the profit margin on PDO threads?
+                        </div>
+                        <div style="padding: 15px; background: rgba(159, 88, 250, 0.1); border-radius: 8px; border-left: 3px solid var(--blue-accent);">
+                            <strong style="color: var(--blue-accent);">Alexis Sterling:</strong> PDO threads offer 68% margins vs 42% for fillers. 
+                            But here's what matters: threads create recurring revenue every 12-18 months, 
+                            while attracting a younger demographic willing to pay premium prices...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section style="padding: 150px 40px; text-align: center; position: relative; z-index: 10;">
+        <div style="max-width: 900px; margin: 0 auto;">
+            <h2 style="font-size: clamp(3rem, 6vw, 5rem); font-weight: 800; line-height: 1.1; margin-bottom: 30px;">
+                The Playing Field Won't Stay<br>
+                <span class="gradient-text">Uneven Forever</span>
+            </h2>
+            <p style="font-size: 1.3rem; color: var(--text-secondary); margin-bottom: 50px; line-height: 1.6;">
+                18-24 months until AI disclosure becomes mandatory. Your window to build 
+                an insurmountable lead is closing. While they wonder how, you'll already 
+                know why.
+            </p>
+            <a href="#activate" class="primary-button" style="font-size: 1.2rem; padding: 20px 40px;">
+                SECURE MY TERRITORY NOW
+                <span style="font-size: 1.5rem;">→</span>
+            </a>
+            <div style="margin-top: 40px; padding: 15px 30px; background: rgba(245, 57, 105, 0.1); border: 1px solid var(--pink-accent); border-radius: 12px; display: inline-block;">
+                <span style="color: var(--pink-accent); font-weight: 600;">⚠️ REGULATORY WINDOW:</span> 
+                <span style="color: var(--text-primary); font-weight: 700;">327</span> reps activated this week
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Create starfield
+        const starfield = document.getElementById('starfield');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starfield.appendChild(star);
+        }
+
+        // Timeline animation on scroll
+        const observerOptions = {
+            threshold: 0.3,
+            rootMargin: '0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.timeline-step').forEach(step => {
+            observer.observe(step);
+        });
+    </script>
+</body>
+</html>
