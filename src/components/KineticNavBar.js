@@ -195,7 +195,7 @@ const KineticNavBar = () => {
 
           {/* Right Actions */}
           <div className="nav-actions">
-            <button className="primary-button" style={{ padding: '12px 24px', fontSize: '0.95rem' }}>
+            <button className="primary-button nav-primary-button">
               <svg width="18" height="18" viewBox="0 0 48 48" fill="none">
                 <use href="#regulatory-window"/>
               </svg>

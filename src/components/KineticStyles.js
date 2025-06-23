@@ -987,55 +987,131 @@ export const navigationStyles = `
       inset 0 1px 0 rgba(255,255,255,0.1);
   }
 
+  /* Icon for nav links */
   .nav-link-icon {
-    width: 16px;
-    height: 16px;
-    opacity: 0.7;
-    transition: opacity 0.3s ease;
-  }
-
-  .nav-link:hover .nav-link-icon {
-    opacity: 1;
-  }
-
-  /* Navigation Actions */
-  .nav-actions {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
-
-  /* More Button */
-  .nav-more {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 8px;
+    width: 18px;
+    height: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .nav-link-icon::before {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: currentColor;
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.5); opacity: 0.3; }
+  }
+
+  /* Market Data Icon */
+  .icon-market::before {
+    background: var(--green-accent);
+    box-shadow: 0 0 10px var(--green-accent);
+  }
+
+  /* Canvas Icon */
+  .icon-canvas::before {
+    background: var(--purple-primary);
+    box-shadow: 0 0 10px var(--purple-primary);
+  }
+
+  /* Sphere OS Icon */
+  .icon-sphere::before {
+    background: var(--blue-accent);
+    box-shadow: 0 0 10px var(--blue-accent);
+  }
+
+  /* Podcasts Icon */
+  .icon-podcasts::before {
+    background: var(--pink-accent);
+    box-shadow: 0 0 10px var(--pink-accent);
+  }
+
+  /* Right Actions */
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  /* More Menu with Radar Animation */
+  .nav-more {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+  }
+
+  .nav-more::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(var(--gem-impossible), 0.05) 0%, transparent 70%);
+    animation: flickerRadar 3s infinite;
+    pointer-events: none;
+  }
+
+  @keyframes flickerRadar {
+    0%, 100% { 
+      opacity: 0.2; 
+      transform: scale(1); 
+    }
+    50% { 
+      opacity: 0.4; 
+      transform: scale(1.5); 
+    }
+  }
+
+  .nav-more:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(var(--gem-impossible), 0.3);
+    transform: translateY(-2px);
   }
 
   .nav-more-icon {
     display: flex;
     gap: 3px;
+    z-index: 1;
   }
 
   .nav-more-dot {
     width: 4px;
     height: 4px;
-    background: var(--text-secondary);
     border-radius: 50%;
-    transition: all 0.3s ease;
+    background: var(--text-secondary);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .nav-more:hover .nav-more-dot {
-    background: var(--purple-primary);
+    background: var(--text-primary);
   }
 
-  .nav-more:hover .nav-more-dot:nth-child(2) {
-    transform: translateY(-3px);
+  .nav-more:hover .nav-more-dot:nth-child(1) {
+    transform: translateX(-2px);
+  }
+
+  .nav-more:hover .nav-more-dot:nth-child(3) {
+    transform: translateX(2px);
   }
 
   /* System Status Display */
@@ -1055,6 +1131,14 @@ export const navigationStyles = `
   .nav-container:hover .system-status {
     opacity: 0.7;
     color: var(--gem-shift);
+  }
+
+  /* Nav Primary Button - Adjusted for navbar */
+  .nav-primary-button {
+    padding: 12px 24px !important;
+    font-size: 0.95rem !important;
+    white-space: nowrap;
+    min-width: fit-content;
   }
 
   /* Continue with remaining styles... */
