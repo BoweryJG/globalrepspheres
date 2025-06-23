@@ -943,6 +943,7 @@ export const navigationStyles = `
     border-radius: 12px;
     text-decoration: none;
     color: var(--text-secondary);
+    font-family: 'Inter', sans-serif;
     font-size: 14px;
     font-weight: 500;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1136,36 +1137,27 @@ export const navigationStyles = `
     text-shadow: 0 0 5px rgba(var(--gem-impossible), 0.5);
   }
 
-  /* Rail container with status in center */
-  .nav-rail-container {
+  /* System status below nav links - like image #3 */
+  .nav-status-container {
     position: absolute;
-    bottom: 16px;
+    bottom: -20px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     align-items: center;
-    gap: 20px;
+    justify-content: center;
+    width: 100%;
   }
 
-  .rail-node {
-    width: 8px;
-    height: 8px;
-    background: radial-gradient(circle, var(--gem-shift), transparent);
-    border-radius: 50%;
-    animation: nodePulse 2s infinite;
-  }
-
-  @keyframes nodePulse {
-    0%, 100% { transform: scale(1); opacity: 0.8; }
-    50% { transform: scale(1.5); opacity: 1; }
-  }
-
-  .rail-node.left {
-    animation-delay: 0s;
-  }
-
-  .rail-node.right {
-    animation-delay: 1s;
+  .nav-status-text {
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    white-space: nowrap;
+    transition: all 0.3s ease;
   }
 
   /* Nav Primary Button - Adjusted for navbar */
