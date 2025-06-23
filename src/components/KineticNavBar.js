@@ -84,20 +84,33 @@ const KineticNavBar = () => {
       };
     }
 
-    // System status rotation
+    // System status rotation with emojis - from ultimate version
     const statusMessages = [
-      'SYSTEM OPERATIONAL',
-      'NEURAL SYNC ACTIVE',
-      'QUANTUM READY',
-      'AI INITIALIZED',
-      'SECURE CONNECTION'
+      '⏱ AI SYNC 97%',
+      '🔗 NEURAL LINK ACTIVE',
+      '⚡ QUANTUM CORE 100%',
+      '📊 DATA STREAM LIVE',
+      '🛡️ SECURITY OPTIMAL',
+      '🌐 NETWORK STABLE',
+      '💎 GEMS ALIGNED',
+      '🔮 PREDICTION MODE'
     ];
     
     let statusIndex = 0;
     const statusInterval = setInterval(() => {
       statusIndex = (statusIndex + 1) % statusMessages.length;
-      setSystemMessage(statusMessages[statusIndex]);
-    }, 4000);
+      // Add fade out effect like ultimate version
+      const element = document.querySelector('.nav-status');
+      if (element) {
+        element.style.opacity = '0';
+        setTimeout(() => {
+          setSystemMessage(statusMessages[statusIndex]);
+          element.style.opacity = '';
+        }, 300);
+      } else {
+        setSystemMessage(statusMessages[statusIndex]);
+      }
+    }, 5000);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -120,12 +133,17 @@ const KineticNavBar = () => {
         <div className="nav-screw screw-bl"></div>
         <div className="nav-screw screw-br"></div>
         
-        {/* Dynamic Nav Rail */}
-        <div className="nav-rail">
-          <div className="power-node"></div>
-          <div className="power-node"></div>
-          <div className="power-node"></div>
-          <div className="power-node"></div>
+        {/* Dynamic Nav Rail with Power Nodes and Status */}
+        <div className="nav-rail-container">
+          <div className="rail-node left"></div>
+          <div className="nav-rail">
+            <div className="power-node"></div>
+            <div className="power-node"></div>
+            <div className="power-node"></div>
+            <div className="power-node"></div>
+          </div>
+          <div className="nav-status">{systemMessage}</div>
+          <div className="rail-node right"></div>
         </div>
         
         <div className="nav-inner">
@@ -210,9 +228,6 @@ const KineticNavBar = () => {
             </button>
           </div>
         </div>
-        
-        {/* System Status Display */}
-        <div className="system-status">{systemMessage}</div>
       </nav>
     </>
   );

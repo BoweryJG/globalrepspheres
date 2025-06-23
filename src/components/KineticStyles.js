@@ -747,10 +747,7 @@ export const navigationStyles = `
 
   /* Dynamic Nav Rail */
   .nav-rail {
-    position: absolute;
-    bottom: 2px;
-    left: 20px;
-    right: 20px;
+    width: 200px;
     height: 2px;
     background: linear-gradient(to right,
       transparent 0%,
@@ -1114,23 +1111,61 @@ export const navigationStyles = `
     transform: translateX(2px);
   }
 
-  /* System Status Display */
-  .system-status {
-    position: absolute;
-    bottom: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 9px;
+  /* System Status Display - Updated from ultimate version */
+  .nav-status {
+    font-size: 11px;
     color: var(--text-muted);
-    text-transform: uppercase;
     letter-spacing: 0.5px;
-    opacity: 0.4;
+    text-transform: uppercase;
+    opacity: 0.6;
+    padding: 0 12px;
+    font-family: 'Orbitron', monospace;
+    white-space: nowrap;
     transition: all 0.3s ease;
+    animation: statusUpdate 8s infinite;
   }
 
-  .nav-container:hover .system-status {
-    opacity: 0.7;
-    color: var(--gem-shift);
+  @keyframes statusUpdate {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 0.8; color: var(--text-secondary); }
+  }
+
+  .nav-status:hover {
+    opacity: 1;
+    color: var(--gem-impossible);
+    text-shadow: 0 0 5px rgba(var(--gem-impossible), 0.5);
+  }
+
+  /* Rail container with status in center */
+  .nav-rail-container {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .rail-node {
+    width: 8px;
+    height: 8px;
+    background: radial-gradient(circle, var(--gem-shift), transparent);
+    border-radius: 50%;
+    animation: nodePulse 2s infinite;
+  }
+
+  @keyframes nodePulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.5); opacity: 1; }
+  }
+
+  .rail-node.left {
+    animation-delay: 0s;
+  }
+
+  .rail-node.right {
+    animation-delay: 1s;
   }
 
   /* Nav Primary Button - Adjusted for navbar */
