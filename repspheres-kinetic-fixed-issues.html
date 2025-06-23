@@ -244,6 +244,8 @@
                 0 2px 4px rgba(0,0,0,0.6),
                 0 4px 8px rgba(0,0,0,0.3);
             z-index: 10;
+            /* FIX 4: Add subtle idle rotation */
+            transition: transform 0.6s ease;
         }
 
         .corner-screw::after {
@@ -402,6 +404,38 @@
             50% { opacity: 0.85; transform: translate(-50%, -50%) scale(1.12); }
         }
 
+        /* FIX 3: Enhanced Jewel Tip Flare with GSAP trigger */
+        .jewel-flare {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 30px;
+            height: 30px;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .jewel-flare::before,
+        .jewel-flare::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--gem-impossible), transparent);
+            transform-origin: center;
+        }
+
+        .jewel-flare::before {
+            transform: translate(-50%, -50%) rotate(0deg);
+        }
+
+        .jewel-flare::after {
+            transform: translate(-50%, -50%) rotate(90deg);
+        }
+
         .analog-center {
             position: absolute;
             width: 8px;
@@ -504,6 +538,11 @@
             will-change: text-shadow, transform;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            /* FIX 1: Digit Alignment Consistency */
+            font-variant-numeric: tabular-nums;
+            text-align: center;
+            display: block;
+            min-width: 150px;
         }
 
         /* Gauge Container for 3D effects */
@@ -807,6 +846,8 @@
                 inset 1px 1px 2px rgba(255, 255, 255, 0.2),
                 0 1px 3px rgba(0, 0, 0, 0.4);
             z-index: 3;
+            /* FIX 4: Add subtle idle rotation for nav screws too */
+            transition: transform 0.6s ease;
         }
 
         .nav-screw::after {
@@ -841,6 +882,24 @@
                 transparent 100%
             );
             overflow: hidden;
+            position: relative;
+        }
+
+        /* FIX 2: Dynamic Glow Trace Animation on Nav Rail */
+        .nav-rail::after {
+            content: '';
+            position: absolute;
+            height: 100%;
+            width: 20%;
+            background: linear-gradient(to right, transparent, var(--gem-shift), transparent);
+            animation: tracePulse 4s infinite ease-in-out;
+            box-shadow: 0 0 10px var(--gem-shift);
+        }
+
+        @keyframes tracePulse {
+            0% { left: -20%; opacity: 0; }
+            50% { left: 50%; opacity: 1; }
+            100% { left: 120%; opacity: 0; }
         }
 
         /* Power Nodes */
@@ -1537,9 +1596,10 @@
                                 <stop offset="100%" style="stop-color:#4B96DC;stop-opacity:0" />
                             </radialGradient>
                             <radialGradient id="navJewelGradient" cx="50%" cy="50%" r="50%">
-                                <stop offset="0%" style="stop-color:var(--gem-impossible);stop-opacity:1" />
-                                <stop offset="50%" style="stop-color:var(--gem-deep);stop-opacity:0.8" />
-                                <stop offset="100%" style="stop-color:var(--gem-shift);stop-opacity:0.6" />
+                                <stop offset="0%" stop-color="#ffffff" stop-opacity="1" />
+                                <stop offset="30%" stop-color="#ff00ff" stop-opacity="1" />
+                                <stop offset="60%" stop-color="#00ffff" stop-opacity="1" />
+                                <stop offset="100%" stop-color="#ff00aa" stop-opacity="0.9" />
                             </radialGradient>
                         </defs>
                         
@@ -1549,8 +1609,7 @@
                         <!-- Inner sphere ring -->
                         <circle cx="16" cy="16" r="8" fill="none" stroke="url(#navSphereGradient)" stroke-width="1.5" opacity="0.6"/>
                         
-                        <!-- Center glow -->
-                        <circle cx="16" cy="16" r="6" fill="url(#navCenterGlow)" opacity="0.8"/>
+                        <!-- Center glow removed to make jewel more vibrant -->
                         
                         <!-- Animated Jewel Core -->
                         <circle cx="16" cy="16" r="3" fill="url(#navJewelGradient)" class="logo-jewel">
@@ -2304,7 +2363,8 @@
             const rotation = (value / 100) * 270 - 135; // Convert to -135° to +135° range (3/4 circle)
             
             // Delay each gauge slightly for staggered effect
-            setTimeout(() => {
+            // FIX 2: Much faster needle animation with reduced delay
+            gsap.delayedCall(index * 0.15, () => {
                     // Create power-up needle sequence
                     const tl = gsap.timeline({
                         onStart: () => {
@@ -2339,9 +2399,35 @@
                                 { scale: 1 },
                                 { scale: 1.3, duration: 0.3, yoyo: true, repeat: 1, ease: "power2.inOut" }
                             );
+                            
+                            // FIX 3: Enhanced jewel tip flare
+                            const flare = document.createElement('div');
+                            flare.className = 'jewel-flare';
+                            
+                            // Create flare children elements
+                            const flare1 = document.createElement('div');
+                            const flare2 = document.createElement('div');
+                            flare1.style.cssText = 'position:absolute;top:50%;left:50%;width:100%;height:2px;background:linear-gradient(to right,transparent,var(--gem-impossible),transparent);transform:translate(-50%,-50%)';
+                            flare2.style.cssText = 'position:absolute;top:50%;left:50%;width:2px;height:100%;background:linear-gradient(to bottom,transparent,var(--gem-impossible),transparent);transform:translate(-50%,-50%)';
+                            flare.appendChild(flare1);
+                            flare.appendChild(flare2);
+                            
+                            card.querySelector('.analog-center').appendChild(flare);
+                            
+                            gsap.timeline()
+                                .set(flare, { opacity: 0 })
+                                .to(flare, { opacity: 1, duration: 0.1 })
+                                .to([flare1, flare2], { 
+                                    scale: 3, 
+                                    opacity: 0, 
+                                    duration: 0.6, 
+                                    ease: "power2.out",
+                                    stagger: 0.1,
+                                    onComplete: () => flare.remove()
+                                });
                         }
                     });
-            }, 500 + (index * 200)); // Start after 500ms, stagger by 200ms each
+            })
         });
         
         // Cursor-responsive 3D tilt for gauges
@@ -2377,6 +2463,54 @@
                 }
             });
         });
+
+        // FIX 4: Subtle idle rotation for screws every 4 seconds
+        setInterval(() => {
+            document.querySelectorAll('.corner-screw, .nav-screw').forEach(screw => {
+                const angle = Math.random() * 30 - 15; // Random between -15 and +15 degrees
+                screw.style.transform = `rotate(${angle}deg)`;
+            });
+        }, 4000);
+
+        // FIX 5: Title and favicon pulse when scrolled to 90%
+        let faviconPulseTriggered = false;
+        
+        window.addEventListener('scroll', () => {
+            const scrollPercentage = (window.pageYOffset) / (document.documentElement.scrollHeight - window.innerHeight);
+            
+            if (!faviconPulseTriggered && scrollPercentage > 0.9) {
+                faviconPulseTriggered = true;
+                
+                // Store original title
+                const originalTitle = document.title;
+                
+                // Pulse title
+                document.title = "🔥 " + originalTitle + " 🔥";
+                
+                // Flash favicon
+                const links = document.querySelectorAll("link[rel*='icon']");
+                const originalHrefs = Array.from(links).map(link => link.href);
+                
+                let pulses = 0;
+                const pulseInterval = setInterval(() => {
+                    links.forEach((link, index) => {
+                        link.href = pulses % 2 === 0 
+                            ? 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="%23ff00ff"/></svg>'
+                            : originalHrefs[index];
+                    });
+                    pulses++;
+                    
+                    if (pulses > 10) {
+                        clearInterval(pulseInterval);
+                        // Restore originals
+                        links.forEach((link, index) => {
+                            link.href = originalHrefs[index];
+                        });
+                        document.title = originalTitle;
+                    }
+                }, 300);
+            }
+        });
     </script>
 </body>
-</html> 
+</html>

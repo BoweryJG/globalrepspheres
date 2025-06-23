@@ -12,8 +12,10 @@ import DecisionPointSection from './components/DecisionPointSection';
 import Footer from './components/Footer';
 import PerformanceMonitor from './components/PerformanceMonitor';
 import HarveyLauncher from './components/HarveyLauncher';
+import KineticNeedlesPage from './components/KineticNeedlesPage';
 import { logBackendStatus } from './utils/backendHealth';
 function App() {
+  const [useKineticDesign] = useState(true); // Set to true to use the new kinetic design
   const [performanceMode, setPerformanceMode] = useState(() => {
     // Check localStorage for saved preference
     const saved = localStorage.getItem('performanceMode');
@@ -38,6 +40,12 @@ function App() {
     };
   }, []);
 
+  // If using kinetic design, return the new page
+  if (useKineticDesign) {
+    return <KineticNeedlesPage />;
+  }
+
+  // Otherwise, return the original design
   // Choose the appropriate components based on performance mode
   // Use exact SVG version that matches header_orb copy.html
   const OrbComponent = AnimatedOrbExact;

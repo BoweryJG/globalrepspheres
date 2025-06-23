@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RepSpheres | The Collaborative AI Sales Intelligence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-darker: #050505;
+            --panel-dark: #1a1a1a;
+            --panel-darker: #141414;
+            --purple-primary: #9f58fa;
+            --purple-dark: #7e22ce;
+            --purple-light: #a855f7;
+            --blue-accent: #4B96DC;
+            --blue-light: #60a5fa;
+            --green-accent: #4bd48e;
+            --green-neon: #00ff88;
+            --pink-accent: #f53969;
+            --orange-accent: #ff6b35;
+            --cyan-accent: #00d4ff;
+            --yellow-accent: #ffd93d;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-hover: rgba(255, 255, 255, 0.08);
+            --matrix-green: #00ff41;
+            --warning-red: #ff0040;
+            --amber-neutral: #ffaa00;
+            --gem-impossible: #ff00ff;
+            --gem-shift: #00ffff;
+            --gem-deep: #ff00aa;
+            --nav-height: 80px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-darker);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+            padding-top: var(--nav-height);
+        }
+
+        /* Award-Winning Navigation Bar */
+        .nav-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--nav-height);
+            z-index: 1000;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            background: linear-gradient(90deg,
+                rgba(26, 26, 26, 0.95) 0%,
+                rgba(30, 30, 30, 0.9) 20%,
+                rgba(26, 26, 26, 0.85) 50%,
+                rgba(30, 30, 30, 0.9) 80%,
+                rgba(26, 26, 26, 0.95) 100%
+            );
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 4px 30px rgba(0, 0, 0, 0.5),
+                0 1px 0 rgba(255, 255, 255, 0.05) inset;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        /* Glass Refraction Overlay */
+        .nav-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0; 
+            right: 0; 
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at top left, rgba(255,255,255,0.06), transparent 70%),
+                radial-gradient(ellipse at bottom right, rgba(159, 88, 250, 0.03), transparent 60%);
+            pointer-events: none;
+            mix-blend-mode: screen;
+            opacity: 0.2;
+            animation: glassOscillate 8s ease-in-out infinite;
+        }
+
+        @keyframes glassOscillate {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(1.02); }
+        }
+
+        .nav-inner {
+            height: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        /* Logo Section with 3D Tilt */
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            position: relative;
+            padding: 8px 16px;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .nav-logo:hover {
+            background: rgba(159, 88, 250, 0.1);
+        }
+
+        .nav-logo-icon {
+            width: 40px;
+            height: 40px;
+            position: relative;
+        }
+
+        /* Animated Jewel Core in Logo */
+        @keyframes gemPulse {
+            0%, 100% { 
+                transform: scale(1) rotate(0deg);
+                filter: brightness(1) hue-rotate(0deg);
+            }
+            25% { 
+                transform: scale(1.2) rotate(90deg);
+                filter: brightness(1.3) hue-rotate(30deg);
+            }
+            50% { 
+                transform: scale(1.1) rotate(180deg);
+                filter: brightness(1.5) hue-rotate(60deg);
+            }
+            75% { 
+                transform: scale(1.15) rotate(270deg);
+                filter: brightness(1.2) hue-rotate(90deg);
+            }
+        }
+
+        .logo-jewel {
+            animation: gemPulse 4s infinite;
+            transform-origin: center;
+        }
+
+        .nav-logo-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 22px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--purple-primary), var(--blue-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        /* Navigation Links */
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            justify-content: center;
+            margin: 0 60px;
+        }
+
+        .nav-link {
+            position: relative;
+            padding: 10px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid transparent;
+            overflow: hidden;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                transparent 0%,
+                rgba(159, 88, 250, 0.1) 50%,
+                transparent 100%
+            );
+            transform: translateX(-100%);
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-link:hover::before {
+            transform: translateX(100%);
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(159, 88, 250, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 
+                0 4px 20px rgba(159, 88, 250, 0.2),
+                0 0 0 1px rgba(159, 88, 250, 0.1) inset;
+        }
+
+        /* Laser Target Active Indicator */
+        .nav-link.active {
+            color: var(--text-primary);
+            background: linear-gradient(135deg, 
+                rgba(159, 88, 250, 0.15) 0%,
+                rgba(75, 150, 220, 0.15) 100%
+            );
+            border-color: rgba(159, 88, 250, 0.4);
+            box-shadow: 
+                0 0 20px rgba(159, 88, 250, 0.3),
+                0 0 0 1px rgba(159, 88, 250, 0.2) inset;
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 10%;
+            width: 80%;
+            height: 2px;
+            background: linear-gradient(to right, 
+                transparent,
+                var(--purple-primary) 20%,
+                var(--blue-accent) 50%,
+                var(--purple-primary) 80%,
+                transparent
+            );
+            animation: laserSweep 1.5s infinite linear;
+            box-shadow: 0 0 10px var(--purple-primary);
+        }
+
+        @keyframes laserSweep {
+            0% { 
+                filter: brightness(1);
+                transform: scaleX(0.8);
+            }
+            50% { 
+                filter: brightness(1.5);
+                transform: scaleX(1);
+            }
+            100% { 
+                filter: brightness(1);
+                transform: scaleX(0.8);
+            }
+        }
+
+        /* Icon for nav links */
+        .nav-link-icon {
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .nav-link-icon::before {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: currentColor;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.5); opacity: 0.3; }
+        }
+
+        /* Market Data Icon */
+        .icon-market::before {
+            background: var(--green-accent);
+            box-shadow: 0 0 10px var(--green-accent);
+        }
+
+        /* Canvas Icon */
+        .icon-canvas::before {
+            background: var(--purple-primary);
+            box-shadow: 0 0 10px var(--purple-primary);
+        }
+
+        /* Sphere OS Icon */
+        .icon-sphere::before {
+            background: var(--blue-accent);
+            box-shadow: 0 0 10px var(--blue-accent);
+        }
+
+        /* Settings Icon */
+        .icon-settings::before {
+            background: var(--amber-neutral);
+            box-shadow: 0 0 10px var(--amber-neutral);
+        }
+
+        /* Right Actions */
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* Premium CTA Button with Forcefield */
+        .nav-cta {
+            position: relative;
+            padding: 10px 24px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--purple-primary), var(--blue-accent));
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            box-shadow: 
+                0 4px 20px rgba(159, 88, 250, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+        }
+
+        /* Forcefield Ring */
+        .nav-cta::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            border: 2px solid;
+            border-color: transparent var(--gem-impossible) transparent var(--gem-shift);
+            border-radius: 12px;
+            transform: translate(-50%, -50%) scale(1.1);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-cta:hover::after {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.15) rotate(180deg);
+            animation: forcefieldRotate 2s linear infinite;
+        }
+
+        @keyframes forcefieldRotate {
+            0% { transform: translate(-50%, -50%) scale(1.15) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) scale(1.15) rotate(360deg); }
+        }
+
+        .nav-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            transition: left 0.5s;
+        }
+
+        .nav-cta:hover::before {
+            left: 100%;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 6px 30px rgba(159, 88, 250, 0.4),
+                0 0 0 2px rgba(255, 255, 255, 0.2) inset,
+                0 0 40px rgba(255, 0, 255, 0.3);
+            filter: brightness(1.1);
+        }
+
+        /* More Menu */
+        .nav-more {
+            position: relative;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-more:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(159, 88, 250, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .nav-more-icon {
+            display: flex;
+            gap: 3px;
+        }
+
+        .nav-more-dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--text-secondary);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-more:hover .nav-more-dot {
+            background: var(--text-primary);
+        }
+
+        .nav-more:hover .nav-more-dot:nth-child(1) {
+            transform: translateX(-2px);
+        }
+
+        .nav-more:hover .nav-more-dot:nth-child(3) {
+            transform: translateX(2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: radial-gradient(ellipse at center, rgba(159, 88, 250, 0.1) 0%, transparent 70%);
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, var(--purple-primary) 50%, var(--blue-accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% 200%;
+            animation: gradientShift 4s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Award-Winning Navigation Bar with Enhanced Features -->
+    <nav class="nav-container">
+        <div class="nav-inner">
+            <!-- Logo with Animated Jewel Core -->
+            <a href="#" class="nav-logo">
+                <div class="nav-logo-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                        <defs>
+                            <linearGradient id="sphereGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#9f58fa;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#4B96DC;stop-opacity:1" />
+                            </linearGradient>
+                            <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.8" />
+                                <stop offset="50%" style="stop-color:#9f58fa;stop-opacity:0.5" />
+                                <stop offset="100%" style="stop-color:#4B96DC;stop-opacity:0" />
+                            </radialGradient>
+                            <radialGradient id="jewelGradient" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" style="stop-color:#ff00ff;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#ff00aa;stop-opacity:0.8" />
+                                <stop offset="100%" style="stop-color:#00ffff;stop-opacity:0.6" />
+                            </radialGradient>
+                        </defs>
+                        
+                        <!-- Outer sphere ring -->
+                        <circle cx="16" cy="16" r="12" fill="none" stroke="url(#sphereGradient)" stroke-width="2" opacity="0.8"/>
+                        
+                        <!-- Inner sphere ring -->
+                        <circle cx="16" cy="16" r="8" fill="none" stroke="url(#sphereGradient)" stroke-width="1.5" opacity="0.6"/>
+                        
+                        <!-- Center glow -->
+                        <circle cx="16" cy="16" r="6" fill="url(#centerGlow)" opacity="0.8"/>
+                        
+                        <!-- Animated Jewel Core -->
+                        <circle cx="16" cy="16" r="3" fill="url(#jewelGradient)" class="logo-jewel">
+                            <animate attributeName="r" values="3;4;3" dur="2s" repeatCount="indefinite"/>
+                            <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite"/>
+                        </circle>
+                        
+                        <!-- Orbital dots -->
+                        <circle cx="16" cy="4" r="1.5" fill="#9f58fa"/>
+                        <circle cx="28" cy="16" r="1.5" fill="#4B96DC"/>
+                        <circle cx="16" cy="28" r="1.5" fill="#4bd48e"/>
+                        <circle cx="4" cy="16" r="1.5" fill="#00d4ff"/>
+                    </svg>
+                </div>
+                <span class="nav-logo-text">RepSpheres</span>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="nav-links">
+                <a href="#market-data" class="nav-link">
+                    <span class="nav-link-icon icon-market"></span>
+                    <span>Market Data</span>
+                </a>
+                <a href="#canvas" class="nav-link">
+                    <span class="nav-link-icon icon-canvas"></span>
+                    <span>Canvas</span>
+                </a>
+                <a href="#sphere-os" class="nav-link active">
+                    <span class="nav-link-icon icon-sphere"></span>
+                    <span>Sphere OS</span>
+                </a>
+                <a href="#settings" class="nav-link">
+                    <span class="nav-link-icon icon-settings"></span>
+                    <span>Settings</span>
+                </a>
+            </nav>
+
+            <!-- Right Actions -->
+            <div class="nav-actions">
+                <a href="#get-started" class="nav-cta">Get Started</a>
+                <button class="nav-more" aria-label="More options">
+                    <div class="nav-more-icon">
+                        <span class="nav-more-dot"></span>
+                        <span class="nav-more-dot"></span>
+                        <span class="nav-more-dot"></span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div>
+            <h1>RepSpheres</h1>
+            <p>Your AI-Powered Sales Intelligence Platform</p>
+            <p style="color: var(--text-muted); font-size: 1rem;">Award-winning navigation with jeweled core, glass refraction, laser indicators & forcefield effects</p>
+        </div>
+    </section>
+
+    <script>
+        // 3D Tilt Effect on Logo
+        const logo = document.querySelector('.nav-logo');
+        if (logo) {
+            logo.addEventListener('mousemove', e => {
+                const rect = logo.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                const rotateX = (y / rect.height) * 10;
+                const rotateY = -(x / rect.width) * 10;
+                logo.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+
+            logo.addEventListener('mouseleave', () => {
+                logo.style.transform = '';
+            });
+        }
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId && targetId !== '#') {
+                    const target = document.querySelector(targetId);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

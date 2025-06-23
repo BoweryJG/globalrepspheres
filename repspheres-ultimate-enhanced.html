@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RepSpheres | The Collaborative AI Sales Intelligence</title>
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/svg+xml" sizes="16x16" href="favicon-16x16.svg">
+    <link rel="apple-touch-icon" href="favicon.svg">
+    
+    <!-- Meta -->
+    <meta name="description" content="RepSpheres - The revolutionary AI-powered sales intelligence platform transforming how businesses connect, engage, and succeed.">
+    <meta name="keywords" content="AI sales, sales intelligence, CRM, sales automation, RepSpheres">
+    <meta name="author" content="RepSpheres">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="RepSpheres | The Collaborative AI Sales Intelligence">
+    <meta property="og:description" content="The future of aesthetic sales is here. AI-powered intelligence that transforms how you connect and close.">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="RepSpheres | The Collaborative AI Sales Intelligence">
+    <meta name="twitter:description" content="The future of aesthetic sales is here. AI-powered intelligence that transforms how you connect and close.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-darker: #050505;
+            --panel-dark: #1a1a1a;
+            --panel-darker: #141414;
+            --purple-primary: #9f58fa;
+            --purple-dark: #7e22ce;
+            --purple-light: #a855f7;
+            --blue-accent: #4B96DC;
+            --blue-light: #60a5fa;
+            --green-accent: #4bd48e;
+            --green-neon: #00ff88;
+            --pink-accent: #f53969;
+            --orange-accent: #ff6b35;
+            --cyan-accent: #00d4ff;
+            --yellow-accent: #ffd93d;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-hover: rgba(255, 255, 255, 0.08);
+            --matrix-green: #00ff41;
+            --warning-red: #ff0040;
+            --amber-neutral: #ffaa00;
+            --gem-impossible: #ff00ff;
+            --gem-shift: #00ffff;
+            --gem-deep: #ff00aa;
+            --nav-height: 80px;
+            --scroll-offset: 0px;
+            --metal-light: #e8e8e8;
+            --metal-mid: #999;
+            --metal-dark: #555;
+            --metal-shadow: #222;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-darker);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+            padding-top: calc(var(--nav-height) + 24px);
+            transition: background 0.5s ease;
+        }
+
+        /* Enhanced Premium Panel Styles */
+        .premium-panel {
+            position: relative;
+            background: 
+                linear-gradient(135deg, #1a1a1a 0%, #252525 20%, #1e1e1e 40%, #2a2a2a 60%, #1f1f1f 80%, #1a1a1a 100%),
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 1px,
+                    rgba(255,255,255,0.01) 1px,
+                    rgba(255,255,255,0.01) 2px
+                ),
+                radial-gradient(ellipse at top left, rgba(255,255,255,0.03) 0%, transparent 40%);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #2a2a2a;
+            box-shadow: 
+                inset 0 2px 4px rgba(255,255,255,0.05),
+                inset 0 -2px 6px rgba(0,0,0,0.6),
+                0 4px 12px rgba(0,0,0,0.5),
+                0 8px 24px rgba(0,0,0,0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Enhanced Corner Screws with Idle Rotation */
+        .corner-screw {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: 
+                radial-gradient(circle at 30% 30%, #d0d0d0 0%, #aaa 10%, #888 30%, #666 50%, #444 70%, #222 100%),
+                conic-gradient(from 45deg, #999 0%, #666 25%, #999 50%, #666 75%, #999 100%);
+            border-radius: 50%;
+            box-shadow:
+                inset 0 2px 3px rgba(255,255,255,0.4),
+                inset 0 -2px 3px rgba(0,0,0,0.8),
+                0 2px 4px rgba(0,0,0,0.6);
+            z-index: 10;
+            transform: rotate(12deg);
+            transition: transform 0.6s ease;
+        }
+
+        /* Navigation Container */
+        .nav-container {
+            position: fixed;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 96vw;
+            max-width: 1400px;
+            height: var(--nav-height);
+            z-index: 1000;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            background: linear-gradient(to right,
+                rgba(26, 26, 26, 0.95) 0%,
+                rgba(30, 30, 30, 0.9) 50%,
+                rgba(26, 26, 26, 0.95) 100%
+            );
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            box-shadow: 
+                0 12px 40px rgba(0, 0, 0, 0.4),
+                0 0 20px rgba(var(--gem-shift), 0.08);
+            overflow: hidden;
+        }
+
+        /* Enhanced Nav Rail with Dynamic Energy Trace */
+        .nav-rail {
+            flex: 1;
+            height: 2px;
+            margin: 0 16px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(var(--gem-shift), 0.25), 
+                rgba(var(--gem-impossible), 0.25), 
+                transparent);
+            box-shadow: 0 0 6px rgba(var(--gem-impossible), 0.3);
+            animation: pulseRail 4s infinite ease-in-out;
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* NEW: Dynamic Glow Trace on Nav Rail */
+        .nav-rail::after {
+            content: '';
+            position: absolute;
+            height: 100%;
+            width: 20%;
+            background: linear-gradient(to right, transparent, var(--gem-shift), transparent);
+            animation: tracePulse 4s infinite ease-in-out;
+        }
+
+        @keyframes tracePulse {
+            0% { left: -20%; opacity: 0; }
+            50% { left: 50%; opacity: 1; }
+            100% { left: 120%; opacity: 0; }
+        }
+
+        /* Enhanced Value Display with Fixed Alignment */
+        .value-display {
+            font-size: 3rem;
+            font-weight: 800;
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 2px;
+            background: linear-gradient(180deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: ledFlicker 10s ease-in-out infinite;
+            /* FIX: Digit Alignment Consistency */
+            font-variant-numeric: tabular-nums;
+            text-align: center;
+            display: block;
+            min-width: 150px;
+        }
+
+        /* Analog Gauge Styles */
+        .analog-gauge {
+            width: 200px;
+            height: 200px;
+            position: relative;
+            margin: 20px auto;
+        }
+
+        .gauge-face {
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 50% 50%, #2a2a2a 0%, #1a1a1a 50%, #0a0a0a 100%),
+                conic-gradient(from 0deg, #333 0deg, #222 90deg, #333 180deg, #222 270deg, #333 360deg);
+            border-radius: 50%;
+            box-shadow: 
+                inset 0 0 30px rgba(0,0,0,0.8),
+                inset 0 0 10px rgba(255,255,255,0.05),
+                0 8px 20px rgba(0,0,0,0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gauge-marks {
+            position: absolute;
+            inset: 20px;
+            border-radius: 50%;
+        }
+
+        .gauge-needle {
+            position: absolute;
+            width: 3px;
+            height: 50%;
+            background: linear-gradient(to bottom, var(--warning-red) 0%, #ff3366 100%);
+            left: 50%;
+            bottom: 50%;
+            transform-origin: bottom center;
+            transform: translateX(-50%) rotate(-90deg);
+            box-shadow: 0 0 10px var(--warning-red);
+            z-index: 10;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .analog-center {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: 
+                radial-gradient(circle at 30% 30%, #666 0%, #444 50%, #222 100%);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 
+                inset 0 2px 4px rgba(255,255,255,0.2),
+                0 2px 4px rgba(0,0,0,0.8);
+            z-index: 11;
+        }
+
+        /* Enhanced Jewel Tip with Flares */
+        .analog-center::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, var(--gem-impossible) 0%, var(--gem-deep) 100%);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px var(--gem-impossible);
+            animation: jewelPulse 2s infinite;
+        }
+
+        @keyframes jewelPulse {
+            0%, 100% { 
+                transform: translate(-50%, -50%) scale(1); 
+                box-shadow: 0 0 10px var(--gem-impossible);
+            }
+            50% { 
+                transform: translate(-50%, -50%) scale(1.2); 
+                box-shadow: 0 0 20px var(--gem-deep), 0 0 40px var(--gem-impossible);
+            }
+        }
+
+        /* LED Matrix Display */
+        .led-matrix {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 4px;
+            padding: 10px;
+            background: #0a0a0a;
+            border-radius: 8px;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.8);
+        }
+
+        .led-dot {
+            width: 6px;
+            height: 6px;
+            background: #111;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .led-dot.active {
+            background: var(--matrix-green);
+            box-shadow: 0 0 8px var(--matrix-green);
+            animation: ledGlow 1s infinite;
+        }
+
+        @keyframes ledGlow {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Primary Button */
+        .primary-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, var(--purple-primary), var(--blue-accent));
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+        }
+
+        .primary-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(159, 88, 250, 0.4);
+        }
+
+        /* Sections */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 40px 80px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .kinetic-section {
+            padding: 120px 40px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Data Grid Pattern */
+        .data-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(159, 88, 250, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(159, 88, 250, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .analog-gauge {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .value-display {
+                font-size: 2rem;
+                min-width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Data Grid -->
+    <div class="data-grid"></div>
+
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 0 24px; height: 100%;">
+            <div style="font-size: 1.5rem; font-weight: 800;">
+                <span style="background: linear-gradient(135deg, var(--purple-primary), var(--blue-accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">RepSpheres</span>
+            </div>
+            
+            <!-- Enhanced Nav Rail with Dynamic Trace -->
+            <div style="display: flex; align-items: center; flex: 1; margin: 0 20px;">
+                <div style="width: 6px; height: 6px; border-radius: 50%; background: var(--gem-impossible); box-shadow: 0 0 10px var(--gem-impossible); margin-right: 8px;"></div>
+                <div class="nav-rail"></div>
+                <div style="width: 6px; height: 6px; border-radius: 50%; background: var(--gem-shift); box-shadow: 0 0 10px var(--gem-shift); margin-left: 8px;"></div>
+            </div>
+            
+            <a href="#activate" class="primary-button" style="padding: 10px 24px; font-size: 0.95rem;">
+                GET STARTED
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div style="max-width: 1400px; margin: 0 auto; text-align: center;">
+            <h1 style="font-size: clamp(3rem, 6vw, 5rem); font-weight: 800; line-height: 1.1; margin-bottom: 30px;">
+                Enhanced Kinetic Interface<br>
+                <span style="background: linear-gradient(135deg, var(--purple-primary), var(--blue-accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">With All Fixes Applied</span>
+            </h1>
+            
+            <!-- Premium Stats Grid with Fixed Alignment -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1200px; margin: 60px auto;">
+                <!-- Enhanced Stat Card with Analog Gauge -->
+                <div class="premium-panel" style="padding: 30px;">
+                    <div class="corner-screw" style="top: 10px; left: 10px;"></div>
+                    <div class="corner-screw" style="top: 10px; right: 10px;"></div>
+                    <div class="corner-screw" style="bottom: 10px; left: 10px;"></div>
+                    <div class="corner-screw" style="bottom: 10px; right: 10px;"></div>
+                    
+                    <h4 style="text-align: center; color: var(--text-secondary); margin-bottom: 20px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">System Performance</h4>
+                    
+                    <div class="analog-gauge">
+                        <div class="gauge-face">
+                            <div class="gauge-marks"></div>
+                            <div class="gauge-needle" id="performanceNeedle"></div>
+                            <div class="analog-center"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="value-display" style="--accent-primary: var(--green-accent); --accent-secondary: var(--green-neon);">
+                        <span id="performanceValue">84%</span>
+                    </div>
+                </div>
+
+                <!-- Enhanced Card with LED Matrix -->
+                <div class="premium-panel" style="padding: 30px;">
+                    <div class="corner-screw" style="top: 10px; left: 10px;"></div>
+                    <div class="corner-screw" style="top: 10px; right: 10px;"></div>
+                    <div class="corner-screw" style="bottom: 10px; left: 10px;"></div>
+                    <div class="corner-screw" style="bottom: 10px; right: 10px;"></div>
+                    
+                    <h4 style="text-align: center; color: var(--text-secondary); margin-bottom: 20px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">AI Activity Matrix</h4>
+                    
+                    <div class="led-matrix" id="ledMatrix">
+                        <!-- LED dots will be generated by JavaScript -->
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <div class="value-display" style="--accent-primary: var(--cyan-accent); --accent-secondary: var(--blue-accent);">
+                            <span id="activityRate">12,847</span>
+                        </div>
+                        <p style="text-align: center; color: var(--text-muted); font-size: 0.8rem; margin-top: 10px;">Operations/sec</p>
+                    </div>
+                </div>
+
+                <!-- Enhanced Card with Fixed Counter -->
+                <div class="premium-panel" style="padding: 30px;">
+                    <div class="corner-screw" style="top: 10px; left: 10px;"></div>
+                    <div class="corner-screw" style="top: 10px; right: 10px;"></div>
+                    <div class="corner-screw" style="bottom: 10px; left: 10px;"></div>
+                    <div class="corner-screw" style="bottom: 10px; right: 10px;"></div>
+                    
+                    <h4 style="text-align: center; color: var(--text-secondary); margin-bottom: 20px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Revenue Impact</h4>
+                    
+                    <div style="display: flex; justify-content: center; align-items: center; height: 200px;">
+                        <div class="value-display" style="--accent-primary: var(--orange-accent); --accent-secondary: var(--yellow-accent); font-size: 2.5rem;">
+                            $<span id="revenueValue">2.4M</span>
+                        </div>
+                    </div>
+                    
+                    <p style="text-align: center; color: var(--green-accent); font-size: 0.9rem;">
+                        <span style="font-weight: 600;">+18.3%</span> this quarter
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Initialize GSAP for needle animations
+        gsap.registerPlugin();
+
+        // Animate performance needle with jewel flare
+        const performanceNeedle = document.getElementById('performanceNeedle');
+        const performanceValue = document.getElementById('performanceValue');
+        const analogCenter = document.querySelector('.analog-center');
+        
+        function animateGauge(value) {
+            const rotation = (value / 100) * 180 - 90;
+            
+            // Animate needle
+            gsap.to(performanceNeedle, {
+                rotation: rotation,
+                duration: 2,
+                ease: "power2.inOut",
+                onComplete: () => {
+                    // Jewel tip flare on completion
+                    gsap.fromTo(analogCenter, 
+                        { scale: 1, boxShadow: '0 0 0 transparent' },
+                        { 
+                            scale: 1.3,
+                            duration: 0.3,
+                            yoyo: true,
+                            repeat: 1,
+                            ease: "power1.inOut",
+                            boxShadow: '0 0 20px var(--gem-deep)'
+                        }
+                    );
+                }
+            });
+            
+            // Animate value
+            gsap.to(performanceValue, {
+                innerHTML: value + '%',
+                duration: 2,
+                snap: { innerHTML: 1 },
+                ease: "power2.inOut"
+            });
+        }
+
+        // Initialize gauge
+        setTimeout(() => animateGauge(84), 500);
+
+        // Create LED Matrix
+        const ledMatrix = document.getElementById('ledMatrix');
+        for (let i = 0; i < 64; i++) {
+            const led = document.createElement('div');
+            led.className = 'led-dot';
+            ledMatrix.appendChild(led);
+        }
+
+        // Animate LED Matrix
+        function animateLEDs() {
+            const leds = ledMatrix.querySelectorAll('.led-dot');
+            leds.forEach((led, i) => {
+                setTimeout(() => {
+                    led.classList.toggle('active', Math.random() > 0.6);
+                }, i * 20);
+            });
+        }
+
+        setInterval(animateLEDs, 2000);
+        animateLEDs(); // Initial animation
+
+        // Subtle idle rotation for screws
+        setInterval(() => {
+            document.querySelectorAll('.corner-screw').forEach(screw => {
+                const angle = Math.random() * 30 - 15;
+                screw.style.transform = `rotate(${angle}deg)`;
+            });
+        }, 4000);
+
+        // Title pulse when scrolled to bottom
+        let triggered = false;
+        window.addEventListener('scroll', () => {
+            const scrollPercentage = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+            
+            if (!triggered && scrollPercentage > 0.9) {
+                triggered = true;
+                const originalTitle = document.title;
+                document.title = "🚨 RepSpheres Alert Activated";
+                
+                // Flash favicon
+                const link = document.querySelector("link[rel*='icon']");
+                const originalHref = link.href;
+                
+                let flashes = 0;
+                const flashInterval = setInterval(() => {
+                    link.href = flashes % 2 === 0 ? 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="%23ff0040"/></svg>' : originalHref;
+                    flashes++;
+                    
+                    if (flashes > 6) {
+                        clearInterval(flashInterval);
+                        link.href = originalHref;
+                        document.title = originalTitle;
+                    }
+                }, 500);
+            }
+        });
+
+        // Revenue counter animation
+        const revenueValue = document.getElementById('revenueValue');
+        let currentRevenue = 2.4;
+        
+        setInterval(() => {
+            currentRevenue += (Math.random() * 0.02 - 0.01);
+            currentRevenue = Math.max(2.3, Math.min(2.5, currentRevenue));
+            revenueValue.textContent = currentRevenue.toFixed(2) + 'M';
+        }, 3000);
+
+        // Activity rate fluctuation
+        const activityRate = document.getElementById('activityRate');
+        let currentActivity = 12847;
+        
+        setInterval(() => {
+            currentActivity += Math.floor(Math.random() * 200 - 100);
+            currentActivity = Math.max(12000, Math.min(13000, currentActivity));
+            activityRate.textContent = currentActivity.toLocaleString();
+        }, 2000);
+    </script>
+</body>
+</html>

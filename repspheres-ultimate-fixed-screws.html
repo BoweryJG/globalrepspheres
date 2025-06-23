@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RepSpheres | The Collaborative AI Sales Intelligence</title>
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/svg+xml" sizes="16x16" href="favicon-16x16.svg">
+    <link rel="apple-touch-icon" href="favicon.svg">
+    
+    <!-- Meta -->
+    <meta name="description" content="RepSpheres - The revolutionary AI-powered sales intelligence platform transforming how businesses connect, engage, and succeed.">
+    <meta name="keywords" content="AI sales, sales intelligence, CRM, sales automation, RepSpheres">
+    <meta name="author" content="RepSpheres">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="RepSpheres | The Collaborative AI Sales Intelligence">
+    <meta property="og:description" content="The future of aesthetic sales is here. AI-powered intelligence that transforms how you connect and close.">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="RepSpheres | The Collaborative AI Sales Intelligence">
+    <meta name="twitter:description" content="The future of aesthetic sales is here. AI-powered intelligence that transforms how you connect and close.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-darker: #050505;
+            --panel-dark: #1a1a1a;
+            --panel-darker: #141414;
+            --purple-primary: #9f58fa;
+            --purple-dark: #7e22ce;
+            --purple-light: #a855f7;
+            --blue-accent: #4B96DC;
+            --blue-light: #60a5fa;
+            --green-accent: #4bd48e;
+            --green-neon: #00ff88;
+            --pink-accent: #f53969;
+            --orange-accent: #ff6b35;
+            --cyan-accent: #00d4ff;
+            --yellow-accent: #ffd93d;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-hover: rgba(255, 255, 255, 0.08);
+            --matrix-green: #00ff41;
+            --warning-red: #ff0040;
+            --amber-neutral: #ffaa00;
+            --gem-impossible: #ff00ff;
+            --gem-shift: #00ffff;
+            --gem-deep: #ff00aa;
+            --nav-height: 80px;
+            --scroll-offset: 0px;
+            --metal-light: #e8e8e8;
+            --metal-mid: #999;
+            --metal-dark: #555;
+            --metal-shadow: #222;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-darker);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+            padding-top: calc(var(--nav-height) + 24px);
+            transition: background 0.5s ease;
+        }
+
+        /* Gutter Shadow Behind Nav */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 80px;
+            left: 2vw;
+            right: 2vw;
+            height: 1px;
+            box-shadow: 
+                0 0 20px rgba(255,255,255,0.02), 
+                0 20px 60px rgba(0,0,0,0.3);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Award-Winning Navigation Bar - Floating Bezel Design */
+        .nav-container {
+            position: fixed;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 96vw;
+            max-width: 1400px;
+            height: var(--nav-height);
+            z-index: 1000;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            background: linear-gradient(to right,
+                rgba(26, 26, 26, 0.95) 0%,
+                rgba(30, 30, 30, 0.9) 10%,
+                rgba(28, 28, 28, 0.88) 50%,
+                rgba(30, 30, 30, 0.9) 90%,
+                rgba(26, 26, 26, 0.95) 100%
+            );
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            box-shadow: 
+                0 12px 40px rgba(0, 0, 0, 0.4),
+                0 0 20px rgba(var(--gem-shift), 0.08),
+                0 2px 10px rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.06),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        /* RESTORED: Ultra-Detailed Metallic Screws for Navigation */
+        .nav-screws {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .screw {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: 
+                radial-gradient(circle at 35% 35%, #e0e0e0 0%, #b8b8b8 15%, #888 40%, #555 70%, #222 100%),
+                linear-gradient(135deg, #ccc 0%, #666 100%);
+            background-size: 100%, 100%;
+            border-radius: 50%;
+            box-shadow:
+                inset 0 0.5px 1px rgba(255,255,255,0.4),
+                inset 0 -0.5px 1px rgba(0,0,0,0.5),
+                0 0.5px 2px rgba(0,0,0,0.8),
+                0 0 3px rgba(0,0,0,0.3);
+            transform: rotate(var(--angle, 10deg));
+            border: 0.5px solid rgba(0,0,0,0.2);
+            transition: transform 0.6s ease;
+        }
+
+        /* Jeweled Screw Caps */
+        .screw::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 2px;
+            height: 2px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle at center, rgba(var(--gem-impossible), 0.8), rgba(var(--gem-deep), 0.4), transparent);
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: screwGlow 3s infinite;
+        }
+
+        @keyframes screwGlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        /* 4-Point Luxury Bezel - Perfect Mechanical Symmetry */
+        .screw-top-left { 
+            top: 12px; 
+            left: 12px; 
+            --angle: 10deg; 
+        }
+        .screw-top-right { 
+            top: 12px; 
+            right: 12px; 
+            --angle: 22deg; 
+        }
+        .screw-bot-left { 
+            bottom: 12px; 
+            left: 12px; 
+            --angle: -12deg; 
+        }
+        .screw-bot-right { 
+            bottom: 12px; 
+            right: 12px; 
+            --angle: 18deg; 
+        }
+
+        /* Enhanced Premium Panel Styles */
+        .premium-panel {
+            position: relative;
+            background: 
+                linear-gradient(135deg, #1a1a1a 0%, #252525 20%, #1e1e1e 40%, #2a2a2a 60%, #1f1f1f 80%, #1a1a1a 100%),
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 1px,
+                    rgba(255,255,255,0.01) 1px,
+                    rgba(255,255,255,0.01) 2px
+                ),
+                repeating-linear-gradient(
+                    -45deg,
+                    transparent,
+                    transparent 1px,
+                    rgba(0,0,0,0.02) 1px,
+                    rgba(0,0,0,0.02) 2px
+                ),
+                radial-gradient(ellipse at top left, rgba(255,255,255,0.03) 0%, transparent 40%),
+                radial-gradient(ellipse at bottom right, rgba(0,0,0,0.1) 0%, transparent 40%);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #2a2a2a;
+            box-shadow: 
+                inset 0 2px 4px rgba(255,255,255,0.05),
+                inset 0 -2px 6px rgba(0,0,0,0.6),
+                inset 2px 0 4px rgba(0,0,0,0.3),
+                inset -2px 0 4px rgba(0,0,0,0.3),
+                0 4px 12px rgba(0,0,0,0.5),
+                0 8px 24px rgba(0,0,0,0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .premium-panel::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-conic-gradient(
+                    from 0deg at 50% 50%,
+                    transparent 0deg,
+                    transparent 0.25deg,
+                    rgba(255,255,255,0.01) 0.25deg,
+                    rgba(255,255,255,0.01) 0.5deg
+                );
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* RESTORED: Full Detail Enhanced Metal Corner Screws */
+        .corner-screw {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: 
+                radial-gradient(circle at 30% 30%, #d0d0d0 0%, #aaa 10%, #888 30%, #666 50%, #444 70%, #222 100%),
+                conic-gradient(from 45deg, #999 0%, #666 25%, #999 50%, #666 75%, #999 100%);
+            border-radius: 50%;
+            box-shadow:
+                inset 0 2px 3px rgba(255,255,255,0.4),
+                inset 0 -2px 3px rgba(0,0,0,0.8),
+                inset 2px 0 3px rgba(0,0,0,0.4),
+                0 1px 2px rgba(255,255,255,0.1),
+                0 2px 4px rgba(0,0,0,0.6),
+                0 4px 8px rgba(0,0,0,0.3);
+            z-index: 10;
+            transform: rotate(12deg);
+            transition: transform 0.6s ease;
+        }
+
+        /* Screw Slot Detail */
+        .corner-screw::after {
+            content: '';
+            position: absolute;
+            width: 7px;
+            height: 1px;
+            background: linear-gradient(to bottom, 
+                rgba(0,0,0,0.8) 0%, 
+                rgba(0,0,0,1) 50%, 
+                rgba(0,0,0,0.8) 100%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            box-shadow: 
+                inset 0 1px 1px rgba(0,0,0,0.9),
+                0 1px 0.5px rgba(255,255,255,0.2);
+        }
+
+        /* Screw Highlight */
+        .corner-screw::before {
+            content: '';
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: radial-gradient(circle at 40% 40%, rgba(255,255,255,0.3), transparent);
+            top: 2px;
+            left: 2px;
+            border-radius: 50%;
+        }
+
+        /* Panel Accent Line */
+        .panel-accent-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-color, var(--purple-primary)), transparent);
+            animation: pulseGlow 3s ease-in-out infinite;
+            z-index: 5;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                opacity: 0.6;
+                box-shadow: 0 0 10px currentColor;
+            }
+            50% {
+                opacity: 1;
+                box-shadow: 0 0 20px currentColor, 0 0 40px currentColor;
+            }
+        }
+
+        /* Enhanced Value Display with Fixed Alignment */
+        .value-display {
+            font-size: 3rem;
+            font-weight: 800;
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 2px;
+            background: linear-gradient(180deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: ledFlicker 10s ease-in-out infinite;
+            /* FIX: Digit Alignment Consistency */
+            font-variant-numeric: tabular-nums;
+            text-align: center;
+            display: block;
+            min-width: 150px;
+        }
+
+        @keyframes ledFlicker {
+            0%, 100% { opacity: 1; }
+            95% { opacity: 0.8; }
+        }
+
+        /* Data Grid Pattern */
+        .data-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(159, 88, 250, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(159, 88, 250, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 40px 80px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* LED Indicators */
+        .led-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            box-shadow: inset 0 0 3px rgba(0,0,0,0.5);
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+
+        .led-green {
+            background: var(--matrix-green);
+            box-shadow: 0 0 10px var(--matrix-green), inset 0 0 3px rgba(0,0,0,0.5);
+        }
+
+        .led-blue {
+            background: var(--cyan-accent);
+            box-shadow: 0 0 10px var(--cyan-accent), inset 0 0 3px rgba(0,0,0,0.5);
+        }
+
+        .led-orange {
+            background: var(--orange-accent);
+            box-shadow: 0 0 10px var(--orange-accent), inset 0 0 3px rgba(0,0,0,0.5);
+        }
+
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(to right, var(--purple-primary), var(--blue-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .premium-panel {
+                margin-bottom: 20px;
+            }
+            
+            .value-display {
+                font-size: 2rem;
+                min-width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Data Grid -->
+    <div class="data-grid"></div>
+
+    <!-- Navigation with Detailed Screws -->
+    <nav class="nav-container">
+        <!-- Metallic Screws - 4-Point Luxury Bezel -->
+        <div class="nav-screws">
+            <div class="screw screw-top-left"></div>
+            <div class="screw screw-top-right"></div>
+            <div class="screw screw-bot-left"></div>
+            <div class="screw screw-bot-right"></div>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 0 24px; height: 100%;">
+            <div style="font-size: 1.5rem; font-weight: 800;">
+                <span class="gradient-text">RepSpheres</span>
+            </div>
+            <div style="font-size: 0.9rem; color: var(--text-secondary);">
+                Restored Screw Details Demo
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div style="max-width: 1400px; margin: 0 auto; text-align: center;">
+            <h1 style="font-size: clamp(3rem, 6vw, 5rem); font-weight: 800; line-height: 1.1; margin-bottom: 30px;">
+                Ultra-Detailed Screws<br>
+                <span class="gradient-text">Fully Restored</span>
+            </h1>
+            
+            <p style="font-size: 1.25rem; line-height: 1.8; color: var(--text-secondary); max-width: 800px; margin: 0 auto 60px;">
+                Look closely at the metallic screws - they now have the full gradient backgrounds, 
+                slot details with shadows, highlight dots, and complex multi-layer box shadows.
+            </p>
+
+            <!-- Premium Stats Grid to Show Corner Screws -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto;">
+                <!-- Card 1 -->
+                <div class="premium-panel" style="--accent-color: #00ff88; padding: 40px;">
+                    <div class="panel-accent-line"></div>
+                    <div class="corner-screw" style="top: 10px; left: 10px;"></div>
+                    <div class="corner-screw" style="top: 10px; right: 10px;"></div>
+                    <div class="corner-screw" style="bottom: 10px; left: 10px;"></div>
+                    <div class="corner-screw" style="bottom: 10px; right: 10px;"></div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+                        <div style="color: #999; text-transform: uppercase; letter-spacing: 1.5px; font-size: 0.7rem; font-family: 'JetBrains Mono', monospace;">
+                            Practices Monitored
+                        </div>
+                        <div class="led-indicator led-green"></div>
+                    </div>
+                    
+                    <div class="value-display" style="--accent-primary: #00ff88; --accent-secondary: #00ff41;">
+                        12,847
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 20px; color: var(--text-muted); font-size: 0.85rem;">
+                        Notice the screw details:<br>
+                        • Radial + conic gradients<br>
+                        • Slot with shadow<br>
+                        • Highlight dot at 40%
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="premium-panel" style="--accent-color: #00d4ff; padding: 40px;">
+                    <div class="panel-accent-line"></div>
+                    <div class="corner-screw" style="top: 10px; left: 10px;"></div>
+                    <div class="corner-screw" style="top: 10px; right: 10px;"></div>
+                    <div class="corner-screw" style="bottom: 10px; left: 10px;"></div>
+                    <div class="corner-screw" style="bottom: 10px; right: 10px;"></div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+                        <div style="color: #999; text-transform: uppercase; letter-spacing: 1.5px; font-size: 0.7rem; font-family: 'JetBrains Mono', monospace;">
+                            Response Time
+                        </div>
+                        <div class="led-indicator led-blue"></div>
+                    </div>
+                    
+                    <div class="value-display" style="--accent-primary: #00d4ff; --accent-secondary: #0099ff;">
+                        12 sec
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 20px; color: var(--text-muted); font-size: 0.85rem;">
+                        Multiple box-shadows:<br>
+                        • 3 inset shadows<br>
+                        • 3 outer shadows<br>
+                        • Idle rotation animation
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="premium-panel" style="--accent-color: #ff6b35; padding: 40px;">
+                    <div class="panel-accent-line"></div>
+                    <div class="corner-screw" style="top: 10px; left: 10px;"></div>
+                    <div class="corner-screw" style="top: 10px; right: 10px;"></div>
+                    <div class="corner-screw" style="bottom: 10px; left: 10px;"></div>
+                    <div class="corner-screw" style="bottom: 10px; right: 10px;"></div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+                        <div style="color: #999; text-transform: uppercase; letter-spacing: 1.5px; font-size: 0.7rem; font-family: 'JetBrains Mono', monospace;">
+                            Success Rate
+                        </div>
+                        <div class="led-indicator led-orange"></div>
+                    </div>
+                    
+                    <div class="value-display" style="--accent-primary: #ff6b35; --accent-secondary: #ff8c00;">
+                        84%
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 20px; color: var(--text-muted); font-size: 0.85rem;">
+                        Nav screws are smaller:<br>
+                        • 5px diameter<br>
+                        • Jeweled caps<br>
+                        • Glowing animation
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Subtle idle rotation for screws
+        setInterval(() => {
+            document.querySelectorAll('.corner-screw, .screw').forEach(screw => {
+                const angle = Math.random() * 30 - 15;
+                screw.style.transform = `rotate(${angle}deg)`;
+            });
+        }, 4000);
+    </script>
+</body>
+</html>

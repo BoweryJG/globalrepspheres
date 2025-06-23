@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RepSpheres | Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #0a0a0a;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        
+        .nav-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+        }
+        
+        .nav-inner {
+            height: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-link {
+            color: #94a3b8;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-link.active {
+            color: white;
+            background: rgba(159, 88, 250, 0.2);
+        }
+        
+        .nav-cta {
+            padding: 10px 24px;
+            background: linear-gradient(135deg, #9f58fa, #4B96DC);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        
+        .content {
+            padding-top: 100px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-container">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">
+                <span>RepSpheres</span>
+            </a>
+            
+            <nav class="nav-links">
+                <a href="#" class="nav-link">Market Data</a>
+                <a href="#" class="nav-link">Canvas</a>
+                <a href="#" class="nav-link active">Sphere OS</a>
+                <a href="#" class="nav-link">Settings</a>
+            </nav>
+            
+            <a href="#" class="nav-cta">Get Started</a>
+        </div>
+    </nav>
+    
+    <div class="content">
+        <h1>Navigation Test</h1>
+        <p>If you can see this page with the navigation bar above, the basic structure is working.</p>
+    </div>
+</body>
+</html>
