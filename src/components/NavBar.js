@@ -67,6 +67,11 @@ const floatAnimation = keyframes`
   50% { transform: translateY(-5px); }
 `;
 
+const shimmer = keyframes`
+  0% { left: -100%; }
+  100% { left: 100%; }
+`;
+
 // Main navigation links
 const getNavLinks = (currentUrl, isAdmin) => {
   const links = [
@@ -157,6 +162,18 @@ const isLinkActive = (href, currentUrl) => {
   return currentUrl.includes(href);
 };
 
+// Status messages for the dynamic AI indicator
+const statusMessages = [
+  '⏱ AI SYNC 97%',
+  '🔗 NEURAL LINK ACTIVE',
+  '⚡ QUANTUM CORE 100%',
+  '📊 DATA STREAM LIVE',
+  '🛡️ SECURITY OPTIMAL',
+  '🌐 NETWORK STABLE',
+  '💎 GEMS ALIGNED',
+  '🔮 PREDICTION MODE'
+];
+
 export default function NavBar() {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
@@ -164,6 +181,7 @@ export default function NavBar() {
   const [openInfo, setOpenInfo] = React.useState(null); // which info modal is open
   const [navLoading, setNavLoading] = React.useState(false);
   const [isNavHovered, setIsNavHovered] = React.useState(false);
+  const [statusIndex, setStatusIndex] = React.useState(0);
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
@@ -217,6 +235,15 @@ export default function NavBar() {
     // Trigger a re-render of App component by dispatching a custom event
     window.dispatchEvent(new CustomEvent('performanceModeChanged', { detail: performanceMode }));
   }, [performanceMode]);
+
+  // Cycle through status messages
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setStatusIndex((prevIndex) => (prevIndex + 1) % statusMessages.length);
+    }, 5000); // Change every 5 seconds
+
+    return () => clearInterval(interval);
+  }, []);
 
   // Determine display styles for each nav link based on screen width
   const getLinkStyles = (key) => {
@@ -858,15 +885,58 @@ export default function NavBar() {
             </Box>
           )}
 
-          {/* Right Section - Auth Buttons & Menu Button */}
+          {/* Right Section - Status Indicator & Menu Button */}
           <Box sx={{
             display: 'flex',
             alignItems: 'center',
             ml: 'auto',
             gap: { xs: 0.5, sm: 1 },
           }}>
-            
-
+            {/* Dynamic AI Status Indicator */}
+            <Box sx={{
+              display: 'flex',
+              alignItems: 'center',
+              px: { xs: 1, sm: 2 },
+              py: { xs: 0.5, sm: 0.75 },
+              background: 'rgba(255,255,255,0.05)',
+              backdropFilter: 'blur(10px)',
+              borderRadius: '20px',
+              border: '1px solid rgba(255,255,255,0.1)',
+              transition: 'all 0.5s ease',
+              position: 'relative',
+              overflow: 'hidden',
+              minWidth: { xs: '100px', sm: 'auto' },
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: '-100%',
+                width: '100%',
+                height: '100%',
+                background: 'linear-gradient(90deg, transparent, rgba(0,255,198,0.2), transparent)',
+                animation: `${shimmer} 3s infinite`,
+              },
+              '&:hover': {
+                background: 'rgba(255,255,255,0.08)',
+                borderColor: ACCENT_COLOR,
+                boxShadow: `0 0 15px ${ACCENT_COLOR}40`,
+              }
+            }}>
+              <Fade in={true} key={statusIndex} timeout={500}>
+                <Typography variant="caption" sx={{
+                  fontFamily: 'Orbitron, monospace',
+                  fontSize: { xs: '0.6rem', sm: '0.7rem' },
+                  fontWeight: 600,
+                  letterSpacing: '0.05em',
+                  color: ACCENT_COLOR,
+                  textTransform: 'uppercase',
+                  whiteSpace: 'nowrap',
+                  filter: 'drop-shadow(0 0 3px rgba(0, 212, 255, 0.5))',
+                }}>
+                  {statusMessages[statusIndex]}
+                </Typography>
+              </Fade>
+            </Box>
 
             {/* More Menu Button (Desktop) */}
             {!isMobile && (
