@@ -830,11 +830,11 @@ export default function NavBar() {
 
           {/* Dynamic AI Status Indicator - Between Logo and Nav */}
           <Box sx={{
-            display: { xs: 'none', md: 'flex' },
+            display: 'flex',
             alignItems: 'center',
-            px: 2,
-            py: 0.75,
-            mx: 2,
+            px: { xs: 1.5, sm: 2 },
+            py: { xs: 0.5, sm: 0.75 },
+            mx: { xs: 1, sm: 2 },
             background: 'rgba(255,255,255,0.05)',
             backdropFilter: 'blur(10px)',
             borderRadius: '20px',
@@ -842,6 +842,7 @@ export default function NavBar() {
             transition: 'all 0.5s ease',
             position: 'relative',
             overflow: 'hidden',
+            flex: { xs: '0 0 auto', sm: '0 0 auto' },
             '&::before': {
               content: '""',
               position: 'absolute',
@@ -861,7 +862,7 @@ export default function NavBar() {
             <Fade in={true} key={statusIndex} timeout={500}>
               <Typography variant="caption" sx={{
                 fontFamily: 'Orbitron, monospace',
-                fontSize: '0.7rem',
+                fontSize: { xs: '0.65rem', sm: '0.7rem' },
                 fontWeight: 600,
                 letterSpacing: '0.05em',
                 color: ACCENT_COLOR,
