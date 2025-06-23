@@ -828,6 +828,52 @@ export default function NavBar() {
             </Box>
           </Box>
 
+          {/* Dynamic AI Status Indicator - Between Logo and Nav */}
+          <Box sx={{
+            display: { xs: 'none', md: 'flex' },
+            alignItems: 'center',
+            px: 2,
+            py: 0.75,
+            mx: 2,
+            background: 'rgba(255,255,255,0.05)',
+            backdropFilter: 'blur(10px)',
+            borderRadius: '20px',
+            border: '1px solid rgba(255,255,255,0.1)',
+            transition: 'all 0.5s ease',
+            position: 'relative',
+            overflow: 'hidden',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: '-100%',
+              width: '100%',
+              height: '100%',
+              background: 'linear-gradient(90deg, transparent, rgba(0,255,198,0.2), transparent)',
+              animation: `${shimmer} 3s infinite`,
+            },
+            '&:hover': {
+              background: 'rgba(255,255,255,0.08)',
+              borderColor: ACCENT_COLOR,
+              boxShadow: `0 0 15px ${ACCENT_COLOR}40`,
+            }
+          }}>
+            <Fade in={true} key={statusIndex} timeout={500}>
+              <Typography variant="caption" sx={{
+                fontFamily: 'Orbitron, monospace',
+                fontSize: '0.7rem',
+                fontWeight: 600,
+                letterSpacing: '0.05em',
+                color: ACCENT_COLOR,
+                textTransform: 'uppercase',
+                whiteSpace: 'nowrap',
+                filter: 'drop-shadow(0 0 3px rgba(0, 212, 255, 0.5))',
+              }}>
+                {statusMessages[statusIndex]}
+              </Typography>
+            </Fade>
+          </Box>
+
           {/* Middle Section - Navigation (only on desktop) */}
           {!isMobile && (
             <Box sx={{
@@ -885,59 +931,13 @@ export default function NavBar() {
             </Box>
           )}
 
-          {/* Right Section - Status Indicator & Menu Button */}
+          {/* Right Section - Menu Button */}
           <Box sx={{
             display: 'flex',
             alignItems: 'center',
             ml: 'auto',
             gap: { xs: 0.5, sm: 1 },
           }}>
-            {/* Dynamic AI Status Indicator */}
-            <Box sx={{
-              display: 'flex',
-              alignItems: 'center',
-              px: { xs: 1, sm: 2 },
-              py: { xs: 0.5, sm: 0.75 },
-              background: 'rgba(255,255,255,0.05)',
-              backdropFilter: 'blur(10px)',
-              borderRadius: '20px',
-              border: '1px solid rgba(255,255,255,0.1)',
-              transition: 'all 0.5s ease',
-              position: 'relative',
-              overflow: 'hidden',
-              minWidth: { xs: '100px', sm: 'auto' },
-              '&::before': {
-                content: '""',
-                position: 'absolute',
-                top: 0,
-                left: '-100%',
-                width: '100%',
-                height: '100%',
-                background: 'linear-gradient(90deg, transparent, rgba(0,255,198,0.2), transparent)',
-                animation: `${shimmer} 3s infinite`,
-              },
-              '&:hover': {
-                background: 'rgba(255,255,255,0.08)',
-                borderColor: ACCENT_COLOR,
-                boxShadow: `0 0 15px ${ACCENT_COLOR}40`,
-              }
-            }}>
-              <Fade in={true} key={statusIndex} timeout={500}>
-                <Typography variant="caption" sx={{
-                  fontFamily: 'Orbitron, monospace',
-                  fontSize: { xs: '0.6rem', sm: '0.7rem' },
-                  fontWeight: 600,
-                  letterSpacing: '0.05em',
-                  color: ACCENT_COLOR,
-                  textTransform: 'uppercase',
-                  whiteSpace: 'nowrap',
-                  filter: 'drop-shadow(0 0 3px rgba(0, 212, 255, 0.5))',
-                }}>
-                  {statusMessages[statusIndex]}
-                </Typography>
-              </Fade>
-            </Box>
-
             {/* More Menu Button (Desktop) */}
             {!isMobile && (
               <IconButton
