@@ -594,41 +594,155 @@ export const kineticStyles = `
 
 // Navigation specific styles
 export const navigationStyles = `
-  /* Premium Navigation System */
+  /* Award-Winning Navigation Bar - Floating Bezel Design */
   .nav-container {
     position: fixed;
-    top: 24px;
-    left: 2vw;
-    right: 2vw;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 96vw;
+    max-width: 1400px;
     height: var(--nav-height);
-    background: var(--panel-darker);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
     z-index: 1000;
-    backdrop-filter: blur(20px);
-    overflow: hidden;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    background: linear-gradient(to right,
+      rgba(26, 26, 26, 0.95) 0%,
+      rgba(30, 30, 30, 0.9) 10%,
+      rgba(28, 28, 28, 0.88) 50%,
+      rgba(30, 30, 30, 0.9) 90%,
+      rgba(26, 26, 26, 0.95) 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
     box-shadow: 
-      0 10px 40px rgba(0,0,0,0.6),
-      inset 0 1px 0 rgba(255,255,255,0.05),
-      inset 0 -1px 0 rgba(0,0,0,0.2);
+      0 12px 40px rgba(0, 0, 0, 0.4),
+      0 0 20px rgba(var(--gem-shift), 0.08),
+      0 2px 10px rgba(0, 0, 0, 0.6),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    transition: all 0.3s ease;
+    overflow: hidden;
   }
 
-  /* Navigation Edge Indicators */
+  /* Edge Mount Indicators */
   .nav-edge {
     position: absolute;
-    top: 0;
-    width: 1px;
-    height: 100%;
-    background: linear-gradient(to bottom, transparent, var(--purple-primary), transparent);
+    top: 10px;
+    bottom: 10px;
+    width: 3px;
+    background: linear-gradient(to bottom,
+      rgba(var(--gem-impossible), 0.2),
+      rgba(var(--gem-shift), 0.1)
+    );
+    box-shadow: 0 0 8px rgba(var(--gem-shift), 0.15);
+    opacity: 0.6;
+    z-index: 1;
+    transition: all 0.3s ease;
+    transform: scaleY(1);
+  }
+
+  .left-edge { 
+    left: -4px; 
+    border-radius: 2px 0 0 2px; 
+  }
+  
+  .right-edge { 
+    right: -4px; 
+    border-radius: 0 2px 2px 0; 
+  }
+
+  /* Hover Reveal Glow Fins */
+  .nav-edge::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 80%;
+    background: radial-gradient(circle, rgba(var(--gem-deep), 0.4), transparent);
+    transform: translate(-50%, -50%);
+    opacity: 0.1;
+    transition: opacity 0.3s ease;
+  }
+
+  .nav-container:hover .nav-edge::after {
     opacity: 0.5;
   }
 
-  .nav-edge.left-edge {
-    left: 0;
+  .nav-container:hover .nav-edge {
+    opacity: 1;
+    box-shadow: 0 0 12px rgba(var(--gem-shift), 0.3);
+    transform: scaleY(1.1);
   }
 
-  .nav-edge.right-edge {
-    right: 0;
+  /* Parallax Background Grid */
+  .nav-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+      radial-gradient(circle at 20% 50%, rgba(var(--gem-impossible), 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 80% 50%, rgba(var(--gem-shift), 0.03) 0%, transparent 50%),
+      repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 19px,
+        rgba(255,255,255,0.01) 20px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        transparent 19px,
+        rgba(255,255,255,0.01) 20px
+      );
+    transform: translateZ(-10px);
+    transition: all 0.5s ease;
+  }
+
+  /* Enhanced Float on Scroll with Parallax Elevation */
+  .nav-container.scrolled {
+    top: 8px;
+    box-shadow:
+      0 16px 50px rgba(0, 0, 0, 0.5),
+      0 0 30px rgba(var(--gem-impossible), 0.12),
+      0 0 60px rgba(var(--gem-shift), 0.06),
+      0 2px 20px rgba(159, 88, 250, 0.15),
+      inset 0 -1px 1px rgba(255,255,255,0.04),
+      inset 0 1px 0 rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.12);
+    background: linear-gradient(to right,
+      rgba(26, 26, 26, 0.98) 0%,
+      rgba(32, 32, 32, 0.95) 10%,
+      rgba(30, 30, 30, 0.92) 50%,
+      rgba(32, 32, 32, 0.95) 90%,
+      rgba(26, 26, 26, 0.98) 100%
+    );
+    transform: translateX(-50%) scale(0.98) translateZ(30px);
+  }
+
+  /* Glass Refraction Overlay */
+  .nav-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0; 
+    right: 0; 
+    bottom: 0;
+    background: 
+      radial-gradient(ellipse at top left, rgba(255,255,255,0.06), transparent 70%),
+      radial-gradient(ellipse at bottom right, rgba(var(--gem-impossible), 0.03), transparent 60%);
+    pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: 0.2;
+    animation: glassOscillate 8s ease-in-out infinite;
+  }
+
+  @keyframes glassOscillate {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(1.02); }
   }
 
   /* Dynamic Nav Rail */
@@ -640,9 +754,9 @@ export const navigationStyles = `
     height: 2px;
     background: linear-gradient(to right,
       transparent 0%,
-      rgba(0, 255, 255, 0.1) 10%,
-      rgba(0, 255, 255, 0.05) 50%,
-      rgba(0, 255, 255, 0.1) 90%,
+      rgba(var(--gem-shift), 0.1) 10%,
+      rgba(var(--gem-shift), 0.05) 50%,
+      rgba(var(--gem-shift), 0.1) 90%,
       transparent 100%
     );
     overflow: hidden;
@@ -655,9 +769,9 @@ export const navigationStyles = `
     position: absolute;
     height: 100%;
     width: 20%;
-    background: linear-gradient(to right, transparent, var(--cyan-accent), transparent);
+    background: linear-gradient(to right, transparent, var(--gem-shift), transparent);
     animation: tracePulse 4s infinite ease-in-out;
-    box-shadow: 0 0 10px var(--cyan-accent);
+    box-shadow: 0 0 10px var(--gem-shift);
   }
 
   @keyframes tracePulse {
@@ -672,7 +786,7 @@ export const navigationStyles = `
     top: -2px;
     width: 6px;
     height: 6px;
-    background: radial-gradient(circle, var(--cyan-accent), transparent);
+    background: radial-gradient(circle, var(--gem-shift), transparent);
     border-radius: 50%;
     animation: powerFlow 8s infinite linear;
   }
@@ -688,19 +802,20 @@ export const navigationStyles = `
   .power-node:nth-child(3) { animation-delay: 4s; }
   .power-node:nth-child(4) { animation-delay: 6s; }
 
-  /* Navigation Screws */
+  /* 4-Point Luxury Screw System */
   .nav-screw {
     position: absolute;
-    width: 5px;
-    height: 5px;
-    background: radial-gradient(circle at 30% 30%, var(--metal-light), var(--metal-dark));
+    width: 8px;
+    height: 8px;
+    background: radial-gradient(circle at 30% 30%, #888, #444);
     border-radius: 50%;
     box-shadow: 
-      inset -1px -1px 2px rgba(0,0,0,0.5),
-      inset 1px 1px 2px rgba(255,255,255,0.2),
-      0 1px 2px rgba(0,0,0,0.4);
-    z-index: 20;
-    transition: transform 0.4s ease;
+      inset -1px -1px 2px rgba(0, 0, 0, 0.8),
+      inset 1px 1px 2px rgba(255, 255, 255, 0.2),
+      0 1px 3px rgba(0, 0, 0, 0.4);
+    z-index: 3;
+    /* FIX 4: Add subtle idle rotation for nav screws too */
+    transition: transform 0.6s ease;
   }
 
   .nav-screw::after {
@@ -708,45 +823,45 @@ export const navigationStyles = `
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 70%;
+    width: 60%;
     height: 1px;
-    background: var(--metal-shadow);
-    transform: translate(-50%, -50%) rotate(45deg);
-    box-shadow: 0 2px 0 -1px var(--metal-shadow);
+    background: #333;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    box-shadow: 0 2px 0 -1px #333;
   }
 
-  .nav-screw.screw-tl { top: 10px; left: 10px; }
-  .nav-screw.screw-tr { top: 10px; right: 10px; }
-  .nav-screw.screw-bl { bottom: 10px; left: 10px; }
-  .nav-screw.screw-br { bottom: 10px; right: 10px; }
+  .screw-tl { top: 8px; left: 8px; }
+  .screw-tr { top: 8px; right: 8px; }
+  .screw-bl { bottom: 8px; left: 8px; }
+  .screw-br { bottom: 8px; right: 8px; }
 
   /* Nav Inner Container */
   .nav-inner {
     height: 100%;
-    padding: 0 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: relative;
-    z-index: 10;
   }
 
-  /* Logo Styles */
+  /* Logo Section with 3D Tilt */
   .nav-logo {
     display: flex;
     align-items: center;
     gap: 12px;
     text-decoration: none;
-    color: var(--text-primary);
-    font-weight: 700;
-    font-size: 1.25rem;
-    font-family: 'Orbitron', 'Space Grotesk', sans-serif;
-    letter-spacing: 0.5px;
-    transition: all 0.3s ease;
+    position: relative;
+    padding: 8px 16px;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
   }
 
   .nav-logo:hover {
-    transform: translateX(5px);
+    background: rgba(var(--gem-impossible), 0.1);
   }
 
   .nav-logo-icon {
@@ -762,61 +877,114 @@ export const navigationStyles = `
     height: 100%;
   }
 
-  .logo-jewel {
-    filter: drop-shadow(0 0 4px var(--gem-impossible));
-    animation: jewelRotate 15s linear infinite;
+  /* Animated Jewel Core in Logo */
+  @keyframes gemPulse {
+    0%, 100% { 
+      transform: scale(1) rotate(0deg);
+      filter: brightness(1) hue-rotate(0deg);
+    }
+    25% { 
+      transform: scale(1.2) rotate(90deg);
+      filter: brightness(1.3) hue-rotate(30deg);
+    }
+    50% { 
+      transform: scale(1.1) rotate(180deg);
+      filter: brightness(1.5) hue-rotate(60deg);
+    }
+    75% { 
+      transform: scale(1.15) rotate(270deg);
+      filter: brightness(1.2) hue-rotate(90deg);
+    }
   }
 
-  @keyframes jewelRotate {
-    from { transform-origin: center; transform: rotate(0deg); }
-    to { transform-origin: center; transform: rotate(360deg); }
+  /* Quantum Flicker on Jewel */
+  @keyframes quantumFlicker {
+    0%, 100% { opacity: 1; }
+    10% { opacity: 0.8; }
+    20% { opacity: 1; }
+    30% { opacity: 0.9; }
+    40% { opacity: 1; }
+    50% { opacity: 0.85; }
+    60% { opacity: 1; }
+    70% { opacity: 0.95; }
+    80% { opacity: 1; }
+    90% { opacity: 0.88; }
+  }
+
+  .logo-jewel {
+    animation: 
+      gemPulse 4s infinite,
+      quantumFlicker 0.5s infinite;
+    transform-origin: center;
+    transition: fill 0.5s ease;
   }
 
   .nav-logo-text {
+    font-family: 'Orbitron', monospace;
+    font-size: 22px;
+    font-weight: 800;
     background: linear-gradient(135deg, var(--purple-primary), var(--blue-accent));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    letter-spacing: -0.5px;
   }
 
   /* Navigation Links */
   .nav-links {
     display: flex;
-    gap: 32px;
     align-items: center;
+    gap: 8px;
+    flex: 1;
+    justify-content: center;
+    margin: 0 60px;
   }
 
   .nav-link {
+    position: relative;
+    padding: 10px 20px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
     gap: 8px;
-    color: var(--text-secondary);
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 0.95rem;
-    transition: all 0.3s ease;
-    position: relative;
-    padding: 8px 0;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid transparent;
+    overflow: hidden;
   }
 
-  .nav-link::after {
+  .nav-link::before {
     content: '';
     position: absolute;
-    bottom: -2px;
+    top: 0;
     left: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--purple-primary), var(--blue-accent));
-    transition: width 0.3s ease;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+      transparent 0%,
+      rgba(var(--gem-impossible), 0.1) 50%,
+      transparent 100%
+    );
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+  }
+
+  .nav-link:hover::before {
+    transform: translateX(100%);
   }
 
   .nav-link:hover {
     color: var(--text-primary);
-    transform: translateY(-2px);
-  }
-
-  .nav-link:hover::after {
-    width: 100%;
+    background: rgba(var(--gem-impossible), 0.08);
+    border-color: rgba(var(--gem-impossible), 0.2);
+    transform: translateY(-1px);
+    box-shadow: 
+      0 4px 12px rgba(var(--gem-impossible), 0.15),
+      inset 0 1px 0 rgba(255,255,255,0.1);
   }
 
   .nav-link-icon {
@@ -868,6 +1036,25 @@ export const navigationStyles = `
 
   .nav-more:hover .nav-more-dot:nth-child(2) {
     transform: translateY(-3px);
+  }
+
+  /* System Status Display */
+  .system-status {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 9px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.4;
+    transition: all 0.3s ease;
+  }
+
+  .nav-container:hover .system-status {
+    opacity: 0.7;
+    color: var(--gem-shift);
   }
 
   /* Continue with remaining styles... */

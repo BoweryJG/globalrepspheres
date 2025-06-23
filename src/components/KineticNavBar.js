@@ -1,12 +1,115 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { navigationStyles } from './KineticStyles';
 
 const KineticNavBar = () => {
+  const navRef = useRef(null);
+  const logoRef = useRef(null);
+  const [systemMessage, setSystemMessage] = useState('SYSTEM OPERATIONAL');
+
+  // Update theme colors based on scroll position
+  const updateThemeColors = () => {
+    const y = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const body = document.body;
+    const root = document.documentElement;
+    
+    // Calculate which section we're in
+    const section = Math.floor(y / windowHeight);
+    
+    // Define color themes for each section
+    const themes = [
+      { impossible: '255, 0, 255', shift: '0, 255, 255', deep: '255, 0, 170' }, // Hero - Magenta/Cyan
+      { impossible: '77, 212, 142', shift: '255, 170, 0', deep: '0, 255, 136' }, // Market - Green/Orange
+      { impossible: '255, 107, 53', shift: '255, 204, 224', deep: '245, 57, 105' }, // Canvas - Orange/Pink
+      { impossible: '75, 150, 220', shift: '159, 88, 250', deep: '0, 212, 255' }, // Sphere OS - Blue/Purple
+      { impossible: '245, 57, 105', shift: '255, 0, 255', deep: '159, 88, 250' }  // Podcasts - Pink/Magenta
+    ];
+    
+    const currentTheme = themes[Math.min(section, themes.length - 1)];
+    
+    // Update CSS variables
+    root.style.setProperty('--gem-impossible', `rgb(${currentTheme.impossible})`);
+    root.style.setProperty('--gem-shift', `rgb(${currentTheme.shift})`);
+    root.style.setProperty('--gem-deep', `rgb(${currentTheme.deep})`);
+    
+    // For rgba() usage in CSS
+    body.style.setProperty('--gem-impossible', currentTheme.impossible);
+    body.style.setProperty('--gem-shift', currentTheme.shift);
+    body.style.setProperty('--gem-deep', currentTheme.deep);
+  };
+
+  useEffect(() => {
+    // Initial theme update
+    updateThemeColors();
+
+    // Handle scroll for navbar effects
+    const handleScroll = () => {
+      if (navRef.current) {
+        if (window.scrollY > 50) {
+          navRef.current.classList.add('scrolled');
+        } else {
+          navRef.current.classList.remove('scrolled');
+        }
+      }
+      
+      // Update theme colors on scroll
+      updateThemeColors();
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    // 3D Tilt Effect on Logo
+    const logo = logoRef.current;
+    if (logo) {
+      const handleMouseMove = (e) => {
+        const rect = logo.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        const rotateX = (y / rect.height) * 10;
+        const rotateY = -(x / rect.width) * 10;
+        logo.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      };
+
+      const handleMouseLeave = () => {
+        logo.style.transform = '';
+      };
+
+      logo.addEventListener('mousemove', handleMouseMove);
+      logo.addEventListener('mouseleave', handleMouseLeave);
+
+      // Cleanup
+      return () => {
+        logo.removeEventListener('mousemove', handleMouseMove);
+        logo.removeEventListener('mouseleave', handleMouseLeave);
+      };
+    }
+
+    // System status rotation
+    const statusMessages = [
+      'SYSTEM OPERATIONAL',
+      'NEURAL SYNC ACTIVE',
+      'QUANTUM READY',
+      'AI INITIALIZED',
+      'SECURE CONNECTION'
+    ];
+    
+    let statusIndex = 0;
+    const statusInterval = setInterval(() => {
+      statusIndex = (statusIndex + 1) % statusMessages.length;
+      setSystemMessage(statusMessages[statusIndex]);
+    }, 4000);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearInterval(statusInterval);
+    };
+  }, []);
+
   return (
     <>
       <style>{navigationStyles}</style>
       
-      <nav className="nav-container">
+      <nav className="nav-container" ref={navRef}>
         {/* Edge Mount Indicators */}
         <div className="nav-edge left-edge"></div>
         <div className="nav-edge right-edge"></div>
@@ -27,7 +130,7 @@ const KineticNavBar = () => {
         
         <div className="nav-inner">
           {/* Logo with Animated Jewel Core */}
-          <a href="#" className="nav-logo">
+          <a href="#" className="nav-logo" ref={logoRef}>
             <div className="nav-logo-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
                 <defs>
@@ -109,7 +212,7 @@ const KineticNavBar = () => {
         </div>
         
         {/* System Status Display */}
-        <div className="system-status">SYSTEM OPERATIONAL</div>
+        <div className="system-status">{systemMessage}</div>
       </nav>
     </>
   );
