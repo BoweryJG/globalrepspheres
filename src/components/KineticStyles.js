@@ -1137,27 +1137,36 @@ export const navigationStyles = `
     text-shadow: 0 0 5px rgba(var(--gem-impossible), 0.5);
   }
 
-  /* System status below nav links - like image #3 */
-  .nav-status-container {
-    position: absolute;
-    bottom: -20px;
-    left: 50%;
-    transform: translateX(-50%);
+  /* System status indicator between logo and nav */
+  .nav-status-indicator {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
+    background: rgba(0, 255, 198, 0.1);
+    border: 1px solid rgba(0, 255, 198, 0.3);
+    border-radius: 20px;
+    padding: 6px 16px;
+    backdrop-filter: blur(10px);
+    margin: 0 20px;
+    transition: all 0.3s ease;
+  }
+
+  .nav-status-indicator:hover {
+    background: rgba(0, 255, 198, 0.15);
+    border-color: rgba(0, 255, 198, 0.5);
+    box-shadow: 0 0 15px rgba(0, 255, 198, 0.3);
   }
 
   .nav-status-text {
-    font-size: 9px;
-    color: rgba(255, 255, 255, 0.4);
+    font-size: 11px;
+    color: #00ffc6;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    font-family: 'Inter', sans-serif;
-    font-weight: 400;
+    font-family: 'Orbitron', monospace;
+    font-weight: 600;
     white-space: nowrap;
     transition: all 0.3s ease;
+    filter: drop-shadow(0 0 3px rgba(0, 212, 255, 0.5));
   }
 
   /* Nav Primary Button - Adjusted for navbar */

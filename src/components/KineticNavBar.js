@@ -100,6 +100,7 @@ const KineticNavBar = () => {
     const statusInterval = setInterval(() => {
       statusIndex = (statusIndex + 1) % statusMessages.length;
       setSystemMessage(statusMessages[statusIndex]);
+      console.log('Status updated to:', statusMessages[statusIndex]);
     }, 6000);
 
     return () => {
@@ -176,6 +177,11 @@ const KineticNavBar = () => {
             <span className="nav-logo-text">RepSpheres</span>
           </a>
 
+          {/* System Status - positioned between logo and nav */}
+          <div className="nav-status-indicator">
+            <span className="nav-status-text">{systemMessage}</span>
+          </div>
+
           {/* Navigation Links */}
           <nav className="nav-links">
             <a href="#market-data" className="nav-link">
@@ -212,11 +218,6 @@ const KineticNavBar = () => {
               </div>
             </button>
           </div>
-        </div>
-
-        {/* System Status - positioned below like image #3 */}
-        <div className="nav-status-container">
-          <span className="nav-status-text">{systemMessage}</span>
         </div>
       </nav>
     </>
