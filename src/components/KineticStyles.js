@@ -634,35 +634,59 @@ export const navigationStyles = `
   /* Dynamic Nav Rail */
   .nav-rail {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    bottom: 2px;
+    left: 20px;
+    right: 20px;
     height: 2px;
-    background: var(--glass);
-    display: flex;
-    justify-content: space-between;
-    padding: 0 20%;
-  }
-
-  .power-node {
-    width: 4px;
-    height: 4px;
-    background: var(--purple-primary);
-    border-radius: 50%;
+    background: linear-gradient(to right,
+      transparent 0%,
+      rgba(0, 255, 255, 0.1) 10%,
+      rgba(0, 255, 255, 0.05) 50%,
+      rgba(0, 255, 255, 0.1) 90%,
+      transparent 100%
+    );
+    overflow: hidden;
     position: relative;
-    top: -1px;
-    box-shadow: 0 0 10px var(--purple-primary);
-    animation: powerPulse 2s ease-in-out infinite;
   }
 
-  .power-node:nth-child(2) { animation-delay: 0.5s; }
-  .power-node:nth-child(3) { animation-delay: 1s; }
-  .power-node:nth-child(4) { animation-delay: 1.5s; }
-
-  @keyframes powerPulse {
-    0%, 100% { opacity: 0.3; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.5); }
+  /* FIX 2: Dynamic Glow Trace Animation on Nav Rail */
+  .nav-rail::after {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 20%;
+    background: linear-gradient(to right, transparent, var(--cyan-accent), transparent);
+    animation: tracePulse 4s infinite ease-in-out;
+    box-shadow: 0 0 10px var(--cyan-accent);
   }
+
+  @keyframes tracePulse {
+    0% { left: -20%; opacity: 0; }
+    50% { left: 50%; opacity: 1; }
+    100% { left: 120%; opacity: 0; }
+  }
+
+  /* Power Nodes */
+  .power-node {
+    position: absolute;
+    top: -2px;
+    width: 6px;
+    height: 6px;
+    background: radial-gradient(circle, var(--cyan-accent), transparent);
+    border-radius: 50%;
+    animation: powerFlow 8s infinite linear;
+  }
+
+  @keyframes powerFlow {
+    0% { left: -10px; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { left: calc(100% + 10px); opacity: 0; }
+  }
+
+  .power-node:nth-child(2) { animation-delay: 2s; }
+  .power-node:nth-child(3) { animation-delay: 4s; }
+  .power-node:nth-child(4) { animation-delay: 6s; }
 
   /* Navigation Screws */
   .nav-screw {
