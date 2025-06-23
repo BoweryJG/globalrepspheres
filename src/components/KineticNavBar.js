@@ -4,7 +4,7 @@ import { navigationStyles } from './KineticStyles';
 const KineticNavBar = () => {
   const navRef = useRef(null);
   const logoRef = useRef(null);
-  const [systemMessage, setSystemMessage] = useState('SYSTEM OPERATIONAL');
+  const [systemMessage, setSystemMessage] = useState('⏱ AI SYNC 97%');
 
   // Update theme colors based on scroll position
   const updateThemeColors = () => {
@@ -84,16 +84,16 @@ const KineticNavBar = () => {
       };
     }
 
-    // Simple status messages without emojis - matching image #3
+    // Status messages with emojis
     const statusMessages = [
-      'SYSTEM OPERATIONAL',
-      'AI SYNC 97%',
-      'NEURAL LINK ACTIVE',
-      'QUANTUM CORE READY',
-      'DATA STREAM LIVE',
-      'SECURITY OPTIMAL',
-      'NETWORK STABLE',
-      'GEMS ALIGNED'
+      '⏱ AI SYNC 97%',
+      '🔗 NEURAL LINK ACTIVE',
+      '⚡ QUANTUM CORE 100%',
+      '📊 DATA STREAM LIVE',
+      '🛡️ SECURITY OPTIMAL',
+      '🌐 NETWORK STABLE',
+      '💎 GEMS ALIGNED',
+      '🔮 PREDICTION MODE'
     ];
     
     let statusIndex = 0;
