@@ -32,6 +32,17 @@ The RepSpheres ecosystem consists of multiple integrated applications and servic
                   └─────────┘
 ```
 
+## 🎨 Design System
+
+For detailed design guidelines, see our [**Style Guide**](./STYLE_GUIDE.md) which covers:
+- Brand aesthetic and visual style
+- Color system with CSS variables
+- Typography guidelines
+- Navigation system specifications
+- Gauge and panel designs
+- Jewel system and motion principles
+- UI themes and responsive considerations
+
 ## 🚀 Core Modules
 
 ### 1. Global RepSpheres (Homepage & Portal)
