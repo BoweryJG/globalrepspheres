@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RepSpheres | Quantum Smooth</title>
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/svg+xml" sizes="16x16" href="favicon-16x16.svg">
+    <link rel="apple-touch-icon" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-darker: #050505;
+            --panel-dark: #1a1a1a;
+            --panel-darker: #141414;
+            --purple-primary: #9f58fa;
+            --purple-dark: #7e22ce;
+            --purple-light: #a855f7;
+            --blue-accent: #4B96DC;
+            --blue-light: #60a5fa;
+            --green-accent: #4bd48e;
+            --green-neon: #00ff88;
+            --pink-accent: #f53969;
+            --orange-accent: #ff6b35;
+            --cyan-accent: #00d4ff;
+            --yellow-accent: #ffd93d;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-hover: rgba(255, 255, 255, 0.08);
+            --matrix-green: #00ff41;
+            --warning-red: #ff0040;
+            --amber-neutral: #ffaa00;
+            --metal-light: #e8e8e8;
+            --metal-mid: #999;
+            --metal-dark: #555;
+            --metal-shadow: #222;
+            --gem-impossible: #ff00ff;
+            --gem-shift: #00ffff;
+            --gem-deep: #ff00aa;
+            --nav-height: 80px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, "system-ui", "Segoe UI", Helvetica, Arial, sans-serif;
+            background: var(--bg-darker);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+            padding-top: var(--nav-height);
+        }
+
+        /* Wind Chime Navigation Bar */
+        .nav-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--nav-height);
+            z-index: 1000;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            background: linear-gradient(90deg,
+                rgba(26, 26, 26, 0.95) 0%,
+                rgba(30, 30, 30, 0.9) 20%,
+                rgba(26, 26, 26, 0.85) 50%,
+                rgba(30, 30, 30, 0.9) 80%,
+                rgba(26, 26, 26, 0.95) 100%
+            );
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 4px 30px rgba(0, 0, 0, 0.5),
+                0 1px 0 rgba(255, 255, 255, 0.05) inset;
+        }
+
+        .nav-inner {
+            height: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        /* Logo with Quantum Smooth Animation */
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            position: relative;
+            padding: 8px 16px;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-logo:hover {
+            background: rgba(159, 88, 250, 0.1);
+        }
+
+        .nav-logo-icon {
+            width: 40px;
+            height: 40px;
+            position: relative;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        /* Ultra Smooth Wind Chime Animations */
+        @keyframes windChimeOuter {
+            0%, 100% { 
+                transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+            }
+            25% { 
+                transform: rotateX(2deg) rotateY(-1.5deg) rotateZ(0.5deg);
+            }
+            50% { 
+                transform: rotateX(-1.5deg) rotateY(2deg) rotateZ(-0.3deg);
+            }
+            75% { 
+                transform: rotateX(0.5deg) rotateY(-0.5deg) rotateZ(0.8deg);
+            }
+        }
+
+        @keyframes windChimeInner {
+            0%, 100% { 
+                transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+            }
+            33% { 
+                transform: rotateX(-1deg) rotateY(2deg) rotateZ(-0.5deg);
+            }
+            66% { 
+                transform: rotateX(1deg) rotateY(-1.5deg) rotateZ(0.3deg);
+            }
+        }
+
+        /* Smooth orbital rotation */
+        @keyframes smoothOrbit {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Quantum teleport animation */
+        @keyframes quantumTeleport {
+            0%, 100% { opacity: 1; }
+            49.9% { opacity: 1; }
+            50% { opacity: 0; }
+            50.1% { opacity: 0; }
+            51% { opacity: 1; }
+        }
+
+        /* Static electrons - no orbital motion */
+        .electron-orbit-1,
+        .electron-orbit-2,
+        .electron-orbit-3,
+        .electron-orbit-4 {
+            /* No animation - electrons are stationary */
+        }
+
+        /* Smooth glow animation */
+        @keyframes smoothGlow {
+            0%, 100% { opacity: 0.7; filter: brightness(0.9); }
+            50% { opacity: 0.9; filter: brightness(1.1); }
+        }
+
+        .electron {
+            animation: smoothGlow 4s ease-in-out infinite;
+            transition: all 0.5s ease;
+        }
+
+        /* Quantum teleport class */
+        .quantum-teleporting {
+            animation: quantumTeleport 1s ease-in-out;
+        }
+
+        .atomic-system {
+            animation: windChimeOuter 20s ease-in-out infinite;
+            transform-origin: center;
+        }
+
+        .inner-system {
+            animation: windChimeInner 15s ease-in-out infinite;
+            animation-delay: -5s;
+            transform-origin: center;
+        }
+
+        .nav-logo-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 22px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--purple-primary), var(--blue-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        /* Navigation Links */
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            justify-content: center;
+            margin: 0 60px;
+        }
+
+        .nav-link {
+            position: relative;
+            padding: 10px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid transparent;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(159, 88, 250, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Right Actions */
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-cta {
+            position: relative;
+            padding: 10px 24px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--purple-primary), var(--blue-accent));
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(159, 88, 250, 0.4);
+        }
+
+        /* Demo Section */
+        .demo-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .demo-container {
+            text-align: center;
+        }
+
+        .demo-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #ffffff 0%, var(--purple-primary) 50%, var(--blue-accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .demo-orb-container {
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Subtle glow effect */
+        .orb-glow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(159, 88, 250, 0.1) 0%, transparent 70%);
+            filter: blur(40px);
+            animation: smoothGlow 6s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Quantum Smooth Navigation Bar -->
+    <nav class="nav-container">
+        <div class="nav-inner">
+            <!-- Logo with Quantum Smooth Animation -->
+            <a href="#" class="nav-logo">
+                <div class="nav-logo-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="overflow: visible;">
+                        <defs>
+                            <linearGradient id="quantumGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#9f58fa;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#4B96DC;stop-opacity:1" />
+                            </linearGradient>
+                            <radialGradient id="quantumCenterGlow" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.8" />
+                                <stop offset="50%" style="stop-color:#9f58fa;stop-opacity:0.5" />
+                                <stop offset="100%" style="stop-color:#4B96DC;stop-opacity:0" />
+                            </radialGradient>
+                            <radialGradient id="quantumJewelGradient" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" style="stop-color:#ff00ff;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#ff00aa;stop-opacity:0.8" />
+                                <stop offset="100%" style="stop-color:#00ffff;stop-opacity:0.6" />
+                            </radialGradient>
+                        </defs>
+                        
+                        <!-- Entire atomic system moves together -->
+                        <g class="atomic-system">
+                            <!-- Outer sphere ring -->
+                            <circle cx="16" cy="16" r="12" fill="none" stroke="url(#quantumGradient)" stroke-width="2" opacity="0.8"/>
+                            
+                            <!-- Inner system with smooth motion -->
+                            <g class="inner-system">
+                                <!-- Inner sphere ring -->
+                                <circle cx="16" cy="16" r="8" fill="none" stroke="url(#quantumGradient)" stroke-width="1.5" opacity="0.6"/>
+                                
+                                <!-- Center glow -->
+                                <circle cx="16" cy="16" r="6" fill="url(#quantumCenterGlow)" opacity="0.8"/>
+                                
+                                <!-- Central Jewel Core (nucleus) -->
+                                <circle cx="16" cy="16" r="3" fill="url(#quantumJewelGradient)">
+                                    <animate attributeName="r" values="3;3.2;3" dur="5s" repeatCount="indefinite"/>
+                                    <animate attributeName="opacity" values="0.8;0.95;0.8" dur="5s" repeatCount="indefinite"/>
+                                </circle>
+                            </g>
+                            
+                            <!-- Static electrons on outer ring at cardinal points -->
+                            <!-- Top -->
+                            <circle cx="16" cy="4" r="1.5" fill="#9f58fa" class="electron"/>
+                            
+                            <!-- Right -->
+                            <circle cx="28" cy="16" r="1.5" fill="#4B96DC" class="electron"/>
+                            
+                            <!-- Bottom -->
+                            <circle cx="16" cy="28" r="1.5" fill="#4bd48e" class="electron"/>
+                            
+                            <!-- Left -->
+                            <circle cx="4" cy="16" r="1.5" fill="#00d4ff" class="electron"/>
+                        </g>
+                    </svg>
+                </div>
+                <span class="nav-logo-text">RepSpheres</span>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="nav-links">
+                <a href="#demo" class="nav-link">Demo</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </nav>
+
+            <!-- Right Actions -->
+            <div class="nav-actions">
+                <a href="#get-started" class="nav-cta">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Demo Section -->
+    <section class="demo-section" id="demo">
+        <div class="demo-container">
+            <h1 class="demo-title">Quantum Smooth</h1>
+            <p style="color: var(--text-secondary); margin-bottom: 3rem;">Butter smooth atomic motion with quantum teleportation</p>
+            
+            <!-- Large demo orb -->
+            <div class="demo-orb-container">
+                <div class="orb-glow"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" style="overflow: visible;">
+                    <defs>
+                        <linearGradient id="demoQuantumGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#9f58fa;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#4B96DC;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#4bd48e;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    
+                    <!-- Large atomic system -->
+                    <g class="atomic-system" style="transform-origin: 100px 100px;">
+                        <!-- Multiple orbital rings -->
+                        <circle cx="100" cy="100" r="80" fill="none" stroke="url(#demoQuantumGradient)" stroke-width="3" opacity="0.6"/>
+                        
+                        <g class="inner-system" style="transform-origin: 100px 100px;">
+                            <circle cx="100" cy="100" r="60" fill="none" stroke="url(#demoQuantumGradient)" stroke-width="2.5" opacity="0.7"/>
+                            <circle cx="100" cy="100" r="40" fill="none" stroke="url(#demoQuantumGradient)" stroke-width="2" opacity="0.8"/>
+                            
+                            <!-- Center nucleus -->
+                            <circle cx="100" cy="100" r="20" fill="url(#quantumJewelGradient)" opacity="0.9">
+                                <animate attributeName="r" values="20;22;20" dur="6s" repeatCount="indefinite"/>
+                            </circle>
+                        </g>
+                        
+                        <!-- Static electrons on outer ring at cardinal points -->
+                        <!-- Top -->
+                        <circle cx="100" cy="20" r="8" fill="#9f58fa" class="electron demo-electron"/>
+                        
+                        <!-- Right -->
+                        <circle cx="180" cy="100" r="8" fill="#4B96DC" class="electron demo-electron"/>
+                        
+                        <!-- Bottom -->
+                        <circle cx="100" cy="180" r="8" fill="#4bd48e" class="electron demo-electron"/>
+                        
+                        <!-- Left -->
+                        <circle cx="20" cy="100" r="8" fill="#00d4ff" class="electron demo-electron"/>
+                    </g>
+                </svg>
+            </div>
+            
+            <p style="color: var(--text-muted); margin-top: 3rem; font-size: 0.9rem;">
+                Static electrons at cardinal points • Wind chime motion on rings • Perfect atomic balance
+            </p>
+        </div>
+    </section>
+
+    <script>
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // No quantum jumps - electrons stay in place
+
+        // Smooth interaction without jitter
+        const logoIcon = document.querySelector('.nav-logo-icon');
+        const demoOrb = document.querySelector('.demo-orb-container svg');
+        
+        const addSmoothInteraction = (element) => {
+            element.addEventListener('mousemove', (e) => {
+                const rect = element.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                // Very subtle influence
+                const atomicSystem = element.querySelector('.atomic-system');
+                if (atomicSystem) {
+                    gsap.to(atomicSystem, {
+                        rotationX: y * 0.02,
+                        rotationY: x * 0.02,
+                        duration: 1,
+                        ease: "power2.out"
+                    });
+                }
+            });
+            
+            element.addEventListener('mouseleave', () => {
+                const atomicSystem = element.querySelector('.atomic-system');
+                if (atomicSystem) {
+                    gsap.to(atomicSystem, {
+                        rotationX: 0,
+                        rotationY: 0,
+                        duration: 2,
+                        ease: "power2.inOut"
+                    });
+                }
+            });
+        };
+        
+        // Apply smooth interaction
+        addSmoothInteraction(logoIcon);
+        addSmoothInteraction(demoOrb);
+        
+        // No initialization needed - electrons are static
+        
+        // Smooth entrance animations
+        gsap.from('.nav-logo', {
+            opacity: 0,
+            y: -20,
+            duration: 1.5,
+            ease: "power3.out"
+        });
+        
+        gsap.from('.demo-title', {
+            opacity: 0,
+            y: 50,
+            duration: 1.5,
+            delay: 0.3,
+            ease: "power3.out"
+        });
+        
+        gsap.from('.demo-orb-container', {
+            opacity: 0,
+            scale: 0.9,
+            duration: 2,
+            delay: 0.6,
+            ease: "power2.out"
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RepSpheres | Two-Line Navigation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-darker: #050505;
+            --panel-dark: #1a1a1a;
+            --panel-darker: #141414;
+            --purple-primary: #9f58fa;
+            --purple-dark: #7e22ce;
+            --purple-light: #a855f7;
+            --blue-accent: #4B96DC;
+            --blue-light: #60a5fa;
+            --green-accent: #4bd48e;
+            --green-neon: #00ff88;
+            --pink-accent: #f53969;
+            --orange-accent: #ff6b35;
+            --cyan-accent: #00d4ff;
+            --yellow-accent: #ffd93d;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-hover: rgba(255, 255, 255, 0.08);
+            --matrix-green: #00ff41;
+            --warning-red: #ff0040;
+            --amber-neutral: #ffaa00;
+            --gem-impossible: #ff00ff;
+            --gem-shift: #00ffff;
+            --gem-deep: #ff00aa;
+            --nav-height: 120px; /* Increased for two lines */
+            --scroll-offset: 0px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-darker);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+            padding-top: calc(var(--nav-height) + 24px);
+            transition: background 0.5s ease;
+        }
+
+        /* Two-Line Navigation Container */
+        .nav-container {
+            position: fixed;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 96vw;
+            max-width: 1400px;
+            height: var(--nav-height);
+            z-index: 1000;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            background: linear-gradient(to right,
+                rgba(26, 26, 26, 0.95) 0%,
+                rgba(30, 30, 30, 0.9) 10%,
+                rgba(28, 28, 28, 0.88) 50%,
+                rgba(30, 30, 30, 0.9) 90%,
+                rgba(26, 26, 26, 0.95) 100%
+            );
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            box-shadow: 
+                0 12px 40px rgba(0, 0, 0, 0.4),
+                0 0 20px rgba(var(--gem-shift), 0.08),
+                0 2px 10px rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.06),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Main Navigation Line */
+        .nav-main {
+            flex: 1;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Status Line */
+        .nav-status-line {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        /* Edge Mount Indicators */
+        .nav-edge {
+            position: absolute;
+            top: 10px;
+            bottom: 10px;
+            width: 3px;
+            background: linear-gradient(to bottom,
+                rgba(var(--gem-impossible), 0.2),
+                rgba(var(--gem-shift), 0.1)
+            );
+            box-shadow: 0 0 8px rgba(var(--gem-shift), 0.15);
+            opacity: 0.6;
+            z-index: 1;
+            transition: all 0.3s ease;
+            transform: scaleY(1);
+        }
+
+        .left-edge { 
+            left: -4px; 
+            border-radius: 2px 0 0 2px; 
+        }
+        
+        .right-edge { 
+            right: -4px; 
+            border-radius: 0 2px 2px 0; 
+        }
+
+        /* Hover Reveal Glow Fins */
+        .nav-edge::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 10px;
+            height: 80%;
+            background: radial-gradient(circle, rgba(var(--gem-deep), 0.4), transparent);
+            transform: translate(-50%, -50%);
+            opacity: 0.1;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-container:hover .nav-edge::after {
+            opacity: 0.5;
+        }
+
+        .nav-container:hover .nav-edge {
+            opacity: 1;
+            box-shadow: 0 0 12px rgba(var(--gem-shift), 0.3);
+            transform: scaleY(1.1);
+        }
+
+        /* Metallic Screws */
+        .nav-screws {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .screw {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: 
+                radial-gradient(circle at 35% 35%, #e0e0e0 0%, #b8b8b8 15%, #888 40%, #555 70%, #222 100%),
+                linear-gradient(135deg, #ccc 0%, #666 100%);
+            background-size: 100%, 100%;
+            border-radius: 50%;
+            box-shadow:
+                inset 0 0.5px 1px rgba(255,255,255,0.4),
+                inset 0 -0.5px 1px rgba(0,0,0,0.5),
+                0 0.5px 2px rgba(0,0,0,0.8),
+                0 0 3px rgba(0,0,0,0.3);
+            transform: rotate(var(--angle, 10deg));
+            border: 0.5px solid rgba(0,0,0,0.2);
+        }
+
+        /* 4-Point Luxury Bezel */
+        .screw-top-left { 
+            top: 12px; 
+            left: 12px; 
+            --angle: 10deg; 
+        }
+        .screw-top-right { 
+            top: 12px; 
+            right: 12px; 
+            --angle: 22deg; 
+        }
+        .screw-bot-left { 
+            bottom: 12px; 
+            left: 12px; 
+            --angle: -12deg; 
+        }
+        .screw-bot-right { 
+            bottom: 12px; 
+            right: 12px; 
+            --angle: 18deg; 
+        }
+
+        /* Logo Section */
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            position: relative;
+            padding: 8px 16px;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .nav-logo:hover {
+            background: rgba(var(--gem-impossible), 0.1);
+        }
+
+        .nav-logo-icon {
+            width: 40px;
+            height: 40px;
+            position: relative;
+        }
+
+        .nav-logo-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 22px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--purple-primary), var(--blue-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        /* Navigation Links */
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .nav-link {
+            position: relative;
+            padding: 10px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid transparent;
+            overflow: hidden;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(var(--gem-impossible), 0.3);
+            transform: translateY(-2px);
+            box-shadow: 
+                0 4px 20px rgba(var(--gem-impossible), 0.2),
+                0 0 0 1px rgba(var(--gem-impossible), 0.1) inset;
+        }
+
+        /* Right Actions */
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* Premium CTA Button */
+        .nav-cta {
+            position: relative;
+            padding: 10px 24px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--purple-primary), var(--blue-accent));
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            box-shadow: 
+                0 4px 20px rgba(159, 88, 250, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 6px 30px rgba(159, 88, 250, 0.4),
+                0 0 0 2px rgba(255, 255, 255, 0.2) inset;
+        }
+
+        /* System Status Display */
+        .nav-status {
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-family: 'Orbitron', monospace;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            animation: statusUpdate 8s infinite;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        @keyframes statusUpdate {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 0.8; color: var(--text-secondary); }
+        }
+
+        /* Power Nodes */
+        .rail-node {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: radial-gradient(circle, 
+                rgba(var(--gem-impossible), 1), 
+                rgba(var(--gem-deep), 0.8),
+                transparent
+            );
+            box-shadow: 
+                0 0 6px rgba(var(--gem-shift), 0.8),
+                inset 0 0 2px rgba(255,255,255,0.5);
+            animation: nodePulse 3s infinite ease-in-out;
+            position: relative;
+        }
+
+        .rail-node::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 50%;
+            background: radial-gradient(circle, 
+                transparent 30%,
+                rgba(var(--gem-shift), 0.2)
+            );
+            animation: nodeRing 2s infinite ease-in-out;
+        }
+
+        @keyframes nodePulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.3); opacity: 1; }
+        }
+
+        @keyframes nodeRing {
+            0%, 100% { transform: scale(1); opacity: 0; }
+            50% { transform: scale(1.5); opacity: 1; }
+        }
+
+        /* Sections */
+        .section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .hero {
+            background: radial-gradient(ellipse at center, rgba(159, 88, 250, 0.1) 0%, transparent 70%);
+        }
+
+        h1 {
+            font-size: 5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, var(--gem-impossible) 50%, var(--gem-shift) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        p {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            h1 {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Two-Line Navigation Bar -->
+    <nav class="nav-container">
+        <!-- Edge Mount Indicators -->
+        <div class="nav-edge left-edge"></div>
+        <div class="nav-edge right-edge"></div>
+
+        <!-- Metallic Screws -->
+        <div class="nav-screws">
+            <div class="screw screw-top-left"></div>
+            <div class="screw screw-top-right"></div>
+            <div class="screw screw-bot-left"></div>
+            <div class="screw screw-bot-right"></div>
+        </div>
+
+        <!-- Main Navigation Line -->
+        <div class="nav-main">
+            <!-- Logo -->
+            <a href="#" class="nav-logo">
+                <div class="nav-logo-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                        <defs>
+                            <linearGradient id="sphereGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#9f58fa;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#4B96DC;stop-opacity:1" />
+                            </linearGradient>
+                            <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.8" />
+                                <stop offset="50%" style="stop-color:#9f58fa;stop-opacity:0.5" />
+                                <stop offset="100%" style="stop-color:#4B96DC;stop-opacity:0" />
+                            </radialGradient>
+                            <radialGradient id="jewelGradient" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" style="stop-color:var(--gem-impossible);stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:var(--gem-deep);stop-opacity:0.8" />
+                                <stop offset="100%" style="stop-color:var(--gem-shift);stop-opacity:0.6" />
+                            </radialGradient>
+                        </defs>
+                        
+                        <!-- Outer sphere ring -->
+                        <circle cx="16" cy="16" r="12" fill="none" stroke="url(#sphereGradient)" stroke-width="2" opacity="0.8"/>
+                        
+                        <!-- Inner sphere ring -->
+                        <circle cx="16" cy="16" r="8" fill="none" stroke="url(#sphereGradient)" stroke-width="1.5" opacity="0.6"/>
+                        
+                        <!-- Center glow -->
+                        <circle cx="16" cy="16" r="6" fill="url(#centerGlow)" opacity="0.8"/>
+                        
+                        <!-- Animated Jewel Core -->
+                        <circle cx="16" cy="16" r="3" fill="url(#jewelGradient)" class="logo-jewel">
+                            <animate attributeName="r" values="3;4;3" dur="2s" repeatCount="indefinite"/>
+                            <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite"/>
+                        </circle>
+                        
+                        <!-- Orbital dots -->
+                        <circle cx="16" cy="4" r="1.5" fill="#9f58fa"/>
+                        <circle cx="28" cy="16" r="1.5" fill="#4B96DC"/>
+                        <circle cx="16" cy="28" r="1.5" fill="#4bd48e"/>
+                        <circle cx="4" cy="16" r="1.5" fill="#00d4ff"/>
+                    </svg>
+                </div>
+                <span class="nav-logo-text">RepSpheres</span>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="nav-links">
+                <a href="#market-data" class="nav-link">Market Data</a>
+                <a href="#canvas" class="nav-link">Canvas</a>
+                <a href="#sphere-os" class="nav-link">Sphere oS</a>
+                <a href="#podcasts" class="nav-link">Podcasts</a>
+            </nav>
+
+            <!-- Right Actions -->
+            <div class="nav-actions">
+                <a href="#get-started" class="nav-cta">Get Started</a>
+            </div>
+        </div>
+
+        <!-- Status Line -->
+        <div class="nav-status-line">
+            <div class="nav-status" id="navStatus">
+                <div class="rail-node"></div>
+                <span>📊 DATA STREAM LIVE</span>
+                <div class="rail-node"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero section">
+        <div>
+            <h1>RepSpheres</h1>
+            <p>Two-Line Navigation System</p>
+            <p style="color: var(--text-muted); font-size: 1rem;">
+                Status display centered on separate line
+            </p>
+        </div>
+    </section>
+
+    <script>
+        // Dynamic Status Updates
+        const statusMessages = [
+            '⏱ AI SYNC 97%',
+            '🔗 NEURAL LINK ACTIVE',
+            '⚡ QUANTUM CORE 100%',
+            '📊 DATA STREAM LIVE',
+            '🛡️ SECURITY OPTIMAL',
+            '🌐 NETWORK STABLE',
+            '💎 GEMS ALIGNED',
+            '🔮 PREDICTION MODE'
+        ];
+
+        let statusIndex = 3; // Start with DATA STREAM LIVE
+        const statusElement = document.querySelector('#navStatus span');
+        
+        if (statusElement) {
+            setInterval(() => {
+                statusIndex = (statusIndex + 1) % statusMessages.length;
+                statusElement.style.opacity = '0';
+                
+                setTimeout(() => {
+                    statusElement.textContent = statusMessages[statusIndex];
+                    statusElement.style.opacity = '1';
+                }, 300);
+            }, 5000);
+        }
+
+        // Floating effect on scroll
+        window.addEventListener('scroll', () => {
+            const navContainer = document.querySelector('.nav-container');
+            if (window.scrollY > 50) {
+                navContainer.style.transform = 'translateX(-50%) translateY(-4px)';
+                navContainer.style.boxShadow = '0 16px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 0, 255, 0.12)';
+            } else {
+                navContainer.style.transform = 'translateX(-50%)';
+            }
+        });
+    </script>
+</body>
+</html>

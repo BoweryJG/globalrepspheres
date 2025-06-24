@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import KineticNavBar from './KineticNavBar';
+import GlobalNavBar from './GlobalNavBar';
 import KineticHeroSection from './KineticHeroSection';
 import KineticTimelineSection from './KineticTimelineSection';
 import KineticStarfield from './KineticStarfield';
@@ -191,7 +191,7 @@ const KineticNeedlesPage = () => {
       <KineticDataGrid />
 
       {/* Navigation Bar */}
-      <KineticNavBar />
+      <GlobalNavBar />
 
       {/* Hero Section */}
       <KineticHeroSection />

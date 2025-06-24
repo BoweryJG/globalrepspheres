@@ -40,7 +40,7 @@
             --gem-impossible: #ff00ff;
             --gem-shift: #00ffff;
             --gem-deep: #ff00aa;
-            --nav-height: 80px;
+            --nav-height: auto;
             --scroll-offset: 0px;
         }
 
@@ -50,7 +50,7 @@
             color: var(--text-primary);
             overflow-x: hidden;
             position: relative;
-            padding-top: calc(var(--nav-height) + 24px);
+            padding-top: 120px;
             transition: background 0.5s ease;
         }
 
@@ -77,7 +77,9 @@
             transform: translateX(-50%);
             width: 96vw;
             max-width: 1400px;
-            height: var(--nav-height);
+            height: auto;
+            padding-top: 12px;
+            padding-bottom: 12px;
             z-index: 1000;
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -294,15 +296,25 @@
             --angle: 18deg; 
         }
 
+        /* Main nav inner - stacked vertically */
         .nav-inner {
-            height: 100%;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 24px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: space-between;
+            padding: 8px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 100%;
             position: relative;
+        }
+
+        /* Top row container */
+        .nav-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            height: 44px;
         }
 
         /* Logo Section with 3D Tilt */
@@ -328,55 +340,13 @@
             position: relative;
         }
 
-        /* Animated Jewel Core in Logo */
-        @keyframes gemPulse {
-            0%, 100% { 
-                transform: scale(1) rotate(0deg);
-                filter: brightness(1) hue-rotate(0deg);
-            }
-            25% { 
-                transform: scale(1.2) rotate(90deg);
-                filter: brightness(1.3) hue-rotate(30deg);
-            }
-            50% { 
-                transform: scale(1.1) rotate(180deg);
-                filter: brightness(1.5) hue-rotate(60deg);
-            }
-            75% { 
-                transform: scale(1.15) rotate(270deg);
-                filter: brightness(1.2) hue-rotate(90deg);
-            }
+        .nav-logo-icon svg {
+            filter: drop-shadow(0 1px 2px rgba(255,255,255,0.1));
+            transition: transform 0.3s ease;
         }
 
-        .logo-jewel {
-            animation: gemPulse 4s infinite;
-            transform-origin: center;
-            transition: fill 0.5s ease;
-            position: relative;
-        }
-
-        /* Quantum Flicker Effect */
-        .logo-jewel-wrapper {
-            position: relative;
-            display: inline-block;
-        }
-
-        .quantum-flicker {
-            position: absolute;
-            inset: -2px;
-            border-radius: 50%;
-            background: conic-gradient(from 0deg, var(--gem-impossible), transparent 30%, var(--gem-shift));
-            mix-blend-mode: color-dodge;
-            opacity: 0.05;
-            animation: flickerGrid 1.6s infinite;
-            pointer-events: none;
-        }
-
-        @keyframes flickerGrid {
-            0%, 100% { opacity: 0.05; transform: scale(1) rotate(0deg); }
-            25% { opacity: 0.08; transform: scale(1.05) rotate(90deg); }
-            50% { opacity: 0.12; transform: scale(1.08) rotate(180deg); }
-            75% { opacity: 0.08; transform: scale(1.05) rotate(270deg); }
+        .nav-logo:hover svg {
+            transform: scale(1.08);
         }
 
         .nav-logo-text {
@@ -390,134 +360,13 @@
             letter-spacing: -0.5px;
         }
 
-        /* Nav Rail Container */
-        .nav-rail-container {
-            display: flex;
-            align-items: center;
-            flex: 1;
-            margin: 0 20px;
-        }
-
-        /* Dynamic Power Rail */
-        .nav-rail {
-            flex: 1;
-            height: 2px;
-            margin: 0 16px;
-            background: linear-gradient(90deg, 
-                transparent, 
-                rgba(var(--gem-shift), 0.25), 
-                rgba(var(--gem-impossible), 0.25), 
-                transparent);
-            box-shadow: 0 0 6px rgba(var(--gem-impossible), 0.3);
-            animation: pulseRail 4s infinite ease-in-out;
-            border-radius: 2px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Data flow effect on rail */
-        .nav-rail::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(90deg, 
-                transparent,
-                rgba(var(--gem-shift), 0.5),
-                transparent
-            );
-            animation: railFlow 3s infinite linear;
-        }
-
-        @keyframes railFlow {
-            0% { left: -100%; }
-            100% { left: 200%; }
-        }
-
-        @keyframes pulseRail {
-            0%, 100% { opacity: 0.3; transform: scaleX(1); }
-            50% { opacity: 0.7; transform: scaleX(1.05); }
-        }
-
-        /* Power Nodes */
-        .rail-node {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: radial-gradient(circle, 
-                rgba(var(--gem-impossible), 1), 
-                rgba(var(--gem-deep), 0.8),
-                transparent
-            );
-            box-shadow: 
-                0 0 6px rgba(var(--gem-shift), 0.8),
-                inset 0 0 2px rgba(255,255,255,0.5);
-            animation: nodePulse 3s infinite ease-in-out;
-            position: relative;
-        }
-
-        .rail-node::after {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            border-radius: 50%;
-            background: radial-gradient(circle, 
-                transparent 30%,
-                rgba(var(--gem-shift), 0.2)
-            );
-            animation: nodeRing 2s infinite ease-in-out;
-        }
-
-        @keyframes nodePulse {
-            0%, 100% { transform: scale(1); opacity: 0.6; }
-            50% { transform: scale(1.3); opacity: 1; }
-        }
-
-        @keyframes nodeRing {
-            0%, 100% { transform: scale(1); opacity: 0; }
-            50% { transform: scale(1.5); opacity: 1; }
-        }
-
-        .rail-node.left { margin-right: 8px; }
-        .rail-node.right { margin-left: 8px; }
-
-        /* System Status Display */
-        .nav-status {
-            font-size: 11px;
-            color: var(--text-muted);
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            opacity: 0.6;
-            padding: 0 12px;
-            font-family: 'Orbitron', monospace;
-            white-space: nowrap;
-            transition: all 0.3s ease;
-            animation: statusUpdate 8s infinite;
-        }
-
-        @keyframes statusUpdate {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 0.8; color: var(--text-secondary); }
-        }
-
-        .nav-status:hover {
-            opacity: 1;
-            color: var(--gem-impossible);
-            text-shadow: 0 0 5px rgba(var(--gem-impossible), 0.5);
-        }
-
         /* Navigation Links */
         .nav-links {
             display: flex;
             align-items: center;
             gap: 8px;
-            justify-content: flex-end;
-            margin-right: 20px;
+            justify-content: center;
+            flex: 1;
         }
 
         .nav-link {
@@ -819,6 +668,137 @@
             transform: translateX(2px);
         }
 
+        /* Power Subsystem Row - Integrated and Aligned */
+        .nav-rail-stack {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 6px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        /* Rail Wrapper */
+        .nav-rail-wrapper {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* Dynamic Power Rail */
+        .nav-rail {
+            flex: 1;
+            height: 2px;
+            margin: 0 16px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(var(--gem-shift), 0.25), 
+                rgba(var(--gem-impossible), 0.25), 
+                transparent);
+            box-shadow: 0 0 6px rgba(var(--gem-impossible), 0.3);
+            animation: pulseRail 4s infinite ease-in-out;
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Data flow effect on rail */
+        .nav-rail::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent,
+                rgba(var(--gem-shift), 0.5),
+                transparent
+            );
+            animation: railFlow 3s infinite linear;
+        }
+
+        @keyframes railFlow {
+            0% { left: -100%; }
+            100% { left: 200%; }
+        }
+
+        @keyframes pulseRail {
+            0%, 100% { opacity: 0.3; transform: scaleX(1); }
+            50% { opacity: 0.7; transform: scaleX(1.05); }
+        }
+
+        /* Power Nodes */
+        .rail-node {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: radial-gradient(circle, 
+                rgba(var(--gem-impossible), 1), 
+                rgba(var(--gem-deep), 0.8),
+                transparent
+            );
+            box-shadow: 
+                0 0 6px rgba(var(--gem-shift), 0.8),
+                inset 0 0 2px rgba(255,255,255,0.5);
+            animation: nodePulse 3s infinite ease-in-out;
+            position: relative;
+        }
+
+        .rail-node::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 50%;
+            background: radial-gradient(circle, 
+                transparent 30%,
+                rgba(var(--gem-shift), 0.2)
+            );
+            animation: nodeRing 2s infinite ease-in-out;
+        }
+
+        @keyframes nodePulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.3); opacity: 1; }
+        }
+
+        @keyframes nodeRing {
+            0%, 100% { transform: scale(1); opacity: 0; }
+            50% { transform: scale(1.5); opacity: 1; }
+        }
+
+        .rail-node.left { margin-right: 8px; }
+        .rail-node.right { margin-left: 8px; }
+
+        /* System Status Display */
+        .nav-status {
+            font-size: 9px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 0.4px;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+            animation: statusUpdate 8s infinite;
+            margin-top: 4px;
+            text-align: center;
+            width: 100%;
+        }
+
+        @keyframes statusUpdate {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; color: var(--text-secondary); }
+        }
+
+        .nav-status:hover {
+            opacity: 1;
+            color: var(--gem-impossible);
+            text-shadow: 0 0 5px rgba(var(--gem-impossible), 0.5);
+        }
+
         /* Sections with different themes */
         .section {
             min-height: 100vh;
@@ -901,80 +881,92 @@
         </div>
 
         <div class="nav-inner">
-            <!-- Modified nav-logo with animated jewel + orbital atom SVG -->
-            <a href="#" class="nav-logo">
-                <div class="nav-logo-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="width: 40px; height: 40px;">
-                        <defs>
-                            <linearGradient id="sphereGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#9f58fa" />
-                                <stop offset="100%" stop-color="#4B96DC" />
-                            </linearGradient>
-                            <radialGradient id="jewelGradient" cx="50%" cy="50%" r="50%">
-                                <stop offset="0%" stop-color="#fff" stop-opacity="1" />
-                                <stop offset="30%" stop-color="#ff00ff" stop-opacity="1" />
-                                <stop offset="60%" stop-color="#00ffff" stop-opacity="1" />
-                                <stop offset="100%" stop-color="#ff00aa" stop-opacity="0.9" />
-                            </radialGradient>
-                        </defs>
-                        <circle cx="16" cy="16" r="12" fill="none" stroke="url(#sphereGradient)" stroke-width="2" opacity="0.8" />
-                        <circle cx="16" cy="16" r="8" fill="none" stroke="url(#sphereGradient)" stroke-width="1.5" opacity="0.5" />
-                        <circle cx="16" cy="16" r="3" fill="url(#jewelGradient)">
-                            <animate attributeName="r" values="3;4;3" dur="2s" repeatCount="indefinite"/>
-                            <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <circle cx="16" cy="4" r="1.5" fill="#9f58fa">
-                            <animateTransform attributeName="transform" type="rotate" from="0 16 16" to="360 16 16" dur="6s" repeatCount="indefinite"/>
-                        </circle>
-                        <circle cx="28" cy="16" r="1.5" fill="#4B96DC">
-                            <animateTransform attributeName="transform" type="rotate" from="0 16 16" to="360 16 16" dur="8s" repeatCount="indefinite"/>
-                        </circle>
-                        <circle cx="16" cy="28" r="1.5" fill="#4bd48e">
-                            <animateTransform attributeName="transform" type="rotate" from="0 16 16" to="360 16 16" dur="10s" repeatCount="indefinite"/>
-                        </circle>
-                    </svg>
+            <!-- Top Row - Logo + Links + Actions -->
+            <div class="nav-row">
+                <!-- Identity -->
+                <div class="nav-logo">
+                    <div class="nav-logo-icon" style="position: relative;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="width: 40px; height: 40px; filter: drop-shadow(0 1px 2px rgba(255,255,255,0.1));">
+                            <defs>
+                                <linearGradient id="sphereGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#9f58fa" />
+                                    <stop offset="100%" stop-color="#4B96DC" />
+                                </linearGradient>
+                                <radialGradient id="jewelGradient" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" stop-color="#fff" stop-opacity="1" />
+                                    <stop offset="30%" stop-color="#ff00ff" stop-opacity="1" />
+                                    <stop offset="60%" stop-color="#00ffff" stop-opacity="1" />
+                                    <stop offset="100%" stop-color="#ff00aa" stop-opacity="0.9" />
+                                </radialGradient>
+                                <filter id="glowTrail">
+                                    <feGaussianBlur in="SourceGraphic" stdDeviation="0.6" result="blur" />
+                                    <feMerge>
+                                        <feMergeNode in="blur"/>
+                                        <feMergeNode in="SourceGraphic"/>
+                                    </feMerge>
+                                </filter>
+                            </defs>
+                            <circle cx="16" cy="16" r="12" fill="none" stroke="url(#sphereGradient)" stroke-width="2" opacity="0.8" />
+                            <circle cx="16" cy="16" r="8" fill="none" stroke="url(#sphereGradient)" stroke-width="1.5" opacity="0.5" />
+                            <circle cx="16" cy="16" r="3" fill="url(#jewelGradient)">
+                                <animate attributeName="r" values="3;4;3" dur="2s" repeatCount="indefinite"/>
+                                <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite"/>
+                            </circle>
+                            <circle cx="16" cy="4" r="1.5" fill="#9f58fa" filter="url(#glowTrail)">
+                                <animateTransform attributeName="transform" type="rotate" from="0 16 16" to="360 16 16" dur="6s" repeatCount="indefinite"/>
+                            </circle>
+                            <circle cx="28" cy="16" r="1.5" fill="#4B96DC" filter="url(#glowTrail)">
+                                <animateTransform attributeName="transform" type="rotate" from="0 16 16" to="360 16 16" dur="8s" repeatCount="indefinite"/>
+                            </circle>
+                            <circle cx="16" cy="28" r="1.5" fill="#4bd48e" filter="url(#glowTrail)">
+                                <animateTransform attributeName="transform" type="rotate" from="0 16 16" to="360 16 16" dur="10s" repeatCount="indefinite"/>
+                            </circle>
+                        </svg>
+                    </div>
+                    <span class="nav-logo-text">RepSpheres</span>
                 </div>
-                <span class="nav-logo-text">RepSpheres</span>
-            </a>
 
-            <!-- Dynamic Nav Rail with Power Nodes -->
-            <div class="nav-rail-container">
-                <div class="rail-node left"></div>
-                <div class="nav-rail"></div>
-                <div class="nav-status" id="navStatus">⏱ AI SYNC 97%</div>
-                <div class="rail-node right"></div>
+                <!-- Navigation Links -->
+                <nav class="nav-links">
+                    <a href="#market-data" class="nav-link">
+                        <span class="nav-link-icon icon-market"></span>
+                        <span>Market Data</span>
+                    </a>
+                    <a href="#canvas" class="nav-link">
+                        <span class="nav-link-icon icon-canvas"></span>
+                        <span>Canvas</span>
+                    </a>
+                    <a href="#sphere-os" class="nav-link">
+                        <span class="nav-link-icon icon-sphere"></span>
+                        <span>Sphere oS</span>
+                    </a>
+                    <a href="#podcasts" class="nav-link">
+                        <span class="nav-link-icon icon-podcasts"></span>
+                        <span>Podcasts</span>
+                    </a>
+                </nav>
+
+                <!-- Right Actions -->
+                <div class="nav-actions">
+                    <a href="#get-started" class="nav-cta">Get Started</a>
+                    <button class="nav-more" aria-label="More options">
+                        <div class="nav-more-icon">
+                            <span class="nav-more-dot"></span>
+                            <span class="nav-more-dot"></span>
+                            <span class="nav-more-dot"></span>
+                        </div>
+                    </button>
+                </div>
             </div>
 
-            <!-- Navigation Links -->
-            <nav class="nav-links">
-                <a href="#market-data" class="nav-link">
-                    <span class="nav-link-icon icon-market"></span>
-                    <span>Market Data</span>
-                </a>
-                <a href="#canvas" class="nav-link">
-                    <span class="nav-link-icon icon-canvas"></span>
-                    <span>Canvas</span>
-                </a>
-                <a href="#sphere-os" class="nav-link">
-                    <span class="nav-link-icon icon-sphere"></span>
-                    <span>Sphere oS</span>
-                </a>
-                <a href="#podcasts" class="nav-link">
-                    <span class="nav-link-icon icon-podcasts"></span>
-                    <span>Podcasts</span>
-                </a>
-            </nav>
-
-            <!-- Right Actions -->
-            <div class="nav-actions">
-                <a href="#get-started" class="nav-cta">Get Started</a>
-                <button class="nav-more" aria-label="More options">
-                    <div class="nav-more-icon">
-                        <span class="nav-more-dot"></span>
-                        <span class="nav-more-dot"></span>
-                        <span class="nav-more-dot"></span>
-                    </div>
-                </button>
+            <!-- Power Subsystem Row (separate line) -->
+            <div class="nav-rail-stack">
+                <div class="nav-rail-wrapper">
+                    <div class="rail-node left"></div>
+                    <div class="nav-rail"></div>
+                    <div class="rail-node right"></div>
+                </div>
+                <div class="nav-status" id="navStatus">⏱ AI SYNC 97%</div>
             </div>
         </div>
     </nav>
@@ -985,7 +977,7 @@
             <h1>RepSpheres</h1>
             <p>Ultimate Navigation Experience</p>
             <p style="color: var(--text-muted); font-size: 1rem;">
-                🔧 Edge mount indicators • 🌌 Floating bezel • ✨ Complete premium package
+                🔧 Integrated power bar • 🌌 Luxury-tight spacing • ✨ Cohesive timepiece design
             </p>
         </div>
     </section>
@@ -1089,7 +1081,7 @@
 
             // Simulate hover sound (visual feedback)
             logo.addEventListener('mouseenter', () => {
-                const jewel = logo.querySelector('.logo-jewel');
+                const jewel = logo.querySelector('circle[fill="url(#jewelGradient)"]');
                 if (jewel) {
                     jewel.style.filter = 'brightness(1.5)';
                     setTimeout(() => {

@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RepSpheres | Sentient Orb</title>
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/svg+xml" sizes="16x16" href="favicon-16x16.svg">
+    <link rel="apple-touch-icon" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-darker: #050505;
+            --panel-dark: #1a1a1a;
+            --panel-darker: #141414;
+            --purple-primary: #9f58fa;
+            --purple-dark: #7e22ce;
+            --purple-light: #a855f7;
+            --blue-accent: #4B96DC;
+            --blue-light: #60a5fa;
+            --green-accent: #4bd48e;
+            --green-neon: #00ff88;
+            --pink-accent: #f53969;
+            --orange-accent: #ff6b35;
+            --cyan-accent: #00d4ff;
+            --yellow-accent: #ffd93d;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-hover: rgba(255, 255, 255, 0.08);
+            --matrix-green: #00ff41;
+            --warning-red: #ff0040;
+            --amber-neutral: #ffaa00;
+            --metal-light: #e8e8e8;
+            --metal-mid: #999;
+            --metal-dark: #555;
+            --metal-shadow: #222;
+            --gem-impossible: #ff00ff;
+            --gem-shift: #00ffff;
+            --gem-deep: #ff00aa;
+            --nav-height: 80px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, "system-ui", "Segoe UI", Helvetica, Arial, sans-serif;
+            background: var(--bg-darker);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+            padding-top: var(--nav-height);
+        }
+
+        /* Wind Chime Navigation Bar */
+        .nav-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--nav-height);
+            z-index: 1000;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            background: linear-gradient(90deg,
+                rgba(26, 26, 26, 0.95) 0%,
+                rgba(30, 30, 30, 0.9) 20%,
+                rgba(26, 26, 26, 0.85) 50%,
+                rgba(30, 30, 30, 0.9) 80%,
+                rgba(26, 26, 26, 0.95) 100%
+            );
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 4px 30px rgba(0, 0, 0, 0.5),
+                0 1px 0 rgba(255, 255, 255, 0.05) inset;
+        }
+
+        .nav-inner {
+            height: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        /* Logo with Sentient Orb */
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            position: relative;
+            padding: 8px 16px;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-logo:hover {
+            background: rgba(159, 88, 250, 0.1);
+        }
+
+        .nav-logo-icon {
+            width: 40px;
+            height: 40px;
+            position: relative;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        /* Ultra Smooth Wind Chime Animations */
+        @keyframes windChimeOuter {
+            0%, 100% { 
+                transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+            }
+            25% { 
+                transform: rotateX(2deg) rotateY(-1.5deg) rotateZ(0.5deg);
+            }
+            50% { 
+                transform: rotateX(-1.5deg) rotateY(2deg) rotateZ(-0.3deg);
+            }
+            75% { 
+                transform: rotateX(0.5deg) rotateY(-0.5deg) rotateZ(0.8deg);
+            }
+        }
+
+        @keyframes windChimeInner {
+            0%, 100% { 
+                transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+            }
+            33% { 
+                transform: rotateX(-1deg) rotateY(2deg) rotateZ(-0.5deg);
+            }
+            66% { 
+                transform: rotateX(1deg) rotateY(-1.5deg) rotateZ(0.3deg);
+            }
+        }
+
+        /* Sentient orb breathing */
+        @keyframes sentientBreathing {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Smooth glow animation */
+        @keyframes smoothGlow {
+            0%, 100% { opacity: 0.7; filter: brightness(0.9); }
+            50% { opacity: 0.9; filter: brightness(1.1); }
+        }
+
+        .electron {
+            animation: smoothGlow 4s ease-in-out infinite;
+            transition: all 0.5s ease;
+        }
+
+
+        .sentient-core {
+            transform-origin: center;
+            will-change: transform;
+            animation: sentientBreathing 8s ease-in-out infinite;
+        }
+
+        .nav-logo-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 22px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--purple-primary), var(--blue-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        /* Navigation Links */
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            justify-content: center;
+            margin: 0 60px;
+        }
+
+        .nav-link {
+            position: relative;
+            padding: 10px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid transparent;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(159, 88, 250, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Right Actions */
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-cta {
+            position: relative;
+            padding: 10px 24px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--purple-primary), var(--blue-accent));
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(159, 88, 250, 0.4);
+        }
+
+        /* Demo Section */
+        .demo-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .demo-container {
+            text-align: center;
+        }
+
+        .demo-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #ffffff 0%, var(--purple-primary) 50%, var(--blue-accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .demo-orb-container {
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Subtle ambient glow */
+        .orb-glow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(159, 88, 250, 0.15) 0%, transparent 70%);
+            filter: blur(60px);
+            animation: smoothGlow 6s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sentient Orb Navigation Bar -->
+    <nav class="nav-container">
+        <div class="nav-inner">
+            <!-- Logo with Sentient Orb Animation -->
+            <a href="#" class="nav-logo">
+                <div class="nav-logo-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="overflow: visible;">
+                        <defs>
+                            <!-- Fluid color shifting gradients -->
+                            <radialGradient id="sentientGradient1" cx="50%" cy="50%">
+                                <stop offset="0%" style="stop-color:#ff00ff;stop-opacity:1">
+                                    <animate attributeName="stop-color" 
+                                        values="#ff00ff;#00ff88;#ff00ff" 
+                                        dur="60s" 
+                                        repeatCount="indefinite"/>
+                                </stop>
+                                <stop offset="50%" style="stop-color:#9f58fa;stop-opacity:0.8">
+                                    <animate attributeName="stop-color" 
+                                        values="#9f58fa;#ffd93d;#9f58fa" 
+                                        dur="60s" 
+                                        repeatCount="indefinite"/>
+                                </stop>
+                                <stop offset="100%" style="stop-color:#00ffff;stop-opacity:0.6">
+                                    <animate attributeName="stop-color" 
+                                        values="#00ffff;#ff6b35;#00ffff" 
+                                        dur="60s" 
+                                        repeatCount="indefinite"/>
+                                </stop>
+                                <animateTransform
+                                    attributeName="gradientTransform"
+                                    type="rotate"
+                                    from="0 0.5 0.5"
+                                    to="360 0.5 0.5"
+                                    dur="45s"
+                                    repeatCount="indefinite"/>
+                            </radialGradient>
+                            
+                            <radialGradient id="sentientGradient2" cx="30%" cy="30%">
+                                <stop offset="0%" style="stop-color:#4B96DC;stop-opacity:0.8">
+                                    <animate attributeName="stop-color" 
+                                        values="#4B96DC;#ff6b35;#4B96DC" 
+                                        dur="45s" 
+                                        repeatCount="indefinite"/>
+                                </stop>
+                                <stop offset="100%" style="stop-color:#00d4ff;stop-opacity:0.4">
+                                    <animate attributeName="stop-color" 
+                                        values="#00d4ff;#ff0040;#00d4ff" 
+                                        dur="45s" 
+                                        repeatCount="indefinite"/>
+                                </stop>
+                                <animateTransform
+                                    attributeName="gradientTransform"
+                                    type="translate"
+                                    values="-0.2,-0.2; 0.2,0.2; -0.2,-0.2"
+                                    dur="30s"
+                                    repeatCount="indefinite"/>
+                            </radialGradient>
+                            
+                            <radialGradient id="sentientGradient3" cx="70%" cy="70%">
+                                <stop offset="0%" style="stop-color:#ff00aa;stop-opacity:0.6">
+                                    <animate attributeName="stop-color" 
+                                        values="#ff00aa;#4bd48e;#ff00aa" 
+                                        dur="50s" 
+                                        repeatCount="indefinite"/>
+                                </stop>
+                                <stop offset="100%" style="stop-color:#f53969;stop-opacity:0.3">
+                                    <animate attributeName="stop-color" 
+                                        values="#f53969;#00d4ff;#f53969" 
+                                        dur="50s" 
+                                        repeatCount="indefinite"/>
+                                </stop>
+                                <animateTransform
+                                    attributeName="gradientTransform"
+                                    type="translate"
+                                    values="0.2,0.2; -0.2,-0.2; 0.2,0.2"
+                                    dur="35s"
+                                    repeatCount="indefinite"/>
+                            </radialGradient>
+                            
+                            <!-- Soft blur for ethereal effect -->
+                            <filter id="sentientBlur">
+                                <feGaussianBlur in="SourceGraphic" stdDeviation="0.5"/>
+                            </filter>
+                            
+                            <linearGradient id="navSphereGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#9f58fa;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#4B96DC;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        
+                        <!-- Outer sphere ring -->
+                        <circle cx="16" cy="16" r="12" fill="none" stroke="url(#navSphereGradient)" stroke-width="2" opacity="0.8"/>
+                        
+                        <!-- Inner sphere ring -->
+                        <circle cx="16" cy="16" r="8" fill="none" stroke="url(#navSphereGradient)" stroke-width="1.5" opacity="0.6"/>
+                        
+                        <!-- Center glow with sentient gradients -->
+                        <circle cx="16" cy="16" r="6" fill="url(#sentientGradient1)" opacity="0.8"/>
+                        <circle cx="16" cy="16" r="5" fill="url(#sentientGradient2)" opacity="0.6"/>
+                        <circle cx="16" cy="16" r="4" fill="url(#sentientGradient3)" opacity="0.7"/>
+                        
+                        <!-- Animated Sentient Jewel Core -->
+                        <circle cx="16" cy="16" r="3" fill="url(#sentientGradient1)" class="logo-jewel">
+                            <animate attributeName="r" values="3;4;3" dur="2s" repeatCount="indefinite"/>
+                            <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite"/>
+                        </circle>
+                        
+                        <!-- Orbital dots representing network nodes -->
+                        <circle cx="16" cy="4" r="1.5" fill="#9f58fa"/>
+                        <circle cx="28" cy="16" r="1.5" fill="#4B96DC"/>
+                        <circle cx="16" cy="28" r="1.5" fill="#4bd48e"/>
+                        <circle cx="4" cy="16" r="1.5" fill="#00d4ff"/>
+                    </svg>
+                </div>
+                <span class="nav-logo-text">RepSpheres</span>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="nav-links">
+                <a href="#demo" class="nav-link">Demo</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </nav>
+
+            <!-- Right Actions -->
+            <div class="nav-actions">
+                <a href="#get-started" class="nav-cta">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Demo Section -->
+    <section class="demo-section" id="demo">
+        <div class="demo-container">
+            <h1 class="demo-title">Sentient Orb</h1>
+            <p style="color: var(--text-secondary); margin-bottom: 3rem;">Experience the omniscient presence of fluid consciousness</p>
+            
+            <!-- Large demo orb -->
+            <div class="demo-orb-container">
+                <div class="orb-glow"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" style="overflow: visible;">
+                    <defs>
+                        <!-- Large sentient gradients -->
+                        <radialGradient id="largeSentient1" cx="50%" cy="50%">
+                            <stop offset="0%" style="stop-color:#ff00ff;stop-opacity:1">
+                                <animate attributeName="stop-color" 
+                                    values="#ff00ff;#00ff88;#00d4ff;#ff00ff" 
+                                    dur="40s" 
+                                    repeatCount="indefinite"/>
+                            </stop>
+                            <stop offset="30%" style="stop-color:#9f58fa;stop-opacity:0.9">
+                                <animate attributeName="stop-color" 
+                                    values="#9f58fa;#ffd93d;#ff6b35;#9f58fa" 
+                                    dur="40s" 
+                                    repeatCount="indefinite"/>
+                            </stop>
+                            <stop offset="60%" style="stop-color:#4B96DC;stop-opacity:0.7">
+                                <animate attributeName="stop-color" 
+                                    values="#4B96DC;#ff6b35;#4bd48e;#4B96DC" 
+                                    dur="40s" 
+                                    repeatCount="indefinite"/>
+                            </stop>
+                            <stop offset="100%" style="stop-color:#00ffff;stop-opacity:0.5">
+                                <animate attributeName="stop-color" 
+                                    values="#00ffff;#ff0040;#ffd93d;#00ffff" 
+                                    dur="40s" 
+                                    repeatCount="indefinite"/>
+                            </stop>
+                            <animateTransform
+                                attributeName="gradientTransform"
+                                type="rotate"
+                                from="0 0.5 0.5"
+                                to="360 0.5 0.5"
+                                dur="60s"
+                                repeatCount="indefinite"/>
+                        </radialGradient>
+                        
+                        <radialGradient id="largeSentient2" cx="35%" cy="35%">
+                            <stop offset="0%" style="stop-color:#4bd48e;stop-opacity:0.8">
+                                <animate attributeName="stop-color" 
+                                    values="#4bd48e;#ff00aa;#4bd48e" 
+                                    dur="35s" 
+                                    repeatCount="indefinite"/>
+                            </stop>
+                            <stop offset="100%" style="stop-color:#00ff88;stop-opacity:0.3">
+                                <animate attributeName="stop-color" 
+                                    values="#00ff88;#f53969;#00ff88" 
+                                    dur="35s" 
+                                    repeatCount="indefinite"/>
+                            </stop>
+                            <animateTransform
+                                attributeName="gradientTransform"
+                                type="translate"
+                                values="-0.15,-0.15; 0.15,0.15; -0.15,-0.15"
+                                dur="25s"
+                                repeatCount="indefinite"/>
+                        </radialGradient>
+                        
+                        <radialGradient id="largeSentient3" cx="65%" cy="65%">
+                            <stop offset="0%" style="stop-color:#ff6b35;stop-opacity:0.7">
+                                <animate attributeName="stop-color" 
+                                    values="#ff6b35;#4B96DC;#ff6b35" 
+                                    dur="45s" 
+                                    repeatCount="indefinite"/>
+                            </stop>
+                            <stop offset="100%" style="stop-color:#ffd93d;stop-opacity:0.3">
+                                <animate attributeName="stop-color" 
+                                    values="#ffd93d;#9f58fa;#ffd93d" 
+                                    dur="45s" 
+                                    repeatCount="indefinite"/>
+                            </stop>
+                            <animateTransform
+                                attributeName="gradientTransform"
+                                type="translate"
+                                values="0.15,0.15; -0.15,-0.15; 0.15,0.15"
+                                dur="30s"
+                                repeatCount="indefinite"/>
+                        </radialGradient>
+                        
+                        <filter id="largeSentientBlur">
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="1"/>
+                        </filter>
+                        
+                        <linearGradient id="largeRingGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#9f58fa;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#4B96DC;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#4bd48e;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    
+                    <!-- Outer sphere ring -->
+                    <circle cx="100" cy="100" r="80" fill="none" stroke="url(#largeRingGradient)" stroke-width="3" opacity="0.8"/>
+                    
+                    <!-- Inner sphere rings -->
+                    <circle cx="100" cy="100" r="60" fill="none" stroke="url(#largeRingGradient)" stroke-width="2.5" opacity="0.7"/>
+                    <circle cx="100" cy="100" r="40" fill="none" stroke="url(#largeRingGradient)" stroke-width="2" opacity="0.6"/>
+                    
+                    <!-- Large Sentient Core layers -->
+                    <circle cx="100" cy="100" r="35" fill="url(#largeSentient1)" opacity="0.8"/>
+                    <circle cx="100" cy="100" r="30" fill="url(#largeSentient2)" opacity="0.6"/>
+                    <circle cx="100" cy="100" r="25" fill="url(#largeSentient3)" opacity="0.7"/>
+                    
+                    <!-- Animated Sentient Jewel Core -->
+                    <circle cx="100" cy="100" r="20" fill="url(#largeSentient1)" class="logo-jewel">
+                        <animate attributeName="r" values="20;25;20" dur="3s" repeatCount="indefinite"/>
+                        <animate attributeName="opacity" values="0.8;1;0.8" dur="3s" repeatCount="indefinite"/>
+                    </circle>
+                    
+                    <!-- Orbital dots representing network nodes -->
+                    <circle cx="100" cy="20" r="10" fill="#9f58fa"/>
+                    <circle cx="180" cy="100" r="10" fill="#4B96DC"/>
+                    <circle cx="100" cy="180" r="10" fill="#4bd48e"/>
+                    <circle cx="20" cy="100" r="10" fill="#00d4ff"/>
+                </svg>
+            </div>
+            
+            <p style="color: var(--text-muted); margin-top: 3rem; font-size: 0.9rem;">
+                Fluid consciousness • Complementary color harmonics • Omniscient presence
+            </p>
+        </div>
+    </section>
+
+    <script>
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Smooth interaction without jitter
+        const logoIcon = document.querySelector('.nav-logo-icon');
+        const demoOrb = document.querySelector('.demo-orb-container svg');
+        
+        const addSmoothInteraction = (element) => {
+            element.addEventListener('mousemove', (e) => {
+                const rect = element.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                // Very subtle influence on the sentient core
+                const sentientCore = element.querySelector('.sentient-core');
+                if (sentientCore) {
+                    gsap.to(sentientCore, {
+                        scale: 1 + (Math.abs(x) + Math.abs(y)) * 0.001,
+                        duration: 2,
+                        ease: "power2.out"
+                    });
+                }
+                
+            });
+            
+            element.addEventListener('mouseleave', () => {
+                const sentientCore = element.querySelector('.sentient-core');
+                
+                if (sentientCore) {
+                    gsap.to(sentientCore, {
+                        scale: 1,
+                        duration: 2,
+                        ease: "power2.inOut"
+                    });
+                }
+            });
+        };
+        
+        // Apply smooth interaction
+        addSmoothInteraction(logoIcon);
+        addSmoothInteraction(demoOrb);
+        
+        // Smooth entrance animations
+        gsap.from('.nav-logo', {
+            opacity: 0,
+            y: -20,
+            duration: 1.5,
+            ease: "power3.out"
+        });
+        
+        gsap.from('.demo-title', {
+            opacity: 0,
+            y: 50,
+            duration: 1.5,
+            delay: 0.3,
+            ease: "power3.out"
+        });
+        
+        gsap.from('.demo-orb-container', {
+            opacity: 0,
+            scale: 0.9,
+            duration: 2,
+            delay: 0.6,
+            ease: "power2.out"
+        });
+    </script>
+</body>
+</html>
