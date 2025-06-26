@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RepSpheres | Join the Network</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Syne', -apple-system, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Matrix-style background */
+        .matrix-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            opacity: 0.15;
+        }
+
+        .matrix-rain {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 255, 170, 0.03) 2px,
+                rgba(0, 255, 170, 0.03) 4px
+            );
+            animation: matrixMove 20s linear infinite;
+        }
+
+        @keyframes matrixMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100px); }
+        }
+
+        /* Modal backdrop */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(ellipse at center, 
+                rgba(0, 0, 0, 0.7) 0%, 
+                rgba(0, 0, 0, 0.9) 100%
+            );
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Modal container - 75% scale */
+        .modal-container {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+            background: #0a0a0a;
+            border: 1px solid rgba(0, 255, 170, 0.2);
+            border-radius: 0;
+            overflow: visible;
+            transform: scale(0.75);
+            transform-origin: center;
+        }
+
+        /* Neon corners */
+        .corner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #00ffaa;
+        }
+
+        .corner-tl {
+            top: -1px;
+            left: -1px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .corner-tr {
+            top: -1px;
+            right: -1px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .corner-bl {
+            bottom: -1px;
+            left: -1px;
+            border-right: none;
+            border-top: none;
+        }
+
+        .corner-br {
+            bottom: -1px;
+            right: -1px;
+            border-left: none;
+            border-top: none;
+        }
+
+        /* Scanning line */
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                #00ffaa, 
+                transparent
+            );
+            animation: scan 4s linear infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+
+        /* Modal content */
+        .modal-content {
+            position: relative;
+            padding: 40px 30px;
+            background: linear-gradient(180deg,
+                rgba(0, 0, 0, 0) 0%,
+                rgba(0, 255, 170, 0.02) 50%,
+                rgba(0, 0, 0, 0) 100%
+            );
+        }
+
+        /* Close button */
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .close-button:hover {
+            border-color: #ff0040;
+            background: rgba(255, 0, 64, 0.1);
+        }
+
+        .close-button::before,
+        .close-button::after {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 1px;
+            background: #fff;
+            transition: background 0.3s ease;
+        }
+
+        .close-button::before { transform: rotate(45deg); }
+        .close-button::after { transform: rotate(-45deg); }
+
+        .close-button:hover::before,
+        .close-button:hover::after {
+            background: #ff0040;
+        }
+
+        /* Header */
+        .modal-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        /* Holographic orb */
+        .holo-orb {
+            position: absolute;
+            inset: 0;
+            background: conic-gradient(
+                from 0deg,
+                #00ffaa,
+                #00aaff,
+                #ff00aa,
+                #ffaa00,
+                #00ffaa
+            );
+            border-radius: 50%;
+            animation: holoRotate 10s linear infinite;
+        }
+
+        @keyframes holoRotate {
+            0% { transform: rotate(0deg); filter: hue-rotate(0deg); }
+            100% { transform: rotate(360deg); filter: hue-rotate(360deg); }
+        }
+
+        .holo-orb::before {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            background: #0a0a0a;
+            border-radius: 50%;
+        }
+
+        .holo-orb::after {
+            content: '';
+            position: absolute;
+            inset: 15px;
+            background: radial-gradient(circle, #00ffaa, transparent);
+            border-radius: 50%;
+            filter: blur(10px);
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+            background: linear-gradient(45deg, #00ffaa, #00aaff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .modal-subtitle {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Form */
+        .form-container {
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0, 255, 170, 0.02);
+            border: 1px solid rgba(0, 255, 170, 0.2);
+            color: #fff;
+            font-family: 'Space Mono', monospace;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            clip-path: polygon(
+                0 0,
+                calc(100% - 10px) 0,
+                100% 10px,
+                100% 100%,
+                0 100%
+            );
+        }
+
+        .form-input:focus {
+            outline: none;
+            background: rgba(0, 255, 170, 0.05);
+            border-color: #00ffaa;
+            box-shadow: 0 0 20px rgba(0, 255, 170, 0.2);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+
+        /* Input labels */
+        .input-label {
+            position: absolute;
+            top: -8px;
+            left: 10px;
+            background: #0a0a0a;
+            padding: 0 5px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #00ffaa;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .form-input:focus ~ .input-label {
+            opacity: 1;
+        }
+
+        /* Terms checkbox */
+        .terms-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .checkbox-custom {
+            width: 16px;
+            height: 16px;
+            border: 1px solid rgba(0, 255, 170, 0.3);
+            position: relative;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-input {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .checkbox-input:checked ~ .checkbox-custom {
+            background: #00ffaa;
+            border-color: #00ffaa;
+        }
+
+        .checkbox-custom::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #000;
+            font-size: 10px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .checkbox-input:checked ~ .checkbox-custom::after {
+            opacity: 1;
+        }
+
+        .terms-text a {
+            color: #00ffaa;
+            text-decoration: none;
+        }
+
+        /* Submit button */
+        .submit-button {
+            width: 100%;
+            padding: 15px;
+            background: transparent;
+            border: 2px solid #00ffaa;
+            color: #00ffaa;
+            font-family: 'Syne', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .submit-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #00ffaa;
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .submit-button:hover {
+            color: #000;
+        }
+
+        .submit-button:hover::before {
+            left: 0;
+        }
+
+        /* Divider */
+        .divider {
+            position: relative;
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: calc(50% - 40px);
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(0, 255, 170, 0.3)
+            );
+        }
+
+        .divider::before { left: 0; }
+        .divider::after { right: 0; transform: scaleX(-1); }
+
+        .divider-text {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 600;
+        }
+
+        /* Social login */
+        .social-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .social-button {
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-button::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, 
+                transparent 30%, 
+                rgba(255, 255, 255, 0.1) 50%, 
+                transparent 70%
+            );
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .social-button:hover::before {
+            transform: translateX(100%);
+        }
+
+        .social-button:hover {
+            border-color: rgba(0, 255, 170, 0.3);
+            color: #00ffaa;
+        }
+
+        .social-icon {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Login link */
+        .login-link {
+            text-align: center;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .login-link a {
+            color: #00ffaa;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .login-link a:hover {
+            opacity: 0.8;
+        }
+
+        /* Tech details */
+        .tech-details {
+            position: absolute;
+            bottom: -30px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            color: rgba(0, 255, 170, 0.4);
+            text-transform: uppercase;
+        }
+
+        .tech-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-dot {
+            width: 4px;
+            height: 4px;
+            background: #00ffaa;
+            border-radius: 50%;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Loading state */
+        .loading-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 2px solid rgba(0, 255, 170, 0.2);
+            border-top-color: #00ffaa;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Glitch effect */
+        @keyframes glitch {
+            0%, 100% { 
+                transform: translate(0);
+                filter: hue-rotate(0deg);
+            }
+            20% { 
+                transform: translate(-2px, 2px);
+                filter: hue-rotate(90deg);
+            }
+            40% { 
+                transform: translate(-2px, -2px);
+                filter: hue-rotate(180deg);
+            }
+            60% { 
+                transform: translate(2px, 2px);
+                filter: hue-rotate(270deg);
+            }
+            80% { 
+                transform: translate(2px, -2px);
+                filter: hue-rotate(360deg);
+            }
+        }
+
+        .modal-container:hover .holo-orb {
+            animation: holoRotate 10s linear infinite, glitch 0.3s ease infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix background -->
+    <div class="matrix-bg">
+        <div class="matrix-rain"></div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-backdrop">
+        <div class="modal-container">
+            <!-- Neon corners -->
+            <div class="corner corner-tl"></div>
+            <div class="corner corner-tr"></div>
+            <div class="corner corner-bl"></div>
+            <div class="corner corner-br"></div>
+
+            <!-- Scanning line -->
+            <div class="scan-line"></div>
+
+            <!-- Modal content -->
+            <div class="modal-content">
+                <!-- Close button -->
+                <button class="close-button" onclick="closeModal()"></button>
+
+                <!-- Header -->
+                <div class="modal-header">
+                    <div class="logo">
+                        <div class="holo-orb"></div>
+                    </div>
+                    <h1 class="modal-title">RepSpheres</h1>
+                    <p class="modal-subtitle">Access Request</p>
+                </div>
+
+                <!-- Form -->
+                <form class="form-container" onsubmit="handleSubmit(event)">
+                    <div class="input-group">
+                        <input type="text" class="form-input" placeholder="Full Name" required>
+                        <label class="input-label">Name</label>
+                    </div>
+
+                    <div class="input-group">
+                        <input type="email" class="form-input" placeholder="Email Address" required>
+                        <label class="input-label">Email</label>
+                    </div>
+
+                    <div class="input-group">
+                        <input type="password" class="form-input" placeholder="Create Password" required>
+                        <label class="input-label">Password</label>
+                    </div>
+
+                    <div class="input-group">
+                        <input type="text" class="form-input" placeholder="Company Name" required>
+                        <label class="input-label">Company</label>
+                    </div>
+
+                    <div class="terms-group">
+                        <label style="position: relative;">
+                            <input type="checkbox" class="checkbox-input" required>
+                            <div class="checkbox-custom"></div>
+                        </label>
+                        <span class="terms-text">
+                            I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a>
+                        </span>
+                    </div>
+
+                    <button type="submit" class="submit-button">Initialize Account</button>
+                </form>
+
+                <!-- Divider -->
+                <div class="divider">
+                    <span class="divider-text">OR</span>
+                </div>
+
+                <!-- Social login -->
+                <div class="social-grid">
+                    <a href="#" class="social-button">
+                        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                        Google
+                    </a>
+                    <a href="#" class="social-button">
+                        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                        </svg>
+                        LinkedIn
+                    </a>
+                </div>
+
+                <!-- Login link -->
+                <div class="login-link">
+                    Already have access? <a href="#" onclick="switchToLogin()">Sign in</a>
+                </div>
+
+                <!-- Loading overlay -->
+                <div class="loading-overlay" id="loadingOverlay">
+                    <div class="loader"></div>
+                </div>
+            </div>
+
+            <!-- Tech details -->
+            <div class="tech-details">
+                <div class="tech-item">
+                    <span class="status-dot"></span>
+                    <span>SSL</span>
+                </div>
+                <div class="tech-item">
+                    <span>v2.0.1</span>
+                </div>
+                <div class="tech-item">
+                    <span>256-bit</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Form submission
+        function handleSubmit(event) {
+            event.preventDefault();
+            
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.classList.add('active');
+            
+            // Simulate API call
+            setTimeout(() => {
+                overlay.classList.remove('active');
+                console.log('Account created');
+                // Redirect or show success
+            }, 2000);
+        }
+
+        // Close modal
+        function closeModal() {
+            document.querySelector('.modal-backdrop').style.display = 'none';
+        }
+
+        // Switch to login
+        function switchToLogin() {
+            console.log('Switching to login...');
+            // Implement login modal switch
+        }
+
+        // Glitch effect on logo hover
+        const logo = document.querySelector('.logo');
+        logo.addEventListener('mouseenter', () => {
+            logo.style.animation = 'glitch 0.5s ease';
+            setTimeout(() => {
+                logo.style.animation = '';
+            }, 500);
+        });
+
+        // Input focus effects
+        const inputs = document.querySelectorAll('.form-input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.querySelector('.input-label').style.opacity = '1';
+            });
+            
+            input.addEventListener('blur', () => {
+                if (!input.value) {
+                    input.parentElement.querySelector('.input-label').style.opacity = '0';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

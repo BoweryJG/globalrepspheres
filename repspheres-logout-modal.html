@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RepSpheres | Logout Confirmation</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-darker: #050505;
+            --panel-dark: #1a1a1a;
+            --panel-darker: #141414;
+            --purple-primary: #9f58fa;
+            --purple-dark: #7e22ce;
+            --purple-light: #a855f7;
+            --blue-accent: #4B96DC;
+            --blue-light: #60a5fa;
+            --green-accent: #4bd48e;
+            --green-neon: #00ff88;
+            --pink-accent: #f53969;
+            --orange-accent: #ff6b35;
+            --cyan-accent: #00d4ff;
+            --yellow-accent: #ffd93d;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-hover: rgba(255, 255, 255, 0.08);
+            --gem-impossible: #ff00ff;
+            --gem-shift: #00ffff;
+            --gem-deep: #ff00aa;
+            --metal-light: #e8e8e8;
+            --metal-mid: #999;
+            --metal-dark: #555;
+            --metal-shadow: #222;
+            --red-accent: #ff4444;
+            --red-dark: #cc0000;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-darker);
+            color: var(--text-primary);
+            overflow: hidden;
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Animated Starfield Background */
+        .starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 200%;
+            background-image: 
+                radial-gradient(2px 2px at 20% 30%, white, transparent),
+                radial-gradient(2px 2px at 40% 70%, white, transparent),
+                radial-gradient(1px 1px at 50% 50%, white, transparent),
+                radial-gradient(1px 1px at 80% 10%, white, transparent),
+                radial-gradient(2px 2px at 90% 60%, white, transparent);
+            background-size: 200px 200px;
+            background-repeat: repeat;
+            animation: moveStars 60s linear infinite;
+        }
+
+        @keyframes moveStars {
+            from { transform: translateY(0); }
+            to { transform: translateY(-100vh); }
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+        }
+
+        /* Logout Modal - Luxury Glassmorphic Design */
+        .logout-modal {
+            position: relative;
+            width: 200px;
+            min-height: 230px;
+            background: linear-gradient(135deg,
+                rgba(26, 26, 26, 0.95) 0%,
+                rgba(30, 30, 30, 0.9) 50%,
+                rgba(26, 26, 26, 0.95) 100%
+            );
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.5),
+                0 0 20px rgba(255, 68, 68, 0.1),
+                0 0 40px rgba(255, 0, 0, 0.05),
+                inset 0 0.5px 0 rgba(255, 255, 255, 0.1),
+                inset 0 -0.5px 0 rgba(0, 0, 0, 0.3);
+            padding: 24px 20px 16px;
+            transform-style: preserve-3d;
+            opacity: 1;
+        }
+
+        /* Breathing Animation - Red Theme */
+        .logout-modal::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--red-accent), var(--orange-accent));
+            opacity: 0.1;
+            z-index: -1;
+            animation: breathing 4s ease-in-out infinite;
+        }
+
+        @keyframes breathing {
+            0%, 100% { transform: scale(1); opacity: 0.1; }
+            50% { transform: scale(1.02); opacity: 0.2; }
+        }
+
+        /* 4-Point Luxury Screws */
+        .screw {
+            position: absolute;
+            width: 4.2px;
+            height: 4.2px;
+            background: radial-gradient(circle at 30% 30%, var(--metal-light), var(--metal-dark));
+            border-radius: 50%;
+            box-shadow: 
+                inset -0.7px -0.7px 1.4px rgba(0,0,0,0.6),
+                inset 0.7px 0.7px 1.4px rgba(255,255,255,0.2),
+                0 0.7px 1.4px rgba(0,0,0,0.4);
+            z-index: 10;
+            transition: transform 0.4s ease;
+        }
+
+        .screw::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 80%;
+            height: 0.5px;
+            background: var(--metal-shadow);
+            transform: translate(-50%, -50%) rotate(var(--angle, 45deg));
+            box-shadow: 0 1px 0 -0.5px var(--metal-shadow);
+        }
+
+        .screw-tl { top: 5px; left: 5px; --angle: 15deg; }
+        .screw-tr { top: 5px; right: 5px; --angle: -22deg; }
+        .screw-bl { bottom: 5px; left: 5px; --angle: -8deg; }
+        .screw-br { bottom: 5px; right: 5px; --angle: 30deg; }
+
+        /* Screw idle animation */
+        @keyframes screwIdle {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(15deg); }
+        }
+
+        .screw {
+            animation: screwIdle 8s ease-in-out infinite;
+            animation-delay: calc(var(--screw-index, 0) * 2s);
+        }
+
+        /* Power Rail */
+        .power-rail {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 1px;
+            background: linear-gradient(to right,
+                transparent,
+                rgba(255, 68, 68, 0.2),
+                rgba(255, 68, 68, 0.1),
+                rgba(255, 68, 68, 0.2),
+                transparent
+            );
+            overflow: hidden;
+        }
+
+        .power-rail::after {
+            content: '';
+            position: absolute;
+            height: 100%;
+            width: 20%;
+            background: linear-gradient(to right, transparent, var(--red-accent), transparent);
+            animation: powerFlow 4s infinite linear;
+            box-shadow: 0 0 10px var(--red-accent);
+        }
+
+        @keyframes powerFlow {
+            from { left: -20%; }
+            to { left: 120%; }
+        }
+
+        /* Power Nodes */
+        .power-node {
+            position: absolute;
+            top: -1px;
+            width: 3px;
+            height: 3px;
+            background: radial-gradient(circle, var(--red-accent), transparent);
+            border-radius: 50%;
+            animation: nodePulse 2s infinite ease-in-out;
+        }
+
+        .power-node:nth-child(1) { left: 20%; animation-delay: 0s; }
+        .power-node:nth-child(2) { left: 40%; animation-delay: 0.5s; }
+        .power-node:nth-child(3) { left: 60%; animation-delay: 1s; }
+        .power-node:nth-child(4) { left: 80%; animation-delay: 1.5s; }
+
+        @keyframes nodePulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.5); opacity: 1; }
+        }
+
+        /* Close Button */
+        .close-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 16px;
+            height: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 20;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 0, 0, 0.1);
+            border-color: rgba(255, 0, 0, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .close-btn::before,
+        .close-btn::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 1px;
+            background: var(--text-secondary);
+            transition: background 0.3s ease;
+        }
+
+        .close-btn::before { transform: rotate(45deg); }
+        .close-btn::after { transform: rotate(-45deg); }
+
+        .close-btn:hover::before,
+        .close-btn:hover::after {
+            background: #ff0040;
+        }
+
+        /* Logo Section */
+        .logo-section {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            margin: 0 auto 8px;
+            position: relative;
+        }
+
+        /* Animated Jewel Core */
+        @keyframes jewelPulse {
+            0%, 100% { 
+                transform: scale(1) rotate(0deg);
+                filter: brightness(1) hue-rotate(0deg);
+            }
+            25% { 
+                transform: scale(1.1) rotate(90deg);
+                filter: brightness(1.2) hue-rotate(30deg);
+            }
+            50% { 
+                transform: scale(1.05) rotate(180deg);
+                filter: brightness(1.4) hue-rotate(60deg);
+            }
+            75% { 
+                transform: scale(1.08) rotate(270deg);
+                filter: brightness(1.1) hue-rotate(90deg);
+            }
+        }
+
+        .logo-jewel {
+            animation: jewelPulse 6s infinite;
+            transform-origin: center;
+        }
+
+        .logo-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 12px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--red-accent), var(--orange-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .logo-subtitle {
+            font-size: 5.5px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.75px;
+            font-weight: 500;
+        }
+
+        /* User Info Section */
+        .user-info {
+            text-align: center;
+            margin: 16px 0;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple-primary), var(--blue-accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            box-shadow: 0 2px 8px rgba(159, 88, 250, 0.3);
+        }
+
+        .user-name {
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .user-email {
+            font-size: 7px;
+            color: var(--text-muted);
+        }
+
+        /* Message Section */
+        .message-section {
+            text-align: center;
+            margin: 16px 0;
+        }
+
+        .logout-message {
+            font-size: 8px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            margin-bottom: 16px;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 7.5px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            color: var(--text-primary);
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .action-btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        /* Logout Button */
+        .action-btn.logout {
+            background: rgba(255, 68, 68, 0.1);
+            border-color: rgba(255, 68, 68, 0.3);
+            color: var(--red-accent);
+        }
+
+        .action-btn.logout:hover {
+            background: rgba(255, 68, 68, 0.2);
+            transform: translateY(-1px);
+            box-shadow: 
+                0 4px 12px rgba(255, 68, 68, 0.3),
+                0 0 20px rgba(255, 68, 68, 0.1);
+            border-color: rgba(255, 68, 68, 0.5);
+        }
+
+        /* Cancel Button */
+        .action-btn.cancel {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+        }
+
+        .action-btn.cancel:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-1px);
+            box-shadow: 
+                0 2px 8px rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        /* Footer */
+        .modal-footer {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+        }
+
+        .security-text {
+            font-size: 5px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.75px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        /* LED Indicators */
+        .led-indicator {
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            display: inline-block;
+            animation: ledBlink 3s infinite;
+        }
+
+        .led-indicator:nth-child(1) { 
+            background: var(--red-accent);
+            box-shadow: 0 0 4px var(--red-accent);
+            animation-delay: 0s;
+        }
+
+        .led-indicator:nth-child(2) { 
+            background: var(--orange-accent);
+            box-shadow: 0 0 4px var(--orange-accent);
+            animation-delay: 1s;
+        }
+
+        .led-indicator:nth-child(3) { 
+            background: var(--yellow-accent);
+            box-shadow: 0 0 4px var(--yellow-accent);
+            animation-delay: 2s;
+        }
+
+        @keyframes ledBlink {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Loading State */
+        .loading-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-radius: 12px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-jewel {
+            width: 24px;
+            height: 24px;
+            animation: loadingSpin 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+        }
+
+        @keyframes loadingSpin {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        /* Focus States */
+        .action-btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 68, 68, 0.4);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 480px) {
+            .modal-overlay {
+                padding: 0;
+            }
+
+            .logout-modal {
+                width: 100%;
+                height: 100%;
+                border-radius: 0;
+                min-height: 100vh;
+                padding: 30px 15px 20px;
+            }
+
+            .screw {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Starfield -->
+    <div class="starfield">
+        <div class="stars"></div>
+    </div>
+
+    <!-- Modal Overlay -->
+    <div class="modal-overlay">
+        <!-- Logout Modal -->
+        <div class="logout-modal">
+            <!-- Power Rail -->
+            <div class="power-rail">
+                <div class="power-node"></div>
+                <div class="power-node"></div>
+                <div class="power-node"></div>
+                <div class="power-node"></div>
+            </div>
+
+            <!-- 4-Point Luxury Screws -->
+            <div class="screw screw-tl" style="--screw-index: 0"></div>
+            <div class="screw screw-tr" style="--screw-index: 1"></div>
+            <div class="screw screw-bl" style="--screw-index: 2"></div>
+            <div class="screw screw-br" style="--screw-index: 3"></div>
+
+            <!-- Close Button -->
+            <button class="close-btn" aria-label="Close"></button>
+
+            <!-- Logo Section -->
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+                        <defs>
+                            <linearGradient id="sphereGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#ff4444;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#ff6b35;stop-opacity:1" />
+                            </linearGradient>
+                            <radialGradient id="jewelGradient" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+                                <stop offset="30%" style="stop-color:#ff4444;stop-opacity:1" />
+                                <stop offset="60%" style="stop-color:#ff6b35;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#cc0000;stop-opacity:0.9" />
+                            </radialGradient>
+                        </defs>
+                        
+                        <!-- Outer sphere ring -->
+                        <circle cx="32" cy="32" r="24" fill="none" stroke="url(#sphereGradient)" stroke-width="3" opacity="0.8"/>
+                        
+                        <!-- Inner sphere ring -->
+                        <circle cx="32" cy="32" r="16" fill="none" stroke="url(#sphereGradient)" stroke-width="2" opacity="0.6"/>
+                        
+                        <!-- Animated Jewel Core -->
+                        <circle cx="32" cy="32" r="6" fill="url(#jewelGradient)" class="logo-jewel">
+                            <animate attributeName="r" values="6;8;6" dur="3s" repeatCount="indefinite"/>
+                            <animate attributeName="opacity" values="0.8;1;0.8" dur="3s" repeatCount="indefinite"/>
+                        </circle>
+                        
+                        <!-- Orbital dots -->
+                        <circle cx="32" cy="8" r="3" fill="#ff4444" opacity="0.8"/>
+                        <circle cx="56" cy="32" r="3" fill="#ff6b35" opacity="0.8"/>
+                        <circle cx="32" cy="56" r="3" fill="#ffd93d" opacity="0.8"/>
+                        <circle cx="8" cy="32" r="3" fill="#ff8866" opacity="0.8"/>
+                    </svg>
+                </div>
+                <h1 class="logo-title">Logout</h1>
+                <p class="logo-subtitle">Secure Session Termination</p>
+            </div>
+
+            <!-- User Info -->
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">JD</div>
+                <div class="user-name" id="userName">John Doe</div>
+                <div class="user-email" id="userEmail">john.doe@repspheres.com</div>
+            </div>
+
+            <!-- Message Section -->
+            <div class="message-section">
+                <p class="logout-message">
+                    Are you sure you want to logout?<br>
+                    Your session will be terminated.
+                </p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="action-btn cancel" onclick="handleCancel()">
+                    Stay Connected
+                </button>
+                <button class="action-btn logout" onclick="handleLogout()">
+                    Logout
+                </button>
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer">
+                <div class="security-text">
+                    <span class="led-indicator"></span>
+                    <span>SESSION ACTIVE</span>
+                    <span class="led-indicator"></span>
+                    <span class="led-indicator"></span>
+                </div>
+            </div>
+
+            <!-- Loading Overlay -->
+            <div class="loading-overlay" id="loadingOverlay">
+                <svg class="loading-jewel" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+                    <defs>
+                        <radialGradient id="loadingGradient">
+                            <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+                            <stop offset="30%" style="stop-color:#ff4444;stop-opacity:1" />
+                            <stop offset="60%" style="stop-color:#ff6b35;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#cc0000;stop-opacity:0.9" />
+                        </radialGradient>
+                    </defs>
+                    <circle cx="24" cy="24" r="20" fill="none" stroke="url(#loadingGradient)" stroke-width="4"/>
+                    <circle cx="24" cy="24" r="10" fill="url(#loadingGradient)"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize GSAP animations
+        gsap.registerPlugin();
+
+        // Modal entrance animation
+        gsap.fromTo(".logout-modal", 
+            {
+                scale: 0.8,
+                rotationX: 10,
+                rotationY: 10,
+                opacity: 0
+            },
+            {
+                duration: 0.8,
+                scale: 1,
+                rotationX: 0,
+                rotationY: 0,
+                opacity: 1,
+                ease: "elastic.out(1, 0.5)",
+                delay: 0.1
+            }
+        );
+
+        gsap.from(".screw", {
+            duration: 0.6,
+            scale: 0,
+            rotation: -180,
+            stagger: 0.1,
+            ease: "back.out(1.7)",
+            delay: 0.5
+        });
+
+        gsap.from(".power-node", {
+            duration: 0.4,
+            scale: 0,
+            stagger: 0.1,
+            ease: "power2.out",
+            delay: 0.7
+        });
+
+        // Close button functionality
+        document.querySelector('.close-btn').addEventListener('click', () => {
+            closeModal();
+        });
+
+        function closeModal() {
+            gsap.to(".logout-modal", {
+                duration: 0.4,
+                scale: 0.8,
+                opacity: 0,
+                ease: "power2.in",
+                onComplete: () => {
+                    document.querySelector('.modal-overlay').style.display = 'none';
+                }
+            });
+        }
+
+        // Action handlers
+        function handleCancel() {
+            closeModal();
+        }
+
+        async function handleLogout() {
+            showLoading();
+            
+            // Simulate logout process
+            setTimeout(() => {
+                hideLoading();
+                // In real implementation, clear session and redirect
+                console.log('Logout successful');
+                window.location.href = '/login'; // Redirect to login page
+            }, 1500);
+        }
+
+        // Loading state
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.add('active');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('active');
+        }
+
+        // Hover effects for action buttons
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.addEventListener('mouseenter', (e) => {
+                gsap.to(e.target, {
+                    duration: 0.3,
+                    y: -2,
+                    ease: "power2.out"
+                });
+            });
+
+            btn.addEventListener('mouseleave', (e) => {
+                gsap.to(e.target, {
+                    duration: 0.3,
+                    y: 0,
+                    ease: "power2.out"
+                });
+            });
+        });
+
+        // Screw rotation on hover
+        document.querySelectorAll('.screw').forEach((screw, index) => {
+            screw.addEventListener('mouseenter', () => {
+                gsap.to(screw, {
+                    duration: 0.4,
+                    rotation: "+=360",
+                    ease: "power2.inOut"
+                });
+            });
+        });
+
+        // 3D tilt effect on modal
+        const modal = document.querySelector('.logout-modal');
+        let modalRect = modal.getBoundingClientRect();
+
+        modal.addEventListener('mousemove', (e) => {
+            const x = e.clientX - modalRect.left - modalRect.width / 2;
+            const y = e.clientY - modalRect.top - modalRect.height / 2;
+            const rotateX = (y / modalRect.height) * 5;
+            const rotateY = -(x / modalRect.width) * 5;
+            
+            gsap.to(modal, {
+                duration: 0.3,
+                rotationX: rotateX,
+                rotationY: rotateY,
+                ease: "power2.out"
+            });
+        });
+
+        modal.addEventListener('mouseleave', () => {
+            gsap.to(modal, {
+                duration: 0.5,
+                rotationX: 0,
+                rotationY: 0,
+                ease: "power2.out"
+            });
+        });
+
+        // Update modal rect on resize
+        window.addEventListener('resize', () => {
+            modalRect = modal.getBoundingClientRect();
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelector('.close-btn').click();
+            }
+        });
+
+        // Simulate user data (in real app, this would come from session)
+        function loadUserData() {
+            const userData = {
+                name: 'John Doe',
+                email: 'john.doe@repspheres.com',
+                initials: 'JD'
+            };
+            
+            document.getElementById('userName').textContent = userData.name;
+            document.getElementById('userEmail').textContent = userData.email;
+            document.getElementById('userAvatar').textContent = userData.initials;
+        }
+
+        // Load user data on page load
+        loadUserData();
+    </script>
+</body>
+</html>
