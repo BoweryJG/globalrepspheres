@@ -1,3 +1,16 @@
+/* CSS Variables */
+:root {
+    --metal-light: #c0c5ce;
+    --metal-dark: #65737e;
+    --metal-shadow: #2b303b;
+    --gem-impossible: #ff00ff;
+    --gem-shift: #00ffff;
+    --purple-primary: #9f58fa;
+    --text-secondary: #999;
+    --text-muted: #666;
+    --green-accent: #00ff00;
+}
+
 /* Animated Starfield Background */
 .starfield {
     position: fixed;

@@ -9,38 +9,61 @@ const LoginModal = ({ isOpen, onClose, onGoogleAuth, onFacebookAuth, onEmailAuth
   const modalOverlayRef = useRef(null);
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen || !modalRef.current) return;
 
-    // Register GSAP
-    gsap.registerPlugin();
+    // Set initial transform-style for 3D effects
+    gsap.set(modalRef.current, { transformStyle: "preserve-3d", perspective: 1000 });
 
     // Modal entrance animation with stagger
-    gsap.from(modalRef.current, {
-      duration: 0.8,
-      scale: 0.8,
-      rotationX: 10,
-      rotationY: 10,
-      opacity: 0,
-      ease: "elastic.out(1, 0.5)",
-      delay: 0.1
-    });
+    gsap.fromTo(modalRef.current, 
+      {
+        scale: 0.8,
+        rotationX: 10,
+        rotationY: 10,
+        opacity: 0,
+      },
+      {
+        duration: 0.8,
+        scale: 1,
+        rotationX: 0,
+        rotationY: 0,
+        opacity: 1,
+        ease: "elastic.out(1, 0.5)",
+        delay: 0.1
+      }
+    );
 
-    gsap.from(".screw", {
-      duration: 0.6,
-      scale: 0,
-      rotation: -180,
-      stagger: 0.1,
-      ease: "back.out(1.7)",
-      delay: 0.5
-    });
+    // Animate screws from the modal container context
+    const screws = modalRef.current.querySelectorAll(".screw");
+    gsap.fromTo(screws,
+      {
+        scale: 0,
+        rotation: -180,
+      },
+      {
+        duration: 0.6,
+        scale: 1,
+        rotation: 0,
+        stagger: 0.1,
+        ease: "back.out(1.7)",
+        delay: 0.5
+      }
+    );
 
-    gsap.from(".power-node", {
-      duration: 0.4,
-      scale: 0,
-      stagger: 0.1,
-      ease: "power2.out",
-      delay: 0.7
-    });
+    // Animate power nodes
+    const powerNodes = modalRef.current.querySelectorAll(".power-node");
+    gsap.fromTo(powerNodes,
+      {
+        scale: 0,
+      },
+      {
+        duration: 0.4,
+        scale: 1,
+        stagger: 0.1,
+        ease: "power2.out",
+        delay: 0.7
+      }
+    );
 
     // Hover effects for social buttons
     const socialBtns = modalRef.current.querySelectorAll('.social-btn');
@@ -130,10 +153,14 @@ const LoginModal = ({ isOpen, onClose, onGoogleAuth, onFacebookAuth, onEmailAuth
   }, [isOpen, onClose]);
 
   const handleClose = () => {
+    if (!modalRef.current) return;
+    
     gsap.to(modalRef.current, {
       duration: 0.4,
       scale: 0.8,
       opacity: 0,
+      rotationX: -10,
+      rotationY: -10,
       ease: "power2.in",
       onComplete: () => {
         onClose();
