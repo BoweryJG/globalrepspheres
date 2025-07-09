@@ -1,0 +1,474 @@
+/* Premium Pricing Section CSS */
+
+.pricing-section {
+  background: radial-gradient(ellipse at center, #0A0A0A 0%, #000000 100%);
+  padding: 6rem 2rem;
+}
+
+.pricing-subtitle {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #999;
+  margin-bottom: 4rem;
+  font-style: italic;
+}
+
+/* Pricing Tiers Grid */
+.pricing-tiers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto 4rem;
+}
+
+/* Pricing Cards */
+.pricing-card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.05) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 20px;
+  padding: 3rem 2rem;
+  position: relative;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.pricing-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, transparent, #D4AF37, transparent);
+  transform: translateX(-100%);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  to { transform: translateX(100%); }
+}
+
+.pricing-card:hover {
+  transform: translateY(-10px);
+  border-color: rgba(212, 175, 55, 0.5);
+  box-shadow: 0 20px 60px rgba(212, 175, 55, 0.2);
+}
+
+/* Card Variants */
+.pricing-card.archive {
+  border-color: rgba(100, 100, 100, 0.3);
+}
+
+.pricing-card.archive::before {
+  background: linear-gradient(90deg, transparent, #666, transparent);
+}
+
+.pricing-card.intelligence {
+  border-color: rgba(0, 255, 0, 0.2);
+}
+
+.pricing-card.intelligence::before {
+  background: linear-gradient(90deg, transparent, #00FF00, transparent);
+}
+
+.pricing-card.professional {
+  border-color: rgba(212, 175, 55, 0.4);
+  background: linear-gradient(135deg, rgba(212,175,55,0.05) 0%, rgba(212,175,55,0.1) 100%);
+}
+
+.pricing-card.professional.popular {
+  transform: scale(1.05);
+  box-shadow: 0 20px 60px rgba(212, 175, 55, 0.3);
+}
+
+.pricing-card.elite {
+  border-color: rgba(147, 112, 219, 0.3);
+  background: linear-gradient(135deg, rgba(147,112,219,0.05) 0%, rgba(147,112,219,0.1) 100%);
+}
+
+.pricing-card.elite::before {
+  background: linear-gradient(90deg, transparent, #9370DB, transparent);
+}
+
+/* Popular Badge */
+.popular-badge {
+  position: absolute;
+  top: -1px;
+  right: 20px;
+  background: #D4AF37;
+  color: #000;
+  padding: 0.5rem 1.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-radius: 0 0 10px 10px;
+}
+
+/* Tier Name */
+.tier-name {
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: #FFFFFF;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+/* Price Display */
+.price {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 1rem;
+}
+
+.currency {
+  font-size: 1.5rem;
+  color: #999;
+  margin-right: 0.25rem;
+}
+
+.amount {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  font-family: 'Orbitron', monospace;
+}
+
+.period {
+  font-size: 1rem;
+  color: #999;
+  margin-left: 0.5rem;
+}
+
+/* Tier Hook */
+.tier-hook {
+  font-size: 1.2rem;
+  color: #D4AF37;
+  margin-bottom: 2rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* Features List */
+.pricing-card ul {
+  list-style: none;
+  margin-bottom: 2rem;
+}
+
+.pricing-card li {
+  padding: 0.75rem 0;
+  color: #C0C0C0;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.pricing-card li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #00FF00;
+  font-weight: bold;
+}
+
+/* Value Propositions */
+.value-prop {
+  text-align: center;
+  font-style: italic;
+  color: #999;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: rgba(255,255,255,0.02);
+  border-radius: 10px;
+}
+
+.roi-badge {
+  display: inline-block;
+  background: rgba(0, 255, 0, 0.1);
+  color: #00FF00;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(0, 255, 0, 0.3);
+}
+
+/* CTA Buttons */
+.tier-cta {
+  width: 100%;
+  padding: 1rem 2rem;
+  background: transparent;
+  color: #D4AF37;
+  border: 2px solid #D4AF37;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.tier-cta:hover {
+  background: #D4AF37;
+  color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+}
+
+.tier-cta.primary {
+  background: #D4AF37;
+  color: #000;
+}
+
+.tier-cta.primary:hover {
+  background: #B8860B;
+  box-shadow: 0 15px 40px rgba(212, 175, 55, 0.5);
+}
+
+/* ROI Calculator */
+.roi-calculator {
+  max-width: 800px;
+  margin: 4rem auto 0;
+  padding: 3rem;
+  background: linear-gradient(135deg, rgba(212,175,55,0.05) 0%, rgba(212,175,55,0.1) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 20px;
+}
+
+.roi-calculator h3 {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #D4AF37;
+}
+
+.calculator-inputs {
+  margin-bottom: 3rem;
+}
+
+.input-group {
+  margin-bottom: 2rem;
+}
+
+.input-group label {
+  display: block;
+  font-size: 1.1rem;
+  color: #C0C0C0;
+  margin-bottom: 1rem;
+}
+
+input[type="range"] {
+  width: 100%;
+  height: 8px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  background: #D4AF37;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+  transition: all 0.3s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.8);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  background: #D4AF37;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.income-display {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-top: 1rem;
+  font-family: 'Orbitron', monospace;
+}
+
+/* ROI Results */
+.roi-results {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.result-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  background: rgba(255,255,255,0.02);
+  border-radius: 10px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.result-item.highlight {
+  background: rgba(212, 175, 55, 0.1);
+  border-color: #D4AF37;
+  transform: scale(1.05);
+}
+
+.result-item .label {
+  font-size: 1.1rem;
+  color: #C0C0C0;
+}
+
+.result-item .value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #D4AF37;
+  font-family: 'Orbitron', monospace;
+}
+
+/* Annual Pricing Toggle */
+.pricing-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.toggle-label {
+  font-size: 1.1rem;
+  color: #999;
+}
+
+.toggle-label.active {
+  color: #D4AF37;
+  font-weight: 600;
+}
+
+.toggle-switch {
+  position: relative;
+  width: 60px;
+  height: 30px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 15px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.toggle-switch.active {
+  background: rgba(212, 175, 55, 0.3);
+}
+
+.toggle-switch::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  background: #666;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.toggle-switch.active::after {
+  left: 33px;
+  background: #D4AF37;
+}
+
+.savings-badge {
+  display: inline-block;
+  background: #00FF00;
+  color: #000;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+
+/* Responsive Pricing */
+@media (max-width: 1200px) {
+  .pricing-tiers {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .pricing-tiers {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .pricing-card.professional.popular {
+    transform: scale(1);
+  }
+  
+  .amount {
+    font-size: 2.5rem;
+  }
+  
+  .roi-calculator {
+    padding: 2rem 1rem;
+  }
+  
+  .income-display {
+    font-size: 2rem;
+  }
+  
+  .result-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+  
+  .result-item .value {
+    font-size: 1.5rem;
+  }
+}
+
+/* Price Animation on Hover */
+@keyframes price-bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.pricing-card:hover .amount {
+  animation: price-bounce 0.5s ease-in-out;
+}
+
+/* Loading State for Calculator */
+.calculator-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(212, 175, 55, 0.2);
+  border-top-color: #D4AF37;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
