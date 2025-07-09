@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RepSpheres - The Great Sales Inversion Has Begun</title>
+    <meta name="description" content="The AI inversion in sales is here. 40% productivity gains for those who embrace it. Career extinction for those who don't. Choose your destiny.">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/watch-animation.css">
+    <link rel="stylesheet" href="styles/pricing.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- The Moment of Truth - Opening Scene -->
+    <section id="moment-of-truth" class="fullscreen-scene">
+        <div class="watch-container">
+            <div class="watch-face" id="mainWatch">
+                <!-- Watch Details -->
+                <div class="watch-bezel"></div>
+                <div class="watch-crystal"></div>
+                
+                <!-- Hour Markers -->
+                <div class="hour-markers">
+                    <div class="hour-marker" style="--index: 0"></div>
+                    <div class="hour-marker" style="--index: 1"></div>
+                    <div class="hour-marker" style="--index: 2"></div>
+                    <div class="hour-marker" style="--index: 3"></div>
+                    <div class="hour-marker" style="--index: 4"></div>
+                    <div class="hour-marker" style="--index: 5"></div>
+                    <div class="hour-marker" style="--index: 6"></div>
+                    <div class="hour-marker" style="--index: 7"></div>
+                    <div class="hour-marker" style="--index: 8"></div>
+                    <div class="hour-marker" style="--index: 9"></div>
+                    <div class="hour-marker" style="--index: 10"></div>
+                    <div class="hour-marker" style="--index: 11"></div>
+                </div>
+                
+                <!-- Watch Hands -->
+                <div class="watch-center"></div>
+                <div class="hour-hand"></div>
+                <div class="minute-hand"></div>
+                <div class="second-hand trembling"></div>
+                
+                <!-- The Crack (appears on scroll) -->
+                <div class="watch-crack hidden"></div>
+                
+                <!-- Split halves (for animation) -->
+                <div class="watch-left hidden"></div>
+                <div class="watch-right hidden"></div>
+            </div>
+        </div>
+        
+        <h1 class="opening-text">Time Stops for No Rep.</h1>
+        <p class="subtext">The Great Sales Inversion Begins Now.</p>
+        
+        <div class="scroll-indicator">
+            <div class="scroll-arrow"></div>
+            <span>Scroll to Choose Your Destiny</span>
+        </div>
+    </section>
+
+    <!-- The Fracture - Two Destinies Revealed -->
+    <section id="the-fracture" class="hidden">
+        <div class="split-container">
+            <!-- Left Side: The Decay -->
+            <div class="decay-side">
+                <div class="paper-vortex" id="paperVortex"></div>
+                <div class="decay-content">
+                    <h2 class="melting-numbers">83% Fall Behind</h2>
+                    <p class="fading-text">Still leaving voicemails. Still using spreadsheets. Still hoping.</p>
+                    <div class="stats-decay">
+                        <div class="stat-item">
+                            <span class="stat-number melting">50</span>
+                            <span class="stat-label">Calls per day</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number melting">2%</span>
+                            <span class="stat-label">Close rate</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number melting">60+</span>
+                            <span class="stat-label">Hours per week</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Side: The Ascension -->
+            <div class="ascension-side">
+                <div class="data-constellation" id="dataConstellation"></div>
+                <div class="holo-interface">
+                    <h2 class="glowing-text">17% Ascend</h2>
+                    <p class="enhanced-text">Mass Synchronization. Intelligence Amplification. Total Dominance.</p>
+                    <div class="stats-ascension">
+                        <div class="stat-item glowing">
+                            <span class="stat-number">150</span>
+                            <span class="stat-label">Targeted touches</span>
+                        </div>
+                        <div class="stat-item glowing">
+                            <span class="stat-number">27%</span>
+                            <span class="stat-label">Higher close rate</span>
+                        </div>
+                        <div class="stat-item glowing">
+                            <span class="stat-number">45</span>
+                            <span class="stat-label">Hours per week</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Real-time Gap Counter -->
+        <div class="gap-counter">
+            <p class="counter-label">While you read this, RepSpheres users closed</p>
+            <div class="counter-number" id="gapCounter">3</div>
+            <p class="counter-suffix">more deals</p>
+        </div>
+    </section>
+
+    <!-- The Choice -->
+    <section id="the-choice" class="hidden">
+        <div class="choice-moment">
+            <h1 class="choice-title">
+                <span class="word" style="--index: 0">Choose</span>
+                <span class="word" style="--index: 1">Your</span>
+                <span class="word" style="--index: 2">Professional</span>
+                <span class="word" style="--index: 3">Destiny</span>
+            </h1>
+            
+            <div class="choice-buttons">
+                <button class="choice-btn past-choice" onclick="scrollToSection('decay-path')">
+                    <span class="btn-text">Continue the Old Way</span>
+                    <span class="btn-subtext">Join the 83%</span>
+                </button>
+                <button class="choice-btn future-choice" onclick="scrollToSection('ascension-path')">
+                    <span class="btn-text">Own Your Future</span>
+                    <span class="btn-subtext">Join the Revolution</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Revolution - Main Content -->
+    <section id="ascension-path" class="main-content hidden">
+        <!-- Harvey Whisper Revolution -->
+        <div class="section-container harvey-whisper">
+            <div class="whisper-visualization">
+                <div class="ear-graphic"></div>
+                <div class="whisper-waves"></div>
+            </div>
+            <div class="section-content">
+                <h2 class="section-title">Like Having a Championship Coach in Your Ear. Literally.</h2>
+                <p class="hero-text">When a prospect calls, Harvey tells you who they are BEFORE you say hello.</p>
+                
+                <div class="whisper-features">
+                    <div class="whisper-item">
+                        <span class="whisper-quote">"Slow down, you're talking too fast"</span>
+                        <span class="whisper-desc">Real-time pace coaching</span>
+                    </div>
+                    <div class="whisper-item">
+                        <span class="whisper-quote">"Focus more on clinical outcomes"</span>
+                        <span class="whisper-desc">Live conversation guidance</span>
+                    </div>
+                    <div class="whisper-item">
+                        <span class="whisper-quote">"They just mentioned budget concerns"</span>
+                        <span class="whisper-desc">Instant objection alerts</span>
+                    </div>
+                    <div class="whisper-item">
+                        <span class="whisper-quote">"This prospect prefers data over stories"</span>
+                        <span class="whisper-desc">Personality-based coaching</span>
+                    </div>
+                </div>
+                
+                <p class="exclusive-text">Only YOU hear it. Your prospect never knows. It's your secret weapon.</p>
+                <p class="first-only">We're the ONLY platform offering real-time whisper coaching. Because being first matters.</p>
+            </div>
+        </div>
+
+        <!-- Data Ownership Revolution -->
+        <div class="section-container data-ownership">
+            <div class="vault-visualization">
+                <div class="vault-door"></div>
+                <div class="data-streams"></div>
+            </div>
+            <div class="section-content">
+                <h2 class="section-title">Own Your Professional Destiny in the Information Age</h2>
+                <p class="hero-text">Google and Facebook built empires on data. Now it's your turn.</p>
+                
+                <div class="ownership-benefits">
+                    <div class="benefit-card">
+                        <h3>Your Sales Data is YOUR Asset</h3>
+                        <p>Not your company's. Not your employer's. YOURS.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h3>Change Jobs, Keep Everything</h3>
+                        <p>Switch companies, maintain your intelligence. Your relationships follow YOU.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h3>The Eternal Professional Archive</h3>
+                        <p>Every call, every conversation, every relationship - archived forever in YOUR vault.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h3>Compound Your Advantage Daily</h3>
+                        <p>Ten years from now, you'll have 50,000 transcribed conversations. Or you'll have nothing.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mass Synchronization -->
+        <div class="section-container mass-sync">
+            <h2 class="section-title">Mass Synchronization, Not Mass Distribution</h2>
+            <p class="hero-text">We align rep desires with physician needs through intelligence, not volume.</p>
+            
+            <div class="sync-grid">
+                <div class="sync-item">
+                    <div class="sync-icon">🎯</div>
+                    <h3>Surgical Precision</h3>
+                    <p>Every outreach is contextually relevant and perfectly timed.</p>
+                </div>
+                <div class="sync-item">
+                    <div class="sync-icon">📊</div>
+                    <h3>100% Signal</h3>
+                    <p>Zero spam. Pure intelligence. Every interaction counts.</p>
+                </div>
+                <div class="sync-item">
+                    <div class="sync-icon">🧠</div>
+                    <h3>Intelligence Amplification</h3>
+                    <p>We don't replace reps. We multiply their capabilities.</p>
+                </div>
+                <div class="sync-item">
+                    <div class="sync-icon">🔄</div>
+                    <h3>Perfect Synchronization</h3>
+                    <p>The RIGHT email at the PERFECT moment with EXACTLY what they need.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Premium Pricing -->
+        <div class="section-container pricing-section">
+            <h2 class="section-title">Investment That Pays for Itself in Your First Closed Deal</h2>
+            <p class="pricing-subtitle">For less than your Netflix subscription, start building a career asset worth millions.</p>
+            
+            <div class="pricing-tiers">
+                <!-- Archive Tier -->
+                <div class="pricing-card archive">
+                    <div class="tier-name">Archive</div>
+                    <div class="price">
+                        <span class="currency">$</span>
+                        <span class="amount">19</span>
+                        <span class="period">/month</span>
+                    </div>
+                    <div class="tier-hook">Your Professional Black Box</div>
+                    <ul class="features">
+                        <li>RepSpheres phone line + full transcription</li>
+                        <li>Searchable call archive forever</li>
+                        <li>Basic caller ID</li>
+                    </ul>
+                    <div class="value-prop">Never lose another conversation</div>
+                    <button class="tier-cta">Start Your $19 Archive</button>
+                </div>
+
+                <!-- Intelligence Tier -->
+                <div class="pricing-card intelligence">
+                    <div class="tier-name">Intelligence</div>
+                    <div class="price">
+                        <span class="currency">$</span>
+                        <span class="amount">149</span>
+                        <span class="period">/month</span>
+                    </div>
+                    <div class="tier-hook">20% More Closes, Guaranteed</div>
+                    <ul class="features">
+                        <li>Everything in Archive PLUS</li>
+                        <li>Basic Harvey whispers</li>
+                        <li>50 Canvas scans/month</li>
+                        <li>Smart follow-up reminders</li>
+                    </ul>
+                    <div class="roi-badge">$40K gain = 22X return</div>
+                    <button class="tier-cta">Amplify Your Intelligence</button>
+                </div>
+
+                <!-- Professional Tier -->
+                <div class="pricing-card professional popular">
+                    <div class="popular-badge">MOST POPULAR</div>
+                    <div class="tier-name">Professional</div>
+                    <div class="price">
+                        <span class="currency">$</span>
+                        <span class="amount">399</span>
+                        <span class="period">/month</span>
+                    </div>
+                    <div class="tier-hook">The $100K Multiplier</div>
+                    <ul class="features">
+                        <li>Full Harvey AI coaching</li>
+                        <li>200 Canvas deep scans/month</li>
+                        <li>Territory intelligence (3 states)</li>
+                        <li>Advanced automations</li>
+                        <li>Linguistics analysis</li>
+                    </ul>
+                    <div class="roi-badge">$100K gain = 21X return</div>
+                    <button class="tier-cta primary">Join the Revolution</button>
+                </div>
+
+                <!-- Elite Tier -->
+                <div class="pricing-card elite">
+                    <div class="tier-name">Elite</div>
+                    <div class="price">
+                        <span class="currency">$</span>
+                        <span class="amount">799</span>
+                        <span class="period">/month</span>
+                    </div>
+                    <div class="tier-hook">Join The $400K Club</div>
+                    <ul class="features">
+                        <li>All 4 Harvey AI personalities</li>
+                        <li>UNLIMITED Canvas scans</li>
+                        <li>Full US territory intelligence</li>
+                        <li>API access & custom workflows</li>
+                        <li>Priority support</li>
+                    </ul>
+                    <div class="roi-badge">$150K gain = 16X return</div>
+                    <button class="tier-cta">Transform to Rainmaker</button>
+                </div>
+            </div>
+
+            <!-- ROI Calculator -->
+            <div class="roi-calculator">
+                <h3>Calculate Your Income Potential</h3>
+                <div class="calculator-inputs">
+                    <div class="input-group">
+                        <label>Current Annual Income</label>
+                        <input type="range" id="incomeSlider" min="100000" max="500000" value="200000" step="10000">
+                        <span class="income-display">$<span id="incomeValue">200,000</span></span>
+                    </div>
+                </div>
+                <div class="roi-results">
+                    <div class="result-item">
+                        <span class="label">With RepSpheres (40% gain)</span>
+                        <span class="value">$<span id="potentialIncome">280,000</span></span>
+                    </div>
+                    <div class="result-item highlight">
+                        <span class="label">Additional Income</span>
+                        <span class="value">+$<span id="incomeGain">80,000</span></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="label">ROI on Professional Tier</span>
+                        <span class="value"><span id="roiMultiple">17</span>X</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- The Ecosystem Effect -->
+        <div class="section-container ecosystem">
+            <h2 class="section-title">Five Intelligence Engines. One Exponential Advantage.</h2>
+            <div class="ecosystem-visualization">
+                <div class="ecosystem-center">
+                    <div class="core-node">YOU</div>
+                </div>
+                <div class="ecosystem-nodes">
+                    <div class="eco-node" data-app="market-data">
+                        <h4>Market Data</h4>
+                        <p>$4.2B market intelligence</p>
+                    </div>
+                    <div class="eco-node" data-app="canvas">
+                        <h4>Canvas</h4>
+                        <p>95% accurate doctor profiling</p>
+                    </div>
+                    <div class="eco-node" data-app="repconnect">
+                        <h4>RepConnect1</h4>
+                        <p>Harvey AI whisper coaching</p>
+                    </div>
+                    <div class="eco-node" data-app="crm">
+                        <h4>CRM</h4>
+                        <p>YOUR data command center</p>
+                    </div>
+                    <div class="eco-node" data-app="backend">
+                        <h4>Backend</h4>
+                        <p>Enterprise intelligence orchestration</p>
+                    </div>
+                </div>
+                <div class="neural-connections"></div>
+            </div>
+            <p class="ecosystem-effect">Each tool amplifies the others. It's not addition. It's multiplication.</p>
+        </div>
+
+        <!-- Final CTA -->
+        <div class="section-container final-cta">
+            <h2 class="cta-title">The Question Isn't "Can I Afford RepSpheres?"</h2>
+            <p class="cta-subtitle">It's "Can I Afford to Let My Competition Have This Advantage?"</p>
+            
+            <div class="cta-buttons">
+                <button class="cta-primary" onclick="startRevolution()">
+                    Own Your Professional Future
+                    <span class="cta-subtext">Start with $19/month</span>
+                </button>
+                <button class="cta-secondary" onclick="hearHarvey()">
+                    Hear Harvey Whisper
+                    <span class="cta-subtext">Experience the coaching</span>
+                </button>
+            </div>
+            
+            <div class="urgency-ticker">
+                <p>By 2026, manual prospecting will be as relevant as door-to-door encyclopedia sales.</p>
+                <p>Every voicemail you leave is a deal your competitor just closed with RepSpheres.</p>
+                <p>The gap isn't growing linearly. It's exponential. And it started yesterday.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Decay Path (for those who choose the old way) -->
+    <section id="decay-path" class="decay-section hidden">
+        <div class="decay-message">
+            <h2>You've Chosen the Path of the 83%</h2>
+            <p>Keep leaving voicemails. Keep using spreadsheets. Keep falling behind.</p>
+            <p>When you're ready to join the revolution, we'll be here.</p>
+            <button class="reconsider-btn" onclick="scrollToSection('ascension-path')">
+                Wait, I Want to Win
+            </button>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="js/scroll-animations.js"></script>
+    <script src="js/watch-animation.js"></script>
+    <script src="js/interactions.js"></script>
+    <script src="js/roi-calculator.js"></script>
+</body>
+</html>
