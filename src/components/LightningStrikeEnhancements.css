@@ -131,20 +131,46 @@ html {
     0 0 30px rgba(0, 255, 255, 0.1);
 }
 
-/* Enhanced spacing after metal containers */
-.metal-container + * {
+/* Enhanced spacing after metal containers and premium panels */
+.metal-container + *,
+.premium-panel + *,
+.timeline-step + * {
   margin-top: clamp(140px, 18vh, 200px) !important;
 }
 
-/* Section following metal container gets extra padding */
+/* Section following metal container or premium panel */
 .metal-container + .section,
-.metal-container + .section-container {
+.metal-container + .section-container,
+.premium-panel + .section,
+.premium-panel + .section-container,
+.timeline-step + .section,
+.timeline-step + .section-container {
   padding-top: clamp(100px, 12vh, 150px);
 }
 
 /* Content sections need breathing room */
 .section-container + .section-container {
   margin-top: clamp(100px, 12vh, 160px);
+}
+
+/* Timeline steps need extra spacing */
+.timeline-step {
+  margin-bottom: clamp(120px, 15vh, 180px) !important;
+}
+
+/* Ensure spacing after timeline section */
+.timeline-section {
+  margin-bottom: clamp(140px, 18vh, 200px) !important;
+}
+
+/* Any content after panels with screws */
+.premium-panel + div,
+.premium-panel + p,
+.premium-panel + h1,
+.premium-panel + h2,
+.premium-panel + h3,
+.premium-panel + h4 {
+  margin-top: clamp(80px, 10vh, 120px) !important;
 }
 
 .metal-container::before {
