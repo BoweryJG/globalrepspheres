@@ -5,6 +5,8 @@ const SubscriptionTiers = () => {
   console.log('💰 SubscriptionTiers rendering...');
   const [hoveredTier, setHoveredTier] = useState(null);
   const [animatedValues, setAnimatedValues] = useState({});
+  const [currentIncome, setCurrentIncome] = useState(200000);
+  const [isAnnual, setIsAnnual] = useState(false);
 
   const tiers = [
     {
@@ -165,11 +167,62 @@ const SubscriptionTiers = () => {
     }).format(value);
   };
 
+  const calculateROI = (tier) => {
+    if (!tier.roi) return null;
+    
+    const baseGain = tier.roi.gain;
+    const incomeMultiplier = currentIncome / 200000; // Scale based on income
+    const adjustedGain = baseGain * incomeMultiplier;
+    const annualCost = tier.price * 12 * (isAnnual ? 0.8 : 1); // 20% discount for annual
+    
+    return {
+      gain: adjustedGain,
+      cost: annualCost,
+      multiplier: Math.round(adjustedGain / annualCost),
+      newIncome: currentIncome + adjustedGain
+    };
+  };
+
   return (
-    <section className="section-container subscription-tiers" style={{ border: '5px solid orange', minHeight: '500px', background: 'rgba(255,165,0,0.1)', position: 'relative', zIndex: 9999 }}>
+    <section className="section-container subscription-tiers">
       <div className="tiers-header">
         <h2>From $19 Career Insurance to $2,999 Market Domination</h2>
         <p className="tiers-subheading">Choose your path to exponential growth</p>
+        
+        {/* Interactive ROI Calculator */}
+        <div className="roi-calculator">
+          <h3>Calculate Your Income Potential</h3>
+          <div className="income-slider">
+            <label>Your Current Annual Income: {formatCurrency(currentIncome)}</label>
+            <input 
+              type="range" 
+              min="100000" 
+              max="500000" 
+              step="10000"
+              value={currentIncome}
+              onChange={(e) => setCurrentIncome(parseInt(e.target.value))}
+              className="income-range"
+            />
+            <div className="income-markers">
+              <span>$100K</span>
+              <span>$300K</span>
+              <span>$500K</span>
+            </div>
+          </div>
+          
+          {/* Annual Billing Toggle */}
+          <div className="billing-toggle">
+            <label className="toggle-label">
+              <input 
+                type="checkbox" 
+                checked={isAnnual}
+                onChange={(e) => setIsAnnual(e.target.checked)}
+              />
+              <span className="toggle-switch"></span>
+              Annual Billing (Save 20%)
+            </label>
+          </div>
+        </div>
       </div>
 
       <div className="tiers-grid">
@@ -198,6 +251,36 @@ const SubscriptionTiers = () => {
 
             {tier.roi && tier.roi.gain && (
               <div className="roi-section">
+                <div className="roi-counter">
+                  {(() => {
+                    const roi = calculateROI(tier);
+                    return (
+                      <>
+                        <div className="roi-income">
+                          <span className="roi-label">Your New Income: </span>
+                          <span className="roi-gain">
+                            {formatCurrency(roi.newIncome)}
+                          </span>
+                        </div>
+                        <div className="roi-multiplier">
+                          <span className="roi-label">ROI: </span>
+                          <span className="roi-value">{roi.multiplier}X</span>
+                        </div>
+                        <div className="roi-investment">
+                          <span className="roi-label">Investment: </span>
+                          <span className="roi-cost">
+                            {formatCurrency(roi.cost)}/year
+                          </span>
+                        </div>
+                      </>
+                    );
+                  })()}
+                </div>
+              </div>
+            )}
+
+            {tier.roi && tier.roi.gain && (
+              <div className="roi-section-old" style={{ display: 'none' }}>
                 <div className="roi-counter">
                   <span className="roi-label">ROI: </span>
                   <span className="roi-gain">
