@@ -4,10 +4,14 @@ import './HarveyWhisper.css';
 const HarveyWhisper = () => {
   const helixRef = useRef(null);
   const [whisperTexts] = useState([
-    "Your empire awaits...",
-    "Unlock infinite potential...",
-    "Transform your reality...",
-    "Ascend beyond limits..."
+    "Slow down, you're talking too fast",
+    "They just mentioned budget concerns - pivot to ROI",
+    "Focus more on clinical outcomes, less on features",
+    "This prospect prefers data over stories",
+    "Perfect timing to mention the case study",
+    "They're ready for the close - ask for commitment",
+    "Objection incoming - prepare the pricing justification",
+    "Your empire awaits..."
   ]);
   const [currentWhisper, setCurrentWhisper] = useState(0);
 

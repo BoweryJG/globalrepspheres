@@ -18,6 +18,11 @@ import CorporatePrisonBreak from './CorporatePrisonBreak';
 import KineticTimelineSection from './KineticTimelineSection';
 import KineticStarfield from './KineticStarfield';
 import KineticDataGrid from './KineticDataGrid';
+import ConspiracySection from './ConspiracySection';
+import MathematicalProof from './MathematicalProof';
+import UrgencyTimer from './UrgencyTimer';
+import ScarcityIndicator from './ScarcityIndicator';
+import EmpireOpportunity from './EmpireOpportunity';
 import { kineticStyles } from './KineticStyles';
 import './LightningStrikeEnhancements.css';
 
@@ -208,25 +213,32 @@ const KineticNeedlesPage = () => {
         onLogin={() => window.location.href = '/login'}
         onSignup={() => window.location.href = '/signup'}
         customLinks={[
-          { href: '#hero', label: 'Home', icon: 'market' },
-          { href: '#canvas', label: 'Canvas', icon: 'canvas' },
-          { href: '#pipeline', label: 'Pipeline', icon: 'pipeline' },
-          { href: '#sphere-os', label: 'Sphere oS', icon: 'sphere' },
-          { href: '#podcasts', label: 'Podcasts', icon: 'podcasts' }
+          { href: '#dimensional-tear', label: 'The Moment', icon: 'market' },
+          { href: '#mathematical-proof', label: 'The Math', icon: 'canvas' },
+          { href: '#conspiracy', label: 'The Truth', icon: 'pipeline' },
+          { href: '#empire', label: 'Your Empire', icon: 'sphere' },
+          { href: '#pricing', label: 'Join Now', icon: 'podcasts' }
         ]}
       />
 
       {/* Hero Section - Dimensional Tear */}
-      <DimensionalTear />
+      <div id="dimensional-tear">
+        <DimensionalTear />
+      </div>
 
       {/* The Great Divide Section */}
       <GreatDivide />
 
-      {/* Agent Command Center Section */}
-      <AgentCommandCenter />
+      {/* Mathematical Proof Section */}
+      <div id="mathematical-proof">
+        <MathematicalProof />
+      </div>
 
-      {/* Integration Advantage Section */}
-      <IntegrationAdvantage />
+      {/* Conspiracy Section */}
+      <div id="conspiracy">
+        <ConspiracySection />
+      </div>
+
 
       {/* Harvey Whisper Section - Binaural Helix */}
       <section id="harvey-whisper" className="section-container" style={{ 
@@ -299,8 +311,6 @@ const KineticNeedlesPage = () => {
         <SpeedTunnel />
       </section>
 
-      {/* Intelligence Timeline */}
-      <KineticTimelineSection />
 
       {/* Corporate Prison Break Section */}
       <section id="corporate-prison-break" className="section-container" style={{ 
@@ -325,6 +335,11 @@ const KineticNeedlesPage = () => {
         </h2>
         <CorporatePrisonBreak />
       </section>
+
+      {/* Empire Opportunity Section */}
+      <div id="empire">
+        <EmpireOpportunity />
+      </div>
 
       {/* Wealth Vault - 4D Accumulation */}
       <section id="wealth-vault" className="section-container" style={{ 
@@ -351,7 +366,44 @@ const KineticNeedlesPage = () => {
       </section>
 
       {/* Subscription Tiers Section */}
-      <SubscriptionTiers />
+      <div id="pricing">
+        <SubscriptionTiers />
+      </div>
+
+      {/* Urgency and Scarcity Section */}
+      <section id="urgency-scarcity" className="section-container" style={{ 
+        backgroundColor: '#0a0a0a', 
+        padding: 'clamp(80px, 10vh, 120px) 0',
+        marginTop: 'clamp(50px, 8vh, 80px)',
+        position: 'relative'
+      }}>
+        <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+            gap: '3rem',
+            marginBottom: '3rem'
+          }}>
+            <UrgencyTimer 
+              title="FOUNDING MEMBER PRICING EXPIRES IN:"
+              variant="default"
+            />
+            <ScarcityIndicator 
+              totalSpots={100}
+              remainingSpots={17}
+              territory="your territory"
+              variant="critical"
+            />
+          </div>
+          
+          <div style={{ textAlign: 'center' }}>
+            <UrgencyTimer 
+              title="⚡ FINAL HOURS TO LOCK IN 75X ADVANTAGE ⚡"
+              variant="critical"
+            />
+          </div>
+        </div>
+      </section>
 
       {/* Entry Point Section */}
       <EntryPointSection />

@@ -19,10 +19,11 @@ const SubscriptionTiers = () => {
         'RepSpheres phone line',
         'Full call transcription',
         'Unlimited storage',
-        'Never lose another conversation',
-        'Career asset building'
+        'Build your data empire',
+        'Own your career intelligence',
+        'Netflix-price entry point'
       ],
-      cta: 'Start Building',
+      cta: 'Start Your Empire',
       color: 'archive'
     },
     {
