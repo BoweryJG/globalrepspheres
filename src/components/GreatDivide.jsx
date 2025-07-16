@@ -6,6 +6,7 @@ import './GreatDivide.css';
 gsap.registerPlugin(ScrollTrigger);
 
 const GreatDivide = () => {
+  console.log('🔥 GreatDivide rendering...');
   const containerRef = useRef(null);
   const leftRef = useRef(null);
   const rightRef = useRef(null);
@@ -93,7 +94,7 @@ const GreatDivide = () => {
   }, []);
 
   return (
-    <section ref={containerRef} className="great-divide-section">
+    <section ref={containerRef} className="section-container great-divide-section">
       <div className="container">
         <h2 className="section-headline">The Great Sales Inversion Has Begun. Which Side Are You On?</h2>
         

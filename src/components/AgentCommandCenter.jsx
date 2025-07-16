@@ -6,6 +6,7 @@ import './AgentCommandCenter.css';
 gsap.registerPlugin(ScrollTrigger);
 
 const AgentCommandCenter = () => {
+  console.log('🚀 AgentCommandCenter rendering...');
   const sectionRef = useRef(null);
   const harveyRef = useRef(null);
   const coachingBubblesRef = useRef(null);
@@ -34,6 +35,7 @@ const AgentCommandCenter = () => {
   useEffect(() => {
     const ctx = gsap.context(() => {
       // Initial setup
+      // Initial setup - restore proper GSAP initialization
       gsap.set('.agent-section-content > *', { opacity: 0, y: 50 });
       
       // Main section animation
@@ -169,7 +171,7 @@ const AgentCommandCenter = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="agent-command-center">
+    <section ref={sectionRef} className="section-container agent-command-center">
       <div className="agent-section-content">
         <h2 className="agent-headline">Your Personal AI Development Team</h2>
         <p className="agent-subheadline">Enterprise Tools for Individual Reps</p>

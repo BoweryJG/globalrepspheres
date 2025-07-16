@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './SubscriptionTiers.css';
 
 const SubscriptionTiers = () => {
+  console.log('💰 SubscriptionTiers rendering...');
   const [hoveredTier, setHoveredTier] = useState(null);
   const [animatedValues, setAnimatedValues] = useState({});
 
@@ -165,7 +166,7 @@ const SubscriptionTiers = () => {
   };
 
   return (
-    <section className="subscription-tiers">
+    <section className="section-container subscription-tiers" style={{ border: '5px solid orange', minHeight: '500px', background: 'rgba(255,165,0,0.1)', position: 'relative', zIndex: 9999 }}>
       <div className="tiers-header">
         <h2>From $19 Career Insurance to $2,999 Market Domination</h2>
         <p className="tiers-subheading">Choose your path to exponential growth</p>

@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import './IntegrationAdvantage.css';
 
 const IntegrationAdvantage = () => {
+  console.log('💚 IntegrationAdvantage rendering...');
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -23,7 +24,7 @@ const IntegrationAdvantage = () => {
   }, []);
 
   return (
-    <section className="integration-advantage" ref={containerRef}>
+    <section className="section-container integration-advantage" ref={containerRef} style={{ border: '5px solid green', minHeight: '500px', background: 'rgba(0,255,0,0.1)', position: 'relative', zIndex: 9999 }}>
       <div className="integration-container">
         {/* Main Headline */}
         <div className="headline-wrapper animate-on-scroll">
