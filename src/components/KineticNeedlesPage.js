@@ -1,8 +1,14 @@
 import React, { useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import GlobalNavBar from './GlobalNavBar';
-import KineticHeroSection from './KineticHeroSection';
+import RepSpheresNavbar from './RepSpheresNavbar';
+import './RepSpheresNavbar.css';
+import DimensionalTear from './DimensionalTear';
+import HarveyWhisper from './HarveyWhisper';
+import DealCounter from './DealCounter';
+import MagneticButtons from './MagneticButtons';
+import SpeedTunnel from './SpeedTunnel';
+import WealthVault from './WealthVault';
 import KineticTimelineSection from './KineticTimelineSection';
 import KineticStarfield from './KineticStarfield';
 import KineticDataGrid from './KineticDataGrid';
@@ -191,13 +197,148 @@ const KineticNeedlesPage = () => {
       <KineticDataGrid />
 
       {/* Navigation Bar */}
-      <GlobalNavBar />
+      <RepSpheresNavbar 
+        onLogin={() => window.location.href = '/login'}
+        onSignup={() => window.location.href = '/signup'}
+        customLinks={[
+          { href: '#hero', label: 'Home', icon: 'market' },
+          { href: '#canvas', label: 'Canvas', icon: 'canvas' },
+          { href: '#pipeline', label: 'Pipeline', icon: 'pipeline' },
+          { href: '#sphere-os', label: 'Sphere oS', icon: 'sphere' },
+          { href: '#podcasts', label: 'Podcasts', icon: 'podcasts' }
+        ]}
+      />
 
-      {/* Hero Section */}
-      <KineticHeroSection />
+      {/* Hero Section - Dimensional Tear */}
+      <DimensionalTear />
+
+      {/* Harvey Whisper Section - Binaural Helix */}
+      <section id="harvey-whisper" className="section-container" style={{ 
+        backgroundColor: '#0a0a0a', 
+        padding: '100px 0',
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
+          <h2 style={{ 
+            textAlign: 'center', 
+            color: '#FFD700', 
+            fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+            marginBottom: '3rem',
+            fontWeight: '800',
+            textShadow: '0 0 30px rgba(255, 215, 0, 0.5)'
+          }}>
+            Harvey Whispers Your Empire's Blueprint
+          </h2>
+          <HarveyWhisper />
+        </div>
+      </section>
+
+      {/* Deal Counter Section */}
+      <section id="deal-counter" className="section-container" style={{ 
+        backgroundColor: '#111111', 
+        padding: '80px 0',
+        position: 'relative'
+      }}>
+        <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px', textAlign: 'center' }}>
+          <h2 style={{ 
+            color: '#FFFFFF', 
+            fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+            marginBottom: '2rem',
+            fontWeight: '800'
+          }}>
+            Watch the Empire Grow in Real-Time
+          </h2>
+          <DealCounter 
+            initialCount={872} 
+            targetCount={2500} 
+            duration={60000}
+          />
+        </div>
+      </section>
+
+      {/* Speed Tunnel - 75x Visualization */}
+      <section id="speed-tunnel" className="section-container" style={{ 
+        backgroundColor: '#000000', 
+        padding: '0',
+        position: 'relative'
+      }}>
+        <h2 style={{ 
+          position: 'absolute',
+          top: '50px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          color: '#FFFFFF', 
+          fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+          fontWeight: '800',
+          textAlign: 'center',
+          zIndex: 20,
+          textShadow: '0 0 30px rgba(59, 130, 246, 0.5)'
+        }}>
+          Experience the 75x Speed Differential
+        </h2>
+        <SpeedTunnel />
+      </section>
 
       {/* Intelligence Timeline */}
       <KineticTimelineSection />
+
+      {/* Wealth Vault - 4D Accumulation */}
+      <section id="wealth-vault" className="section-container" style={{ 
+        backgroundColor: '#000000', 
+        padding: '0',
+        position: 'relative'
+      }}>
+        <h2 style={{ 
+          position: 'absolute',
+          top: '50px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          color: '#FFD700', 
+          fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+          fontWeight: '800',
+          textAlign: 'center',
+          zIndex: 20,
+          textShadow: '0 0 30px rgba(255, 215, 0, 0.5)'
+        }}>
+          Your Wealth Accumulation Vault
+        </h2>
+        <WealthVault />
+      </section>
+
+      {/* Magnetic Choice Section */}
+      <section id="magnetic-choice" className="section-container" style={{ 
+        backgroundColor: '#0f0f0f', 
+        padding: '120px 0',
+        position: 'relative',
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center'
+      }}>
+        <div className="container" style={{ width: '100%', maxWidth: '1000px', margin: '0 auto', padding: '0 20px' }}>
+          <h2 style={{ 
+            textAlign: 'center', 
+            color: '#FFFFFF', 
+            fontSize: 'clamp(2.5rem, 6vw, 4rem)',
+            marginBottom: '4rem',
+            fontWeight: '900',
+            letterSpacing: '-0.02em'
+          }}>
+            Choose Your Destiny
+          </h2>
+          <MagneticButtons 
+            onChoice={(choice) => {
+              if (choice === 'empire') {
+                // Scroll to sign up or show modal
+                window.location.href = '#signup';
+              } else {
+                // Show warning or educate
+                console.log('User chose to keep falling behind');
+              }
+            }}
+          />
+        </div>
+      </section>
 
       {/* Add more sections as needed */}
     </>

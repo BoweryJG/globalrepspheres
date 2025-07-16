@@ -1,0 +1,357 @@
+/* Deal Counter: Particle Explosion System */
+.deal-counter-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  min-height: 200px;
+  overflow: hidden;
+}
+
+.deal-counter {
+  position: relative;
+  text-align: center;
+  z-index: 10;
+  padding: 1.5rem;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+/* CSS Houdini Particle System (with fallback) */
+@supports (background: paint(particle-explosion)) {
+  .deal-counter {
+    background-image: paint(particle-explosion);
+    --particle-count: 50;
+    --explosion-force: 100;
+    --particle-color: #FFD700;
+  }
+}
+
+/* Fallback for non-Houdini browsers */
+@supports not (background: paint(particle-explosion)) {
+  .deal-counter.exploding::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at center,
+      rgba(255, 215, 0, 0.3) 0%,
+      rgba(255, 215, 0, 0.1) 50%,
+      transparent 100%
+    );
+    animation: explosion-pulse 0.5s ease-out;
+    pointer-events: none;
+    border-radius: inherit;
+  }
+}
+
+@keyframes explosion-pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+.counter-label {
+  font-size: 0.9rem;
+  color: rgba(255, 215, 0, 0.8);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+
+.counter-number {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #FFD700;
+  text-shadow: 
+    0 0 10px rgba(255, 215, 0, 0.5),
+    0 0 20px rgba(255, 215, 0, 0.3),
+    0 0 30px rgba(255, 215, 0, 0.1);
+  margin: 0.5rem 0;
+  animation: number-glow 2s ease-in-out infinite alternate;
+}
+
+.counter-sublabel {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+@keyframes number-glow {
+  0% {
+    text-shadow: 
+      0 0 10px rgba(255, 215, 0, 0.5),
+      0 0 20px rgba(255, 215, 0, 0.3),
+      0 0 30px rgba(255, 215, 0, 0.1);
+  }
+  100% {
+    text-shadow: 
+      0 0 20px rgba(255, 215, 0, 0.8),
+      0 0 30px rgba(255, 215, 0, 0.5),
+      0 0 40px rgba(255, 215, 0, 0.3);
+  }
+}
+
+/* Explosion effect */
+.deal-counter.exploding {
+  animation: counter-explode 0.5s ease-out;
+}
+
+@keyframes counter-explode {
+  0% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.1);
+    filter: brightness(1.5) saturate(1.5);
+  }
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+
+/* Particles container for fallback animation */
+.particles-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle, #FFD700, rgba(255, 215, 0, 0.3));
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform-origin: center;
+  animation: particle-explosion 1s ease-out forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes particle-explosion {
+  0% {
+    transform: 
+      translate(-50%, -50%) 
+      scale(0);
+    opacity: 1;
+  }
+  50% {
+    transform: 
+      translate(-50%, -50%) 
+      translateX(calc(cos(var(--angle)) * calc(var(--velocity) * 0.5px)))
+      translateY(calc(sin(var(--angle)) * calc(var(--velocity) * 0.5px)))
+      scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: 
+      translate(-50%, -50%) 
+      translateX(calc(cos(var(--angle)) * calc(var(--velocity) * 1px)))
+      translateY(calc(sin(var(--angle)) * calc(var(--velocity) * 1px)))
+      scale(0);
+    opacity: 0;
+  }
+}
+
+/* Success Story Trails */
+.success-trails {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 15;
+}
+
+.success-trail {
+  position: absolute;
+  font-size: 14px;
+  color: #FFD700;
+  opacity: 0;
+  animation: trail-formation 3s ease-out forwards;
+  white-space: nowrap;
+  font-weight: 600;
+  text-shadow: 
+    0 0 10px rgba(255, 215, 0, 0.5),
+    0 0 20px rgba(255, 215, 0, 0.3);
+  transform-origin: center;
+}
+
+@keyframes trail-formation {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.8);
+    letter-spacing: 10px;
+    filter: blur(5px);
+  }
+  25% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    letter-spacing: normal;
+    filter: blur(0);
+  }
+  75% {
+    opacity: 1;
+    transform: translateY(-10px) scale(1.05);
+    letter-spacing: 1px;
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.9);
+    letter-spacing: 5px;
+    filter: blur(3px);
+  }
+}
+
+/* Counter Glow Effect */
+.counter-glow {
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 215, 0, calc(var(--glow-intensity) * 0.3)) 0%,
+    rgba(255, 215, 0, calc(var(--glow-intensity) * 0.1)) 50%,
+    transparent 100%
+  );
+  animation: glow-pulse 2s ease-in-out infinite alternate;
+  z-index: 1;
+  border-radius: 50%;
+}
+
+@keyframes glow-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .deal-counter-container {
+    padding: 1rem;
+    min-height: 150px;
+  }
+  
+  .counter-number {
+    font-size: 2rem;
+  }
+  
+  .counter-label {
+    font-size: 0.8rem;
+  }
+  
+  .counter-sublabel {
+    font-size: 0.7rem;
+  }
+  
+  .success-trail {
+    font-size: 12px;
+  }
+}
+
+/* Accessibility and Performance */
+@media (prefers-reduced-motion: reduce) {
+  .deal-counter,
+  .counter-number,
+  .success-trail,
+  .particle,
+  .counter-glow {
+    animation-duration: 0.3s !important;
+    animation-iteration-count: 1 !important;
+  }
+  
+  .particles-container {
+    display: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .deal-counter {
+    background: rgba(0, 0, 0, 0.9);
+    border: 2px solid #FFD700;
+  }
+  
+  .counter-number {
+    color: #FFFFFF;
+    text-shadow: 2px 2px 4px #000000;
+  }
+  
+  .success-trail {
+    color: #FFFFFF;
+    text-shadow: 2px 2px 4px #000000;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .deal-counter {
+    background: rgba(0, 0, 0, 0.9);
+    border-color: rgba(255, 215, 0, 0.5);
+  }
+}
+
+/* Emergency brake for low-end devices */
+@media (max-width: 480px) and (max-resolution: 1.5dppx) {
+  .particle,
+  .particles-container,
+  .counter-glow {
+    display: none !important;
+  }
+  
+  .deal-counter {
+    animation: none !important;
+  }
+  
+  .counter-number {
+    animation-duration: 1s !important;
+  }
+}
+
+/* Focus states for accessibility */
+.deal-counter:focus-within {
+  outline: 2px solid #FFD700;
+  outline-offset: 4px;
+}
+
+/* Print styles */
+@media print {
+  .particles-container,
+  .success-trails,
+  .counter-glow {
+    display: none !important;
+  }
+  
+  .deal-counter {
+    background: transparent !important;
+    border: 2px solid #000 !important;
+  }
+  
+  .counter-number {
+    color: #000 !important;
+    text-shadow: none !important;
+  }
+}

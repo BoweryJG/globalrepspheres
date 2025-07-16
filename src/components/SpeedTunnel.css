@@ -1,0 +1,467 @@
+/* ================================
+   SPEED TUNNEL - 75X VISUALIZATION
+   ================================ */
+
+.speed-tunnel-container {
+  position: relative;
+  min-height: 100vh;
+  background: radial-gradient(circle at 50% 50%, #1a1a1a, #000000);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ================================
+   3D TUNNEL STRUCTURE
+   ================================ */
+
+.speed-tunnel {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  perspective: 500px;
+  transform-style: preserve-3d;
+  overflow: hidden;
+}
+
+.tunnel-structure {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.tunnel-segment {
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  left: 10%;
+  top: 10%;
+  border: 2px solid rgba(59, 130, 246, 0.3);
+  border-radius: 20px;
+  transform: translateZ(calc(var(--z) * -100px));
+  animation: tunnel-flow 2s linear infinite;
+  box-shadow: 
+    inset 0 0 20px rgba(59, 130, 246, 0.1),
+    0 0 10px rgba(59, 130, 246, 0.2);
+}
+
+@keyframes tunnel-flow {
+  from {
+    transform: translateZ(calc(var(--z) * -100px));
+  }
+  to {
+    transform: translateZ(calc((var(--z) + 20) * -100px));
+  }
+}
+
+/* Add glow effect that intensifies with depth */
+.tunnel-segment::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 20px;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(59, 130, 246, calc(0.05 + var(--z) * 0.01)),
+    transparent
+  );
+  animation: segment-glow 3s ease-in-out infinite;
+  animation-delay: calc(var(--z) * 0.1s);
+}
+
+@keyframes segment-glow {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ================================
+   TRADITIONAL REPS - GROUND CRAWLERS
+   ================================ */
+
+.traditional-reps-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.traditional-rep {
+  position: absolute;
+  bottom: 10%;
+  width: 8px;
+  height: 8px;
+  background: #666;
+  border-radius: 50%;
+  animation: crawl-forward 10s linear infinite;
+  box-shadow: 0 0 4px rgba(102, 102, 102, 0.5);
+  transform: translateZ(0);
+}
+
+.traditional-rep::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, #666, transparent);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes crawl-forward {
+  0% {
+    transform: translateZ(100px) scale(1.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateZ(-2000px) scale(0.1);
+    opacity: 0;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+/* ================================
+   AI REPS - LIGHT STREAKS
+   ================================ */
+
+.ai-reps-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.ai-rep {
+  position: absolute;
+  left: -100px;
+  width: 200px;
+  height: 3px;
+  background: linear-gradient(
+    90deg, 
+    transparent,
+    rgba(255, 215, 0, 0.3),
+    #FFD700,
+    rgba(255, 215, 0, 0.3),
+    transparent
+  );
+  animation: light-speed linear infinite;
+  filter: blur(1px) brightness(2);
+  box-shadow: 
+    0 0 10px #FFD700,
+    0 0 20px rgba(255, 215, 0, 0.5);
+  transform: translateZ(0);
+}
+
+.ai-rep::before {
+  content: '';
+  position: absolute;
+  width: 50px;
+  height: 100%;
+  left: 50%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.8),
+    transparent
+  );
+  animation: streak-pulse 0.3s ease-in-out infinite;
+}
+
+@keyframes light-speed {
+  from { 
+    transform: translateX(-100px) translateZ(100px);
+  }
+  to { 
+    transform: translateX(calc(100vw + 200px)) translateZ(-500px);
+  }
+}
+
+@keyframes streak-pulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scaleX(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleX(1.5);
+  }
+}
+
+/* ================================
+   SPEED LINES
+   ================================ */
+
+.speed-lines {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: calc(0.3 + var(--scroll-velocity) * 0.7);
+}
+
+.speed-line {
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(59, 130, 246, 0.5),
+    transparent
+  );
+  animation: speed-line-flow linear infinite;
+  transform: translateZ(0);
+}
+
+@keyframes speed-line-flow {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* ================================
+   TURBULENCE EFFECT
+   ================================ */
+
+.speed-tunnel::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    transparent 30%,
+    rgba(59, 130, 246, calc(var(--turbulence) * 0.1)) 70%,
+    rgba(147, 51, 234, calc(var(--turbulence) * 0.2))
+  );
+  animation: turbulent-motion calc(2s / (1 + var(--turbulence))) linear infinite;
+  pointer-events: none;
+}
+
+@keyframes turbulent-motion {
+  0%, 100% {
+    transform: 
+      translateX(calc(sin(var(--time)) * var(--turbulence) * 50px))
+      translateY(calc(cos(var(--time)) * var(--turbulence) * 30px));
+  }
+  50% {
+    transform: 
+      translateX(calc(sin(var(--time) * 2) * var(--turbulence) * 30px))
+      translateY(calc(cos(var(--time) * 3) * var(--turbulence) * 50px));
+  }
+}
+
+/* ================================
+   INFO OVERLAY
+   ================================ */
+
+.speed-info {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  text-align: center;
+  color: white;
+}
+
+.speed-comparison {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 2rem 3rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.comparison-item {
+  text-align: center;
+}
+
+.comparison-item.traditional {
+  opacity: 0.7;
+}
+
+.comparison-item.ai {
+  animation: ai-glow 2s ease-in-out infinite;
+}
+
+@keyframes ai-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8));
+  }
+}
+
+.item-label {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.item-speed {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.comparison-item.traditional .item-speed {
+  color: #666;
+}
+
+.comparison-item.ai .item-speed {
+  color: #FFD700;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+}
+
+.item-description {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.comparison-divider {
+  font-size: 2rem;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* ================================
+   RESPONSIVE DESIGN
+   ================================ */
+
+@media (max-width: 768px) {
+  .speed-tunnel {
+    height: 400px;
+  }
+  
+  .speed-comparison {
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1.5rem;
+  }
+  
+  .comparison-divider {
+    transform: rotate(90deg);
+  }
+  
+  .item-speed {
+    font-size: 2rem;
+  }
+  
+  .traditional-rep,
+  .ai-rep {
+    animation-duration: 5s;
+  }
+}
+
+@media (max-width: 480px) {
+  .speed-info {
+    bottom: 20px;
+    width: 90%;
+  }
+  
+  .speed-comparison {
+    padding: 1rem;
+  }
+  
+  .item-label {
+    font-size: 1rem;
+  }
+  
+  .item-speed {
+    font-size: 1.5rem;
+  }
+  
+  .item-description {
+    font-size: 0.8rem;
+  }
+}
+
+/* ================================
+   PERFORMANCE OPTIMIZATIONS
+   ================================ */
+
+/* Reduce animations on low-end devices */
+@media (max-width: 768px) and (max-resolution: 2dppx) {
+  .speed-lines {
+    display: none;
+  }
+  
+  .ai-rep::before {
+    display: none;
+  }
+  
+  .tunnel-segment::before {
+    display: none;
+  }
+  
+  * {
+    animation-duration: 2s !important;
+  }
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  .speed-tunnel {
+    perspective: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .tunnel-segment {
+    border-color: white;
+    border-width: 3px;
+  }
+  
+  .traditional-rep {
+    background: white;
+    box-shadow: none;
+  }
+  
+  .ai-rep {
+    background: linear-gradient(90deg, transparent, yellow, transparent);
+    filter: none;
+  }
+  
+  .speed-comparison {
+    background: black;
+    border: 2px solid white;
+  }
+}
