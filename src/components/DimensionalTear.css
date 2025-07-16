@@ -477,7 +477,55 @@
 }
 
 /* ================================
-   HERO STATS
+   HERO SUPPORTING COPY
+   ================================ */
+
+.hero-supporting-copy {
+  margin-bottom: 3rem;
+  animation: supporting-copy-appear 1s ease-out 1s forwards;
+  opacity: 0;
+}
+
+.supporting-point {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+  line-height: 1.6;
+  opacity: 0.9;
+  text-align: left;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.supporting-point:last-child {
+  margin-bottom: 0;
+}
+
+.point-indicator {
+  color: var(--electric-blue);
+  font-weight: 800;
+  font-size: 1.2em;
+  text-shadow: 0 0 10px var(--electric-blue);
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+}
+
+@keyframes supporting-copy-appear {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================================
+   HERO STATS (Legacy - keeping for potential use)
    ================================ */
 
 .hero-stats {
@@ -699,6 +747,16 @@
     padding: 2rem;
     margin: 1rem;
     border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .hero-supporting-copy {
+    margin-bottom: 2rem;
+  }
+  
+  .supporting-point {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    gap: 0.8rem;
   }
   
   .hero-stats {

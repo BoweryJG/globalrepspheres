@@ -158,7 +158,7 @@ const MagneticButtons = ({ onChoice }) => {
           onMouseEnter={() => setIsHovering({ ...isHovering, empire: true })}
           onMouseLeave={() => setIsHovering({ ...isHovering, empire: false })}
         >
-          <span className="button-text">Join the Empire</span>
+          <span className="button-text">Start Your Revolution</span>
           <div className="attraction-particles">
             {[...Array(20)].map((_, i) => (
               <div key={i} className="particle" style={{ '--particle-index': i }}></div>

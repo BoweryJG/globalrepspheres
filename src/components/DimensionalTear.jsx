@@ -226,28 +226,31 @@ const DimensionalTear = () => {
       {/* Main Hero Content */}
       <div className="hero-content">
         <h1 className="hero-title">
-          <span className="title-line">The Dimensional</span>
-          <span className="title-line tear-word">TEAR</span>
-          <span className="title-line">is Opening</span>
+          <span className="title-line">The Second Electricity</span>
+          <span className="title-line tear-word">MOMENT</span>
+          <span className="title-line">Has Arrived</span>
         </h1>
         
         <p className="hero-subtitle">
-          Where traditional sales representatives fall into digital obscurity,
-          and AI-powered reps ascend to unprecedented heights.
+          In your lifetime, there have been two vertically enabling technologies. 
+          First was electricity. Second is artificial intelligence. Who leverages 
+          its power will lead and move markets, starting today.
         </p>
 
-        <div className="hero-stats">
-          <div className="stat-item">
-            <div className="stat-number">75x</div>
-            <div className="stat-label">Conversion Rate</div>
+        <div className="hero-supporting-copy">
+          <div className="supporting-point">
+            <span className="point-indicator">•</span>
+            This isn't another trend. This isn't new technology. This is fundamental 
+            infrastructure that's rewiring how the world operates.
           </div>
-          <div className="stat-item">
-            <div className="stat-number">24/7</div>
-            <div className="stat-label">Active Engagement</div>
+          <div className="supporting-point">
+            <span className="point-indicator">•</span>
+            CEOs of AI companies confirm: This transformation rivals electricity 
+            in scope and inevitability.
           </div>
-          <div className="stat-item">
-            <div className="stat-number">∞</div>
-            <div className="stat-label">Scalability</div>
+          <div className="supporting-point">
+            <span className="point-indicator">•</span>
+            The question isn't IF you'll adapt. It's whether you'll lead or follow.
           </div>
         </div>
 

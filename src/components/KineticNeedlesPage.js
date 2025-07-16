@@ -4,6 +4,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import RepSpheresNavbar from './RepSpheresNavbar';
 import './RepSpheresNavbar.css';
 import DimensionalTear from './DimensionalTear';
+import GreatDivide from './GreatDivide';
+import AgentCommandCenter from './AgentCommandCenter';
+import IntegrationAdvantage from './IntegrationAdvantage';
+import SubscriptionTiers from './SubscriptionTiers';
+import EntryPointSection from './EntryPointSection';
 import HarveyWhisper from './HarveyWhisper';
 import DealCounter from './DealCounter';
 import MagneticButtons from './MagneticButtons';
@@ -214,6 +219,15 @@ const KineticNeedlesPage = () => {
       {/* Hero Section - Dimensional Tear */}
       <DimensionalTear />
 
+      {/* The Great Divide Section */}
+      <GreatDivide />
+
+      {/* Agent Command Center Section */}
+      <AgentCommandCenter />
+
+      {/* Integration Advantage Section */}
+      <IntegrationAdvantage />
+
       {/* Harvey Whisper Section - Binaural Helix */}
       <section id="harvey-whisper" className="section-container" style={{ 
         backgroundColor: '#0a0a0a', 
@@ -335,6 +349,12 @@ const KineticNeedlesPage = () => {
         </h2>
         <WealthVault />
       </section>
+
+      {/* Subscription Tiers Section */}
+      <SubscriptionTiers />
+
+      {/* Entry Point Section */}
+      <EntryPointSection />
 
       {/* Magnetic Choice Section */}
       <section id="magnetic-choice" className="section-container" style={{ 
