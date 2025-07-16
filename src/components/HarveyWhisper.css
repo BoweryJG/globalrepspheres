@@ -10,24 +10,47 @@
 .harvey-whisper-container {
   position: relative;
   width: 100%;
-  height: 500px;
+  height: 700px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: radial-gradient(circle at center, 
-    rgba(147, 51, 234, 0.1) 0%, 
-    rgba(10, 10, 10, 0.95) 70%);
+  background: 
+    radial-gradient(circle at center, 
+      rgba(0, 212, 255, 0.15) 0%, 
+      rgba(0, 255, 255, 0.08) 30%,
+      rgba(10, 10, 10, 0.95) 70%),
+    conic-gradient(
+      from 0deg at center,
+      transparent,
+      rgba(0, 212, 255, 0.1),
+      transparent,
+      rgba(0, 255, 255, 0.1),
+      transparent
+    );
+  animation: background-rotate 20s linear infinite;
+}
+
+@keyframes background-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* 3D Helix Structure */
 .binaural-helix {
   position: relative;
-  width: 300px;
-  height: 400px;
+  width: 500px;
+  height: 600px;
   transform-style: preserve-3d;
-  perspective: 1000px;
+  perspective: 1200px;
   perspective-origin: center center;
+  filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.3));
+  animation: helix-float 6s ease-in-out infinite;
+}
+
+@keyframes helix-float {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-20px) scale(1.05); }
 }
 
 .helix-wrapper {
@@ -40,25 +63,31 @@
 
 .helix-strand {
   position: absolute;
-  width: 2px;
+  width: 4px;
   height: 100%;
   left: 50%;
   top: 0;
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    var(--whisper-gold) 20%,
-    var(--whisper-purple) 50%,
-    var(--whisper-gold) 80%,
+    var(--whisper-gold) 15%,
+    rgba(255, 255, 255, 0.9) 25%,
+    var(--whisper-gold) 50%,
+    rgba(255, 255, 255, 0.9) 75%,
+    var(--whisper-gold) 85%,
     transparent 100%
   );
   transform-origin: 50% 50%;
   transform: 
     rotateY(calc(var(--n) * 10deg))
-    translateZ(80px)
+    translateZ(120px)
     rotateX(calc(var(--n) * 3deg));
-  opacity: 0.7;
-  box-shadow: 0 0 10px var(--whisper-shadow);
+  opacity: 0.9;
+  box-shadow: 
+    0 0 20px var(--whisper-gold),
+    0 0 40px rgba(255, 215, 0, 0.5),
+    inset 0 0 10px rgba(255, 255, 255, 0.5);
+  filter: brightness(1.2);
 }
 
 /* Create double helix effect */
@@ -181,23 +210,27 @@
 
 .whisper-text {
   position: absolute;
-  font-size: 18px;
-  font-weight: 300;
+  font-size: 24px;
+  font-weight: 400;
   color: var(--whisper-white);
   text-align: center;
-  text-shadow: 0 0 20px var(--whisper-gold);
+  text-shadow: 
+    0 0 20px var(--whisper-gold),
+    0 0 40px rgba(255, 215, 0, 0.5),
+    0 0 60px rgba(255, 255, 255, 0.3);
   opacity: 0;
   filter: blur(10px);
-  transform: translateZ(50px) rotateY(90deg);
-  transition: all 0.5s ease-out;
+  transform: translateZ(50px) rotateY(90deg) scale(0.8);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
 }
 
 .whisper-text.active {
   opacity: 1;
-  filter: blur(0);
-  transform: translateZ(0) rotateY(0);
+  filter: blur(0) drop-shadow(0 0 20px var(--whisper-gold));
+  transform: translateZ(0) rotateY(0) scale(1);
   animation: materialize-whisper 2s ease-out;
 }
 

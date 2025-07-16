@@ -9,10 +9,12 @@ import DealCounter from './DealCounter';
 import MagneticButtons from './MagneticButtons';
 import SpeedTunnel from './SpeedTunnel';
 import WealthVault from './WealthVault';
+import CorporatePrisonBreak from './CorporatePrisonBreak';
 import KineticTimelineSection from './KineticTimelineSection';
 import KineticStarfield from './KineticStarfield';
 import KineticDataGrid from './KineticDataGrid';
 import { kineticStyles } from './KineticStyles';
+import './LightningStrikeEnhancements.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -215,7 +217,8 @@ const KineticNeedlesPage = () => {
       {/* Harvey Whisper Section - Binaural Helix */}
       <section id="harvey-whisper" className="section-container" style={{ 
         backgroundColor: '#0a0a0a', 
-        padding: '100px 0',
+        padding: 'clamp(80px, 10vh, 120px) 0',
+        marginTop: 'clamp(100px, 15vh, 150px)',
         position: 'relative',
         overflow: 'hidden'
       }}>
@@ -237,7 +240,8 @@ const KineticNeedlesPage = () => {
       {/* Deal Counter Section */}
       <section id="deal-counter" className="section-container" style={{ 
         backgroundColor: '#111111', 
-        padding: '80px 0',
+        padding: 'clamp(80px, 10vh, 120px) 0',
+        marginTop: 'clamp(100px, 15vh, 150px)',
         position: 'relative'
       }}>
         <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px', textAlign: 'center' }}>
@@ -261,6 +265,7 @@ const KineticNeedlesPage = () => {
       <section id="speed-tunnel" className="section-container" style={{ 
         backgroundColor: '#000000', 
         padding: '0',
+        marginTop: 'clamp(100px, 15vh, 150px)',
         position: 'relative'
       }}>
         <h2 style={{ 
@@ -283,10 +288,35 @@ const KineticNeedlesPage = () => {
       {/* Intelligence Timeline */}
       <KineticTimelineSection />
 
+      {/* Corporate Prison Break Section */}
+      <section id="corporate-prison-break" className="section-container" style={{ 
+        backgroundColor: '#000000', 
+        padding: '0',
+        marginTop: 'clamp(100px, 15vh, 150px)',
+        position: 'relative'
+      }}>
+        <h2 style={{ 
+          position: 'absolute',
+          top: '50px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          color: '#FFFFFF', 
+          fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+          fontWeight: '800',
+          textAlign: 'center',
+          zIndex: 20,
+          textShadow: '0 0 30px rgba(255, 68, 68, 0.5)'
+        }}>
+          Break the Corporate Chains
+        </h2>
+        <CorporatePrisonBreak />
+      </section>
+
       {/* Wealth Vault - 4D Accumulation */}
       <section id="wealth-vault" className="section-container" style={{ 
         backgroundColor: '#000000', 
         padding: '0',
+        marginTop: 'clamp(100px, 15vh, 150px)',
         position: 'relative'
       }}>
         <h2 style={{ 
@@ -309,7 +339,8 @@ const KineticNeedlesPage = () => {
       {/* Magnetic Choice Section */}
       <section id="magnetic-choice" className="section-container" style={{ 
         backgroundColor: '#0f0f0f', 
-        padding: '120px 0',
+        padding: 'clamp(100px, 12vh, 150px) 0',
+        marginTop: 'clamp(100px, 15vh, 150px)',
         position: 'relative',
         minHeight: '100vh',
         display: 'flex',
