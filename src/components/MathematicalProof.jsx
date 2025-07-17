@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import InteractiveMultiplier from './InteractiveMultiplier';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -140,7 +141,10 @@ const MathematicalProof = () => {
           </p>
         </div>
 
-        {/* The Calculation */}
+        {/* Interactive Calculator */}
+        <InteractiveMultiplier />
+
+        {/* The Static Comparison */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: '1fr auto 1fr',
@@ -215,7 +219,7 @@ const MathematicalProof = () => {
               textShadow: '0 0 40px rgba(0, 255, 136, 0.8)',
               animation: animationStarted ? 'pulse 2s ease-in-out infinite' : 'none'
             }}>
-              75X
+              ???X
             </div>
           </div>
 
@@ -313,7 +317,7 @@ const MathematicalProof = () => {
                   fontWeight: '900',
                   fontSize: '1.2rem'
                 }}>
-                  1
+                  Limited
                 </div>
               </div>
               <div style={{ color: '#cccccc', fontWeight: '600' }}>Traditional Rep</div>
@@ -342,7 +346,7 @@ const MathematicalProof = () => {
                   fontWeight: '900',
                   fontSize: '1.2rem'
                 }}>
-                  75
+                  Exponential
                 </div>
               </div>
               <div style={{ color: '#cccccc', fontWeight: '600' }}>AI-Powered Rep</div>
@@ -387,10 +391,10 @@ const MathematicalProof = () => {
                 Monthly Impact
               </h4>
               <div style={{ color: '#ffffff', fontSize: '1.1rem', lineHeight: '1.6' }}>
-                <div>Traditional: <span style={{ color: '#ff4444' }}>30 deals</span></div>
-                <div>Intelligence-Enhanced: <span style={{ color: '#00ff88' }}>2,250 deals</span></div>
+                <div>Traditional: <span style={{ color: '#ff4444' }}>Limited pipeline</span></div>
+                <div>Intelligence-Enhanced: <span style={{ color: '#00ff88' }}>Exponential growth</span></div>
                 <div style={{ color: '#ffd700', fontWeight: '900', marginTop: '1rem' }}>
-                  75X MORE REVENUE
+                  CALCULATE YOUR MULTIPLIER ABOVE
                 </div>
               </div>
             </div>
@@ -405,10 +409,10 @@ const MathematicalProof = () => {
                 Annual Impact
               </h4>
               <div style={{ color: '#ffffff', fontSize: '1.1rem', lineHeight: '1.6' }}>
-                <div>Traditional: <span style={{ color: '#ff4444' }}>365 deals</span></div>
-                <div>Intelligence-Enhanced: <span style={{ color: '#00ff88' }}>27,375 deals</span></div>
+                <div>Traditional: <span style={{ color: '#ff4444' }}>Slow growth</span></div>
+                <div>Intelligence-Enhanced: <span style={{ color: '#00ff88' }}>Career transformation</span></div>
                 <div style={{ color: '#ffd700', fontWeight: '900', marginTop: '1rem' }}>
-                  75X YOUR CAREER
+                  YOUR CUSTOM CALCULATION
                 </div>
               </div>
             </div>
