@@ -1,5 +1,5 @@
-import React, { useRef, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
@@ -18,7 +18,6 @@ import PodcastsIcon from '@mui/icons-material/Podcasts';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import MemoryIcon from '@mui/icons-material/Memory';
 import LogoutIcon from '@mui/icons-material/Logout';
-import PersonIcon from '@mui/icons-material/Person';
 import { useOrbContext } from './OrbContextProvider';
 import { useAuth } from '../contexts/AuthContext';
 import Menu from '@mui/material/Menu';
@@ -29,7 +28,6 @@ import Avatar from '@mui/material/Avatar';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import InfoModal from './InfoModal';
-import Tooltip from '@mui/material/Tooltip';
 import Fade from '@mui/material/Fade';
 import Slide from '@mui/material/Slide';
 import { keyframes } from '@mui/system';
@@ -42,7 +40,6 @@ import { handleAuthenticatedNavigation } from '../utils/authUtils';
 import { getUserInitials, getUserDisplayName } from '../utils/userUtils';
 
 const ACCENT_COLOR = '#00ffc6';
-const CANVAS_COLOR = '#00d4ff';
 
 // Animation keyframes
 const glowPulse = keyframes`
@@ -88,7 +85,7 @@ const getNavLinks = (currentUrl, isAdmin) => {
     },
     { 
       key: 'canvas',
-      label: 'Canvas', 
+      label: 'CANVAS', 
       href: 'https://canvas.repspheres.com/',
       icon: <DashboardIcon fontSize="small" sx={{ 
         color: ACCENT_COLOR,
@@ -97,24 +94,24 @@ const getNavLinks = (currentUrl, isAdmin) => {
       description: 'AI-powered sales intelligence'
     },
     { 
+      key: 'repconnect',
+      label: 'RepConnect', 
+      href: 'https://repconnect.repspheres.com/',
+      icon: <PodcastsIcon fontSize="small" sx={{ 
+        color: ACCENT_COLOR,
+        filter: 'drop-shadow(0 0 3px rgba(0, 212, 255, 0.5))'
+      }} />,
+      description: 'Connect with industry professionals'
+    },
+    { 
       key: 'sphereos',
-      label: 'Sphere oS', 
+      label: 'Sphere OS', 
       href: 'https://crm.repspheres.com/',
       icon: <MemoryIcon fontSize="small" sx={{ 
         color: ACCENT_COLOR,
         filter: 'drop-shadow(0 0 3px rgba(0, 212, 255, 0.5))'
       }} />,
       description: 'AI-powered CRM platform'
-    },
-    {
-      key: 'podcast',
-      label: 'Podcast',
-      href: 'https://podcast.repspheres.com/',
-      icon: <PodcastsIcon fontSize="small" sx={{ 
-        color: ACCENT_COLOR,
-        filter: 'drop-shadow(0 0 3px rgba(0, 212, 255, 0.5))'
-      }} />,
-      description: 'Industry insights & interviews'
     },
   ];
 
@@ -127,13 +124,6 @@ const getNavLinks = (currentUrl, isAdmin) => {
       icon: <InsightsIcon fontSize="small" sx={{ color: ACCENT_COLOR }} />,
       description: 'Admin dashboard'
     });
-  }
-
-  // Linguistics is now part of CRM module
-
-  // Hide podcast link when already on the podcast page
-  if (currentUrl.includes('/podcast.html') || currentUrl.includes('page=podcast')) {
-    return links.filter((l) => l.key !== 'podcast');
   }
 
   return links;
@@ -154,10 +144,6 @@ const isLinkActive = (href, currentUrl) => {
     return currentUrl.includes(new URL(href).hostname);
   }
   
-  // Special case for podcast page
-  if (href === '/?page=podcast') {
-    return currentUrl.includes('page=podcast') || currentUrl.includes('/podcast.html');
-  }
   
   return currentUrl.includes(href);
 };
@@ -182,9 +168,7 @@ export default function NavBar() {
   const [navLoading, setNavLoading] = React.useState(false);
   const [isNavHovered, setIsNavHovered] = React.useState(false);
   const [statusIndex, setStatusIndex] = React.useState(0);
-  const theme = useTheme();
   const navigate = useNavigate();
-  const location = useLocation();
   
   
   // Settings states
@@ -194,15 +178,10 @@ export default function NavBar() {
   const [performanceMode, setPerformanceMode] = React.useState(() => {
     return localStorage.getItem('performanceMode') === 'true';
   });
-  // Breakpoints for progressive collapsing of nav links
-  const hidePodcast = useMediaQuery('(max-width:1200px)');
-  const hideSphereOS = useMediaQuery('(max-width:1100px)');
-  // const hideLinguistics = useMediaQuery('(max-width:1000px)'); // Removed - linguistics is in CRM now
-  const hideCanvas = useMediaQuery('(max-width:900px)');
-  const hideInsights = useMediaQuery('(max-width:800px)');
-  const isMobile = hideInsights; // all nav links collapsed below 800px
-  // Show hamburger menu whenever any link is hidden
-  const showMenu = hidePodcast || hideSphereOS || hideCanvas || isMobile;
+  // Simplified breakpoints - only mobile vs desktop
+  const isMobile = useMediaQuery('(max-width:1000px)');
+  const isTablet = useMediaQuery('(max-width:1200px)');
+  const showMenu = isMobile;
   // Extra small breakpoints for very narrow screens
   const isXS = useMediaQuery('(max-width:400px)');
   const isXXS = useMediaQuery('(max-width:320px)');
@@ -245,23 +224,6 @@ export default function NavBar() {
     return () => clearInterval(interval);
   }, []);
 
-  // Determine display styles for each nav link based on screen width
-  const getLinkStyles = (key) => {
-    if (key === 'podcast') {
-      return { '@media (max-width:1200px)': { display: 'none' } };
-    }
-    if (key === 'sphereos') {
-      return { '@media (max-width:1100px)': { display: 'none' } };
-    }
-    // Linguistics removed - now part of CRM module
-    if (key === 'canvas') {
-      return { '@media (max-width:900px)': { display: 'none' } };
-    }
-    if (key === 'insights') {
-      return { '@media (max-width:800px)': { display: 'none' } };
-    }
-    return {};
-  };
 
   // Orb SVG for brand logo with gradient colors
   const orb = (
@@ -466,8 +428,8 @@ export default function NavBar() {
     <Slide direction="left" in={drawerOpen} mountOnEnter unmountOnExit>
       <Box
         sx={{ 
-          width: '260px', 
-          p: 2, 
+          width: '280px', 
+          p: 3, // Consistent padding
           background: 'rgba(20,14,38,0.98)',
           backdropFilter: 'blur(20px)',
           borderLeft: '2px solid',
@@ -485,7 +447,7 @@ export default function NavBar() {
           sx={{ 
           display: 'flex', 
           alignItems: 'center', 
-          mb: 4, 
+          mb: 3, 
           mt: 2,
           cursor: 'pointer',
           textDecoration: 'none',
@@ -515,6 +477,89 @@ export default function NavBar() {
             }}>Spheres</Box>
           </Box>
         </Box>
+
+        {/* Authentication Buttons in Drawer */}
+        {!user && !loading && (
+          <Box sx={{ 
+            display: 'flex', 
+            gap: 1, 
+            mb: 3,
+            px: 1
+          }}>
+            <Button
+              onClick={() => {
+                setDrawerOpen(false);
+                handleNavigation('/login', true);
+              }}
+              sx={{
+                ...loginButtonStyles,
+                flex: 1,
+                fontSize: '0.9rem',
+              }}
+            >
+              Login
+            </Button>
+            <Button
+              onClick={() => {
+                setDrawerOpen(false);
+                handleNavigation('/signup', true);
+              }}
+              sx={{
+                ...signupButtonStyles,
+                flex: 1,
+                fontSize: '0.9rem',
+              }}
+            >
+              Sign Up
+            </Button>
+          </Box>
+        )}
+
+        {/* User Info in Drawer (if logged in) */}
+        {user && !loading && (
+          <Box sx={{ 
+            display: 'flex', 
+            alignItems: 'center',
+            p: 2,
+            mb: 2,
+            background: 'rgba(123, 66, 246, 0.1)',
+            borderRadius: '8px',
+            border: `1px solid ${ACCENT_COLOR}30`,
+          }}>
+            <Avatar sx={{ 
+              width: 36, 
+              height: 36, 
+              bgcolor: ACCENT_COLOR,
+              mr: 2,
+              fontSize: '0.9rem',
+              fontWeight: 600
+            }}>
+              {getUserInitials(user)}
+            </Avatar>
+            <Box sx={{ flex: 1 }}>
+              <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                {getUserDisplayName(user)}
+              </Typography>
+              <Typography variant="caption" sx={{ opacity: 0.7 }}>
+                {user.email}
+              </Typography>
+            </Box>
+            <IconButton
+              onClick={() => {
+                setDrawerOpen(false);
+                handleSignOut();
+              }}
+              sx={{
+                color: ACCENT_COLOR,
+                '&:hover': { background: 'rgba(123, 66, 246, 0.2)' }
+              }}
+            >
+              <LogoutIcon />
+            </IconButton>
+          </Box>
+        )}
+
+        <Divider sx={{ bgcolor: 'rgba(255,255,255,0.1)', mb: 2 }} />
 
         {/* Navigation Links */}
         <List sx={{ mb: 2 }}>
@@ -749,9 +794,9 @@ export default function NavBar() {
         <Toolbar sx={{
           position: 'relative',
           zIndex: 1, 
-          px: { xs: 1, sm: 2 },
-          height: { xs: '60px', sm: '64px' },
-          minHeight: { xs: '60px', sm: '64px' },
+          px: { xs: 2, sm: 3, md: 4 }, // Consistent padding: 16px/24px/32px
+          height: { xs: '64px', sm: '68px' },
+          minHeight: { xs: '64px', sm: '68px' },
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -821,9 +866,9 @@ export default function NavBar() {
           <Box sx={{
             display: 'flex',
             alignItems: 'center',
-            px: { xs: 1.5, sm: 2 },
-            py: { xs: 0.5, sm: 0.75 },
-            mx: { xs: 1, sm: 2 },
+            px: { xs: 2, sm: 2.5 }, // Consistent padding
+            py: { xs: 0.75, sm: 1 },
+            mx: { xs: 1.5, sm: 2 }, // Consistent margins
             background: 'rgba(0, 255, 198, 0.1)',
             backdropFilter: 'blur(10px)',
             borderRadius: '20px',
@@ -875,13 +920,15 @@ export default function NavBar() {
               position: 'absolute',
               left: '50%',
               transform: 'translateX(-50%)',
+              maxWidth: 'calc(100vw - 400px)', // Reserve space for logo and auth buttons
             }}>
               <Box sx={{
                 display: 'flex',
                 alignItems: 'center',
                 height: '100%',
-                px: { sm: 1, md: 2 },
-                maxWidth: { sm: '65vw', md: '70vw' },
+                px: 1,
+                gap: 0.5,
+                flexWrap: 'nowrap', // Prevent wrapping
                 overflowX: 'auto',
                 '&::-webkit-scrollbar': { display: 'none' },
                 msOverflowStyle: 'none',
@@ -902,14 +949,18 @@ export default function NavBar() {
                     className={isLinkActive(link.href, currentUrl) ? 'active' : ''}
                     sx={{
                       ...navButtonStyles,
-                      ...getLinkStyles(link.key),
+                      minWidth: 'auto',
+                      whiteSpace: 'nowrap',
+                      flexShrink: 0, // Prevent shrinking
+                      px: { sm: 1, md: 1.5 },
+                      fontSize: { sm: '0.85rem', md: '0.9rem' },
                       '& .buttonText': {
-                        display: { xs: 'none', sm: 'inline' }
+                        display: isTablet ? 'none' : 'inline' // Hide text on tablet to save space
                       }
                     }}
                   >
                     <Box sx={{ 
-                      mr: { xs: 0, sm: 1 },
+                      mr: isTablet ? 0 : 1,
                       display: 'flex',
                       alignItems: 'center'
                     }}>
@@ -922,13 +973,61 @@ export default function NavBar() {
             </Box>
           )}
 
-          {/* Right Section - Menu Button */}
+          {/* Right Section - Auth Buttons & Menu */}
           <Box sx={{
             display: 'flex',
             alignItems: 'center',
             ml: 'auto',
-            gap: { xs: 0.5, sm: 1 },
+            gap: { xs: 1, sm: 1.5 }, // Consistent 8px/12px gaps
           }}>
+            {/* Authentication Buttons */}
+            {!user && !loading && (
+              <>
+                <Button
+                  onClick={() => handleNavigation('/login', true)}
+                  sx={loginStyles}
+                >
+                  Login
+                </Button>
+                <Button
+                  onClick={() => handleNavigation('/signup', true)}
+                  sx={signupStyles}
+                >
+                  Sign Up
+                </Button>
+              </>
+            )}
+            
+            {/* User Menu (if logged in) */}
+            {user && !loading && (
+              <IconButton
+                onClick={handleAuthMenuOpen}
+                sx={{
+                  color: '#fff',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    color: ACCENT_COLOR,
+                    transform: 'scale(1.1)',
+                  }
+                }}
+              >
+                <Avatar sx={{ 
+                  width: 32, 
+                  height: 32, 
+                  bgcolor: ACCENT_COLOR,
+                  fontSize: '0.875rem',
+                  fontWeight: 600
+                }}>
+                  {getUserInitials(user)}
+                </Avatar>
+              </IconButton>
+            )}
+            
+            {/* Loading State */}
+            {loading && (
+              <CircularProgress size={24} sx={{ color: ACCENT_COLOR }} />
+            )}
+
             {/* More Menu Button (Desktop) */}
             {!isMobile && (
               <IconButton
@@ -1093,6 +1192,65 @@ export default function NavBar() {
         ))}
       </Menu>
       
+      {/* Auth Menu (for logged-in users) */}
+      <Menu
+        anchorEl={authMenuAnchorEl}
+        open={Boolean(authMenuAnchorEl)}
+        onClose={handleAuthMenuClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        PaperProps={{
+          sx: {
+            mt: 1,
+            borderRadius: '12px',
+            background: 'rgba(30,20,55,0.95)',
+            backdropFilter: 'blur(15px)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+            border: '1px solid rgba(123,66,246,0.2)',
+            color: '#fff',
+            minWidth: '200px',
+            p: 1,
+          }
+        }}
+      >
+        {user && (
+          <>
+            <Box sx={{ px: 2, py: 1, mb: 1 }}>
+              <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                {getUserDisplayName(user)}
+              </Typography>
+              <Typography variant="caption" sx={{ opacity: 0.7 }}>
+                {user.email}
+              </Typography>
+            </Box>
+            <Divider sx={{ borderColor: 'rgba(255,255,255,0.1)', my: 1 }} />
+            <MenuItem 
+              onClick={handleSignOut}
+              sx={{
+                py: 1.2,
+                px: 2,
+                fontSize: '0.95rem',
+                transition: 'all 0.2s ease',
+                '&:hover': {
+                  background: 'rgba(123,66,246,0.2)',
+                  color: ACCENT_COLOR,
+                }
+              }}
+            >
+              <ListItemIcon>
+                <LogoutIcon sx={{ color: ACCENT_COLOR }} />
+              </ListItemIcon>
+              Sign Out
+            </MenuItem>
+          </>
+        )}
+      </Menu>
 
       {/* Info Modals */}
       {moreMenuItems.map(item => (
