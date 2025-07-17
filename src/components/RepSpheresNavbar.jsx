@@ -14,11 +14,11 @@ const RepSpheresNavbar = ({
 
   // Default navigation links
   const defaultLinks = [
-    { href: '#market-data', label: 'Market Data', icon: 'market' },
-    { href: '#canvas', label: 'Canvas', icon: 'canvas' },
-    { href: '#pipeline', label: 'Pipeline', icon: 'pipeline' },
-    { href: '#sphere-os', label: 'Sphere oS', icon: 'sphere' },
-    { href: '#podcasts', label: 'Podcasts', icon: 'podcasts' }
+    { href: 'https://marketdata.repspheres.com/', label: 'Market Data', icon: 'market' },
+    { href: 'https://canvas.repspheres.com/', label: 'Canvas', icon: 'canvas' },
+    { href: 'https://repconnect.repspheres.com/', label: 'Pipeline', icon: 'pipeline' },
+    { href: 'https://crm.repspheres.com/', label: 'Sphere oS', icon: 'sphere' },
+    { href: 'https://podcast.repspheres.com/', label: 'Podcasts', icon: 'podcasts' }
   ];
 
   const navLinks = customLinks.length > 0 ? customLinks : defaultLinks;
@@ -68,6 +68,10 @@ const RepSpheresNavbar = ({
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
       }
+    } else if (href.startsWith('https://')) {
+      // External links open in new tab
+      window.open(href, '_blank', 'noopener,noreferrer');
+      e.preventDefault();
     }
     setIsMobileMenuOpen(false);
   };
