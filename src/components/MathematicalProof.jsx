@@ -135,8 +135,8 @@ const MathematicalProof = () => {
             lineHeight: '1.4',
             fontWeight: '500'
           }}>
-            The numbers don't lie. Here's the mathematical proof that AI reps 
-            outperform traditional reps by exactly 75x.
+            The numbers don't lie. Here's the mathematical proof that intelligent automation 
+            transforms rep performance by orders of magnitude.
           </p>
         </div>
 
@@ -189,7 +189,7 @@ const MathematicalProof = () => {
                 fontWeight: '900',
                 textShadow: '0 0 20px rgba(255, 68, 68, 0.5)'
               }}>
-                <span style={{ fontSize: '0.7em' }}>only</span> 1 deal/day
+                <span style={{ fontSize: '0.7em' }}>limited</span> results
               </div>
             </div>
           </div>
@@ -236,7 +236,7 @@ const MathematicalProof = () => {
               marginBottom: '1.5rem',
               fontWeight: '800'
             }}>
-              AI-Powered Rep
+              Intelligence-Enhanced Rep
             </h3>
             
             <div style={{ color: '#ffffff', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', lineHeight: '1.8' }}>
@@ -254,7 +254,7 @@ const MathematicalProof = () => {
                 fontWeight: '900',
                 textShadow: '0 0 20px rgba(0, 255, 136, 0.5)'
               }}>
-                75 deals/day
+                exponential results
               </div>
             </div>
           </div>
@@ -388,7 +388,7 @@ const MathematicalProof = () => {
               </h4>
               <div style={{ color: '#ffffff', fontSize: '1.1rem', lineHeight: '1.6' }}>
                 <div>Traditional: <span style={{ color: '#ff4444' }}>30 deals</span></div>
-                <div>AI-Powered: <span style={{ color: '#00ff88' }}>2,250 deals</span></div>
+                <div>Intelligence-Enhanced: <span style={{ color: '#00ff88' }}>2,250 deals</span></div>
                 <div style={{ color: '#ffd700', fontWeight: '900', marginTop: '1rem' }}>
                   75X MORE REVENUE
                 </div>
@@ -406,7 +406,7 @@ const MathematicalProof = () => {
               </h4>
               <div style={{ color: '#ffffff', fontSize: '1.1rem', lineHeight: '1.6' }}>
                 <div>Traditional: <span style={{ color: '#ff4444' }}>365 deals</span></div>
-                <div>AI-Powered: <span style={{ color: '#00ff88' }}>27,375 deals</span></div>
+                <div>Intelligence-Enhanced: <span style={{ color: '#00ff88' }}>27,375 deals</span></div>
                 <div style={{ color: '#ffd700', fontWeight: '900', marginTop: '1rem' }}>
                   75X YOUR CAREER
                 </div>

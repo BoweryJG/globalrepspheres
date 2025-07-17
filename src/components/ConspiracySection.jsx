@@ -143,8 +143,8 @@ const ConspiracySection = () => {
             letterSpacing: '-0.02em',
             lineHeight: '1.1'
           }}>
-            YOUR COMPANY IS KEEPING<br />
-            <span style={{ color: '#ffaa00' }}>THESE TOOLS FROM YOU</span>
+            THE INTELLIGENCE GAP<br />
+            <span style={{ color: '#ffaa00' }}>IS WIDENING FAST</span>
           </h2>
           
           <p style={{
@@ -155,8 +155,8 @@ const ConspiracySection = () => {
             lineHeight: '1.4',
             fontWeight: '500'
           }}>
-            The elite know something you don't. While they automate their way to millions,
-            they keep you trapped in manual labor.
+            Some reps have discovered intelligent automation tools that transform their results.
+            Meanwhile, others are still working with traditional methods.
           </p>
         </div>
 
@@ -196,10 +196,10 @@ const ConspiracySection = () => {
               }}>🕴️</div>
             </div>
             <h3 style={{ color: '#ff4444', fontSize: '1.3rem', marginBottom: '1rem', textAlign: 'center' }}>
-              The C-Suite Secret
+              The Access Challenge
             </h3>
             <p style={{ color: '#cccccc', fontSize: '0.95rem', lineHeight: '1.5', textAlign: 'center' }}>
-              "Let them keep making calls. We'll automate everything and claim the credit."
+              "Advanced tools exist, but budget approval and rollout take 18+ months."
             </p>
           </div>
 
@@ -231,10 +231,10 @@ const ConspiracySection = () => {
               }}>👔</div>
             </div>
             <h3 style={{ color: '#ff4444', fontSize: '1.3rem', marginBottom: '1rem', textAlign: 'center' }}>
-              The Sales Elite
+              The Training Gap
             </h3>
             <p style={{ color: '#cccccc', fontSize: '0.95rem', lineHeight: '1.5', textAlign: 'center' }}>
-              "If they get AI tools, they won't need us anymore. Keep them dialing."
+              "New technology requires extensive training programs we haven't built yet."
             </p>
           </div>
 

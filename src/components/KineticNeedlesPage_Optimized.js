@@ -15,6 +15,8 @@ import SubscriptionTiers from './SubscriptionTiers';
 import UrgencyTimer from './UrgencyTimer';
 import ScarcityIndicator from './ScarcityIndicator';
 import MagneticButtons from './MagneticButtons';
+import CRMIntegrations from './CRMIntegrations';
+import CanvasIntelligence from './CanvasIntelligence';
 import KineticStarfield from './KineticStarfield';
 import KineticDataGrid from './KineticDataGrid';
 import { kineticStyles } from './KineticStyles';
@@ -80,7 +82,7 @@ const KineticNeedlesPage_Optimized = () => {
         customLinks={[
           { href: '#dimensional-tear', label: 'The Moment', icon: 'market' },
           { href: '#mathematical-proof', label: 'The Math', icon: 'canvas' },
-          { href: '#conspiracy', label: 'The Truth', icon: 'pipeline' },
+          { href: '#canvas', label: 'Canvas Intelligence', icon: 'pipeline' },
           { href: '#empire', label: 'Your Empire', icon: 'sphere' },
           { href: '#pricing', label: 'Join Now', icon: 'podcasts' }
         ]}
@@ -106,7 +108,12 @@ const KineticNeedlesPage_Optimized = () => {
         <ConspiracySection />
       </div>
 
-      {/* 5. HARVEY WHISPER - Championship Coach in Your Ear */}
+      {/* 5. CANVAS INTELLIGENCE - The HOW Behind the Results */}
+      <div id="canvas" className="lightning-section">
+        <CanvasIntelligence />
+      </div>
+
+      {/* 6. HARVEY WHISPER - Championship Coach in Your Ear */}
       <section id="harvey-whisper" className="lightning-section section-container" style={{ 
         backgroundColor: '#0a0a0a', 
         padding: 'clamp(80px, 10vh, 120px) 0',
@@ -129,7 +136,7 @@ const KineticNeedlesPage_Optimized = () => {
         </div>
       </section>
 
-      {/* 6. SPEED TUNNEL - Experience the 75x Differential */}
+      {/* 7. SPEED TUNNEL - Experience the 75x Differential */}
       <section id="speed-tunnel" className="lightning-section section-container" style={{ 
         backgroundColor: '#000000', 
         padding: '0',
@@ -153,7 +160,7 @@ const KineticNeedlesPage_Optimized = () => {
         <SpeedTunnel />
       </section>
 
-      {/* 7. CORPORATE PRISON BREAK - Break the Chains */}
+      {/* 8. CORPORATE PRISON BREAK - Break the Chains */}
       <section id="corporate-prison-break" className="lightning-section section-container" style={{ 
         backgroundColor: '#000000', 
         padding: '0',
@@ -177,17 +184,20 @@ const KineticNeedlesPage_Optimized = () => {
         <CorporatePrisonBreak />
       </section>
 
-      {/* 8. EMPIRE OPPORTUNITY - Google Built an Empire. Now It's Your Turn. */}
+      {/* 9. EMPIRE OPPORTUNITY - Google Built an Empire. Now It's Your Turn. */}
       <div id="empire" className="lightning-section">
         <EmpireOpportunity />
       </div>
 
-      {/* 9. SUBSCRIPTION TIERS - Lock In Your Empire */}
+      {/* 10. CRM INTEGRATIONS - Connect Instantly */}
+      <CRMIntegrations />
+
+      {/* 11. SUBSCRIPTION TIERS - Lock In Your Empire */}
       <div id="pricing" className="lightning-section">
         <SubscriptionTiers />
       </div>
 
-      {/* 10. URGENCY & SCARCITY - Final Call */}
+      {/* 12. URGENCY & SCARCITY - Final Call */}
       <section id="urgency-scarcity" className="lightning-section section-container" style={{ 
         backgroundColor: '#0a0a0a', 
         padding: 'clamp(80px, 10vh, 120px) 0',
@@ -222,7 +232,7 @@ const KineticNeedlesPage_Optimized = () => {
         </div>
       </section>
 
-      {/* 11. MAGNETIC CHOICE - Choose Your Destiny */}
+      {/* 13. MAGNETIC CHOICE - Choose Your Destiny */}
       <section id="magnetic-choice" className="lightning-section section-container" style={{ 
         backgroundColor: '#0f0f0f', 
         padding: 'clamp(100px, 12vh, 150px) 0',
