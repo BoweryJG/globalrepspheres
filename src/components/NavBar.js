@@ -12,7 +12,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Box from '@mui/material/Box';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
 import InsightsIcon from '@mui/icons-material/Insights';
 import PodcastsIcon from '@mui/icons-material/Podcasts';
 import DashboardIcon from '@mui/icons-material/Dashboard';
