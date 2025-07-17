@@ -21,11 +21,20 @@ import KineticStarfield from './KineticStarfield';
 import KineticDataGrid from './KineticDataGrid';
 import { kineticStyles } from './KineticStyles';
 import './LightningStrikeEnhancements.css';
+import './MobileOptimizedStyles.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const KineticNeedlesPage_Optimized = () => {
   useEffect(() => {
+    // Add mobile viewport meta tag if not present
+    if (!document.querySelector('meta[name="viewport"]')) {
+      const viewport = document.createElement('meta');
+      viewport.name = 'viewport';
+      viewport.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+      document.head.appendChild(viewport);
+    }
+
     // Enhanced scroll-driven effects for seamless flow
     const sections = document.querySelectorAll('.lightning-section');
     
@@ -205,10 +214,7 @@ const KineticNeedlesPage_Optimized = () => {
         position: 'relative'
       }}>
         <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-            gap: '3rem',
+          <div className="urgency-scarcity-grid" style={{
             marginBottom: '3rem'
           }}>
             <UrgencyTimer 

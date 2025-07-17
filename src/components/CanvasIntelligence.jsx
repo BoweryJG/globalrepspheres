@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import './MobileOptimizedStyles.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -178,12 +179,9 @@ const CanvasIntelligence = () => {
         </div>
 
         {/* Demo Tabs */}
-        <div style={{
-          display: 'flex',
+        <div className="canvas-demo-tabs" style={{
           justifyContent: 'center',
-          gap: '1rem',
-          marginBottom: '3rem',
-          flexWrap: 'wrap'
+          marginBottom: '3rem'
         }}>
           {[
             { id: 'npi', label: 'NPI Lookup', icon: '🔍' },
@@ -193,6 +191,7 @@ const CanvasIntelligence = () => {
             <button
               key={tab.id}
               onClick={() => setCurrentDemo(tab.id)}
+              className="canvas-demo-tab"
               style={{
                 background: currentDemo === tab.id 
                   ? 'linear-gradient(135deg, #3b82f6, #2563eb)'
@@ -201,9 +200,7 @@ const CanvasIntelligence = () => {
                   ? '2px solid #3b82f6' 
                   : '1px solid rgba(100, 100, 100, 0.3)',
                 borderRadius: '12px',
-                padding: '1rem 2rem',
                 color: '#ffffff',
-                fontSize: '1.1rem',
                 fontWeight: '600',
                 cursor: 'pointer',
                 transition: 'all 0.3s ease',
@@ -240,14 +237,11 @@ const CanvasIntelligence = () => {
               🔍 Instant Doctor Intelligence
             </h3>
 
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr auto 2fr',
-              gap: '3rem',
+            <div className="canvas-npi-grid" style={{
               alignItems: 'center'
             }}>
               {/* Input Side */}
-              <div>
+              <div className="canvas-npi-input">
                 <div style={{
                   background: 'rgba(0, 0, 0, 0.5)',
                   padding: '1.5rem',
@@ -293,8 +287,7 @@ const CanvasIntelligence = () => {
               </div>
 
               {/* Arrow */}
-              <div style={{
-                fontSize: '2rem',
+              <div className="canvas-npi-arrow" style={{
                 color: '#3b82f6',
                 animation: 'pulse 2s ease-in-out infinite'
               }}>
@@ -302,7 +295,7 @@ const CanvasIntelligence = () => {
               </div>
 
               {/* Output Side */}
-              <div style={{
+              <div className="canvas-npi-output" style={{
                 background: 'rgba(59, 130, 246, 0.1)',
                 padding: '2rem',
                 borderRadius: '15px',
@@ -367,11 +360,7 @@ const CanvasIntelligence = () => {
               🎓 6 Harvard-Level Communication Styles
             </h3>
 
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-              gap: '1.5rem'
-            }}>
+            <div className="canvas-tones-grid">
               {harvardTones.map(tone => (
                 <div
                   key={tone.id}
@@ -451,11 +440,7 @@ const CanvasIntelligence = () => {
               📊 Instant Custom Reports & Distribution
             </h3>
 
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-              gap: '2rem'
-            }}>
+            <div className="canvas-reports-grid">
               <div
                 ref={addReportRef}
                 style={{

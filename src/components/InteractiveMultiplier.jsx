@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import './MobileOptimizedStyles.css';
 
 const InteractiveMultiplier = () => {
   const [baseMetrics, setBaseMetrics] = useState({
@@ -128,18 +129,15 @@ const InteractiveMultiplier = () => {
       </div>
 
       {/* Calculator Grid */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr auto 1fr',
-        gap: '3rem',
+      <div className="multiplier-calculator-grid" style={{
         alignItems: 'start',
         marginBottom: '3rem'
       }}>
         
         {/* Traditional Approach */}
-        <div style={{
+        <div className="multiplier-traditional" style={{
           background: 'rgba(255, 68, 68, 0.1)',
-          padding: '2rem',
+          padding: 'clamp(1.5rem, 4vw, 2rem)',
           borderRadius: '15px',
           border: '2px solid rgba(255, 68, 68, 0.3)'
         }}>
@@ -253,12 +251,10 @@ const InteractiveMultiplier = () => {
         </div>
 
         {/* VS Divider */}
-        <div style={{
-          display: 'flex',
+        <div className="multiplier-vs-divider" style={{
           flexDirection: 'column',
-          alignItems: 'center',
           gap: '1rem',
-          padding: '2rem 0'
+          padding: 'clamp(1rem, 3vw, 2rem) 0'
         }}>
           <div style={{
             fontSize: '2rem',
@@ -278,9 +274,9 @@ const InteractiveMultiplier = () => {
         </div>
 
         {/* Intelligence-Enhanced Approach */}
-        <div style={{
+        <div className="multiplier-enhanced" style={{
           background: 'rgba(0, 255, 136, 0.1)',
-          padding: '2rem',
+          padding: 'clamp(1.5rem, 4vw, 2rem)',
           borderRadius: '15px',
           border: '2px solid rgba(0, 255, 136, 0.3)'
         }}>

@@ -1,0 +1,358 @@
+/* Mobile-First Responsive Design for Lightning Strike Homepage */
+
+/* Base mobile styles */
+.lightning-section {
+  padding: clamp(40px, 8vh, 80px) 20px;
+  margin: 0;
+}
+
+.container {
+  max-width: 100%;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
+/* Interactive Multiplier Mobile Optimization */
+.multiplier-calculator-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.multiplier-vs-divider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+  font-size: 1.5rem;
+  order: 2;
+}
+
+.multiplier-traditional {
+  order: 1;
+}
+
+.multiplier-enhanced {
+  order: 3;
+}
+
+.multiplier-results-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Canvas Intelligence Mobile */
+.canvas-demo-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+}
+
+.canvas-demo-tab {
+  padding: 1rem 1.5rem !important;
+  font-size: 1rem !important;
+  text-align: center;
+}
+
+.canvas-npi-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: stretch;
+}
+
+.canvas-npi-arrow {
+  order: 2;
+  text-align: center;
+  padding: 1rem 0;
+  font-size: 1.5rem;
+  transform: rotate(90deg);
+}
+
+.canvas-npi-input {
+  order: 1;
+}
+
+.canvas-npi-output {
+  order: 3;
+}
+
+.canvas-tones-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.canvas-reports-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+/* CRM Integrations Mobile */
+.crm-integrations-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.crm-integration-card {
+  padding: 1.5rem !important;
+}
+
+/* Conspiracy Section Mobile */
+.conspiracy-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.conspiracy-corporate-logos {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+}
+
+/* Mathematical Proof Mobile */
+.math-proof-comparison {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.math-proof-vs {
+  order: 2;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.math-proof-traditional {
+  order: 1;
+}
+
+.math-proof-enhanced {
+  order: 3;
+}
+
+.math-proof-chart {
+  padding: 2rem 1rem;
+}
+
+.math-proof-bars {
+  gap: 2rem !important;
+}
+
+/* Empire Opportunity Mobile */
+.empire-examples-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.empire-blueprint-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.empire-comparison {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* Urgency & Scarcity Mobile */
+.urgency-scarcity-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+/* Subscription Tiers Mobile */
+.subscription-tiers-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+/* General Mobile Typography */
+@media (max-width: 768px) {
+  .lightning-section h1,
+  .lightning-section h2 {
+    font-size: clamp(1.8rem, 6vw, 2.5rem) !important;
+    line-height: 1.2 !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .lightning-section h3 {
+    font-size: clamp(1.3rem, 4vw, 1.8rem) !important;
+    line-height: 1.3 !important;
+  }
+
+  .lightning-section h4 {
+    font-size: clamp(1.1rem, 3vw, 1.4rem) !important;
+  }
+
+  .lightning-section p {
+    font-size: clamp(0.95rem, 2.5vw, 1.1rem) !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Reduce padding and margins on mobile */
+  .lightning-section {
+    padding: clamp(30px, 6vh, 60px) 15px !important;
+    margin-top: clamp(20px, 4vh, 40px) !important;
+  }
+
+  /* Mobile navigation adjustments */
+  .nav-links {
+    display: none;
+  }
+
+  .mobile-menu-button {
+    display: block;
+  }
+
+  /* Mobile multiplier display */
+  .multiplier-display {
+    font-size: clamp(2.5rem, 10vw, 4rem) !important;
+  }
+
+  /* Mobile sliders */
+  input[type="range"] {
+    height: 12px !important;
+    margin: 1rem 0 !important;
+  }
+
+  /* Mobile buttons */
+  button {
+    padding: 1rem 1.5rem !important;
+    font-size: 1rem !important;
+    min-height: 48px; /* Touch target size */
+  }
+
+  /* Mobile form elements */
+  input, select, textarea {
+    min-height: 48px;
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+
+  /* Mobile spacing */
+  .container {
+    padding: 0 10px;
+  }
+
+  /* Mobile-specific animations */
+  .mobile-fade-in {
+    animation: mobileFadeIn 0.6s ease-out;
+  }
+
+  @keyframes mobileFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .multiplier-calculator-grid {
+    grid-template-columns: 1fr auto 1fr;
+    gap: 2rem;
+  }
+
+  .canvas-npi-grid {
+    grid-template-columns: 1fr auto 1fr;
+    gap: 2rem;
+  }
+
+  .canvas-npi-arrow {
+    transform: none;
+    order: 2;
+  }
+
+  .canvas-tones-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .crm-integrations-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  .empire-examples-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* Desktop optimizations */
+@media (min-width: 1025px) {
+  .multiplier-calculator-grid {
+    grid-template-columns: 1fr auto 1fr;
+    gap: 3rem;
+  }
+
+  .canvas-npi-grid {
+    grid-template-columns: 1fr auto 2fr;
+    gap: 3rem;
+  }
+
+  .canvas-tones-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .crm-integrations-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .empire-examples-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* Touch-friendly interactions */
+@media (pointer: coarse) {
+  button, .clickable {
+    min-height: 48px;
+    min-width: 48px;
+  }
+  
+  .slider-thumb {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .icon, .logo {
+    image-rendering: -webkit-optimize-contrast;
+  }
+}
+
+/* Landscape mobile adjustments */
+@media (max-width: 768px) and (orientation: landscape) {
+  .lightning-section {
+    padding: clamp(20px, 4vh, 40px) 15px !important;
+  }
+  
+  .multiplier-display {
+    font-size: clamp(2rem, 8vw, 3rem) !important;
+  }
+}

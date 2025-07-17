@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import gsap from 'gsap';
+import './MobileOptimizedStyles.css';
 
 const CRMIntegrations = () => {
   const [connectedSystems, setConnectedSystems] = useState({});
@@ -143,10 +144,7 @@ const CRMIntegrations = () => {
         </div>
 
         {/* Integration Grid */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-          gap: '2rem',
+        <div className="crm-integrations-grid" style={{
           marginBottom: '3rem'
         }}>
           {crmSystems.map((system, index) => {
@@ -158,12 +156,12 @@ const CRMIntegrations = () => {
                 key={system.id}
                 ref={addIntegrationRef}
                 data-system-id={system.id}
+                className="crm-integration-card"
                 style={{
                   background: isConnected 
                     ? `linear-gradient(135deg, ${system.color}20, ${system.color}10)`
                     : 'linear-gradient(135deg, rgba(40, 40, 40, 0.8), rgba(20, 20, 20, 0.9))',
                   borderRadius: '15px',
-                  padding: '2rem',
                   border: isConnected 
                     ? `2px solid ${system.color}60`
                     : '1px solid rgba(100, 100, 100, 0.3)',
