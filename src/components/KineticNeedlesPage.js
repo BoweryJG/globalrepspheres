@@ -14,11 +14,9 @@ import DealCounter from './DealCounter';
 import MagneticButtons from './MagneticButtons';
 import SpeedTunnel from './SpeedTunnel';
 import WealthVault from './WealthVault';
-import CorporatePrisonBreak from './CorporatePrisonBreak';
 import KineticTimelineSection from './KineticTimelineSection';
 import KineticStarfield from './KineticStarfield';
 import KineticDataGrid from './KineticDataGrid';
-import ConspiracySection from './ConspiracySection';
 import MathematicalProof from './MathematicalProof';
 import UrgencyTimer from './UrgencyTimer';
 import ScarcityIndicator from './ScarcityIndicator';
@@ -215,7 +213,7 @@ const KineticNeedlesPage = () => {
         customLinks={[
           { href: '#dimensional-tear', label: 'The Moment', icon: 'market' },
           { href: '#mathematical-proof', label: 'The Math', icon: 'canvas' },
-          { href: '#conspiracy', label: 'The Truth', icon: 'pipeline' },
+          { href: '#empire', label: 'Your Empire', icon: 'pipeline' },
           { href: '#empire', label: 'Your Empire', icon: 'sphere' },
           { href: '#pricing', label: 'Join Now', icon: 'podcasts' }
         ]}
@@ -234,9 +232,9 @@ const KineticNeedlesPage = () => {
         <MathematicalProof />
       </div>
 
-      {/* Conspiracy Section */}
-      <div id="conspiracy">
-        <ConspiracySection />
+      {/* Empire Opportunity Section */}
+      <div id="empire">
+        <EmpireOpportunity />
       </div>
 
 

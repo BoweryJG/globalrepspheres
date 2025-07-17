@@ -6,7 +6,6 @@ import './RepSpheresNavbar.css';
 import DimensionalTear from './DimensionalTear';
 import GreatDivide from './GreatDivide';
 import MathematicalProof from './MathematicalProof';
-import ConspiracySection from './ConspiracySection';
 import HarveyWhisper from './HarveyWhisper';
 import SpeedTunnel from './SpeedTunnel';
 import EmpireOpportunity from './EmpireOpportunity';
@@ -112,40 +111,22 @@ const KineticNeedlesPage_Optimized = () => {
         <MathematicalProof />
       </div>
 
-      {/* 4. THE CONSPIRACY - Your Company Is Keeping These Tools From You */}
-      <div id="conspiracy" className="lightning-section">
-        <ConspiracySection />
-      </div>
-
-      {/* 5. CANVAS INTELLIGENCE - The HOW Behind the Results */}
+      {/* 4. CANVAS INTELLIGENCE - The HOW Behind the Results */}
       <div id="canvas" className="lightning-section">
         <CanvasIntelligence />
       </div>
 
-      {/* 6. HARVEY WHISPER - Championship Coach in Your Ear */}
+      {/* 5. HARVEY WHISPER - Championship Coach in Your Ear */}
       <section id="harvey-whisper" className="lightning-section section-container" style={{ 
         backgroundColor: '#0a0a0a', 
         padding: 'clamp(80px, 10vh, 120px) 0',
         marginTop: 'clamp(50px, 8vh, 80px)',
-        position: 'relative',
-        overflow: 'hidden'
+        position: 'relative' 
       }}>
-        <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
-          <h2 style={{ 
-            textAlign: 'center', 
-            color: '#FFD700', 
-            fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-            marginBottom: '3rem',
-            fontWeight: '800',
-            textShadow: '0 0 30px rgba(255, 215, 0, 0.5)'
-          }}>
-            Harvey Whispers Your Empire's Blueprint
-          </h2>
-          <HarveyWhisper />
-        </div>
+        <HarveyWhisper />
       </section>
 
-      {/* 7. SPEED TUNNEL - Experience the 75x Differential */}
+      {/* 6. SPEED TUNNEL - Experience the 75x Differential */}
       <section id="speed-tunnel" className="lightning-section section-container" style={{ 
         backgroundColor: '#000000', 
         padding: '0',
@@ -160,17 +141,16 @@ const KineticNeedlesPage_Optimized = () => {
           color: '#FFFFFF', 
           fontSize: 'clamp(2rem, 5vw, 3.5rem)',
           fontWeight: '800',
-          textAlign: 'center',
-          zIndex: 20,
-          textShadow: '0 0 30px rgba(59, 130, 246, 0.5)'
+          zIndex: 10,
+          textShadow: '0 0 30px rgba(255, 255, 255, 0.5)'
         }}>
-          Experience the 75x Speed Differential
+          Feel the 75x Speed Difference
         </h2>
         <SpeedTunnel />
       </section>
 
-      {/* 8. CORPORATE PRISON BREAK - Break the Chains */}
-      <section id="corporate-prison-break" className="lightning-section section-container" style={{ 
+      {/* 7. EMPIRE OPPORTUNITY - Your Empire Awaits */}
+      <section id="empire" className="lightning-section section-container" style={{ 
         backgroundColor: '#000000', 
         padding: '0',
         marginTop: 'clamp(50px, 8vh, 80px)',
@@ -186,16 +166,16 @@ const KineticNeedlesPage_Optimized = () => {
           fontWeight: '800',
           textAlign: 'center',
           zIndex: 20,
-          textShadow: '0 0 30px rgba(255, 68, 68, 0.5)'
+          textShadow: '0 0 30px rgba(255, 215, 0, 0.5)'
         }}>
-          Break the Corporate Chains
+          Your Empire Awaits
         </h2>
-        <CorporatePrisonBreak />
+        <EmpireOpportunity />
       </section>
 
-      {/* 9. EMPIRE OPPORTUNITY - Google Built an Empire. Now It's Your Turn. */}
-      <div id="empire" className="lightning-section">
-        <EmpireOpportunity />
+      {/* 8. SUBSCRIPTION TIERS - Choose Your Path */}
+      <div id="pricing" className="lightning-section">
+        <SubscriptionTiers />
       </div>
 
       {/* 10. CRM INTEGRATIONS - Connect Instantly */}
