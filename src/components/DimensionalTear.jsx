@@ -236,7 +236,7 @@ const DimensionalTear = () => {
         </h1>
         
         <p className="hero-subtitle">
-          While institutions deliberate, Rep<sup>x</sup> professionals are redefining what's possible in sales performance.
+          While institutions deliberate, Rep<sup>x</sup> is redefining possible in sales performance.
           The augmented sales professional doesn't just compete—they operate in a different league entirely.
         </p>
 
