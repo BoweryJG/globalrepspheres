@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RepSpheres - The Closing Window</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        .test-container {
+            position: relative;
+            background: linear-gradient(135deg, 
+                rgba(139, 0, 0, 0.9) 0%, 
+                rgba(255, 69, 0, 0.8) 25%, 
+                rgba(255, 0, 0, 0.9) 50%, 
+                rgba(139, 0, 0, 0.9) 75%, 
+                rgba(0, 0, 0, 0.95) 100%);
+            min-height: 100vh;
+            padding: 4rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .test-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, 
+                rgba(255, 69, 0, 0.1) 0%, 
+                rgba(255, 0, 0, 0.05) 40%, 
+                transparent 70%);
+            animation: pulseBackground 4s ease-in-out infinite;
+        }
+        
+        @keyframes pulseBackground {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+        
+        .content {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 900;
+            color: #ff4444;
+            text-shadow: 0 0 20px rgba(255, 68, 68, 0.8);
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+            animation: titleGlow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes titleGlow {
+            from { text-shadow: 0 0 20px rgba(255, 68, 68, 0.8); }
+            to { text-shadow: 0 0 30px rgba(255, 68, 68, 1), 0 0 40px rgba(255, 140, 0, 0.6); }
+        }
+        
+        .subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.6rem);
+            color: #ffaa00;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px rgba(255, 170, 0, 0.5);
+        }
+        
+        .visual-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 4rem 0;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .hourglass-container {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            background: linear-gradient(135deg, 
+                rgba(255, 68, 68, 0.1), 
+                rgba(255, 136, 0, 0.1));
+            border: 2px solid rgba(255, 68, 68, 0.3);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 40px rgba(255, 68, 68, 0.3);
+        }
+        
+        .hourglass-visual {
+            position: relative;
+            width: 200px;
+            height: 300px;
+            background: linear-gradient(to bottom, 
+                rgba(255, 170, 0, 0.3) 0%, 
+                rgba(255, 68, 68, 0.1) 50%, 
+                rgba(102, 102, 102, 0.3) 100%);
+            clip-path: polygon(20% 0%, 80% 0%, 60% 45%, 40% 45%, 40% 55%, 60% 55%, 80% 100%, 20% 100%);
+            animation: hourglassShake 3s ease-in-out infinite;
+        }
+        
+        @keyframes hourglassShake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(1deg); }
+            75% { transform: rotate(-1deg); }
+        }
+        
+        .sand-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #ffaa00;
+            border-radius: 50%;
+            animation: fallDown 2s linear infinite;
+        }
+        
+        .particle.equipped {
+            background: #ffaa00;
+            box-shadow: 0 0 4px rgba(255, 170, 0, 0.8);
+            animation: riseUp 2s linear infinite;
+        }
+        
+        .particle.unequipped {
+            background: #666;
+            box-shadow: 0 0 4px rgba(102, 102, 102, 0.5);
+            animation: fallDown 2s linear infinite;
+        }
+        
+        @keyframes fallDown {
+            0% { transform: translateY(-50px); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(350px); opacity: 0; }
+        }
+        
+        @keyframes riseUp {
+            0% { transform: translateY(350px); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-50px); opacity: 0; }
+        }
+        
+        .speedometer {
+            position: relative;
+            width: 250px;
+            height: 150px;
+            background: radial-gradient(circle at 50% 100%, 
+                rgba(255, 68, 68, 0.1) 0%, 
+                rgba(255, 0, 0, 0.05) 50%, 
+                transparent 80%);
+            border-radius: 125px 125px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid rgba(255, 68, 68, 0.3);
+            box-shadow: 0 0 30px rgba(255, 68, 68, 0.2);
+        }
+        
+        .speedometer-arc {
+            position: absolute;
+            width: 200px;
+            height: 100px;
+            border: 4px solid;
+            border-color: #ffaa00 #ff8800 #ff4444 #cc0000;
+            border-radius: 100px 100px 0 0;
+            animation: arcGlow 3s ease-in-out infinite;
+        }
+        
+        @keyframes arcGlow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.2) drop-shadow(0 0 10px rgba(255, 68, 68, 0.8)); }
+        }
+        
+        .speedometer-needle {
+            position: absolute;
+            width: 2px;
+            height: 80px;
+            background: linear-gradient(to top, #ff4444, #ffffff);
+            transform-origin: bottom center;
+            transform: rotate(45deg);
+            box-shadow: 0 0 10px rgba(255, 68, 68, 0.8);
+            animation: needleMove 5s ease-in-out infinite;
+        }
+        
+        @keyframes needleMove {
+            0% { transform: rotate(-45deg); }
+            100% { transform: rotate(45deg); }
+        }
+        
+        .speedometer-title {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1rem;
+            font-weight: 900;
+            color: #ff4444;
+            text-shadow: 0 0 10px rgba(255, 68, 68, 0.8);
+            letter-spacing: 0.1em;
+        }
+        
+        .urgency-copy {
+            margin: 4rem 0;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .urgency-text {
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            color: #ffffff;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        .highlight {
+            color: #ffaa00;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(255, 170, 0, 0.8);
+        }
+        
+        .critical {
+            color: #ff4444;
+            font-weight: 800;
+            text-shadow: 0 0 15px rgba(255, 68, 68, 0.8);
+            animation: criticalPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes criticalPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
+        .warning {
+            color: #ff4444;
+            font-weight: 900;
+            text-shadow: 0 0 20px rgba(255, 68, 68, 1);
+            animation: warningFlash 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes warningFlash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .countdown-container {
+            margin: 3rem 0;
+            padding: 2rem;
+            background: linear-gradient(135deg, 
+                rgba(255, 68, 68, 0.2), 
+                rgba(255, 0, 0, 0.1));
+            border: 2px solid rgba(255, 68, 68, 0.5);
+            border-radius: 20px;
+            box-shadow: 0 0 40px rgba(255, 68, 68, 0.3);
+        }
+        
+        .countdown-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .countdown-number {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 900;
+            color: #ff4444;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 20px rgba(255, 68, 68, 0.8);
+            animation: numberGlow 1s ease-in-out infinite alternate;
+        }
+        
+        @keyframes numberGlow {
+            from { text-shadow: 0 0 20px rgba(255, 68, 68, 0.8); }
+            to { text-shadow: 0 0 30px rgba(255, 68, 68, 1), 0 0 40px rgba(255, 140, 0, 0.6); }
+        }
+        
+        .cta-button {
+            position: relative;
+            display: inline-block;
+            padding: 1.5rem 3rem;
+            background: linear-gradient(135deg, 
+                #ff4444 0%, 
+                #ff6600 25%, 
+                #ff4444 50%, 
+                #cc0000 75%, 
+                #990000 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 15px;
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 40px rgba(255, 68, 68, 0.4);
+            animation: ctaPulse 2s ease-in-out infinite;
+            text-decoration: none;
+        }
+        
+        @keyframes ctaPulse {
+            0%, 100% { 
+                transform: scale(1); 
+                box-shadow: 0 0 40px rgba(255, 68, 68, 0.4); 
+            }
+            50% { 
+                transform: scale(1.02); 
+                box-shadow: 0 0 60px rgba(255, 68, 68, 0.6); 
+            }
+        }
+        
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 80px rgba(255, 68, 68, 0.8);
+        }
+        
+        .cta-features {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #ffffff;
+            font-weight: 600;
+        }
+        
+        .feature-icon {
+            font-size: 1.5rem;
+            animation: iconBounce 2s ease-in-out infinite;
+        }
+        
+        @keyframes iconBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+        
+        .demo-note {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #ffaa00;
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 170, 0, 0.3);
+            font-size: 0.9rem;
+            max-width: 300px;
+            z-index: 1000;
+        }
+        
+        @media (max-width: 768px) {
+            .visual-container {
+                flex-direction: column;
+                gap: 3rem;
+            }
+            
+            .hourglass-container {
+                width: 250px;
+                height: 350px;
+            }
+            
+            .speedometer {
+                width: 200px;
+                height: 120px;
+            }
+            
+            .demo-note {
+                top: 10px;
+                right: 10px;
+                max-width: 200px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="content">
+            <div class="demo-note">
+                <strong>Demo Component</strong><br>
+                This is a visual representation of the React component. 
+                The actual component includes Three.js 3D effects and interactive features.
+            </div>
+            
+            <div class="header">
+                <h1 class="title">THE CLOSING WINDOW</h1>
+                <p class="subtitle">
+                    Technology adoption used to take years. This is happening in weeks.
+                </p>
+            </div>
+
+            <div class="visual-container">
+                <div class="hourglass-container">
+                    <div class="hourglass-visual">
+                        <div class="sand-particles">
+                            <!-- Animated particles will be generated by JavaScript -->
+                        </div>
+                    </div>
+                    <div style="position: absolute; top: 20px; left: 20px; font-size: 0.9rem; color: #ffaa00;">
+                        <div style="font-weight: 900; font-size: 1.2rem;">298</div>
+                        <div>Equipped Reps Rising</div>
+                    </div>
+                    <div style="position: absolute; bottom: 20px; right: 20px; font-size: 0.9rem; color: #666;">
+                        <div style="font-weight: 900; font-size: 1.2rem;">702</div>
+                        <div>Unequipped Reps Falling</div>
+                    </div>
+                </div>
+
+                <div class="speedometer">
+                    <div class="speedometer-arc"></div>
+                    <div class="speedometer-needle"></div>
+                    <div class="speedometer-title">WEEKS NOT YEARS</div>
+                </div>
+            </div>
+
+            <div class="urgency-copy">
+                <p class="urgency-text">
+                    <span class="highlight">Early adopters versus laggards</span>—never before will the results be more apparent. 
+                    Each day you don't leverage this, you're <span class="critical">exponentially falling behind</span>.
+                </p>
+                <p class="urgency-text" style="font-size: clamp(1.3rem, 3vw, 1.8rem); text-align: center;">
+                    <span class="warning">This window won't last.</span>
+                </p>
+            </div>
+
+            <div class="countdown-container">
+                <div style="font-size: 0.9rem; color: #ffaa00; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase;">
+                    TIME ON PAGE
+                </div>
+                <div class="countdown-display">
+                    <span class="countdown-number" id="minutes">0</span>
+                    <span style="color: #ccc;">MIN</span>
+                    <span style="color: #ff4444; font-size: 2rem;">:</span>
+                    <span class="countdown-number" id="seconds">00</span>
+                    <span style="color: #ccc;">SEC</span>
+                </div>
+                <div id="countdown-warning" style="font-size: 1rem; color: #ff8800; font-weight: 600; font-style: italic; display: none;">
+                    You're already behind competitors who act faster
+                </div>
+            </div>
+
+            <div class="cta-section">
+                <button class="cta-button" onclick="alert('CTA Clicked! This would normally redirect to signup.')">
+                    <div>Start Your RepConnect Line Today</div>
+                    <div style="font-size: 0.9rem; font-weight: 600; color: #ffaa00; margin-top: 0.5rem;">
+                        Before Your Competitors Do
+                    </div>
+                </button>
+                
+                <div class="cta-features">
+                    <div class="feature-item">
+                        <span class="feature-icon">⚡</span>
+                        <span>Immediate Setup</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🎯</span>
+                        <span>Instant Results</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">📈</span>
+                        <span>Exponential Growth</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Countdown timer
+        let startTime = Date.now();
+        
+        function updateCountdown() {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+            
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+            
+            // Show warning after 30 seconds
+            if (elapsed > 30) {
+                document.getElementById('countdown-warning').style.display = 'block';
+            }
+        }
+        
+        setInterval(updateCountdown, 1000);
+        
+        // Generate sand particles
+        function createParticles() {
+            const container = document.querySelector('.sand-particles');
+            
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = Math.random() > 0.7 ? 'particle equipped' : 'particle unequipped';
+                particle.style.left = Math.random() * 180 + 10 + 'px';
+                particle.style.animationDelay = Math.random() * 2 + 's';
+                particle.style.animationDuration = (2 + Math.random() * 2) + 's';
+                container.appendChild(particle);
+            }
+        }
+        
+        createParticles();
+        
+        // Recreate particles every 4 seconds
+        setInterval(createParticles, 4000);
+        
+        // Simple ticking sound simulation
+        let audioContext;
+        let isPlaying = false;
+        
+        function createTick() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.1);
+            
+            gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.1);
+        }
+        
+        // Add click event to enable audio
+        document.addEventListener('click', function() {
+            if (!isPlaying) {
+                isPlaying = true;
+                setInterval(createTick, 2000);
+            }
+        }, { once: true });
+        
+        console.log('RepSpheres Closing Window Demo Loaded');
+        console.log('✨ Features:');
+        console.log('- Animated hourglass with falling/rising particles');
+        console.log('- Real-time countdown timer');
+        console.log('- Speedometer with moving needle');
+        console.log('- Urgent visual design with red/orange color scheme');
+        console.log('- Responsive mobile design');
+        console.log('- Sound effects on user interaction');
+        console.log('- CTA button with hover effects');
+    </script>
+</body>
+</html>

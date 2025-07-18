@@ -3,7 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import RepSpheresNavbar from './RepSpheresNavbar';
 import './RepSpheresNavbar.css';
-import DimensionalTear from './DimensionalTear';
+import HistoricalMoment from './HistoricalMoment';
 import GreatDivide from './GreatDivide';
 import MathematicalProof from './MathematicalProof';
 import HarveyWhisper from './HarveyWhisper';
@@ -88,7 +88,7 @@ const KineticNeedlesPage_Optimized = () => {
         onLogin={() => window.location.href = '/login'}
         onSignup={() => window.location.href = '/signup'}
         customLinks={[
-          { href: '#dimensional-tear', label: 'The Moment', icon: 'market' },
+          { href: '#historical-moment', label: 'The Moment', icon: 'market' },
           { href: '#mathematical-proof', label: 'The Math', icon: 'canvas' },
           { href: '#canvas', label: 'Canvas Intelligence', icon: 'pipeline' },
           { href: '#empire', label: 'Your Empire', icon: 'sphere' },
@@ -96,9 +96,9 @@ const KineticNeedlesPage_Optimized = () => {
         ]}
       />
 
-      {/* 1. THE DIMENSIONAL TEAR - The Second Electricity Moment */}
-      <div id="dimensional-tear" className="lightning-section">
-        <DimensionalTear />
+      {/* 1. THE HISTORICAL MOMENT - The Second Electricity Moment */}
+      <div id="historical-moment" className="lightning-section">
+        <HistoricalMoment />
       </div>
 
       {/* 2. THE GREAT DIVIDE - Which Side Are You On? */}
