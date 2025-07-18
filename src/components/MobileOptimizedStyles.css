@@ -434,14 +434,17 @@
   /* Dimensional Tear Mobile Fixes */
   .dimensional-tear-container {
     min-height: 100vh !important;
-    padding: 0 !important;
+    padding: 20px 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
   .hero-content {
-    position: absolute !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
     width: calc(100% - 2rem) !important;
     max-width: 600px !important;
     padding: 2rem 1.5rem !important;
@@ -449,7 +452,7 @@
     border-radius: 28px !important;
     background: rgba(0, 0, 0, 0.9) !important;
     backdrop-filter: blur(15px) !important;
-    border: 1px solid rgba(0, 212, 255, 0.3) !important;
+    border: 2px solid rgba(0, 212, 255, 0.4) !important;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8) !important;
   }
 
@@ -601,11 +604,21 @@
 
 /* Extra Small Mobile Optimization (320px - 480px) */
 @media (max-width: 480px) {
+  .dimensional-tear-container {
+    padding: 15px 0 !important;
+    min-height: 100vh !important;
+  }
+
   .hero-content {
     padding: 1.5rem 1rem !important;
     margin: 0.5rem !important;
     border-radius: 20px !important;
     width: calc(100% - 1rem) !important;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    border: 2px solid rgba(0, 212, 255, 0.5) !important;
   }
 
   .hero-title {
