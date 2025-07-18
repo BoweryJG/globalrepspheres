@@ -238,25 +238,25 @@ const DimensionalTear = () => {
         </h1>
         
         <p className="hero-subtitle">
-          While corporate committees debate policy, elite reps are seizing unfair advantages.
-          The next 30 days will crown the market dominators for the next decade.
+          While institutions deliberate, the market's most sophisticated professionals are evolving.
+          The choices made in these decisive weeks will determine who shapes entire industries.
         </p>
 
         <div className="hero-supporting-copy">
           <div className="supporting-point">
-            <span className="point-indicator">⚡</span>
-            <strong>Your Territory Is Being Stolen</strong><br/>
-            Right now, enhanced reps are calling YOUR prospects, closing YOUR deals, and taking YOUR commissions. Every day you wait is another day they get stronger while you get left behind.
+            <span className="point-indicator">◆</span>
+            <strong>The Invisible Competitive Shift</strong><br/>
+            Enhanced professionals are systematically outperforming traditional approaches across every metric. They're not working harder—they're operating from a fundamentally different paradigm that compounds daily.
           </div>
           <div className="supporting-point">
-            <span className="point-indicator">⚡</span>
-            <strong>The Secret Weapon Your Competition Doesn't Want You to Know</strong><br/>
-            Top performers aren't just working harder—they're using intelligence multiplication that makes them 10x more effective. The ones who discovered this first are already unreachable.
+            <span className="point-indicator">◆</span>
+            <strong>Access to Proprietary Intelligence Systems</strong><br/>
+            The most successful professionals have quietly adopted cognitive enhancement tools that provide exponential leverage. Those who recognized this trend early have established positions that become more unassailable each quarter.
           </div>
           <div className="supporting-point">
-            <span className="point-indicator">⚡</span>
-            <strong>This Advantage Disappears Forever in 30 Days</strong><br/>
-            Once everyone has access, the advantage vanishes. Early adopters are building insurmountable leads RIGHT NOW. Miss this window and you'll spend years trying to catch up.
+            <span className="point-indicator">◆</span>
+            <strong>The Closing Window of Opportunity</strong><br/>
+            Market advantages are temporary by nature. The professionals securing enhanced capabilities today are building the foundation for decades of market leadership. Tomorrow's standard is today's competitive edge.
           </div>
         </div>
 
