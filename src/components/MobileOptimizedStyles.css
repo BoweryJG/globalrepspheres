@@ -147,6 +147,28 @@
   gap: 2rem !important;
 }
 
+/* Mathematical Proof Section Mobile Fixes */
+.mathematical-proof-section > div > div:nth-child(3) {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  padding: 2rem 1rem;
+}
+
+.mathematical-proof-section > div > div:nth-child(3) > div:nth-child(1) {
+  order: 1;
+}
+
+.mathematical-proof-section > div > div:nth-child(3) > div:nth-child(2) {
+  order: 2;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.mathematical-proof-section > div > div:nth-child(3) > div:nth-child(3) {
+  order: 3;
+}
+
 /* Empire Opportunity Mobile */
 .empire-examples-grid {
   display: grid;
@@ -321,6 +343,41 @@
     margin: 40px 0 !important;
     min-height: 48px !important;
     border-radius: 8px !important;
+  }
+
+  /* Mathematical Proof Mobile Responsive */
+  .mathematical-proof-section > div > div:nth-child(3) {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+    padding: 2rem 1rem !important;
+  }
+
+  .mathematical-proof-section > div > div:nth-child(3) > div:nth-child(1) {
+    order: 1 !important;
+  }
+
+  .mathematical-proof-section > div > div:nth-child(3) > div:nth-child(2) {
+    order: 2 !important;
+    text-align: center !important;
+    padding: 1rem 0 !important;
+  }
+
+  .mathematical-proof-section > div > div:nth-child(3) > div:nth-child(3) {
+    order: 3 !important;
+  }
+
+  /* Fix chart bars on mobile */
+  .mathematical-proof-section .chart-bar {
+    width: 60px !important;
+    margin: 0 auto !important;
+  }
+
+  /* Mobile mathematical proof chart */
+  .mathematical-proof-section > div > div:nth-child(4) > div:nth-child(2) {
+    flex-direction: column !important;
+    gap: 2rem !important;
+    height: auto !important;
+    padding: 1rem !important;
   }
 }
 

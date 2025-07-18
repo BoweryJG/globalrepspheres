@@ -155,44 +155,15 @@ const KineticNeedlesPage_Optimized = () => {
         <SpeedTunnel />
       </section>
 
-      {/* 8. EMPIRE OPPORTUNITY - Your Empire Awaits */}
-      <section id="empire" className="lightning-section section-container" style={{ 
-        backgroundColor: '#000000', 
-        padding: '0',
-        marginTop: 'clamp(50px, 8vh, 80px)',
-        position: 'relative'
-      }}>
-        <h2 style={{ 
-          position: 'absolute',
-          top: '50px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          color: '#FFFFFF', 
-          fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-          fontWeight: '800',
-          textAlign: 'center',
-          zIndex: 20,
-          textShadow: '0 0 30px rgba(255, 215, 0, 0.5)'
-        }}>
-          Your Empire Awaits
-        </h2>
-        <EmpireOpportunity />
-      </section>
-
-      {/* 9. SUBSCRIPTION TIERS - Choose Your Path */}
+      {/* 8. SUBSCRIPTION TIERS - Choose Your Path */}
       <div id="pricing" className="lightning-section">
         <SubscriptionTiers />
       </div>
 
-      {/* 10. CRM INTEGRATIONS - Connect Instantly */}
+      {/* 9. CRM INTEGRATIONS - Connect Instantly */}
       <CRMIntegrations />
 
-      {/* 11. SUBSCRIPTION TIERS - Lock In Your Empire */}
-      <div id="pricing" className="lightning-section">
-        <SubscriptionTiers />
-      </div>
-
-      {/* 12. URGENCY & SCARCITY - Final Call */}
+      {/* 10. URGENCY & SCARCITY - Final Call */}
       <section id="urgency-scarcity" className="lightning-section section-container" style={{ 
         backgroundColor: '#0a0a0a', 
         padding: 'clamp(80px, 10vh, 120px) 0',
@@ -224,7 +195,7 @@ const KineticNeedlesPage_Optimized = () => {
         </div>
       </section>
 
-      {/* 13. MAGNETIC CHOICE - Choose Your Destiny */}
+      {/* 11. MAGNETIC CHOICE - Choose Your Destiny */}
       <section id="magnetic-choice" className="lightning-section section-container" style={{ 
         backgroundColor: '#0f0f0f', 
         padding: 'clamp(100px, 12vh, 150px) 0',

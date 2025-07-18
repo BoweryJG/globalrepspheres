@@ -100,6 +100,12 @@ const GreatDivide = () => {
         
         <div className="divide-container">
           <div ref={leftRef} className="divide-side left-side">
+            {/* Beautiful Detailed Screws */}
+            <div className="corner-screw screw-tl deep" style={{top: '15px', left: '15px'}}></div>
+            <div className="corner-screw screw-tr deep" style={{top: '15px', right: '15px'}}></div>
+            <div className="corner-screw screw-bl deep" style={{bottom: '15px', left: '15px'}}></div>
+            <div className="corner-screw screw-br deep" style={{bottom: '15px', right: '15px'}}></div>
+            
             <h3 className="side-title">The Falling</h3>
             <div className="stats-container">
               <div className="stat-item">
@@ -130,6 +136,12 @@ const GreatDivide = () => {
           <div ref={dividerRef} className="divider-line"></div>
 
           <div ref={rightRef} className="divide-side right-side">
+            {/* Beautiful Detailed Screws */}
+            <div className="corner-screw screw-tl deep" style={{top: '15px', left: '15px'}}></div>
+            <div className="corner-screw screw-tr deep" style={{top: '15px', right: '15px'}}></div>
+            <div className="corner-screw screw-bl deep" style={{bottom: '15px', left: '15px'}}></div>
+            <div className="corner-screw screw-br deep" style={{bottom: '15px', right: '15px'}}></div>
+            
             <h3 className="side-title">The Rising</h3>
             <div className="stats-container">
               <div className="stat-item">

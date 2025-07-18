@@ -225,6 +225,12 @@ const DimensionalTear = () => {
 
       {/* Main Hero Content */}
       <div className="hero-content">
+        {/* Beautiful Detailed Screws */}
+        <div className="corner-screw screw-tl deep" style={{top: '15px', left: '15px'}}></div>
+        <div className="corner-screw screw-tr deep" style={{top: '15px', right: '15px'}}></div>
+        <div className="corner-screw screw-bl deep" style={{bottom: '15px', left: '15px'}}></div>
+        <div className="corner-screw screw-br deep" style={{bottom: '15px', right: '15px'}}></div>
+        
         <h1 className="hero-title">
           <span className="title-line">Meet the Rep<sup>2</sup></span>
           <span className="title-line tear-word">ENHANCED</span>
