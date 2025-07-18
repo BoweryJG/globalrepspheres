@@ -232,31 +232,29 @@ const DimensionalTear = () => {
         <div className="corner-screw screw-br deep" style={{bottom: '15px', right: '15px'}}></div>
         
         <h1 className="hero-title">
-          <span className="title-line">The Augmented</span>
-          <span className="title-line tear-word">Rep<sup>X</sup></span>
-          <span className="title-line">Sales Professional</span>
+          <span className="title-line tear-word">Rep<sup>x</sup></span>
         </h1>
         
         <p className="hero-subtitle">
-          While institutions deliberate, Rep<sup>X</sup> professionals are redefining what's possible in sales performance.
+          While institutions deliberate, Rep<sup>x</sup> professionals are redefining what's possible in sales performance.
           The augmented sales professional doesn't just compete—they operate in a different league entirely.
         </p>
 
         <div className="hero-supporting-copy">
           <div className="supporting-point">
             <span className="point-indicator">◆</span>
-            <strong>The Rep<sup>X</sup> Advantage</strong><br/>
+            <strong>The Rep<sup>x</sup> Advantage</strong><br/>
             Augmented sales professionals systematically outperform traditional reps across every metric. They're not working harder—they're operating with cognitive enhancement that multiplies their natural abilities exponentially.
           </div>
           <div className="supporting-point">
             <span className="point-indicator">◆</span>
             <strong>Beyond Human Performance Limits</strong><br/>
-            The Rep<sup>X</sup> professional leverages AI-powered intelligence systems that process thousands of data points simultaneously. While traditional reps rely on intuition, augmented professionals operate with superhuman market awareness.
+            The Rep<sup>x</sup> professional leverages AI-powered intelligence systems that process thousands of data points simultaneously. While traditional reps rely on intuition, augmented professionals operate with superhuman market awareness.
           </div>
           <div className="supporting-point">
             <span className="point-indicator">◆</span>
             <strong>The Augmentation Window</strong><br/>
-            The transition to Rep<sup>X</sup> is happening now. Professionals who secure cognitive enhancement today establish themselves as the next generation of market leaders. The augmented sales professional isn't coming—they're here.
+            The transition to Rep<sup>x</sup> is happening now. Professionals who secure cognitive enhancement today establish themselves as the next generation of market leaders. The augmented sales professional isn't coming—they're here.
           </div>
         </div>
 
