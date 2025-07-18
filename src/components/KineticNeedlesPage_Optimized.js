@@ -18,6 +18,7 @@ import CRMIntegrations from './CRMIntegrations';
 import CanvasIntelligence from './CanvasIntelligence';
 import KineticStarfield from './KineticStarfield';
 import KineticDataGrid from './KineticDataGrid';
+import KineticTimelineSection from './KineticTimelineSection';
 import { kineticStyles } from './KineticStyles';
 import './LightningStrikeEnhancements.css';
 import './MobileOptimizedStyles.css';
@@ -101,22 +102,27 @@ const KineticNeedlesPage_Optimized = () => {
         <DimensionalTear />
       </div>
 
-      {/* 2. THE GREAT DIVIDE - Which Side Are You On? */}
+      {/* 2. KINETIC TIMELINE - While They React, We Predict */}
+      <div className="lightning-section">
+        <KineticTimelineSection />
+      </div>
+
+      {/* 3. THE GREAT DIVIDE - Which Side Are You On? */}
       <div className="lightning-section">
         <GreatDivide />
       </div>
 
-      {/* 3. MATHEMATICAL PROOF - This Isn't Opinion. It's Math. */}
+      {/* 4. MATHEMATICAL PROOF - This Isn't Opinion. It's Math. */}
       <div id="mathematical-proof" className="lightning-section">
         <MathematicalProof />
       </div>
 
-      {/* 4. CANVAS INTELLIGENCE - The HOW Behind the Results */}
+      {/* 5. CANVAS INTELLIGENCE - The HOW Behind the Results */}
       <div id="canvas" className="lightning-section">
         <CanvasIntelligence />
       </div>
 
-      {/* 5. HARVEY WHISPER - Championship Coach in Your Ear */}
+      {/* 6. HARVEY WHISPER - Championship Coach in Your Ear */}
       <section id="harvey-whisper" className="lightning-section section-container" style={{ 
         backgroundColor: '#0a0a0a', 
         padding: 'clamp(80px, 10vh, 120px) 0',
@@ -126,7 +132,7 @@ const KineticNeedlesPage_Optimized = () => {
         <HarveyWhisper />
       </section>
 
-      {/* 6. SPEED TUNNEL - Experience the 75x Differential */}
+      {/* 7. SPEED TUNNEL - Experience the 75x Differential */}
       <section id="speed-tunnel" className="lightning-section section-container" style={{ 
         backgroundColor: '#000000', 
         padding: '0',
@@ -149,7 +155,7 @@ const KineticNeedlesPage_Optimized = () => {
         <SpeedTunnel />
       </section>
 
-      {/* 7. EMPIRE OPPORTUNITY - Your Empire Awaits */}
+      {/* 8. EMPIRE OPPORTUNITY - Your Empire Awaits */}
       <section id="empire" className="lightning-section section-container" style={{ 
         backgroundColor: '#000000', 
         padding: '0',
@@ -173,7 +179,7 @@ const KineticNeedlesPage_Optimized = () => {
         <EmpireOpportunity />
       </section>
 
-      {/* 8. SUBSCRIPTION TIERS - Choose Your Path */}
+      {/* 9. SUBSCRIPTION TIERS - Choose Your Path */}
       <div id="pricing" className="lightning-section">
         <SubscriptionTiers />
       </div>

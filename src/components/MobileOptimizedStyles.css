@@ -181,6 +181,32 @@
   gap: 1.5rem;
 }
 
+/* Timeline Section Mobile */
+.timeline-section {
+  padding: clamp(40px, 8vh, 80px) 15px;
+}
+
+.timeline-step {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.timeline-step .premium-panel {
+  order: 1;
+}
+
+.timeline-step > div:last-child {
+  order: 2;
+  padding: 0 15px;
+}
+
+.digital-display {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
 /* General Mobile Typography */
 @media (max-width: 768px) {
   .lightning-section h1,
@@ -262,6 +288,39 @@
       opacity: 1;
       transform: translateY(0);
     }
+  }
+
+  /* Mobile Timeline Section */
+  .timeline-section {
+    padding: clamp(30px, 6vh, 60px) 10px !important;
+  }
+
+  .timeline-step {
+    gap: 1.5rem !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .timeline-step .premium-panel {
+    padding: 30px 20px !important;
+  }
+
+  .digital-display {
+    padding: 15px !important;
+    font-size: 0.75rem !important;
+  }
+
+  .digital-display > div {
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+  }
+
+  /* Mobile Timeline Navigation Button */
+  .timeline-section button {
+    padding: 14px 24px !important;
+    font-size: 1rem !important;
+    margin: 40px 0 !important;
+    min-height: 48px !important;
+    border-radius: 8px !important;
   }
 }
 
