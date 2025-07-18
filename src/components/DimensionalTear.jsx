@@ -232,31 +232,31 @@ const DimensionalTear = () => {
         <div className="corner-screw screw-br deep" style={{bottom: '15px', right: '15px'}}></div>
         
         <h1 className="hero-title">
-          <span className="title-line">Meet the Rep<sup>2</sup></span>
-          <span className="title-line tear-word">ENHANCED</span>
+          <span className="title-line">The Augmented</span>
+          <span className="title-line tear-word">Rep<sup>2</sup></span>
           <span className="title-line">Sales Professional</span>
         </h1>
         
         <p className="hero-subtitle">
-          While institutions deliberate, the market's most sophisticated professionals are evolving.
-          The choices made in these decisive weeks will determine who shapes entire industries.
+          While institutions deliberate, Rep² professionals are redefining what's possible in sales performance.
+          The augmented sales professional doesn't just compete—they operate in a different league entirely.
         </p>
 
         <div className="hero-supporting-copy">
           <div className="supporting-point">
             <span className="point-indicator">◆</span>
-            <strong>The Invisible Competitive Shift</strong><br/>
-            Enhanced professionals are systematically outperforming traditional approaches across every metric. They're not working harder—they're operating from a fundamentally different paradigm that compounds daily.
+            <strong>The Rep² Advantage</strong><br/>
+            Augmented sales professionals systematically outperform traditional reps across every metric. They're not working harder—they're operating with cognitive enhancement that multiplies their natural abilities exponentially.
           </div>
           <div className="supporting-point">
             <span className="point-indicator">◆</span>
-            <strong>Access to Proprietary Intelligence Systems</strong><br/>
-            The most successful professionals have quietly adopted cognitive enhancement tools that provide exponential leverage. Those who recognized this trend early have established positions that become more unassailable each quarter.
+            <strong>Beyond Human Performance Limits</strong><br/>
+            The Rep² professional leverages AI-powered intelligence systems that process thousands of data points simultaneously. While traditional reps rely on intuition, augmented professionals operate with superhuman market awareness.
           </div>
           <div className="supporting-point">
             <span className="point-indicator">◆</span>
-            <strong>The Closing Window of Opportunity</strong><br/>
-            Market advantages are temporary by nature. The professionals securing enhanced capabilities today are building the foundation for decades of market leadership. Tomorrow's standard is today's competitive edge.
+            <strong>The Augmentation Window</strong><br/>
+            The transition to Rep² is happening now. Professionals who secure cognitive enhancement today establish themselves as the next generation of market leaders. The augmented sales professional isn't coming—they're here.
           </div>
         </div>
 
