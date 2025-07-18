@@ -132,13 +132,13 @@ const DimensionalTear = () => {
       className={`dimensional-tear-container ${isHighPerformance ? 'high-performance' : 'low-performance'}`} 
       ref={containerRef}
     >
-      {/* Falling Side - Digital Decay */}
+      {/* Falling Side - The Unenhanced */}
       <div className="tear-side falling-side">
         <div className="side-content">
-          <div className="side-title">The Falling Path</div>
+          <div className="side-title">The Unenhanced Rep</div>
           <div className="side-description">
-            Traditional reps grinding through endless cold calls, 
-            watching opportunities slip away, trapped in digital mediocrity.
+            Veteran reps with decades of experience, still grinding through 
+            endless cold calls, watching younger enhanced reps dominate their territory.
           </div>
           <div className="falling-particles">
             {isHighPerformance && [...Array(20)].map((_, i) => (
@@ -188,12 +188,12 @@ const DimensionalTear = () => {
         </div>
       </div>
 
-      {/* Rising Side - Ascension */}
+      {/* Rising Side - The Enhanced */}
       <div className="tear-side rising-side">
         <div className="side-content">
-          <div className="side-title">The Rising Path</div>
+          <div className="side-title">The Rep² Professional</div>
           <div className="side-description">
-            AI-powered reps ascending to unprecedented heights, 
+            Enhanced reps combining decades of sales wisdom with engineered intelligence, 
             converting prospects at 75x traditional rates.
           </div>
           <div className="rising-particles">
@@ -226,31 +226,31 @@ const DimensionalTear = () => {
       {/* Main Hero Content */}
       <div className="hero-content">
         <h1 className="hero-title">
-          <span className="title-line">The Second Electricity</span>
-          <span className="title-line tear-word">MOMENT</span>
-          <span className="title-line">Has Arrived</span>
+          <span className="title-line">Meet the Rep<sup>2</sup></span>
+          <span className="title-line tear-word">ENHANCED</span>
+          <span className="title-line">Sales Professional</span>
         </h1>
         
         <p className="hero-subtitle">
-          In your lifetime, there have been two vertically enabling technologies. 
-          First was electricity. Second is artificial intelligence. Who leverages 
-          its power will lead and move markets, starting today.
+          While others debate technology, veteran reps are becoming superhuman.
+          The future belongs to reps who enhance, not reps who resist.
         </p>
 
         <div className="hero-supporting-copy">
           <div className="supporting-point">
             <span className="point-indicator">•</span>
-            This isn't another trend. This isn't new technology. This is fundamental 
-            infrastructure that's rewiring how the world operates.
+            <strong>Rep² = Rep + Engineered Intelligence</strong><br/>
+            Your experience + intelligent enhancement = exponential results
           </div>
           <div className="supporting-point">
             <span className="point-indicator">•</span>
-            CEOs of AI companies confirm: This transformation rivals electricity 
-            in scope and inevitability.
+            <strong>The Enhancement Advantage</strong><br/>
+            75x conversion rates through veteran instincts + engineered precision
           </div>
           <div className="supporting-point">
             <span className="point-indicator">•</span>
-            The question isn't IF you'll adapt. It's whether you'll lead or follow.
+            <strong>Who Will Lead?</strong><br/>
+            Old school sales wisdom + new school intelligence = market domination
           </div>
         </div>
 

@@ -374,6 +374,11 @@
   color: white;
   max-width: 800px;
   padding: 2rem;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
 }
 
 .hero-title {
@@ -382,6 +387,13 @@
   margin-bottom: 1.5rem;
   line-height: 1.1;
   text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+.hero-title sup {
+  font-size: 0.6em;
+  color: var(--electric-blue);
+  text-shadow: 0 0 20px var(--electric-blue);
+  font-weight: 700;
 }
 
 .title-line {
@@ -493,11 +505,19 @@
   margin-bottom: 1.5rem;
   font-size: clamp(0.9rem, 1.8vw, 1.1rem);
   line-height: 1.6;
-  opacity: 0.9;
+  opacity: 0.95;
   text-align: left;
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.supporting-point strong {
+  color: var(--electric-blue);
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+  display: block;
+  margin-bottom: 0.3rem;
 }
 
 .supporting-point:last-child {
@@ -790,7 +810,10 @@
 
 @media (max-width: 480px) {
   .hero-content {
-    padding: 1rem;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.92);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    margin: 0.5rem;
   }
   
   .side-content {
@@ -799,6 +822,16 @@
   
   .side-description {
     font-size: 0.9rem;
+  }
+  
+  .supporting-point {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 1.2rem;
+  }
+  
+  .hero-title sup {
+    font-size: 0.5em;
   }
 }
 
