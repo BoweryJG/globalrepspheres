@@ -135,10 +135,10 @@ const DimensionalTear = () => {
       {/* Falling Side - The Unenhanced */}
       <div className="tear-side falling-side">
         <div className="side-content">
-          <div className="side-title">The Unenhanced Rep</div>
+          <div className="side-title">The Waiting Game</div>
           <div className="side-description">
-            Veteran reps with decades of experience, still grinding through 
-            endless cold calls, watching younger enhanced reps dominate their territory.
+            Veteran reps waiting for their company to "roll out" enhancement tools, 
+            watching competitors leverage independent solutions while corporate debates budget allocation.
           </div>
           <div className="falling-particles">
             {isHighPerformance && [...Array(20)].map((_, i) => (
@@ -191,10 +191,10 @@ const DimensionalTear = () => {
       {/* Rising Side - The Enhanced */}
       <div className="tear-side rising-side">
         <div className="side-content">
-          <div className="side-title">The Rep² Professional</div>
+          <div className="side-title">The Independent Advantage</div>
           <div className="side-description">
-            Enhanced reps combining decades of sales wisdom with engineered intelligence, 
-            converting prospects at 75x traditional rates.
+            Smart reps who enhanced independently, combining decades of sales wisdom with engineered intelligence, 
+            dominating markets while their colleagues wait for corporate "approval."
           </div>
           <div className="rising-particles">
             {isHighPerformance && [...Array(20)].map((_, i) => (
@@ -244,13 +244,13 @@ const DimensionalTear = () => {
           </div>
           <div className="supporting-point">
             <span className="point-indicator">•</span>
-            <strong>The Enhancement Advantage</strong><br/>
-            75x conversion rates through veteran instincts + engineered precision
+            <strong>The Corporate Reality</strong><br/>
+            When companies finally integrate this technology, will they offer it to everyone or streamline their own processes? These conversations are happening now.
           </div>
           <div className="supporting-point">
             <span className="point-indicator">•</span>
             <strong>Who Will Lead?</strong><br/>
-            Old school sales wisdom + new school intelligence = market domination
+            Smart reps are enhancing independently while corporations debate budgets and bottom lines
           </div>
         </div>
 
