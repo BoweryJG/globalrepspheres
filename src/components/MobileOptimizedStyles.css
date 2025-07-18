@@ -379,6 +379,163 @@
     height: auto !important;
     padding: 1rem !important;
   }
+
+  /* Great Divide Mobile Optimization */
+  .great-divide-section {
+    padding: clamp(40px, 8vh, 80px) 15px !important;
+  }
+
+  .great-divide-section .container {
+    padding: 0 10px !important;
+  }
+
+  .divide-container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2rem !important;
+  }
+
+  .divide-side {
+    width: 100% !important;
+    margin-bottom: 2rem !important;
+    padding: 2rem 1rem !important;
+    border-radius: 20px !important;
+  }
+
+  .divider-line {
+    width: 80% !important;
+    height: 4px !important;
+    margin: 2rem auto !important;
+    background: linear-gradient(90deg, transparent, var(--electric-blue), transparent) !important;
+  }
+
+  .stats-container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .stat-item {
+    text-align: center !important;
+    padding: 1rem !important;
+  }
+
+  .side-features {
+    font-size: 0.9rem !important;
+    line-height: 1.4 !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .side-features li {
+    margin-bottom: 0.8rem !important;
+  }
+
+  /* Dimensional Tear Mobile Fixes */
+  .dimensional-tear-container {
+    min-height: 100vh !important;
+    padding: 0 !important;
+  }
+
+  .hero-content {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: calc(100% - 2rem) !important;
+    max-width: 600px !important;
+    padding: 2rem 1.5rem !important;
+    margin: 1rem !important;
+    border-radius: 28px !important;
+    background: rgba(0, 0, 0, 0.9) !important;
+    backdrop-filter: blur(15px) !important;
+    border: 1px solid rgba(0, 212, 255, 0.3) !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8) !important;
+  }
+
+  .hero-title {
+    font-size: clamp(2rem, 8vw, 3rem) !important;
+    line-height: 1.1 !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1rem, 3vw, 1.2rem) !important;
+    line-height: 1.4 !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .supporting-point {
+    font-size: clamp(0.9rem, 2.5vw, 1rem) !important;
+    line-height: 1.5 !important;
+    margin-bottom: 1.5rem !important;
+    gap: 1rem !important;
+  }
+
+  .supporting-point strong {
+    font-size: clamp(1rem, 3vw, 1.1rem) !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .hero-cta {
+    margin-top: 2rem !important;
+  }
+
+  /* Corner screws mobile optimization */
+  .corner-screw {
+    width: 4px !important;
+    height: 4px !important;
+  }
+
+  .corner-screw.deep {
+    width: 5px !important;
+    height: 5px !important;
+  }
+
+  /* Interactive calculator mobile fixes */
+  .multiplier-calculator-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  .multiplier-enhanced,
+  .multiplier-traditional {
+    padding: 1.5rem 1rem !important;
+  }
+
+  .multiplier-vs-divider {
+    padding: 1rem 0 !important;
+    margin: 1rem 0 !important;
+  }
+
+  /* CRM integrations mobile */
+  .crm-integrations-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  .crm-integration-card {
+    padding: 1.5rem 1rem !important;
+  }
+
+  /* Timeline section mobile */
+  .timeline-section {
+    padding: clamp(30px, 6vh, 60px) 10px !important;
+  }
+
+  .timeline-step {
+    gap: 1.5rem !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .timeline-step .premium-panel {
+    padding: 1.5rem 1rem !important;
+  }
+
+  .digital-display {
+    padding: 1rem !important;
+    font-size: 0.8rem !important;
+  }
 }
 
 /* Tablet optimizations */
@@ -439,6 +596,90 @@
   .empire-examples-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
+  }
+}
+
+/* Extra Small Mobile Optimization (320px - 480px) */
+@media (max-width: 480px) {
+  .hero-content {
+    padding: 1.5rem 1rem !important;
+    margin: 0.5rem !important;
+    border-radius: 20px !important;
+    width: calc(100% - 1rem) !important;
+  }
+
+  .hero-title {
+    font-size: clamp(1.8rem, 7vw, 2.5rem) !important;
+    line-height: 1.2 !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(0.9rem, 2.8vw, 1.1rem) !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .supporting-point {
+    font-size: clamp(0.85rem, 2.2vw, 0.95rem) !important;
+    line-height: 1.4 !important;
+    margin-bottom: 1.2rem !important;
+  }
+
+  .supporting-point strong {
+    font-size: clamp(0.9rem, 2.5vw, 1rem) !important;
+  }
+
+  .great-divide-section {
+    padding: clamp(30px, 5vh, 50px) 10px !important;
+  }
+
+  .divide-side {
+    padding: 1.5rem 0.8rem !important;
+    border-radius: 15px !important;
+  }
+
+  .stats-container {
+    gap: 0.8rem !important;
+  }
+
+  .stat-item {
+    padding: 0.8rem !important;
+  }
+
+  .side-features {
+    font-size: 0.85rem !important;
+    line-height: 1.3 !important;
+  }
+
+  .timeline-section {
+    padding: clamp(20px, 4vh, 40px) 8px !important;
+  }
+
+  .timeline-step .premium-panel {
+    padding: 1.2rem 0.8rem !important;
+  }
+
+  .digital-display {
+    padding: 0.8rem !important;
+    font-size: 0.75rem !important;
+  }
+
+  /* Fix button spacing on very small screens */
+  .timeline-section button {
+    padding: 12px 20px !important;
+    font-size: 0.9rem !important;
+    margin: 30px 0 !important;
+  }
+
+  /* Ensure touch targets are large enough */
+  .corner-screw {
+    width: 3px !important;
+    height: 3px !important;
+  }
+
+  .corner-screw.deep {
+    width: 4px !important;
+    height: 4px !important;
   }
 }
 
