@@ -181,13 +181,6 @@ const RepSpheresNavbar = ({
               >
                 Sign Up
               </button>
-              <button className="nav-more" aria-label="More options">
-                <div className="nav-more-icon">
-                  <span className="nav-more-dot"></span>
-                  <span className="nav-more-dot"></span>
-                  <span className="nav-more-dot"></span>
-                </div>
-              </button>
               <button 
                 className={`nav-hamburger ${isMobileMenuOpen ? 'active' : ''}`}
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
