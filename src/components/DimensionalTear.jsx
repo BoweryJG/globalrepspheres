@@ -135,10 +135,10 @@ const DimensionalTear = () => {
       {/* Falling Side - The Unenhanced */}
       <div className="tear-side falling-side">
         <div className="side-content">
-          <div className="side-title">The Waiting Game</div>
+          <div className="side-title">The Corporate Lottery</div>
           <div className="side-description">
-            Veteran reps waiting for their company to "roll out" enhancement tools, 
-            watching competitors leverage independent solutions while corporate debates budget allocation.
+            Talented reps trapped by their company's resistance to enhancement, 
+            watching competitors from forward-thinking companies dominate their territory with Rep² advantages.
           </div>
           <div className="falling-particles">
             {isHighPerformance && [...Array(20)].map((_, i) => (
@@ -191,10 +191,10 @@ const DimensionalTear = () => {
       {/* Rising Side - The Enhanced */}
       <div className="tear-side rising-side">
         <div className="side-content">
-          <div className="side-title">The Independent Advantage</div>
+          <div className="side-title">The Competitive Edge</div>
           <div className="side-description">
-            Smart reps who enhanced independently, combining decades of sales wisdom with engineered intelligence, 
-            dominating markets while their colleagues wait for corporate "approval."
+            Smart reps who refused to let corporate politics determine their competitive advantage, 
+            becoming Rep² professionals regardless of their company's stance on enhancement.
           </div>
           <div className="rising-particles">
             {isHighPerformance && [...Array(20)].map((_, i) => (
@@ -233,24 +233,24 @@ const DimensionalTear = () => {
         
         <p className="hero-subtitle">
           While others debate technology, veteran reps are becoming superhuman.
-          The future belongs to reps who enhance, not reps who resist.
+          The decisions made in the coming weeks will dictate who moves markets for years to come.
         </p>
 
         <div className="hero-supporting-copy">
           <div className="supporting-point">
             <span className="point-indicator">•</span>
-            <strong>Rep² = Rep + Engineered Intelligence</strong><br/>
-            Your experience + intelligent enhancement = exponential results
+            <strong>The Competitive Reality</strong><br/>
+            Your competitor works for a company whose management embraces enhancement. You work for one that doesn't. How will you compete when they're Rep² and you're not?
           </div>
           <div className="supporting-point">
             <span className="point-indicator">•</span>
-            <strong>The Corporate Reality</strong><br/>
-            When companies finally integrate this technology, will they offer it to everyone or streamline their own processes? These conversations are happening now.
+            <strong>The Corporate Divide</strong><br/>
+            Some management teams are already integrating enhancement tools. Others are debating. The gap between enhanced and unenhanced reps is widening daily.
           </div>
           <div className="supporting-point">
             <span className="point-indicator">•</span>
-            <strong>Who Will Lead?</strong><br/>
-            Smart reps are enhancing independently while corporations debate budgets and bottom lines
+            <strong>This Window Won't Last</strong><br/>
+            The coming weeks will separate the market leaders from the followers. Individual enhancement is your only guarantee of competitive advantage.
           </div>
         </div>
 
