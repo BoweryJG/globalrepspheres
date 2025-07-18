@@ -238,25 +238,25 @@ const DimensionalTear = () => {
         </h1>
         
         <p className="hero-subtitle">
-          While others debate technology, veteran reps are becoming superhuman.
-          The decisions made in the coming weeks will dictate who moves markets for years to come.
+          While corporate committees debate policy, elite reps are seizing unfair advantages.
+          The next 30 days will crown the market dominators for the next decade.
         </p>
 
         <div className="hero-supporting-copy">
           <div className="supporting-point">
-            <span className="point-indicator">•</span>
-            <strong>The Competitive Reality</strong><br/>
-            Your competitor works for a company whose management embraces enhancement. You work for one that doesn't. How will you compete when they're Rep² and you're not?
+            <span className="point-indicator">⚡</span>
+            <strong>Your Territory Is Being Stolen</strong><br/>
+            Right now, enhanced reps are calling YOUR prospects, closing YOUR deals, and taking YOUR commissions. Every day you wait is another day they get stronger while you get left behind.
           </div>
           <div className="supporting-point">
-            <span className="point-indicator">•</span>
-            <strong>The Corporate Divide</strong><br/>
-            Some management teams are already integrating enhancement tools. Others are debating. The gap between enhanced and unenhanced reps is widening daily.
+            <span className="point-indicator">⚡</span>
+            <strong>The Secret Weapon Your Competition Doesn't Want You to Know</strong><br/>
+            Top performers aren't just working harder—they're using intelligence multiplication that makes them 10x more effective. The ones who discovered this first are already unreachable.
           </div>
           <div className="supporting-point">
-            <span className="point-indicator">•</span>
-            <strong>This Window Won't Last</strong><br/>
-            The coming weeks will separate the market leaders from the followers. Individual enhancement is your only guarantee of competitive advantage.
+            <span className="point-indicator">⚡</span>
+            <strong>This Advantage Disappears Forever in 30 Days</strong><br/>
+            Once everyone has access, the advantage vanishes. Early adopters are building insurmountable leads RIGHT NOW. Miss this window and you'll spend years trying to catch up.
           </div>
         </div>
 
