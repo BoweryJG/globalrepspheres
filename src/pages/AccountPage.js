@@ -30,7 +30,7 @@ import {
 } from '@mui/icons-material';
 import StarryBackground from '../components/StarryBackground_Ultra';
 import NavBar from '../components/NavBar';
-import { PRICING_TIERS } from '../stripeService_v2';
+import { getPricingTiers } from '../stripeService_v2';
 
 const AccountContainer = styled(Box)(({ theme }) => ({
   minHeight: '100vh',
@@ -101,7 +101,25 @@ export default function AccountPage() {
     { date: '2023-10-15', amount: 149, status: 'paid', invoice: 'INV-2023-10-001' }
   ]);
 
-  const currentTier = PRICING_TIERS[userAccount.subscription.tier];
+  const [pricingTiers, setPricingTiers] = useState({});
+  const [loadingPricing, setLoadingPricing] = useState(true);
+
+  useEffect(() => {
+    const fetchPricing = async () => {
+      try {
+        const tiers = await getPricingTiers();
+        setPricingTiers(tiers);
+      } catch (error) {
+        console.error('Error fetching pricing:', error);
+      } finally {
+        setLoadingPricing(false);
+      }
+    };
+
+    fetchPricing();
+  }, []);
+
+  const currentTier = pricingTiers[userAccount.subscription.tier] || { name: 'Professional' };
   const usagePercentage = (userAccount.usage.creditsUsed / userAccount.usage.creditsTotal) * 100;
 
   const formatDate = (dateString) => {

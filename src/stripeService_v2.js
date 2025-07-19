@@ -1,46 +1,32 @@
-// Stripe Pricing Configuration - Unified 5-Tier Structure
-export const PRICING_TIERS = {
-  explorer: {
-    name: 'Explorer',
-    priceId: process.env.REACT_APP_STRIPE_EXPLORER_MONTHLY_PRICE_ID || 'price_1RRuqbGRiAPUZqWu3f91wnNx',
-    price: 49,
-    interval: 'month',
-    annualPriceId: process.env.REACT_APP_STRIPE_EXPLORER_ANNUAL_PRICE_ID || 'price_1RWMXEGRiAPUZqWuPwcgrovN',
-    annualPrice: 490,
-  },
-  professional: {
-    name: 'Professional', 
-    priceId: process.env.REACT_APP_STRIPE_PROFESSIONAL_MONTHLY_PRICE_ID || 'price_1RRurNGRiAPUZqWuklICsE4P',
-    price: 149,
-    interval: 'month',
-    annualPriceId: process.env.REACT_APP_STRIPE_PROFESSIONAL_ANNUAL_PRICE_ID || 'price_1RWMWjGRiAPUZqWu6YBZY7o4',
-    annualPrice: 1490,
-  },
-  growth: {
-    name: 'Growth',
-    priceId: process.env.REACT_APP_STRIPE_GROWTH_MONTHLY_PRICE_ID || 'price_1RWMW3GRiAPUZqWuoTA0eLUC',
-    price: 349,
-    interval: 'month',
-    annualPriceId: process.env.REACT_APP_STRIPE_GROWTH_ANNUAL_PRICE_ID || 'price_1RRus5GRiAPUZqWup3jk1S8U',
-    annualPrice: 3490,
-  },
-  enterprise: {
-    name: 'Enterprise',
-    priceId: process.env.REACT_APP_STRIPE_ENTERPRISE_MONTHLY_PRICE_ID || 'price_1RRushGRiAPUZqWuIvqueK7h',
-    price: 749,
-    interval: 'month',
-    annualPriceId: process.env.REACT_APP_STRIPE_ENTERPRISE_ANNUAL_PRICE_ID || 'price_1RWMT4GRiAPUZqWuqiNhkZfw',
-    annualPrice: 7490,
-  },
-  elite: {
-    name: 'Elite',
-    priceId: process.env.REACT_APP_STRIPE_ELITE_MONTHLY_PRICE_ID || 'price_1RRutVGRiAPUZqWuDMSAqHsD',
-    price: 1499,
-    interval: 'month',
-    annualPriceId: process.env.REACT_APP_STRIPE_ELITE_ANNUAL_PRICE_ID || 'price_1RWMSCGRiAPUZqWu30j19b9G',
-    annualPrice: 14990,
+import { API_ENDPOINTS } from './config/api';
+
+// Fetch pricing tiers from backend
+let cachedPricingTiers = null;
+export async function getPricingTiers() {
+  if (cachedPricingTiers) {
+    return cachedPricingTiers;
   }
-};
+
+  try {
+    const response = await fetch(API_ENDPOINTS.PRICING_TIERS);
+    if (!response.ok) {
+      throw new Error('Failed to fetch pricing tiers');
+    }
+    
+    cachedPricingTiers = await response.json();
+    return cachedPricingTiers;
+  } catch (error) {
+    console.error('Error fetching pricing tiers:', error);
+    // Return fallback pricing if backend is unavailable
+    return {
+      explorer: { name: 'Explorer', stripeIds: { monthly: 'price_1RRuqbGRiAPUZqWu3f91wnNx', annual: 'price_1RWMXEGRiAPUZqWuPwcgrovN' }},
+      professional: { name: 'Professional', stripeIds: { monthly: 'price_1RRurNGRiAPUZqWuklICsE4P', annual: 'price_1RWMWjGRiAPUZqWu6YBZY7o4' }},
+      growth: { name: 'Growth', stripeIds: { monthly: 'price_1RWMW3GRiAPUZqWuoTA0eLUC', annual: 'price_1RRus5GRiAPUZqWup3jk1S8U' }},
+      enterprise: { name: 'Enterprise', stripeIds: { monthly: 'price_1RRushGRiAPUZqWuIvqueK7h', annual: 'price_1RWMT4GRiAPUZqWuqiNhkZfw' }},
+      elite: { name: 'Elite', stripeIds: { monthly: 'price_1RRutVGRiAPUZqWuDMSAqHsD', annual: 'price_1RWMSCGRiAPUZqWu30j19b9G' }}
+    };
+  }
+}
 
 export async function createCheckoutSession(tier, billingInterval = 'month') {
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
@@ -57,15 +43,16 @@ export async function createCheckoutSession(tier, billingInterval = 'month') {
   }
 
   try {
-    const tierConfig = PRICING_TIERS[tier];
+    const pricingTiers = await getPricingTiers();
+    const tierConfig = pricingTiers[tier];
     if (!tierConfig) {
       throw new Error('Invalid pricing tier');
     }
 
     // Determine which price ID to use
-    let priceId = tierConfig.priceId;
-    if (billingInterval === 'year' && tierConfig.annualPriceId) {
-      priceId = tierConfig.annualPriceId;
+    let priceId = tierConfig.stripeIds.monthly;
+    if (billingInterval === 'year' && tierConfig.stripeIds.annual) {
+      priceId = tierConfig.stripeIds.annual;
     }
 
     const res = await fetch(`${backendUrl}/create-checkout-session`, {

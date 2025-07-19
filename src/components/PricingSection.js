@@ -1,171 +1,88 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Container, Typography, Grid, Button, Chip, CircularProgress } from '@mui/material';
 import { Check, Star, Bolt, Phone, TrendingUp, Psychology, Speed, EmojiEvents, Rocket } from '@mui/icons-material';
 import { createCheckoutSession } from '../stripeService';
+import { API_ENDPOINTS } from '../config/api';
 
-const pricingTiers = [
-  {
-    id: 'explorer',
-    name: 'Explorer',
-    tagline: 'Your Secret Weapon Starts Here',
-    price: '$49',
-    period: '/month',
-    annualPrice: '$490',
-    annualPeriod: '/year',
-    description: 'The edge that pays for itself with just one extra appointment',
-    features: [
-      'Market X-Ray Vision: Track growth on 100+ hot procedures',
-      '5 AI Power Plays that get callbacks',
-      'Weekly Intelligence Briefings before competition',
-      'Explorer Elite Status in private community',
-      'Basic category insights & market trends',
-      'Mobile app access'
-    ],
-    testimonial: {
-      quote: "I booked 3 meetings my first week using Explorer insights. This is cheating.",
-      author: "Mike D., Zimmer Rep"
-    },
-    roi: "One extra appointment pays for 6 months",
-    cta: 'Start Dominating',
-    popular: false,
-    gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+// Default tier configuration with icons and UI elements
+const defaultTierConfig = {
+  explorer: {
     icon: <TrendingUp sx={{ fontSize: 30 }} />,
-    stripeMonthly: 'price_1RRuqbGRiAPUZqWu3f91wnNx',
-    stripeAnnual: 'price_1RWMXEGRiAPUZqWuPwcgrovN',
+    gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    popular: false
   },
-  {
-    id: 'professional',
-    name: 'Professional',
-    tagline: 'Turn Territory Management Into Territory Domination',
-    price: '$149',
-    period: '/month',
-    annualPrice: '$1,490',
-    annualPeriod: '/year',
-    description: 'Your unfair advantage arsenal for crushing quota',
-    features: [
-      'Complete Market Intelligence: 500+ procedures with surgeon insights',
-      '50 AI Sales Conversations worth $10K+ each',
-      '10 Conversation Forensics revealing why you win/lose',
-      'Real-time alerts on expansions & competitor issues',
-      'Fortune 500 level reports on demand',
-      'VIP Support: We answer before your second ring',
-      'Professional Badge + priority everything'
-    ],
-    testimonial: {
-      quote: "Jumped from #12 to #2 in district within 90 days. My manager asked what changed.",
-      author: "Sarah K., Allergan"
-    },
-    roi: "One small deal = full year paid",
-    cta: 'Claim Your Territory',
-    popular: true,
-    gradient: 'linear-gradient(135deg, #00ffc6 0%, #00d4a8 100%)',
+  professional: {
     icon: <Psychology sx={{ fontSize: 30 }} />,
-    savings: 'MOST POPULAR',
-    stripeMonthly: 'price_1RRurNGRiAPUZqWuklICsE4P',
-    stripeAnnual: 'price_1RWMWjGRiAPUZqWu6YBZY7o4',
+    gradient: 'linear-gradient(135deg, #00ffc6 0%, #00d4a8 100%)',
+    popular: true,
+    savings: 'MOST POPULAR'
   },
-  {
-    id: 'growth',
-    name: 'Growth',
-    tagline: 'Scale From Rep to Regional Force',
-    price: '$349',
-    period: '/month',
-    annualPrice: '$3,490',
-    annualPeriod: '/year',
-    description: 'Your revenue multiplication system',
-    features: [
-      'UNLIMITED AI Brain Power for brilliant talking points',
-      '50 Call Transformations into masterclasses',
-      '3 Custom Territory Intelligence Reports monthly',
-      'Wolf Pack Mode: Share wins with 3 team members',
-      'API Weapon: Connect CRM & automate dominance',
-      'Quarterly War Room with $5M+ producers',
-      'Growth Badge + quarterly strategy calls'
-    ],
-    testimonial: {
-      quote: "My team's close rate went from 18% to 47%. We're unstoppable now.",
-      author: "Regional Manager, Top 5 Device Company"
-    },
-    roi: "5% close rate increase = 10x return",
-    cta: 'Build Your Empire',
-    popular: false,
-    gradient: 'linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%)',
+  growth: {
     icon: <Speed sx={{ fontSize: 30 }} />,
-    stripeMonthly: 'price_1RWMW3GRiAPUZqWuoTA0eLUC',
-    stripeAnnual: 'price_1RRus5GRiAPUZqWup3jk1S8U',
+    gradient: 'linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%)',
+    popular: false
   },
-  {
-    id: 'enterprise',
-    name: 'Enterprise',
-    tagline: 'Build Your Sales Empire',
-    price: '$749',
-    period: '/month',
-    annualPrice: '$7,490',
-    annualPeriod: '/year',
-    description: 'Your market domination platform',
-    features: [
-      'UNLIMITED Everything: Every call, every brief, every opportunity',
-      '5 AI Automation Workflows running while you golf',
-      'Custom AI Training on your secret sauce',
-      '10-Seat Strike Team armament',
-      'White-Label Reports that stun C-suite',
-      'Monthly Strategy Summit with enterprise team',
-      'API Priority Access for custom integrations',
-      'Enterprise Badge + dedicated success line'
-    ],
-    testimonial: {
-      quote: "We took 62% market share in 8 months. Competitors think we have insider info. We do.",
-      author: "VP Sales, PE-Backed Aesthetic Company"
-    },
-    roi: "10% market share gain = 50x return",
-    cta: 'Command The Market',
-    popular: false,
-    gradient: 'linear-gradient(135deg, #7B42F6 0%, #5B32D6 100%)',
+  enterprise: {
     icon: <EmojiEvents sx={{ fontSize: 30 }} />,
-    savings: 'Save $1,498/year',
-    stripeMonthly: 'price_1RRushGRiAPUZqWuIvqueK7h',
-    stripeAnnual: 'price_1RWMT4GRiAPUZqWuqiNhkZfw',
-  },
-  {
-    id: 'elite',
-    name: 'Elite',
-    tagline: 'For Those Who Refuse To Lose',
-    price: '$1,499',
-    period: '/month',
-    annualPrice: '$14,990',
-    annualPeriod: '/year',
-    description: 'Your personal sales special forces',
-    features: [
-      'INFINITE POWER: Every limit removed',
-      'Your AI Army trained on YOUR wins 24/7',
-      'Done-For-You reports while you close',
-      'War General who\'s personally closed $50M+',
-      'Weekly Battle Planning sessions',
-      'Unlimited team member access',
-      'First access to game-breaking features',
-      'Elite Inner Circle quarterly meetups',
-      'Custom everything: AI, reports, strategies'
-    ],
-    testimonial: {
-      quote: "My commission went from $400K to $1.3M. Elite pays for itself every 10 days.",
-      author: "National Account Director"
-    },
-    roi: "ROI is for people who think small",
-    cta: 'Join The Elite',
+    gradient: 'linear-gradient(135deg, #7B42F6 0%, #5B32D6 100%)',
     popular: false,
-    gradient: 'linear-gradient(135deg, #ff006e 0%, #8338ec 100%)',
+    savings: 'Save $1,498/year'
+  },
+  elite: {
     icon: <Rocket sx={{ fontSize: 30 }} />,
+    gradient: 'linear-gradient(135deg, #ff006e 0%, #8338ec 100%)',
+    popular: false,
     highlight: true,
-    savings: 'Save $2,998/year',
-    stripeMonthly: 'price_1RRutVGRiAPUZqWuDMSAqHsD',
-    stripeAnnual: 'price_1RWMSCGRiAPUZqWu30j19b9G',
+    savings: 'Save $2,998/year'
   }
-];
+};
 
 export default function PricingSection() {
   const [hoveredTier, setHoveredTier] = useState(null);
   const [billingPeriod, setBillingPeriod] = useState('monthly');
   const [loadingTier, setLoadingTier] = useState(null);
+  const [pricingTiers, setPricingTiers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch pricing data from backend
+  useEffect(() => {
+    const fetchPricingTiers = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(API_ENDPOINTS.PRICING_TIERS);
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch pricing data');
+        }
+        
+        const backendTiers = await response.json();
+        
+        // Merge backend data with UI configuration
+        const mergedTiers = backendTiers.map(tier => ({
+          ...tier,
+          ...defaultTierConfig[tier.id],
+          // Format prices for display
+          price: `$${tier.price.monthly}`,
+          period: '/month',
+          annualPrice: `$${tier.price.annual.toLocaleString()}`,
+          annualPeriod: '/year',
+          stripeMonthly: tier.stripeIds.monthly,
+          stripeAnnual: tier.stripeIds.annual
+        }));
+        
+        setPricingTiers(mergedTiers);
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching pricing:', err);
+        setError('Failed to load pricing. Please refresh the page.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPricingTiers();
+  }, []);
 
   const handleSubscribe = async (tier) => {
     setLoadingTier(tier.id);
@@ -222,6 +139,43 @@ export default function PricingSection() {
       />
 
       <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1 }}>
+        {/* Loading State */}
+        {loading && (
+          <Box sx={{ display: 'flex', justifyContent: 'center', py: 10 }}>
+            <CircularProgress sx={{ color: '#00ffc6' }} />
+          </Box>
+        )}
+
+        {/* Error State */}
+        {error && (
+          <Box sx={{ textAlign: 'center', py: 10 }}>
+            <Typography 
+              variant="h6" 
+              sx={{ 
+                color: '#ff6b6b', 
+                fontFamily: "'DM Sans', Arial, sans-serif",
+                mb: 2 
+              }}
+            >
+              {error}
+            </Typography>
+            <Button 
+              variant="outlined" 
+              onClick={() => window.location.reload()}
+              sx={{ 
+                borderColor: '#00ffc6', 
+                color: '#00ffc6',
+                '&:hover': { backgroundColor: 'rgba(0,255,198,0.1)' }
+              }}
+            >
+              Retry
+            </Button>
+          </Box>
+        )}
+
+        {/* Content - only show when loaded and no error */}
+        {!loading && !error && (
+          <>
         {/* Section Header */}
         <Box sx={{ textAlign: 'center', mb: 8 }}>
           <Chip
@@ -890,6 +844,8 @@ export default function PricingSection() {
             </Grid>
           </Grid>
         </Box>
+        </>
+        )}
       </Container>
     </Box>
   );
