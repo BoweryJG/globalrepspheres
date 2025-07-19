@@ -4,36 +4,123 @@ import { Check, Star, Bolt, Phone, TrendingUp, Psychology, Speed, EmojiEvents, R
 import { createCheckoutSession } from '../stripeService';
 import { API_ENDPOINTS } from '../config/api';
 
-// Default tier configuration with icons and UI elements
+// Default tier configuration with icons, UI elements, and copy
 const defaultTierConfig = {
   explorer: {
     icon: <TrendingUp sx={{ fontSize: 30 }} />,
     gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    popular: false
+    popular: false,
+    tagline: 'Your RepX Intelligence Starts Here',
+    description: 'Essential market intelligence that pays for itself with your first qualified lead',
+    features: [
+      'RepX Market Scanner: Monitor 100+ growth procedures',
+      '10 AI-Powered Conversation Starters monthly',
+      'Weekly Intelligence Briefings before competitors',
+      'Explorer Community Access',
+      'Basic trend insights & procedure tracking',
+      'Mobile RepX app access'
+    ],
+    testimonial: {
+      quote: "Three qualified leads in my first week with Explorer RepX. The intel is pure gold.",
+      author: "Jessica M., Zimmer Biomet Rep"
+    },
+    roi: "One qualified lead = 6 months paid",
+    cta: 'Start Your RepX Journey'
   },
   professional: {
     icon: <Psychology sx={{ fontSize: 30 }} />,
     gradient: 'linear-gradient(135deg, #00ffc6 0%, #00d4a8 100%)',
     popular: true,
-    savings: 'MOST POPULAR'
+    savings: 'MOST POPULAR',
+    tagline: 'RepX Professional: Territory Domination',
+    description: 'Advanced RepX intelligence arsenal for crushing quotas and maximizing commission',
+    features: [
+      'Complete RepX Intelligence: 500+ procedures with surgeon insights',
+      '75 AI Conversation Builders worth $15K+ each',
+      '25 RepX Call Analysis sessions revealing win patterns',
+      'Real-time expansion alerts & competitor intelligence',
+      'Executive-level RepX reports on demand',
+      'Priority RepX support & training',
+      'Professional RepX badge + community perks'
+    ],
+    testimonial: {
+      quote: "RepX Professional took me from #15 to #3 in my district. My manager wants to know my secret.",
+      author: "David K., Allergan Sales"
+    },
+    roi: "One mid-size deal = annual subscription covered",
+    cta: 'Claim Your RepX Territory'
   },
   growth: {
     icon: <Speed sx={{ fontSize: 30 }} />,
     gradient: 'linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%)',
-    popular: false
+    popular: false,
+    tagline: 'RepX Growth: Scale Beyond Limits',
+    description: 'RepX intelligence multiplication system for regional dominance',
+    features: [
+      'UNLIMITED RepX AI Brain Power for brilliant territory insights',
+      '100 Call Transformation sessions into RepX masterclasses',
+      '5 Custom Territory RepX Intelligence Reports monthly',
+      'Team RepX Mode: Share insights with 5 team members',
+      'RepX API Access: Automate your intelligence workflow',
+      'Quarterly RepX Strategy War Room with $10M+ producers',
+      'Growth RepX badge + exclusive mastermind access'
+    ],
+    testimonial: {
+      quote: "My entire team's RepX-powered close rate went from 22% to 58%. We own our region now.",
+      author: "Marcus T., Regional Manager, Top 3 Device Company"
+    },
+    roi: "10% territory growth = 15x RepX ROI",
+    cta: 'Build Your RepX Empire'
   },
   enterprise: {
     icon: <EmojiEvents sx={{ fontSize: 30 }} />,
     gradient: 'linear-gradient(135deg, #7B42F6 0%, #5B32D6 100%)',
     popular: false,
-    savings: 'Save $1,498/year'
+    savings: 'ENTERPRISE VALUE',
+    tagline: 'RepX Enterprise: Market Command Center',
+    description: 'Complete RepX intelligence platform for market domination at scale',
+    features: [
+      'UNLIMITED RepX Everything: Every insight, every analysis, every opportunity',
+      '10 AI RepX Automation Workflows running 24/7',
+      'Custom RepX AI Training on your proprietary methods',
+      '20-User RepX Command Center access',
+      'White-Label RepX Reports that wow C-suite executives',
+      'Monthly RepX Strategy Summit with enterprise team',
+      'Priority RepX API & custom integrations',
+      'Enterprise RepX badge + dedicated success manager'
+    ],
+    testimonial: {
+      quote: "RepX Enterprise intelligence helped us capture 78% market share in 6 months. Competitors can't compete.",
+      author: "Sarah L., VP Sales, PE-Backed Medical Device Co."
+    },
+    roi: "15% market share gain = 75x RepX investment",
+    cta: 'Command Your RepX Market'
   },
   elite: {
     icon: <Rocket sx={{ fontSize: 30 }} />,
     gradient: 'linear-gradient(135deg, #ff006e 0%, #8338ec 100%)',
     popular: false,
     highlight: true,
-    savings: 'Save $2,998/year'
+    savings: 'ULTIMATE REPX',
+    tagline: 'RepX Elite: For Those Who Refuse To Lose',
+    description: 'Your personal RepX special forces unit for unprecedented market dominance',
+    features: [
+      'INFINITE RepX POWER: Every limitation removed permanently',
+      'Personal RepX AI Army trained exclusively on YOUR wins',
+      'Done-For-You RepX reports while you focus on closing',
+      'Dedicated RepX War General (personally closed $100M+)',
+      'Weekly RepX Battle Planning & strategy sessions',
+      'Unlimited team member RepX access',
+      'First access to breakthrough RepX features',
+      'Elite RepX Inner Circle quarterly summits',
+      'Custom RepX everything: AI, reports, strategies, training'
+    ],
+    testimonial: {
+      quote: "My RepX Elite-powered commission jumped from $500K to $1.8M annually. It pays for itself every 8 days.",
+      author: "Jennifer R., National Account Director"
+    },
+    roi: "RepX Elite ROI transcends traditional metrics",
+    cta: 'Join The RepX Elite'
   }
 };
 
@@ -208,7 +295,7 @@ export default function PricingSection() {
               textShadow: '0 4px 20px rgba(0,255,198,0.2)',
             }}
           >
-            Choose Your Competitive Edge
+            Choose Your Rep<sup style={{ fontSize: '0.7em', color: '#00ffc6' }}>X</sup> Subscription
           </Typography>
           <Typography
             variant="h6"
@@ -222,8 +309,8 @@ export default function PricingSection() {
               mb: 4,
             }}
           >
-            Every day without RepSpheres is deals lost to competitors with better intel. 
-            Join 2,847+ top performers already dominating their markets.
+            Every day without RepSpheres is revenue lost to competitors with better intelligence. 
+            Join 3,200+ elite performers already maximizing their Rep<sup style={{ fontSize: '0.6em', color: '#00ffc6' }}>X</sup> potential.
           </Typography>
 
           {/* Social Proof Ticker */}
@@ -241,7 +328,7 @@ export default function PricingSection() {
                 },
               }}
             >
-              🔥 Sarah from Dallas just upgraded to Enterprise • Mike in Chicago closed 3 deals with Growth • 47 reps joined today
+              🔥 Sarah from Dallas upgraded to Enterprise Rep<sup style={{ fontSize: '0.6em' }}>X</sup> • Mike in Chicago closed $2.1M with Growth Rep<sup style={{ fontSize: '0.6em' }}>X</sup> • 73 reps subscribed today
             </Typography>
           </Box>
 
@@ -700,7 +787,7 @@ export default function PricingSection() {
               WebkitTextFillColor: 'transparent',
             }}
           >
-            The Math That Matters
+            The Rep<sup style={{ fontSize: '0.6em', color: '#00ffc6' }}>X</sup> Mathematics
           </Typography>
           <Typography
             variant="body1"
@@ -713,8 +800,8 @@ export default function PricingSection() {
               mx: 'auto',
             }}
           >
-            Top performers use RepSpheres to close 2.3x more deals. 
-            Calculate your potential commission increase.
+            Elite performers with RepSpheres intelligence close 3.4x more high-value deals. 
+            Calculate your Rep<sup style={{ fontSize: '0.6em', color: '#00ffc6' }}>X</sup> subscription ROI and commission multiplier.
           </Typography>
           <Button
             variant="contained"
@@ -738,7 +825,7 @@ export default function PricingSection() {
               },
             }}
           >
-            Calculate Your ROI →
+            Calculate Your Rep<sup style={{ fontSize: '0.6em' }}>X</sup> ROI →
           </Button>
         </Box>
 
@@ -754,7 +841,7 @@ export default function PricingSection() {
               color: '#fff',
             }}
           >
-            Still Have Questions?
+            Questions About Your Rep<sup style={{ fontSize: '0.6em', color: '#00ffc6' }}>X</sup> Subscription?
           </Typography>
           <Typography
             variant="body1"
@@ -765,7 +852,7 @@ export default function PricingSection() {
               mb: 4,
             }}
           >
-            See RepSpheres in action with a personalized demo
+            See RepSpheres Rep<sup style={{ fontSize: '0.6em', color: '#00ffc6' }}>X</sup> intelligence in action with a personalized demo
           </Typography>
           <Button
             variant="outlined"
