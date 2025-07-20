@@ -170,30 +170,32 @@ const LoginModal = ({ isOpen, onClose, onGoogleAuth, onFacebookAuth, onEmailAuth
 
   const handleGoogleAuth = async () => {
     setIsLoading(true);
-    
-    // Simulate authentication delay
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      await onGoogleAuth();
       setShowSuccess(true);
       setTimeout(() => {
         setShowSuccess(false);
-        onGoogleAuth();
       }, 800);
-    }, 1500);
+    } catch (error) {
+      console.error('Google auth failed:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleFacebookAuth = async () => {
     setIsLoading(true);
-    
-    // Simulate authentication delay
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      await onFacebookAuth();
       setShowSuccess(true);
       setTimeout(() => {
         setShowSuccess(false);
-        onFacebookAuth();
       }, 800);
-    }, 1500);
+    } catch (error) {
+      console.error('Facebook auth failed:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleEmailAuth = () => {
