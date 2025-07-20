@@ -17,20 +17,26 @@ const SimpleNavBar = () => {
   const externalApps = [
     {
       label: 'Market Data',
-      href: 'https://market.repspheres.com/',
+      href: 'https://marketdata.repspheres.com/',
       icon: <InsightsIcon sx={{ fontSize: 20 }} />,
       color: '#00ffc6'
     },
     {
       label: 'Canvas',
       href: 'https://canvas.repspheres.com/',
-      icon: <MemoryIcon sx={{ fontSize: 20 }} />,
+      icon: <DashboardIcon sx={{ fontSize: 20 }} />,
       color: '#00d4ff'
+    },
+    {
+      label: 'RepConnect',
+      href: 'https://repconnect.repspheres.com/',
+      icon: <MemoryIcon sx={{ fontSize: 20 }} />,
+      color: '#9f58fa'
     },
     {
       label: 'CRM',
       href: 'https://crm.repspheres.com/',
-      icon: <DashboardIcon sx={{ fontSize: 20 }} />,
+      icon: <MemoryIcon sx={{ fontSize: 20 }} />,
       color: '#7B42F6'
     }
   ];

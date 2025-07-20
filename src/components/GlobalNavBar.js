@@ -181,24 +181,24 @@ const GlobalNavBar = () => {
               <span>Canvas</span>
             </a>
             <a 
-              href="https://crm.repspheres.com/" 
+              href="https://repconnect.repspheres.com/" 
               className="nav-link"
               onClick={handleNavLinkClick}
               target="_blank"
               rel="noopener noreferrer"
             >
               <span className="nav-link-icon icon-sphere"></span>
-              <span>Sphere oS</span>
+              <span>RepConnect</span>
             </a>
             <a 
-              href="https://podcast.repspheres.com/" 
+              href="https://crm.repspheres.com/" 
               className="nav-link"
               onClick={handleNavLinkClick}
               target="_blank"
               rel="noopener noreferrer"
             >
               <span className="nav-link-icon icon-podcasts"></span>
-              <span>Podcasts</span>
+              <span>CRM</span>
             </a>
           </nav>
 

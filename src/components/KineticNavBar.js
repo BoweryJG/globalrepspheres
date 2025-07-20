@@ -190,15 +190,15 @@ const KineticNavBar = () => {
             </a>
             <a href="https://canvas.repspheres.com/" className="nav-link">
               <span className="nav-link-icon icon-canvas"></span>
-              <span>CANVAS</span>
+              <span>Canvas</span>
             </a>
             <a href="https://repconnect.repspheres.com/" className="nav-link">
-              <span className="nav-link-icon icon-connect"></span>
+              <span className="nav-link-icon icon-sphere"></span>
               <span>RepConnect</span>
             </a>
             <a href="https://crm.repspheres.com/" className="nav-link">
-              <span className="nav-link-icon icon-sphere"></span>
-              <span>Sphere OS</span>
+              <span className="nav-link-icon icon-podcasts"></span>
+              <span>CRM</span>
             </a>
           </nav>
 

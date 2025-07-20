@@ -84,7 +84,7 @@ const getNavLinks = (currentUrl, isAdmin) => {
     },
     { 
       key: 'canvas',
-      label: 'CANVAS', 
+      label: 'Canvas', 
       href: 'https://canvas.repspheres.com/',
       icon: <DashboardIcon fontSize="small" sx={{ 
         color: ACCENT_COLOR,
@@ -96,21 +96,21 @@ const getNavLinks = (currentUrl, isAdmin) => {
       key: 'repconnect',
       label: 'RepConnect', 
       href: 'https://repconnect.repspheres.com/',
-      icon: <PodcastsIcon fontSize="small" sx={{ 
-        color: ACCENT_COLOR,
-        filter: 'drop-shadow(0 0 3px rgba(0, 212, 255, 0.5))'
-      }} />,
-      description: 'Connect with industry professionals'
-    },
-    { 
-      key: 'sphereos',
-      label: 'Sphere OS', 
-      href: 'https://crm.repspheres.com/',
       icon: <MemoryIcon fontSize="small" sx={{ 
         color: ACCENT_COLOR,
         filter: 'drop-shadow(0 0 3px rgba(0, 212, 255, 0.5))'
       }} />,
-      description: 'AI-powered CRM platform'
+      description: 'AI-powered relationship management'
+    },
+    { 
+      key: 'crm',
+      label: 'CRM', 
+      href: 'https://crm.repspheres.com/',
+      icon: <PodcastsIcon fontSize="small" sx={{ 
+        color: ACCENT_COLOR,
+        filter: 'drop-shadow(0 0 3px rgba(0, 212, 255, 0.5))'
+      }} />,
+      description: 'Customer relationship management'
     },
   ];
 
