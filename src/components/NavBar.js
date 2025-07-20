@@ -713,11 +713,11 @@ export default function NavBar() {
         backdropFilter: 'blur(40px) saturate(150%)',
         WebkitBackdropFilter: 'blur(40px) saturate(150%)',
         boxShadow: `0 8px 32px rgba(0,0,0,0.4), 0 0 60px rgba(123,66,246,0.2), inset 0 1px 0 rgba(255,255,255,0.05)`,
-        borderBottom: '1px solid rgba(255,255,255,0.1)',
+        borderBottom: { xs: 'none', md: '1px solid rgba(255,255,255,0.1)' },
         borderRadius: { xs: '0 0 16px 16px', md: '0 0 24px 24px' },
         mx: 'auto',
         mt: { xs: 0.5, md: 1 },
-        width: { xs: 'calc(100% - 10px)', sm: 'calc(100% - 20px)', md: 'calc(100% - 40px)' },
+        width: { xs: 'calc(100% - 8px)', sm: 'calc(100% - 20px)', md: 'calc(100% - 40px)' },
         maxWidth: '1800px',
         marginLeft: 'auto',
         marginRight: 'auto',
@@ -729,7 +729,7 @@ export default function NavBar() {
         position: 'relative',
         '&:hover': {
           boxShadow: '0 10px 40px rgba(0,0,0,0.4), 0 0 80px rgba(0, 212, 255, 0.2)',
-          borderBottomColor: 'rgba(0, 212, 255, 0.25)',
+          borderBottomColor: { xs: 'transparent', md: 'rgba(0, 212, 255, 0.25)' },
         },
       }}>
         <NavBarCanvas isHovered={isNavHovered} />
@@ -819,7 +819,7 @@ export default function NavBar() {
 
           {/* Dynamic AI Status Indicator - Between Logo and Nav */}
           <Box sx={{
-            display: 'flex',
+            display: { xs: 'none', sm: 'flex' },
             alignItems: 'center',
             px: { xs: 1.5, sm: 2 },
             py: { xs: 0.5, sm: 0.75 },
@@ -928,6 +928,7 @@ export default function NavBar() {
             alignItems: 'center',
             ml: 'auto',
             gap: { xs: 0.5, sm: 1 },
+            mr: { xs: 1, sm: 0.5 },
           }}>
             {/* More Menu Button (Desktop) */}
             {!isMobile && (

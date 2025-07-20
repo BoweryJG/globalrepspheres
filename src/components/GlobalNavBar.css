@@ -512,6 +512,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
+    margin-right: 12px;
 }
 
 /* Premium CTA Button - Original White Design */
@@ -624,6 +625,19 @@
 @media (max-width: 768px) {
     .nav-links {
         display: none;
+    }
+    
+    .nav-actions {
+        margin-right: 16px;
+    }
+    
+    .nav-inner {
+        padding: 0 16px;
+    }
+    
+    .nav-container {
+        width: calc(100vw - 8px);
+        margin: 0 4px;
     }
 }
 
