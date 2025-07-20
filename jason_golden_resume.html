@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jason W. Golden - Sales Leader & Technical Innovator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Montserrat:wght@300;400;500;600&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-charcoal: #2C2C2C;
+            --warm-white: #FEFEFE;
+            --luxury-gold: #D4AF37;
+            --light-gray: #F8F8F8;
+            --text-secondary: #666666;
+            --border-subtle: #E8E8E8;
+            
+            --font-primary: 'Playfair Display', serif;
+            --font-headers: 'Montserrat', sans-serif;
+            --font-body: 'Source Sans Pro', sans-serif;
+            
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-2xl: 48px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--warm-white);
+            color: var(--primary-charcoal);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .resume-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--warm-white);
+            box-shadow: 0 0 40px rgba(44, 44, 44, 0.1);
+            border: 1px solid var(--luxury-gold);
+            position: relative;
+        }
+
+        .resume-container::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            border: 1px solid var(--border-subtle);
+            pointer-events: none;
+        }
+
+        /* Header Section */
+        .header {
+            padding: var(--spacing-2xl) var(--spacing-xl);
+            text-align: center;
+            border-bottom: 1px solid var(--luxury-gold);
+            background: linear-gradient(135deg, var(--warm-white) 0%, #FAFAFA 100%);
+            position: relative;
+        }
+
+        .name {
+            font-family: var(--font-primary);
+            font-size: 2.625rem;
+            font-weight: 600;
+            color: var(--primary-charcoal);
+            margin-bottom: var(--spacing-sm);
+            letter-spacing: 1px;
+        }
+
+        .divider {
+            width: 80px;
+            height: 2px;
+            background: var(--luxury-gold);
+            margin: var(--spacing-md) auto;
+        }
+
+        .title {
+            font-family: var(--font-headers);
+            font-size: 1.125rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-xl);
+            font-weight: 300;
+            color: var(--text-secondary);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            font-size: 0.9rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: var(--spacing-2xl);
+            padding: var(--spacing-2xl);
+        }
+
+        /* Left Column */
+        .left-column {
+            padding-right: var(--spacing-lg);
+        }
+
+        .section {
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .section-title {
+            font-family: var(--font-headers);
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--primary-charcoal);
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 1px solid var(--luxury-gold);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 24px;
+            height: 2px;
+            background: var(--luxury-gold);
+        }
+
+        .professional-summary {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--primary-charcoal);
+            font-weight: 300;
+        }
+
+        .achievements-list {
+            list-style: none;
+        }
+
+        .achievement-item {
+            margin-bottom: var(--spacing-md);
+            position: relative;
+            padding-left: var(--spacing-md);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .achievement-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 12px;
+            width: 6px;
+            height: 6px;
+            background: var(--luxury-gold);
+            border-radius: 50%;
+        }
+
+        .skills-grid {
+            display: grid;
+            gap: var(--spacing-lg);
+        }
+
+        .skill-category {
+            background: var(--light-gray);
+            padding: var(--spacing-md);
+            border-radius: 2px;
+            border-left: 3px solid var(--luxury-gold);
+        }
+
+        .skill-category-title {
+            font-family: var(--font-headers);
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--primary-charcoal);
+            margin-bottom: var(--spacing-sm);
+            letter-spacing: 1px;
+        }
+
+        .skill-items {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Right Column */
+        .experience-item {
+            margin-bottom: var(--spacing-xl);
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: var(--spacing-xl);
+        }
+
+        .experience-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .experience-header {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .company-name {
+            font-family: var(--font-headers);
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--primary-charcoal);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .position-duration {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .position {
+            font-weight: 500;
+            color: var(--luxury-gold);
+            font-size: 0.95rem;
+        }
+
+        .duration {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        .experience-achievements {
+            list-style: none;
+        }
+
+        .experience-achievement {
+            margin-bottom: var(--spacing-sm);
+            position: relative;
+            padding-left: var(--spacing-md);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .experience-achievement::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 4px;
+            height: 4px;
+            background: var(--luxury-gold);
+            border-radius: 50%;
+        }
+
+        .metric {
+            font-weight: 600;
+            color: var(--primary-charcoal);
+        }
+
+        /* Education */
+        .education-item {
+            background: var(--light-gray);
+            padding: var(--spacing-md);
+            border-radius: 2px;
+            border-left: 3px solid var(--luxury-gold);
+        }
+
+        .degree {
+            font-weight: 600;
+            color: var(--primary-charcoal);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .university {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .honors {
+            font-size: 0.85rem;
+            color: var(--luxury-gold);
+            font-style: italic;
+        }
+
+        /* Print Styles */
+        @media print {
+            .resume-container {
+                box-shadow: none;
+                border: none;
+                margin: 0;
+                max-width: none;
+            }
+            
+            .resume-container::before {
+                display: none;
+            }
+            
+            .header {
+                padding: var(--spacing-lg) var(--spacing-md);
+            }
+            
+            .main-content {
+                padding: var(--spacing-lg) var(--spacing-md);
+                gap: var(--spacing-lg);
+            }
+            
+            .name {
+                font-size: 2.25rem;
+            }
+            
+            .contact-info {
+                gap: var(--spacing-lg);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-lg);
+                padding: var(--spacing-lg);
+            }
+            
+            .left-column {
+                padding-right: 0;
+            }
+            
+            .header {
+                padding: var(--spacing-lg);
+            }
+            
+            .name {
+                font-size: 2.25rem;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+            
+            .position-duration {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="resume-container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="name">JASON W. GOLDEN</h1>
+            <div class="divider"></div>
+            <p class="title">Sales Architect & Technical Innovator</p>
+            <div class="contact-info">
+                <div class="contact-item">201-523-1306</div>
+                <div class="contact-item">jasonwilliamgolden@gmail.com</div>
+                <div class="contact-item">New York, New York</div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Left Column -->
+            <section class="left-column">
+                <!-- Professional Summary -->
+                <div class="section">
+                    <h2 class="section-title">Executive Profile</h2>
+                    <p class="professional-summary">
+                        Visionary sales architect with 13+ years transforming premium medical device markets. 
+                        <strong>$15M+ in documented revenue generation</strong> through strategic growth initiatives, 
+                        technical innovation, and high-performance team development. Expert in leveraging automation 
+                        and custom development to create scalable business solutions for healthcare leaders.
+                    </p>
+                </div>
+
+                <!-- Key Achievements -->
+                <div class="section">
+                    <h2 class="section-title">Key Achievements</h2>
+                    <ul class="achievements-list">
+                        <li class="achievement-item">Quadrupled regional production in 12 months through strategic market development</li>
+                        <li class="achievement-item">Generated <span class="metric">$3.7M additional client revenue</span> through process optimization</li>
+                        <li class="achievement-item">Built proprietary frameworks yielding <span class="metric">318% YoY growth</span></li>
+                        <li class="achievement-item">Pioneered first-of-kind university partnership events in company history</li>
+                        <li class="achievement-item">Developed automation systems with <span class="metric">40% above-average conversion rates</span></li>
+                    </ul>
+                </div>
+
+                <!-- Core Competencies -->
+                <div class="section">
+                    <h2 class="section-title">Core Competencies</h2>
+                    <div class="skills-grid">
+                        <div class="skill-category">
+                            <div class="skill-category-title">Strategic Leadership</div>
+                            <div class="skill-items">Revenue Architecture • Team Development • Market Expansion • KOL Management</div>
+                        </div>
+                        <div class="skill-category">
+                            <div class="skill-category-title">Technical Innovation</div>
+                            <div class="skill-items">HubSpot CRM • Python Automation • Next.js • Advanced Analytics • Custom Workflows</div>
+                        </div>
+                        <div class="skill-category">
+                            <div class="skill-category-title">Business Development</div>
+                            <div class="skill-items">Healthcare Consulting • Process Optimization • Digital Marketing • CRM Implementation</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Education -->
+                <div class="section">
+                    <h2 class="section-title">Education</h2>
+                    <div class="education-item">
+                        <div class="degree">B.S. Entrepreneurship & Small Business Management</div>
+                        <div class="university">Quinnipiac University, 2005</div>
+                        <div class="honors">Dean's List: Spring '05, Fall '04, Spring '04, Fall '03</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Column -->
+            <section class="right-column">
+                <div class="section">
+                    <h2 class="section-title">Professional Experience</h2>
+                    
+                    <!-- Bowery Creative Agency -->
+                    <div class="experience-item">
+                        <div class="experience-header">
+                            <div class="company-name">BOWERY CREATIVE AGENCY</div>
+                            <div class="position-duration">
+                                <span class="position">Founder & Principal</span>
+                                <span class="duration">04/2024 - Present & 11/2020 - 04/2023</span>
+                            </div>
+                        </div>
+                        <ul class="experience-achievements">
+                            <li class="experience-achievement">Built specialized agency optimizing practice business processes, generating <span class="metric">$2.1M in revenue</span></li>
+                            <li class="experience-achievement">Developed solutions for 17 clients, producing additional <span class="metric">$3.7M in revenue</span> for their practices</li>
+                            <li class="experience-achievement">Mastered HubSpot and CRM implementation, creating sophisticated automation systems with contextual triggering</li>
+                            <li class="experience-achievement">Created Python automation scripts and cron jobs to streamline client marketing operations and analytics</li>
+                        </ul>
+                    </div>
+
+                    <!-- NEOCIS -->
+                    <div class="experience-item">
+                        <div class="experience-header">
+                            <div class="company-name">NEOCIS</div>
+                            <div class="position-duration">
+                                <span class="position">Regional Sales Manager</span>
+                                <span class="duration">04/2023 - 04/2024</span>
+                            </div>
+                        </div>
+                        <ul class="experience-achievements">
+                            <li class="experience-achievement">Quadrupled regional production compared to prior year through strategic market development</li>
+                            <li class="experience-achievement">Spearheaded largest KOL event at Cornell University with industry partner—a first for the company</li>
+                            <li class="experience-achievement">Implemented training initiatives resulting in <span class="metric">30% improvement</span> in team conversion metrics</li>
+                        </ul>
+                    </div>
+
+                    <!-- CYNOSURE -->
+                    <div class="experience-item">
+                        <div class="experience-header">
+                            <div class="company-name">CYNOSURE</div>
+                            <div class="position-duration">
+                                <span class="position">District Sales Manager ~ NYC</span>
+                                <span class="duration">01/2019 - 10/2020</span>
+                            </div>
+                        </div>
+                        <ul class="experience-achievements">
+                            <li class="experience-achievement">Generated <span class="metric">$2.7M in medical device sales</span> to plastic surgeons, dermatologists, and medical spas</li>
+                            <li class="experience-achievement">Rebuilt and trained team of 8 specialists (3 territory managers, 2 customer success, 2 clinical managers)</li>
+                            <li class="experience-achievement">Drove <span class="metric">318% year-over-year</span> territory sales revenue growth</li>
+                        </ul>
+                    </div>
+
+                    <!-- MIRAMAR LABS -->
+                    <div class="experience-item">
+                        <div class="experience-header">
+                            <div class="company-name">MIRAMAR LABS</div>
+                            <div class="position-duration">
+                                <span class="position">Eastern US and Canadian Sales Manager</span>
+                                <span class="duration">06/2015 - 06/2018</span>
+                            </div>
+                        </div>
+                        <ul class="experience-achievements">
+                            <li class="experience-achievement">Managed team of 4 responsible for growing business within their territories</li>
+                            <li class="experience-achievement">Increased capital sales revenue <span class="metric">126% fiscal year 2017 vs 2016</span>; led to acquisition by Sientra</li>
+                        </ul>
+                    </div>
+
+                    <!-- Early Career -->
+                    <div class="experience-item">
+                        <div class="experience-header">
+                            <div class="company-name">EARLY CAREER HIGHLIGHTS</div>
+                            <div class="position-duration">
+                                <span class="position">Medical Device Sales Specialist</span>
+                                <span class="duration">2010 - 2015</span>
+                            </div>
+                        </div>
+                        <ul class="experience-achievements">
+                            <li class="experience-achievement"><strong>Solta Medical:</strong> Produced <span class="metric">$1.7M as Liposonix Specialist</span> for NY/NJ region (2013-2015)</li>
+                            <li class="experience-achievement"><strong>Zeltiq/CoolSculpting:</strong> Generated <span class="metric">$4.5M as 1st Northeastern District Sales Manager</span>; Circle of Excellence winner (2010-2012)</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
