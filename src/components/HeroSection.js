@@ -14,7 +14,7 @@ export default function HeroSection() {
         data-hero-section
         sx={{
           position: 'relative',
-          minHeight: { xs: '100vh', md: '90vh' },
+          minHeight: { xs: '90vh', md: '90vh' },
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -22,197 +22,12 @@ export default function HeroSection() {
           textAlign: 'center',
           zIndex: 1,
           background: 'transparent',
-          pt: { xs: 4, md: 22 },
-          pb: { xs: 4, md: 14 },
+          pt: { xs: 14, md: 22 },
+          pb: { xs: 8, md: 14 },
           overflow: 'hidden',
         }}
       >
-      {/* Mobile Glassmorphism Card Wrapper */}
-      <Box sx={{ 
-        display: { xs: 'block', md: 'none' },
-        mx: 2,
-        p: 3,
-        background: 'rgba(24,24,43,0.85)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        borderRadius: '24px',
-        border: '1px solid rgba(0,255,198,0.2)',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.3), 0 4px 16px rgba(0,255,198,0.1), inset 0 1px 0 rgba(255,255,255,0.1)',
-        position: 'relative',
-        overflow: 'hidden',
-        willChange: 'transform',
-        touchAction: 'manipulation',
-        animation: 'slideInUp 0.8s ease-out',
-        '@keyframes slideInUp': {
-          '0%': {
-            opacity: 0,
-            transform: 'translateY(30px) scale(0.95)',
-          },
-          '100%': {
-            opacity: 1,
-            transform: 'translateY(0) scale(1)',
-          }
-        },
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'radial-gradient(circle at 50% 50%, rgba(0,255,198,0.1) 0%, transparent 70%)',
-          opacity: 0.6,
-          pointerEvents: 'none',
-        }
-      }}>
-        <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1, p: 0 }}>
-          {/* Mobile Optimized Hero Content */}
-          <Typography
-            variant="h1"
-            sx={{
-              fontFamily: "'Space Grotesk', 'Montserrat Alternates', Arial, sans-serif",
-              fontWeight: 900,
-              fontSize: '2.2rem',
-              mb: 2,
-              letterSpacing: '-0.02em',
-              lineHeight: 1.1,
-              background: 'linear-gradient(135deg, #00ffc6 0%, #3a86ff 50%, #7B42F6 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              textShadow: '0 0 40px rgba(0,255,198,0.3)',
-              willChange: 'transform',
-              animation: 'titleFadeIn 1s ease-out 0.3s both',
-              '@keyframes titleFadeIn': {
-                '0%': {
-                  opacity: 0,
-                  transform: 'translateY(20px)',
-                },
-                '100%': {
-                  opacity: 1,
-                  transform: 'translateY(0)',
-                }
-              },
-            }}
-          >
-            The Intelligence Revolution Has Arrived
-          </Typography>
-          
-          <Typography
-            variant="h6"
-            sx={{
-              fontFamily: "'DM Sans', Arial, sans-serif",
-              mb: 3,
-              fontWeight: 500,
-              fontSize: '1rem',
-              lineHeight: 1.5,
-              color: 'rgba(255,255,255,0.9)',
-            }}
-          >
-            Transform your sales performance with AI-powered insights from the largest dataset in medical aesthetics.
-          </Typography>
-          
-          {/* Mobile Stats Pills */}
-          <Box sx={{ 
-            display: 'flex', 
-            gap: 1, 
-            mb: 4, 
-            overflowX: 'auto',
-            pb: 1,
-            '&::-webkit-scrollbar': { display: 'none' },
-            scrollbarWidth: 'none',
-          }}>
-            {[
-              { label: '300+ AI Models', color: '#00ffc6' },
-              { label: '15 Years Data', color: '#3a86ff' },
-              { label: 'One System', color: '#7B42F6' }
-            ].map((stat, index) => (
-              <Box
-                key={index}
-                sx={{
-                  px: 2,
-                  py: 1,
-                  background: `linear-gradient(90deg, ${stat.color}20 0%, ${stat.color}10 100%)`,
-                  border: `1px solid ${stat.color}40`,
-                  borderRadius: '20px',
-                  fontSize: '0.8rem',
-                  fontWeight: 600,
-                  color: stat.color,
-                  whiteSpace: 'nowrap',
-                  backdropFilter: 'blur(10px)',
-                }}
-              >
-                {stat.label}
-              </Box>
-            ))}
-          </Box>
-          
-          {/* Mobile CTA Button */}
-          <Button
-            variant="contained"
-            size="large"
-            href="#pricing"
-            sx={{
-              width: '100%',
-              py: 2.5,
-              mb: 2,
-              fontWeight: 800,
-              fontFamily: "'Space Grotesk', Arial, sans-serif",
-              fontSize: '1.1rem',
-              borderRadius: '16px',
-              background: 'linear-gradient(135deg, #00ffc6 0%, #3a86ff 50%, #7B42F6 100%)',
-              boxShadow: '0 8px 24px rgba(0,255,198,0.3)',
-              color: '#fff',
-              letterSpacing: '0.02em',
-              textTransform: 'uppercase',
-              transition: 'all 0.3s ease',
-              minHeight: '56px',
-              willChange: 'transform',
-              animation: 'buttonFadeIn 1s ease-out 0.6s both',
-              '@keyframes buttonFadeIn': {
-                '0%': {
-                  opacity: 0,
-                  transform: 'translateY(15px) scale(0.95)',
-                },
-                '100%': {
-                  opacity: 1,
-                  transform: 'translateY(0) scale(1)',
-                }
-              },
-              '&:hover': {
-                transform: 'translateY(-2px)',
-                boxShadow: '0 12px 32px rgba(0,255,198,0.4)',
-              },
-              '&:active': {
-                transform: 'translateY(0)',
-              }
-            }}
-          >
-            Claim Your Competitive Edge
-          </Button>
-          
-          {/* Secondary Action */}
-          <Button
-            variant="text"
-            href="#demo"
-            sx={{
-              color: 'rgba(255,255,255,0.8)',
-              fontFamily: "'DM Sans', Arial, sans-serif",
-              fontSize: '0.9rem',
-              textDecoration: 'underline',
-              '&:hover': {
-                color: '#00ffc6',
-                backgroundColor: 'transparent',
-              }
-            }}
-          >
-            Calculate Your ROI →
-          </Button>
-        </Container>
-      </Box>
-      
-      {/* Desktop Container - Hidden on Mobile */}
-      <Container maxWidth="md" sx={{ mt: { xs: 4, md: 24 }, display: { xs: 'none', md: 'block' } }}>
+      <Container maxWidth="md" sx={{ mt: { xs: 20, md: 24 } }}>
   <Typography
     variant="h1"
     sx={{
