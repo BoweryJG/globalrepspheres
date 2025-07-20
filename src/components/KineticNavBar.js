@@ -192,13 +192,13 @@ const KineticNavBar = () => {
               <span className="nav-link-icon icon-canvas"></span>
               <span>Canvas</span>
             </a>
-            <a href="#sphere-os" className="nav-link">
+            <a href="#repconnect" className="nav-link">
               <span className="nav-link-icon icon-sphere"></span>
-              <span>Sphere oS</span>
+              <span>RepConnect</span>
             </a>
-            <a href="#podcasts" className="nav-link">
+            <a href="#crm" className="nav-link">
               <span className="nav-link-icon icon-podcasts"></span>
-              <span>Podcasts</span>
+              <span>CRM</span>
             </a>
           </nav>
 

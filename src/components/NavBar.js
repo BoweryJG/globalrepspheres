@@ -97,24 +97,24 @@ const getNavLinks = (currentUrl, isAdmin) => {
       description: 'AI-powered sales intelligence'
     },
     { 
-      key: 'sphereos',
-      label: 'Sphere oS', 
-      href: 'https://crm.repspheres.com/',
+      key: 'repconnect',
+      label: 'RepConnect', 
+      href: 'https://repconnect.repspheres.com/',
       icon: <MemoryIcon fontSize="small" sx={{ 
         color: ACCENT_COLOR,
         filter: 'drop-shadow(0 0 3px rgba(0, 212, 255, 0.5))'
       }} />,
-      description: 'AI-powered CRM platform'
+      description: 'AI-powered relationship management'
     },
     {
-      key: 'podcast',
-      label: 'Podcast',
-      href: 'https://podcast.repspheres.com/',
+      key: 'crm',
+      label: 'CRM',
+      href: 'https://crm.repspheres.com/',
       icon: <PodcastsIcon fontSize="small" sx={{ 
         color: ACCENT_COLOR,
         filter: 'drop-shadow(0 0 3px rgba(0, 212, 255, 0.5))'
       }} />,
-      description: 'Industry insights & interviews'
+      description: 'Customer relationship management'
     },
   ];
 
@@ -127,13 +127,6 @@ const getNavLinks = (currentUrl, isAdmin) => {
       icon: <InsightsIcon fontSize="small" sx={{ color: ACCENT_COLOR }} />,
       description: 'Admin dashboard'
     });
-  }
-
-  // Linguistics is now part of CRM module
-
-  // Hide podcast link when already on the podcast page
-  if (currentUrl.includes('/podcast.html') || currentUrl.includes('page=podcast')) {
-    return links.filter((l) => l.key !== 'podcast');
   }
 
   return links;
@@ -152,11 +145,6 @@ const isLinkActive = (href, currentUrl) => {
   // For external URLs
   if (href.startsWith('http')) {
     return currentUrl.includes(new URL(href).hostname);
-  }
-  
-  // Special case for podcast page
-  if (href === '/?page=podcast') {
-    return currentUrl.includes('page=podcast') || currentUrl.includes('/podcast.html');
   }
   
   return currentUrl.includes(href);
@@ -195,14 +183,13 @@ export default function NavBar() {
     return localStorage.getItem('performanceMode') === 'true';
   });
   // Breakpoints for progressive collapsing of nav links
-  const hidePodcast = useMediaQuery('(max-width:1200px)');
-  const hideSphereOS = useMediaQuery('(max-width:1100px)');
-  // const hideLinguistics = useMediaQuery('(max-width:1000px)'); // Removed - linguistics is in CRM now
+  const hideCRM = useMediaQuery('(max-width:1200px)');
+  const hideRepConnect = useMediaQuery('(max-width:1100px)');
   const hideCanvas = useMediaQuery('(max-width:900px)');
   const hideInsights = useMediaQuery('(max-width:800px)');
   const isMobile = hideInsights; // all nav links collapsed below 800px
   // Show hamburger menu whenever any link is hidden
-  const showMenu = hidePodcast || hideSphereOS || hideCanvas || isMobile;
+  const showMenu = hideCRM || hideRepConnect || hideCanvas || isMobile;
   // Extra small breakpoints for very narrow screens
   const isXS = useMediaQuery('(max-width:400px)');
   const isXXS = useMediaQuery('(max-width:320px)');
@@ -247,13 +234,12 @@ export default function NavBar() {
 
   // Determine display styles for each nav link based on screen width
   const getLinkStyles = (key) => {
-    if (key === 'podcast') {
+    if (key === 'crm') {
       return { '@media (max-width:1200px)': { display: 'none' } };
     }
-    if (key === 'sphereos') {
+    if (key === 'repconnect') {
       return { '@media (max-width:1100px)': { display: 'none' } };
     }
-    // Linguistics removed - now part of CRM module
     if (key === 'canvas') {
       return { '@media (max-width:900px)': { display: 'none' } };
     }
