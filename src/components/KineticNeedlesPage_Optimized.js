@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import RepSpheresNavbar from './RepSpheresNavbar';
+import LoginModal from './LoginModal';
+import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import './RepSpheresNavbar.css';
 import DimensionalTear from './DimensionalTear';
 import GreatDivide from './GreatDivide';
@@ -26,6 +28,9 @@ import './MobileOptimizedStyles.css';
 gsap.registerPlugin(ScrollTrigger);
 
 const KineticNeedlesPage_Optimized = () => {
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [isSignupMode, setIsSignupMode] = useState(false);
+
   useEffect(() => {
     // Add mobile viewport meta tag if not present
     if (!document.querySelector('meta[name="viewport"]')) {
@@ -77,7 +82,7 @@ const KineticNeedlesPage_Optimized = () => {
   }, []);
 
   return (
-    <>
+    <AuthProvider>
       <style>{kineticStyles}</style>
       
       {/* Animated Background Elements */}
@@ -86,8 +91,14 @@ const KineticNeedlesPage_Optimized = () => {
 
       {/* Navigation Bar */}
       <RepSpheresNavbar 
-        onLogin={() => window.location.href = '/login'}
-        onSignup={() => window.location.href = '/signup'}
+        onLogin={() => {
+          setIsSignupMode(false);
+          setShowLoginModal(true);
+        }}
+        onSignup={() => {
+          setIsSignupMode(true);
+          setShowLoginModal(true);
+        }}
         customLinks={[
           { href: 'https://marketdata.repspheres.com/', label: 'Market Data', icon: 'market' },
           { href: 'https://canvas.repspheres.com/', label: 'Canvas', icon: 'canvas' },
@@ -257,6 +268,27 @@ const KineticNeedlesPage_Optimized = () => {
         </div>
       </section>
 
+      {/* Authentication Modal */}
+      <LoginModal 
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        onGoogleAuth={async () => {
+          // Handle Google auth
+          console.log('Google auth triggered');
+          setShowLoginModal(false);
+        }}
+        onFacebookAuth={async () => {
+          // Handle Facebook auth  
+          console.log('Facebook auth triggered');
+          setShowLoginModal(false);
+        }}
+        onEmailAuth={async () => {
+          // Handle email auth
+          console.log('Email auth triggered');
+          setShowLoginModal(false);
+        }}
+      />
+
       <style jsx>{`
         @keyframes shimmer {
           0% { transform: translateX(-100%); }
@@ -267,7 +299,7 @@ const KineticNeedlesPage_Optimized = () => {
           scroll-margin-top: 80px;
         }
       `}</style>
-    </>
+    </AuthProvider>
   );
 };
 
