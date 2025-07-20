@@ -5,7 +5,7 @@ import RepSpheresNavbar from './RepSpheresNavbar';
 import LoginModal from './LoginModal';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import './RepSpheresNavbar.css';
-import MicroHero from './MicroHero';
+import RealitySplitHero from './RealitySplitHero';
 import GreatDivide from './GreatDivide';
 import MathematicalProof from './MathematicalProof';
 import HarveyWhisper from './HarveyWhisper';
@@ -116,9 +116,9 @@ const KineticNeedlesPageContent = () => {
         ]}
       />
 
-      {/* 1. MICRO HERO - Psychological Activation Hook */}
-      <div id="micro-hero" className="lightning-section">
-        <MicroHero 
+      {/* 1. REALITY SPLIT HERO - Iconic Crack-Based Design */}
+      <div id="reality-split-hero" className="lightning-section">
+        <RealitySplitHero 
           onLogin={() => {
             setIsSignupMode(false);
             setShowLoginModal(true);
