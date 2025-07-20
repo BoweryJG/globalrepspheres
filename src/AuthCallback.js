@@ -3,59 +3,33 @@ import { useNavigate } from 'react-router-dom';
 import { CircularProgress, Box, Typography } from '@mui/material';
 import supabase from './supabase';
 
-console.log('🚀 AuthCallback.js file loaded!');
-
 export default function AuthCallback() {
   const navigate = useNavigate();
-
-  console.log('🔄 AuthCallback component mounted');
 
   useEffect(() => {
     const handleCallback = async () => {
       try {
-        console.log('🔄 Auth callback started, current URL:', window.location.href);
-        
-        // Check if we have OAuth response in URL (either query params or hash)
         const urlParams = new URLSearchParams(window.location.search);
         const hashParams = new URLSearchParams(window.location.hash.substring(1));
         const hasCode = urlParams.has('code');
         const hasAccessToken = hashParams.has('access_token');
         const hasError = urlParams.has('error') || hashParams.has('error');
         
-        console.log('🔄 URL params check:', { 
-          hasCode, 
-          hasAccessToken,
-          hasError, 
-          queryParams: Object.fromEntries(urlParams),
-          hashParams: Object.fromEntries(hashParams)
-        });
-        
         if (hasError) {
-          console.error('❌ OAuth error in URL:', urlParams.get('error') || hashParams.get('error'));
           navigate('/');
           return;
         }
         
         if (!hasCode && !hasAccessToken) {
-          console.log('⚠️ No OAuth code or access token found in URL, redirecting home');
           navigate('/');
           return;
         }
         
-        // Handle the OAuth callback - use exchangeCodeForSession like other RepSpheres apps
         const { data, error } = await supabase.auth.exchangeCodeForSession(window.location.href);
         
-        console.log('🔄 Exchange result:', { data, error });
-        
         if (error) {
-          console.error('❌ Error during auth callback:', error);
           navigate('/');
           return;
-        }
-        
-        if (data?.session) {
-          console.log('✅ Session established:', data.session.user.email);
-          console.log('📊 User metadata:', data.session.user.user_metadata);
         }
 
         // Check all possible sources for intended destination
@@ -99,8 +73,7 @@ export default function AuthCallback() {
           navigate('/');
         }
       } catch (error) {
-        console.error('Auth callback error:', error);
-        navigate('/login');
+        navigate('/');
       }
     };
 
