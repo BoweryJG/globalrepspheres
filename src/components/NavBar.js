@@ -540,7 +540,7 @@ export default function NavBar() {
             </Avatar>
             <Box sx={{ flex: 1 }}>
               <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                {getUserDisplayName(user)}
+                {getUserInitials(user)}
               </Typography>
               <Typography variant="caption" sx={{ opacity: 0.7 }}>
                 {user.email}
@@ -1228,7 +1228,7 @@ export default function NavBar() {
           <>
             <Box sx={{ px: 2, py: 1, mb: 1 }}>
               <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                {getUserDisplayName(user)}
+                {getUserInitials(user)}
               </Typography>
               <Typography variant="caption" sx={{ opacity: 0.7 }}>
                 {user.email}
