@@ -27,9 +27,10 @@ import './MobileOptimizedStyles.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const KineticNeedlesPage_Optimized = () => {
+const KineticNeedlesPageContent = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [isSignupMode, setIsSignupMode] = useState(false);
+  const { signInWithGoogle, signInWithFacebook } = useAuth();
 
   useEffect(() => {
     // Add mobile viewport meta tag if not present
@@ -82,7 +83,7 @@ const KineticNeedlesPage_Optimized = () => {
   }, []);
 
   return (
-    <AuthProvider>
+    <>
       <style>{kineticStyles}</style>
       
       {/* Animated Background Elements */}
@@ -274,17 +275,25 @@ const KineticNeedlesPage_Optimized = () => {
         mode={isSignupMode ? 'signup' : 'login'}
         onClose={() => setShowLoginModal(false)}
         onGoogleAuth={async () => {
-          // Handle Google auth
-          console.log(`${isSignupMode ? 'Signup' : 'Login'} with Google triggered`);
-          setShowLoginModal(false);
+          try {
+            console.log(`${isSignupMode ? 'Signup' : 'Login'} with Google triggered`);
+            await signInWithGoogle();
+            setShowLoginModal(false);
+          } catch (error) {
+            console.error('Google auth error:', error);
+          }
         }}
         onFacebookAuth={async () => {
-          // Handle Facebook auth  
-          console.log(`${isSignupMode ? 'Signup' : 'Login'} with Facebook triggered`);
-          setShowLoginModal(false);
+          try {
+            console.log(`${isSignupMode ? 'Signup' : 'Login'} with Facebook triggered`);
+            await signInWithFacebook();
+            setShowLoginModal(false);
+          } catch (error) {
+            console.error('Facebook auth error:', error);
+          }
         }}
         onEmailAuth={async () => {
-          // Handle email auth
+          // Handle email auth (placeholder for now)
           console.log(`${isSignupMode ? 'Signup' : 'Login'} with Email triggered`);
           setShowLoginModal(false);
         }}
@@ -300,6 +309,15 @@ const KineticNeedlesPage_Optimized = () => {
           scroll-margin-top: 80px;
         }
       `}</style>
+    </>
+  );
+};
+
+// Main wrapper component with AuthProvider
+const KineticNeedlesPage_Optimized = () => {
+  return (
+    <AuthProvider>
+      <KineticNeedlesPageContent />
     </AuthProvider>
   );
 };
