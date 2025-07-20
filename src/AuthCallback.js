@@ -3,12 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { CircularProgress, Box, Typography } from '@mui/material';
 import supabase from './supabase';
 
+const isDev = process.env.NODE_ENV === 'development';
+
 export default function AuthCallback() {
   const navigate = useNavigate();
 
   useEffect(() => {
     const handleCallback = async () => {
       try {
+        if (isDev) console.log('🔄 Auth callback started');
+        
         const urlParams = new URLSearchParams(window.location.search);
         const hashParams = new URLSearchParams(window.location.hash.substring(1));
         const hasCode = urlParams.has('code');
@@ -16,11 +20,13 @@ export default function AuthCallback() {
         const hasError = urlParams.has('error') || hashParams.has('error');
         
         if (hasError) {
+          if (isDev) console.error('❌ OAuth error:', urlParams.get('error') || hashParams.get('error'));
           navigate('/');
           return;
         }
         
         if (!hasCode && !hasAccessToken) {
+          if (isDev) console.log('⚠️ No OAuth code found, redirecting home');
           navigate('/');
           return;
         }
@@ -28,8 +34,13 @@ export default function AuthCallback() {
         const { data, error } = await supabase.auth.exchangeCodeForSession(window.location.href);
         
         if (error) {
+          if (isDev) console.error('❌ Auth error:', error);
           navigate('/');
           return;
+        }
+        
+        if (data?.session && isDev) {
+          console.log('✅ Session established:', data.session.user.email);
         }
 
         // Check all possible sources for intended destination
