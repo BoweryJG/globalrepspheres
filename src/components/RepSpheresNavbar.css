@@ -689,3 +689,23 @@
         width: 600px;
     }
 }
+
+/* User Info Styling */
+.nav-user-info {
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 12px;
+    margin-right: 8px;
+    background: var(--glass);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    backdrop-filter: blur(8px);
+    text-transform: capitalize;
+}
+
+@media (max-width: 768px) {
+    .nav-user-info {
+        display: none;
+    }
+}

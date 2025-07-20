@@ -4,6 +4,8 @@ import './RepSpheresNavbar.css';
 const RepSpheresNavbar = ({ 
   onLogin, 
   onSignup, 
+  onLogout,
+  user = null,
   customLinks = [],
   logoHref = '/',
   theme = 'default' 
@@ -169,18 +171,34 @@ const RepSpheresNavbar = ({
 
             {/* Right Actions */}
             <div className="nav-actions">
-              <button 
-                className="nav-cta-secondary"
-                onClick={onLogin}
-              >
-                Login
-              </button>
-              <button 
-                className="nav-cta"
-                onClick={onSignup}
-              >
-                Sign Up
-              </button>
+              {user ? (
+                <>
+                  <span className="nav-user-info">
+                    {user.email?.split('@')[0] || 'User'}
+                  </span>
+                  <button 
+                    className="nav-cta-secondary"
+                    onClick={onLogout}
+                  >
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button 
+                    className="nav-cta-secondary"
+                    onClick={onLogin}
+                  >
+                    Login
+                  </button>
+                  <button 
+                    className="nav-cta"
+                    onClick={onSignup}
+                  >
+                    Sign Up
+                  </button>
+                </>
+              )}
               <button 
                 className={`nav-hamburger ${isMobileMenuOpen ? 'active' : ''}`}
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

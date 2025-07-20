@@ -35,20 +35,27 @@ export function AuthProvider({ children }) {
   // Function to sign in with Google
   const signInWithGoogle = async (intendedPath = null) => {
     try {
+      console.log('🔄 Starting Google OAuth...');
+      
       if (intendedPath) {
         setIntendedDestination(intendedPath);
       }
       
-      const { error } = await supabase.auth.signInWithOAuth({
+      const redirectUrl = `${window.location.origin}/auth/callback`;
+      console.log('🔄 Redirect URL:', redirectUrl);
+      
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: redirectUrl,
         },
       });
       
+      console.log('🔄 OAuth initiation result:', { data, error });
+      
       if (error) throw error;
     } catch (error) {
-      console.error('Error signing in with Google:', error.message);
+      console.error('❌ Error signing in with Google:', error.message);
       throw error;
     }
   };
@@ -56,20 +63,27 @@ export function AuthProvider({ children }) {
   // Function to sign in with Facebook
   const signInWithFacebook = async (intendedPath = null) => {
     try {
+      console.log('🔄 Starting Facebook OAuth...');
+      
       if (intendedPath) {
         setIntendedDestination(intendedPath);
       }
       
-      const { error } = await supabase.auth.signInWithOAuth({
+      const redirectUrl = `${window.location.origin}/auth/callback`;
+      console.log('🔄 Redirect URL:', redirectUrl);
+      
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'facebook',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: redirectUrl,
         },
       });
       
+      console.log('🔄 OAuth initiation result:', { data, error });
+      
       if (error) throw error;
     } catch (error) {
-      console.error('Error signing in with Facebook:', error.message);
+      console.error('❌ Error signing in with Facebook:', error.message);
       throw error;
     }
   };
@@ -145,8 +159,8 @@ export function AuthProvider({ children }) {
       // Get the intended destination to pass it along
       const destination = sessionStorage.getItem('intendedDestination') || intendedPath;
       const redirectUrl = destination 
-        ? `https://repspheres.com/auth/callback?redirect=${encodeURIComponent(destination)}`
-        : `https://repspheres.com/auth/callback`;
+        ? `${window.location.origin}/auth/callback?redirect=${encodeURIComponent(destination)}`
+        : `${window.location.origin}/auth/callback`;
       
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
@@ -188,10 +202,13 @@ export function AuthProvider({ children }) {
       // Set up auth state change listener - local only
       const { data: authListener } = supabase.auth.onAuthStateChange(
         async (event, session) => {
+          console.log('🔄 Auth state change:', event, session?.user?.email || 'No user');
           if (session) {
             const { data: { user: currentUser } } = await supabase.auth.getUser();
+            console.log('✅ Setting user:', currentUser?.email);
             setUser(currentUser);
           } else {
+            console.log('❌ Clearing user');
             setUser(null);
           }
           setLoading(false);

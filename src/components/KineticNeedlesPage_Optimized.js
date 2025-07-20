@@ -30,7 +30,7 @@ gsap.registerPlugin(ScrollTrigger);
 const KineticNeedlesPageContent = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [isSignupMode, setIsSignupMode] = useState(false);
-  const { signInWithGoogle, signInWithFacebook } = useAuth();
+  const { user, signInWithGoogle, signInWithFacebook, signOut } = useAuth();
 
   useEffect(() => {
     // Add mobile viewport meta tag if not present
@@ -100,6 +100,14 @@ const KineticNeedlesPageContent = () => {
           setIsSignupMode(true);
           setShowLoginModal(true);
         }}
+        onLogout={async () => {
+          try {
+            await signOut();
+          } catch (error) {
+            console.error('Logout error:', error);
+          }
+        }}
+        user={user}
         customLinks={[
           { href: 'https://marketdata.repspheres.com/', label: 'Market Data', icon: 'market' },
           { href: 'https://canvas.repspheres.com/', label: 'Canvas', icon: 'canvas' },

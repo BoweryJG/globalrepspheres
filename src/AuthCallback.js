@@ -6,16 +6,45 @@ import supabase from './supabase';
 export default function AuthCallback() {
   const navigate = useNavigate();
 
+  console.log('🔄 AuthCallback component mounted');
+
   useEffect(() => {
     const handleCallback = async () => {
       try {
+        console.log('🔄 Auth callback started, current URL:', window.location.href);
+        
+        // Check if we have URL parameters indicating an OAuth callback
+        const urlParams = new URLSearchParams(window.location.search);
+        const hasCode = urlParams.has('code');
+        const hasError = urlParams.has('error');
+        
+        console.log('🔄 URL params check:', { hasCode, hasError, allParams: Object.fromEntries(urlParams) });
+        
+        if (hasError) {
+          console.error('❌ OAuth error in URL:', urlParams.get('error'));
+          navigate('/');
+          return;
+        }
+        
+        if (!hasCode) {
+          console.log('⚠️ No OAuth code found in URL, redirecting home');
+          navigate('/');
+          return;
+        }
+        
         // Handle the OAuth callback
-        const { error } = await supabase.auth.exchangeCodeForSession(window.location.href);
+        const { data, error } = await supabase.auth.exchangeCodeForSession(window.location.href);
+        
+        console.log('🔄 Exchange result:', { data, error });
         
         if (error) {
-          console.error('Error during auth callback:', error);
-          navigate('/login');
+          console.error('❌ Error during auth callback:', error);
+          navigate('/');
           return;
+        }
+        
+        if (data?.session) {
+          console.log('✅ Session established:', data.session.user.email);
         }
 
         // Check all possible sources for intended destination
