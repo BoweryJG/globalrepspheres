@@ -37,6 +37,7 @@ import Switch from '@mui/material/Switch';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import { handleAuthenticatedNavigation } from '../utils/authUtils';
 import { getUserInitials, getUserDisplayName, getUserAvatarUrl } from '../utils/userUtils';
+import LogoutModal from './LogoutModal';
 
 const ACCENT_COLOR = '#00ffc6';
 
@@ -167,6 +168,7 @@ export default function NavBar() {
   const [navLoading, setNavLoading] = React.useState(false);
   const [isNavHovered, setIsNavHovered] = React.useState(false);
   const [statusIndex, setStatusIndex] = React.useState(0);
+  const [logoutModalOpen, setLogoutModalOpen] = React.useState(false);
   const navigate = useNavigate();
   
   
@@ -303,8 +305,17 @@ export default function NavBar() {
   };
   
   const handleSignOut = () => {
-    signOut();
+    setLogoutModalOpen(true);
     handleAuthMenuClose();
+  };
+
+  const handleLogoutConfirm = async () => {
+    await signOut();
+    setLogoutModalOpen(false);
+  };
+
+  const handleLogoutCancel = () => {
+    setLogoutModalOpen(false);
   };
   
   // Styles for different button types
@@ -549,7 +560,7 @@ export default function NavBar() {
             <IconButton
               onClick={() => {
                 setDrawerOpen(false);
-                handleSignOut();
+                setLogoutModalOpen(true);
               }}
               sx={{
                 color: ACCENT_COLOR,
@@ -1268,6 +1279,13 @@ export default function NavBar() {
           <Typography>Content for {item.label} goes here.</Typography>
         </InfoModal>
       ))}
+
+      {/* Logout Modal */}
+      <LogoutModal 
+        isOpen={logoutModalOpen}
+        onClose={handleLogoutCancel}
+        onConfirm={handleLogoutConfirm}
+      />
 
     </>
   );
