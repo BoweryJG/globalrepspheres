@@ -40,8 +40,8 @@ export default function AuthCallback() {
           return;
         }
         
-        // Handle the OAuth callback - use getSessionFromUrl for hash-based responses
-        const { data, error } = await supabase.auth.getSessionFromUrl({ storeSession: true });
+        // Handle the OAuth callback - use exchangeCodeForSession like other RepSpheres apps
+        const { data, error } = await supabase.auth.exchangeCodeForSession(window.location.href);
         
         console.log('🔄 Exchange result:', { data, error });
         
