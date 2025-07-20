@@ -55,6 +55,7 @@
             --primary-charcoal: #2C2C2C;
             --warm-white: #FEFEFE;
             --luxury-gold: #D4AF37;
+            --deep-emerald: #006B3C;
             --light-gray: #F8F8F8;
             --text-secondary: #666666;
             --border-subtle: #E8E8E8;
@@ -411,15 +412,246 @@
                 align-items: flex-start;
             }
         }
+
+        /* Mysterious Micro-Engineering Elements */
+        .micro-instrument {
+            position: absolute;
+            opacity: 0.4;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .resume-container:hover .micro-instrument {
+            opacity: 0.6;
+        }
+
+        .precision-caliper {
+            width: 12px;
+            height: 8px;
+        }
+
+        .crystalline-escapement {
+            width: 10px;
+            height: 10px;
+        }
+
+        .micro-circuit {
+            width: 14px;
+            height: 6px;
+        }
+
+        .geometric-measurement {
+            width: 8px;
+            height: 12px;
+        }
+
+        /* Background Technical Watermarks */
+        .technical-watermark {
+            position: absolute;
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .gear-train-ghost {
+            width: 120px;
+            height: 120px;
+            top: 20%;
+            right: 5%;
+        }
+
+        .blueprint-fragment {
+            width: 160px;
+            height: 80px;
+            bottom: 20%;
+            left: 3%;
+        }
+
+        /* Enhanced bullets with micro-instruments */
+        .achievement-item::before,
+        .experience-achievement::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 12px;
+            width: 6px;
+            height: 6px;
+            background: var(--deep-emerald);
+            border-radius: 50%;
+            box-shadow: 
+                0 0 0 1px var(--luxury-gold),
+                inset 0 1px 0 rgba(255,255,255,0.3);
+        }
+
+        /* Corner precision instruments */
+        .corner-instruments {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            opacity: 0.3;
+        }
+
+        .corner-instruments.top-left {
+            top: 24px;
+            left: 24px;
+        }
+
+        .corner-instruments.top-right {
+            top: 24px;
+            right: 24px;
+        }
+
+        .corner-instruments.bottom-left {
+            bottom: 24px;
+            left: 24px;
+        }
+
+        .corner-instruments.bottom-right {
+            bottom: 24px;
+            right: 24px;
+        }
+
+        /* Section header micro-instruments */
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            right: 0;
+            width: 8px;
+            height: 2px;
+            background: var(--deep-emerald);
+            opacity: 0.6;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .micro-instrument,
+            .corner-instruments,
+            .technical-watermark {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="resume-container">
+        <!-- Corner Precision Instruments -->
+        <div class="corner-instruments top-left">
+            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 2L14 2M2 2L2 14" stroke="#2C2C2C" stroke-width="0.5"/>
+                <circle cx="3" cy="3" r="1" fill="#006B3C"/>
+                <path d="M3 3L5 5M5 5L7 3" stroke="#D4AF37" stroke-width="0.3"/>
+                <rect x="1" y="1" width="2" height="2" stroke="#D4AF37" stroke-width="0.2" fill="none"/>
+            </svg>
+        </div>
+        
+        <div class="corner-instruments top-right">
+            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 2L2 2M14 2L14 14" stroke="#2C2C2C" stroke-width="0.5"/>
+                <circle cx="13" cy="3" r="1" fill="#006B3C"/>
+                <path d="M13 3L11 5M11 5L9 3" stroke="#D4AF37" stroke-width="0.3"/>
+                <path d="M12 1L12 5M10 3L14 3" stroke="#D4AF37" stroke-width="0.2"/>
+            </svg>
+        </div>
+
+        <div class="corner-instruments bottom-left">
+            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 14L14 14M2 14L2 2" stroke="#2C2C2C" stroke-width="0.5"/>
+                <circle cx="3" cy="13" r="1" fill="#006B3C"/>
+                <polygon points="3,11 5,13 3,15" stroke="#D4AF37" stroke-width="0.3" fill="none"/>
+                <path d="M1 13L7 13" stroke="#D4AF37" stroke-width="0.2"/>
+            </svg>
+        </div>
+
+        <div class="corner-instruments bottom-right">
+            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 14L2 14M14 14L14 2" stroke="#2C2C2C" stroke-width="0.5"/>
+                <circle cx="13" cy="13" r="1" fill="#006B3C"/>
+                <path d="M11 11L15 15M15 11L11 15" stroke="#D4AF37" stroke-width="0.3"/>
+                <rect x="12" y="12" width="2" height="2" stroke="#D4AF37" stroke-width="0.2" fill="none"/>
+            </svg>
+        </div>
+
+        <!-- Background Technical Watermarks -->
+        <div class="technical-watermark gear-train-ghost">
+            <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="60" cy="60" r="25" stroke="#2C2C2C" stroke-width="0.5" fill="none"/>
+                <circle cx="60" cy="60" r="15" stroke="#D4AF37" stroke-width="0.3" fill="none"/>
+                <circle cx="60" cy="60" r="5" fill="#006B3C"/>
+                <path d="M45 45L75 75M75 45L45 75" stroke="#D4AF37" stroke-width="0.2"/>
+                <circle cx="30" cy="30" r="8" stroke="#2C2C2C" stroke-width="0.3" fill="none"/>
+                <circle cx="90" cy="90" r="8" stroke="#2C2C2C" stroke-width="0.3" fill="none"/>
+                <path d="M30 30L60 60M60 60L90 90" stroke="#D4AF37" stroke-width="0.2"/>
+            </svg>
+        </div>
+
+        <div class="technical-watermark blueprint-fragment">
+            <svg viewBox="0 0 160 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="10" y="10" width="140" height="60" stroke="#2C2C2C" stroke-width="0.3" fill="none"/>
+                <path d="M20 20L140 20M20 30L140 30M20 40L140 40" stroke="#D4AF37" stroke-width="0.2"/>
+                <circle cx="30" cy="25" r="3" stroke="#006B3C" stroke-width="0.3" fill="none"/>
+                <circle cx="50" cy="35" r="2" fill="#006B3C"/>
+                <circle cx="70" cy="25" r="3" stroke="#D4AF37" stroke-width="0.3" fill="none"/>
+                <path d="M80 20L80 40M90 20L90 40M100 20L100 40" stroke="#2C2C2C" stroke-width="0.2"/>
+                <text x="120" y="30" font-family="monospace" font-size="3" fill="#D4AF37">∞§∆</text>
+            </svg>
+        </div>
+
         <!-- Header -->
         <header class="header">
+            <!-- Micro Precision Calipers flanking the name -->
+            <div class="micro-instrument precision-caliper" style="top: 32px; left: 45%;">
+                <svg viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 1L11 1M1 7L11 7" stroke="#2C2C2C" stroke-width="0.4"/>
+                    <circle cx="2" cy="4" r="1" fill="#006B3C"/>
+                    <circle cx="10" cy="4" r="1" fill="#006B3C"/>
+                    <path d="M2 1L2 7M10 1L10 7" stroke="#D4AF37" stroke-width="0.3"/>
+                    <path d="M3 4L9 4" stroke="#D4AF37" stroke-width="0.2"/>
+                    <text x="6" y="6" font-family="monospace" font-size="1" fill="#D4AF37" text-anchor="middle">∇</text>
+                </svg>
+            </div>
+
+            <div class="micro-instrument precision-caliper" style="top: 32px; right: 45%;">
+                <svg viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 1L11 1M1 7L11 7" stroke="#2C2C2C" stroke-width="0.4"/>
+                    <circle cx="2" cy="4" r="1" fill="#006B3C"/>
+                    <circle cx="10" cy="4" r="1" fill="#006B3C"/>
+                    <path d="M2 1L2 7M10 1L10 7" stroke="#D4AF37" stroke-width="0.3"/>
+                    <path d="M3 4L9 4" stroke="#D4AF37" stroke-width="0.2"/>
+                    <text x="6" y="6" font-family="monospace" font-size="1" fill="#D4AF37" text-anchor="middle">∆</text>
+                </svg>
+            </div>
+
             <h1 class="name">JASON W. GOLDEN</h1>
+            
+            <!-- Micro Circuit measuring the divider -->
+            <div class="micro-instrument micro-circuit" style="top: 118px; left: 48%;">
+                <svg viewBox="0 0 14 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 3L13 3" stroke="#D4AF37" stroke-width="0.4"/>
+                    <circle cx="3" cy="3" r="1" fill="#006B3C"/>
+                    <circle cx="7" cy="3" r="0.5" fill="#D4AF37"/>
+                    <circle cx="11" cy="3" r="1" fill="#006B3C"/>
+                    <path d="M3 1L3 5M11 1L11 5" stroke="#2C2C2C" stroke-width="0.3"/>
+                    <rect x="6" y="2" width="2" height="2" stroke="#D4AF37" stroke-width="0.2" fill="none"/>
+                </svg>
+            </div>
+            
             <div class="divider"></div>
             <p class="title">Sales Architect & Technical Innovator</p>
+            
+            <!-- Geometric measurement device near contact info -->
+            <div class="micro-instrument geometric-measurement" style="bottom: 20px; left: 30%;">
+                <svg viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 1L4 11" stroke="#2C2C2C" stroke-width="0.4"/>
+                    <circle cx="4" cy="2" r="0.8" fill="#006B3C"/>
+                    <circle cx="4" cy="6" r="0.6" fill="#D4AF37"/>
+                    <circle cx="4" cy="10" r="0.8" fill="#006B3C"/>
+                    <path d="M1 2L7 2M1 6L7 6M1 10L7 10" stroke="#D4AF37" stroke-width="0.2"/>
+                    <text x="1" y="4" font-family="monospace" font-size="0.8" fill="#D4AF37">φ</text>
+                    <text x="1" y="8" font-family="monospace" font-size="0.8" fill="#D4AF37">ψ</text>
+                </svg>
+            </div>
+
             <div class="contact-info">
                 <div class="contact-item">201-523-1306</div>
                 <div class="contact-item">jasonwilliamgolden@gmail.com</div>
@@ -433,6 +665,18 @@
             <section class="left-column">
                 <!-- Professional Summary -->
                 <div class="section">
+                    <!-- Crystalline Escapement near section title -->
+                    <div class="micro-instrument crystalline-escapement" style="top: 2px; right: 16px;">
+                        <svg viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <polygon points="5,1 8,3 7,6 3,6 2,3" stroke="#2C2C2C" stroke-width="0.4" fill="none"/>
+                            <circle cx="5" cy="4" r="1.5" fill="#006B3C"/>
+                            <circle cx="5" cy="4" r="0.8" fill="#D4AF37"/>
+                            <path d="M5 1L5 7M2 3L8 3" stroke="#D4AF37" stroke-width="0.2"/>
+                            <circle cx="5" cy="1" r="0.3" fill="#D4AF37"/>
+                            <circle cx="2" cy="3" r="0.3" fill="#006B3C"/>
+                            <circle cx="8" cy="3" r="0.3" fill="#006B3C"/>
+                        </svg>
+                    </div>
                     <h2 class="section-title">Executive Profile</h2>
                     <p class="professional-summary">
                         Visionary sales architect with 13+ years transforming premium medical device markets. 
@@ -444,6 +688,18 @@
 
                 <!-- Key Achievements -->
                 <div class="section">
+                    <!-- Precision Measurement Device near achievements -->
+                    <div class="micro-instrument geometric-measurement" style="top: 2px; right: 12px;">
+                        <svg viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 1L7 1M1 11L7 11" stroke="#2C2C2C" stroke-width="0.4"/>
+                            <circle cx="4" cy="3" r="1" fill="#006B3C"/>
+                            <circle cx="4" cy="6" r="0.7" fill="#D4AF37"/>
+                            <circle cx="4" cy="9" r="1" fill="#006B3C"/>
+                            <path d="M1 3L7 3M1 6L7 6M1 9L7 9" stroke="#D4AF37" stroke-width="0.2"/>
+                            <text x="0.5" y="5" font-family="monospace" font-size="0.7" fill="#D4AF37">∑</text>
+                            <text x="6.5" y="8" font-family="monospace" font-size="0.7" fill="#006B3C">⊕</text>
+                        </svg>
+                    </div>
                     <h2 class="section-title">Key Achievements</h2>
                     <ul class="achievements-list">
                         <li class="achievement-item">Quadrupled regional production in 12 months through strategic market development</li>
@@ -456,6 +712,18 @@
 
                 <!-- Core Competencies -->
                 <div class="section">
+                    <!-- Micro Circuit Fragment near competencies -->
+                    <div class="micro-instrument micro-circuit" style="top: 2px; right: 8px;">
+                        <svg viewBox="0 0 14 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 3L13 3" stroke="#D4AF37" stroke-width="0.4"/>
+                            <circle cx="2" cy="3" r="0.8" fill="#006B3C"/>
+                            <rect x="5" y="2" width="2" height="2" stroke="#2C2C2C" stroke-width="0.3" fill="none"/>
+                            <circle cx="9" cy="3" r="0.6" fill="#D4AF37"/>
+                            <circle cx="12" cy="3" r="0.8" fill="#006B3C"/>
+                            <path d="M2 1L2 5M9 1L9 5M12 1L12 5" stroke="#D4AF37" stroke-width="0.2"/>
+                            <text x="6" y="4.5" font-family="monospace" font-size="0.6" fill="#D4AF37">Ω</text>
+                        </svg>
+                    </div>
                     <h2 class="section-title">Core Competencies</h2>
                     <div class="skills-grid">
                         <div class="skill-category">
@@ -487,10 +755,36 @@
             <!-- Right Column -->
             <section class="right-column">
                 <div class="section">
+                    <!-- Complex Crystalline Escapement for Experience -->
+                    <div class="micro-instrument crystalline-escapement" style="top: 2px; right: 6px;">
+                        <svg viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <polygon points="5,0.5 9,2.5 8,5.5 6,8 4,8 2,5.5 1,2.5" stroke="#2C2C2C" stroke-width="0.4" fill="none"/>
+                            <circle cx="5" cy="4" r="2" fill="#006B3C" opacity="0.7"/>
+                            <circle cx="5" cy="4" r="1.2" fill="#D4AF37"/>
+                            <circle cx="5" cy="4" r="0.6" fill="#006B3C"/>
+                            <path d="M5 0.5L5 7.5M1 2.5L9 2.5M2 5.5L8 5.5" stroke="#D4AF37" stroke-width="0.15"/>
+                            <circle cx="5" cy="0.5" r="0.3" fill="#D4AF37"/>
+                            <circle cx="1" cy="2.5" r="0.2" fill="#006B3C"/>
+                            <circle cx="9" cy="2.5" r="0.2" fill="#006B3C"/>
+                            <text x="2.5" y="1.5" font-family="monospace" font-size="0.6" fill="#D4AF37">◊</text>
+                        </svg>
+                    </div>
                     <h2 class="section-title">Professional Experience</h2>
                     
                     <!-- Bowery Creative Agency -->
                     <div class="experience-item">
+                        <!-- Precision Analysis Tool -->
+                        <div class="micro-instrument precision-caliper" style="top: 8px; right: 4px;">
+                            <svg viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0.5 1L11.5 1M0.5 7L11.5 7" stroke="#2C2C2C" stroke-width="0.4"/>
+                                <circle cx="1.5" cy="4" r="0.8" fill="#006B3C"/>
+                                <circle cx="10.5" cy="4" r="0.8" fill="#006B3C"/>
+                                <path d="M1.5 1L1.5 7M10.5 1L10.5 7" stroke="#D4AF37" stroke-width="0.3"/>
+                                <path d="M2.5 4L9.5 4" stroke="#D4AF37" stroke-width="0.2"/>
+                                <rect x="5" y="3" width="2" height="2" stroke="#D4AF37" stroke-width="0.2" fill="none"/>
+                                <text x="6" y="6" font-family="monospace" font-size="0.8" fill="#D4AF37" text-anchor="middle">$</text>
+                            </svg>
+                        </div>
                         <div class="experience-header">
                             <div class="company-name">BOWERY CREATIVE AGENCY</div>
                             <div class="position-duration">
@@ -570,6 +864,25 @@
                 </div>
             </section>
         </main>
+        
+        <!-- Final Mysterious Calibration Tool -->
+        <div class="micro-instrument crystalline-escapement" style="bottom: 40px; right: 40px; opacity: 0.2;">
+            <svg viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="5,0.5 9.5,3 8.5,6.5 6,9 4,9 1.5,6.5 0.5,3" stroke="#2C2C2C" stroke-width="0.4" fill="none"/>
+                <circle cx="5" cy="4.5" r="2.5" fill="#006B3C" opacity="0.3"/>
+                <circle cx="5" cy="4.5" r="1.5" fill="#D4AF37" opacity="0.6"/>
+                <circle cx="5" cy="4.5" r="0.8" fill="#006B3C"/>
+                <circle cx="5" cy="4.5" r="0.3" fill="#D4AF37"/>
+                <path d="M5 0.5L5 8.5M0.5 3L9.5 3M1.5 6.5L8.5 6.5" stroke="#D4AF37" stroke-width="0.15"/>
+                <circle cx="5" cy="0.5" r="0.2" fill="#D4AF37"/>
+                <circle cx="0.5" cy="3" r="0.2" fill="#006B3C"/>
+                <circle cx="9.5" cy="3" r="0.2" fill="#006B3C"/>
+                <circle cx="1.5" cy="6.5" r="0.2" fill="#D4AF37"/>
+                <circle cx="8.5" cy="6.5" r="0.2" fill="#D4AF37"/>
+                <text x="7" y="2" font-family="monospace" font-size="0.5" fill="#D4AF37">∞</text>
+                <text x="1" y="7.5" font-family="monospace" font-size="0.5" fill="#006B3C">Ω</text>
+            </svg>
+        </div>
     </div>
 </body>
 </html>
