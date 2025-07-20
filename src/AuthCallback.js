@@ -55,6 +55,7 @@ export default function AuthCallback() {
         
         if (data?.session) {
           console.log('✅ Session established:', data.session.user.email);
+          console.log('📊 User metadata:', data.session.user.user_metadata);
         }
 
         // Check all possible sources for intended destination

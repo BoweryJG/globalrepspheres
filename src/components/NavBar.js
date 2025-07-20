@@ -36,7 +36,7 @@ import SpeedIcon from '@mui/icons-material/Speed';
 import Switch from '@mui/material/Switch';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import { handleAuthenticatedNavigation } from '../utils/authUtils';
-import { getUserInitials, getUserDisplayName } from '../utils/userUtils';
+import { getUserInitials, getUserDisplayName, getUserAvatarUrl } from '../utils/userUtils';
 
 const ACCENT_COLOR = '#00ffc6';
 
@@ -525,14 +525,17 @@ export default function NavBar() {
             borderRadius: '8px',
             border: `1px solid ${ACCENT_COLOR}30`,
           }}>
-            <Avatar sx={{ 
-              width: 36, 
-              height: 36, 
-              bgcolor: ACCENT_COLOR,
-              mr: 2,
-              fontSize: '0.9rem',
-              fontWeight: 600
-            }}>
+            <Avatar 
+              src={getUserAvatarUrl(user)}
+              sx={{ 
+                width: 36, 
+                height: 36, 
+                bgcolor: ACCENT_COLOR,
+                mr: 2,
+                fontSize: '0.9rem',
+                fontWeight: 600
+              }}
+            >
               {getUserInitials(user)}
             </Avatar>
             <Box sx={{ flex: 1 }}>
@@ -1010,13 +1013,16 @@ export default function NavBar() {
                   }
                 }}
               >
-                <Avatar sx={{ 
-                  width: 32, 
-                  height: 32, 
-                  bgcolor: ACCENT_COLOR,
-                  fontSize: '0.875rem',
-                  fontWeight: 600
-                }}>
+                <Avatar 
+                  src={getUserAvatarUrl(user)}
+                  sx={{ 
+                    width: 32, 
+                    height: 32, 
+                    bgcolor: ACCENT_COLOR,
+                    fontSize: '0.875rem',
+                    fontWeight: 600
+                  }}
+                >
                   {getUserInitials(user)}
                 </Avatar>
               </IconButton>

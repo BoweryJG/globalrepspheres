@@ -41,6 +41,26 @@ export function getUserInitials(user) {
 }
 
 /**
+ * Get user avatar URL from metadata
+ * @param {Object} user - Supabase user object  
+ * @returns {string|null} - Avatar URL or null
+ */
+export function getUserAvatarUrl(user) {
+  if (!user) return null;
+  
+  // Try to get from various avatar fields in user_metadata
+  if (user.user_metadata?.avatar_url) {
+    return user.user_metadata.avatar_url;
+  }
+  
+  if (user.user_metadata?.picture) {
+    return user.user_metadata.picture;
+  }
+  
+  return null;
+}
+
+/**
  * Get user display name
  * @param {Object} user - Supabase user object
  * @returns {string} - Display name
