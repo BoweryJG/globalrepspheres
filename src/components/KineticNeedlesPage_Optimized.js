@@ -89,11 +89,10 @@ const KineticNeedlesPage_Optimized = () => {
         onLogin={() => window.location.href = '/login'}
         onSignup={() => window.location.href = '/signup'}
         customLinks={[
-          { href: '#dimensional-tear', label: 'The Moment', icon: 'market' },
-          { href: '#mathematical-proof', label: 'The Math', icon: 'canvas' },
-          { href: '#canvas', label: 'Canvas Intelligence', icon: 'pipeline' },
-          { href: '#empire', label: 'Your Empire', icon: 'sphere' },
-          { href: '#pricing', label: 'Join Now', icon: 'podcasts' }
+          { href: 'https://marketdata.repspheres.com/', label: 'Market Data', icon: 'market' },
+          { href: 'https://canvas.repspheres.com/', label: 'Canvas', icon: 'canvas' },
+          { href: 'https://repconnect.repspheres.com/', label: 'RepConnect', icon: 'pipeline' },
+          { href: 'https://crm.repspheres.com/', label: 'CRM', icon: 'sphere' }
         ]}
       />
 
