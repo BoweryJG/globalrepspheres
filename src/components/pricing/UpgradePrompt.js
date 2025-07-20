@@ -11,9 +11,12 @@ import {
 } from '@mui/material';
 import { Close, Bolt, TrendingUp } from '@mui/icons-material';
 import { useSubscription } from '../../contexts/SubscriptionContext';
+import { useCanvasFeatureAccess } from '../../hooks/useUnifiedSubscription';
+import { formatRepxTierName, getNextRepxTier } from '../../services/subscriptionService';
 
-export default function UpgradePrompt({ feature, onClose, persistent = false }) {
+export default function UpgradePrompt({ feature, onClose, persistent = false, useRepxTiers = false }) {
   const { subscription, getUsagePercentage, getUpgradeMessage, usage, limits } = useSubscription();
+  const canvasFeatures = useCanvasFeatureAccess();
   const [show, setShow] = React.useState(true);
 
   const percentage = getUsagePercentage(feature);
@@ -30,7 +33,14 @@ export default function UpgradePrompt({ feature, onClose, persistent = false }) 
     ripples: 'Ripples Deployments',
   };
 
-  const nextTier = {
+  // Use Rep^x tiers if specified, otherwise use traditional tiers
+  const nextTier = useRepxTiers ? {
+    repx1: 'repx2',
+    repx2: 'repx3', 
+    repx3: 'repx4',
+    repx4: 'repx5',
+    repx5: null
+  } : {
     free: 'explorer',
     explorer: 'professional',
     professional: 'growth',
@@ -38,7 +48,13 @@ export default function UpgradePrompt({ feature, onClose, persistent = false }) 
     enterprise: 'elite',
   };
 
-  const tierNames = {
+  const tierNames = useRepxTiers ? {
+    repx1: 'Rep^1',
+    repx2: 'Rep^2',
+    repx3: 'Rep^3', 
+    repx4: 'Rep^4',
+    repx5: 'Rep^5'
+  } : {
     explorer: 'Explorer',
     professional: 'Professional',
     growth: 'Growth',
@@ -46,16 +62,25 @@ export default function UpgradePrompt({ feature, onClose, persistent = false }) 
     elite: 'Elite',
   };
 
+  // Get current tier for Rep^x mode
+  const currentTier = useRepxTiers ? canvasFeatures.repxTier : subscription.tier;
+
   const handleUpgrade = () => {
     // Track upgrade click
     if (window.gtag) {
       window.gtag('event', 'upgrade_prompt_click', {
         event_category: 'engagement',
-        event_label: `${feature}_${subscription.tier}_to_${nextTier[subscription.tier]}`,
+        event_label: `${feature}_${currentTier}_to_${nextTier[currentTier]}`,
         value: percentage,
       });
     }
-    window.location.href = '/#pricing';
+    
+    if (useRepxTiers) {
+      // For Rep^x tiers, show the unified pricing modal or redirect with Rep^x context
+      window.location.href = '/#pricing?context=repx';
+    } else {
+      window.location.href = '/#pricing';
+    }
   };
 
   const handleClose = () => {
@@ -147,7 +172,7 @@ export default function UpgradePrompt({ feature, onClose, persistent = false }) 
         </Box>
 
         {/* Upgrade Benefits */}
-        {nextTier[subscription.tier] && (
+        {nextTier[currentTier] && (
           <Box sx={{ mb: 3, p: 2, borderRadius: '12px', backgroundColor: 'rgba(255,255,255,0.05)' }}>
             <Typography
               sx={{
@@ -157,14 +182,14 @@ export default function UpgradePrompt({ feature, onClose, persistent = false }) 
                 mb: 1,
               }}
             >
-              Upgrade to {tierNames[nextTier[subscription.tier]]} and get:
+              Upgrade to {tierNames[nextTier[currentTier]]} and get:
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <TrendingUp sx={{ fontSize: 16, color: 'rgba(255,255,255,0.6)', mr: 1 }} />
               <Typography sx={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.85rem' }}>
-                {nextTier[subscription.tier] === 'elite' 
+                {nextTier[currentTier] === 'elite' || nextTier[currentTier] === 'repx5'
                   ? 'Unlimited everything'
-                  : `${getLimitForNextTier(feature, nextTier[subscription.tier])} ${featureNames[feature].toLowerCase()}/month`}
+                  : `${getLimitForNextTier(feature, nextTier[currentTier])} ${featureNames[feature].toLowerCase()}/month`}
               </Typography>
             </Box>
           </Box>
@@ -215,6 +240,15 @@ export default function UpgradePrompt({ feature, onClose, persistent = false }) 
   );
 
   function getLimitForNextTier(feature, tier) {
+    // Rep^x tier limits for Canvas features
+    const repxTierLimits = {
+      repx2: { canvas_briefs: 10 },
+      repx3: { canvas_briefs: 25 },
+      repx4: { canvas_briefs: 50 },
+      repx5: { canvas_briefs: 'Unlimited' }
+    };
+    
+    // Traditional tier limits
     const tierLimits = {
       explorer: { canvas_briefs: 25, ai_prompts: 5, call_analyses: 5, contacts: 10, ripples: 25 },
       professional: { canvas_briefs: 50, ai_prompts: 50, call_analyses: 10, contacts: 25, ripples: 50 },
@@ -222,6 +256,10 @@ export default function UpgradePrompt({ feature, onClose, persistent = false }) 
       enterprise: { canvas_briefs: 'Unlimited', ai_prompts: 'Unlimited', call_analyses: 'Unlimited', contacts: 100, ripples: 'Unlimited' },
       elite: { canvas_briefs: 'Unlimited', ai_prompts: 'Unlimited', call_analyses: 'Unlimited', contacts: 'Unlimited', ripples: 'Unlimited' },
     };
+    
+    if (useRepxTiers && repxTierLimits[tier]) {
+      return repxTierLimits[tier][feature] || 'Unlimited';
+    }
     
     return tierLimits[tier]?.[feature] || 'Unlimited';
   }

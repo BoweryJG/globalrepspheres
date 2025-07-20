@@ -6,22 +6,30 @@
  * - SphereOsCrM  
  * - canvasheader
  * - market-data-jg
+ * 
+ * NOTE: This file is currently unused in the application.
+ * The working subscription system is in src/contexts/SubscriptionContext.js
+ * which properly connects to the osbackend for all subscription functionality.
  */
 
-import { createClient } from '@supabase/supabase-js';
-import { UNIFIED_PRICING_TIERS, getPriceId, getTierFeatures, canAccessFeature } from './unified-pricing-config.js';
+// NOTE: Imports commented out since this service is not currently used
+// If you need to use this service in the future, uncomment these imports:
+// import { createClient } from '@supabase/supabase-js';
+// import { UNIFIED_PRICING_TIERS, getPriceId, getTierFeatures, canAccessFeature } from './unified-pricing-config.js';
 
-// Initialize Supabase client
-const supabase = createClient(
-  process.env.SUPABASE_URL || process.env.REACT_APP_SUPABASE_URL,
-  process.env.SUPABASE_ANON_KEY || process.env.REACT_APP_SUPABASE_ANON_KEY
-);
+// Initialize Supabase client (commented out since service is unused)
+// const supabase = createClient(
+//   process.env.SUPABASE_URL || process.env.REACT_APP_SUPABASE_URL,
+//   process.env.SUPABASE_ANON_KEY || process.env.REACT_APP_SUPABASE_ANON_KEY
+// );
+
+/*
+NOTE: This entire class is commented out since it's not currently used.
+The working subscription system is in src/contexts/SubscriptionContext.js
 
 export class SubscriptionService {
   
-  /**
-   * Get user's current subscription across all modules
-   */
+  // Get user's current subscription across all modules
   static async getUserSubscription(userId) {
     try {
       const { data: profile, error } = await supabase
@@ -392,3 +400,9 @@ export const {
   resetMonthlyUsage,
   getSubscriptionAnalytics
 } = SubscriptionService;
+
+*/
+
+// This file is currently inactive.
+// All subscription functionality is handled by src/contexts/SubscriptionContext.js
+// which connects to the osbackend for proper subscription management.

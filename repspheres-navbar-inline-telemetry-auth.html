@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RepSpheres | The Collaborative AI Sales Intelligence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-darker: #050505;
+            --panel-dark: #1a1a1a;
+            --panel-darker: #141414;
+            --purple-primary: #9f58fa;
+            --purple-dark: #7e22ce;
+            --purple-light: #a855f7;
+            --blue-accent: #4B96DC;
+            --blue-light: #60a5fa;
+            --green-accent: #4bd48e;
+            --green-neon: #00ff88;
+            --pink-accent: #f53969;
+            --orange-accent: #ff6b35;
+            --cyan-accent: #00d4ff;
+            --yellow-accent: #ffd93d;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-hover: rgba(255, 255, 255, 0.08);
+            --matrix-green: #00ff41;
+            --warning-red: #ff0040;
+            --amber-neutral: #ffaa00;
+            --gem-impossible: #ff00ff;
+            --gem-shift: #00ffff;
+            --gem-deep: #ff00aa;
+            --nav-height: 60px;
+            --scroll-offset: 0px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-darker);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+            padding-top: 120px;
+            transition: background 0.5s ease;
+        }
+
+        /* Fixed Header Container for Nav + Telemetry */
+        .header-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding-top: 24px;
+        }
+
+        /* Award-Winning Navigation Bar - Floating Bezel Design */
+        .nav-container {
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 96vw;
+            max-width: 1400px;
+            height: var(--nav-height);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            background: linear-gradient(to right,
+                rgba(26, 26, 26, 0.95) 0%,
+                rgba(30, 30, 30, 0.9) 10%,
+                rgba(28, 28, 28, 0.88) 50%,
+                rgba(30, 30, 30, 0.9) 90%,
+                rgba(26, 26, 26, 0.95) 100%
+            );
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            box-shadow: 
+                0 12px 40px rgba(0, 0, 0, 0.4),
+                0 0 20px rgba(var(--gem-shift), 0.08),
+                0 2px 10px rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.06),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        /* PATCHED TELEMETRY SYSTEM */
+        .telemetry-container {
+            position: relative;
+            margin-top: 8px;
+            width: 96vw;
+            max-width: 1400px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 8px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background: linear-gradient(to bottom,
+                rgba(255, 255, 255, 0.02) 0%,
+                transparent 100%
+            );
+        }
+
+        .telemetry-rail-system {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            padding: 0 24px;
+        }
+
+        .telemetry-rail-wrapper.unified {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 50vw; /* default mobile behavior */
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .telemetry-status-inline {
+            font-size: 8px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 0.4px;
+            opacity: 0.4;
+            transition: all 0.3s ease;
+            animation: statusUpdate 8s infinite;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        /* Responsive scaling for larger devices */
+        @media (min-width: 480px) {
+            .telemetry-rail-wrapper.unified {
+                width: 60vw;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .telemetry-rail-wrapper.unified {
+                width: 70vw;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .telemetry-rail-wrapper.unified {
+                width: 600px;
+            }
+        }
+
+        /* Edge Mount Indicators */
+        .nav-edge {
+            position: absolute;
+            top: 10px;
+            bottom: 10px;
+            width: 3px;
+            background: linear-gradient(to bottom,
+                rgba(var(--gem-impossible), 0.2),
+                rgba(var(--gem-shift), 0.1)
+            );
+            box-shadow: 0 0 8px rgba(var(--gem-shift), 0.15);
+            opacity: 0.6;
+            z-index: 1;
+            transition: all 0.3s ease;
+            transform: scaleY(1);
+        }
+
+        .left-edge { 
+            left: -4px; 
+            border-radius: 2px 0 0 2px; 
+        }
+        
+        .right-edge { 
+            right: -4px; 
+            border-radius: 0 2px 2px 0; 
+        }
+
+        /* Hover Reveal Glow Fins */
+        .nav-edge::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 10px;
+            height: 80%;
+            background: radial-gradient(circle, rgba(var(--gem-deep), 0.4), transparent);
+            transform: translate(-50%, -50%);
+            opacity: 0.1;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-container:hover .nav-edge::after {
+            opacity: 0.5;
+        }
+
+        .nav-container:hover .nav-edge {
+            opacity: 1;
+            box-shadow: 0 0 12px rgba(var(--gem-shift), 0.3);
+            transform: scaleY(1.1);
+        }
+
+        /* Parallax Background Grid */
+        .nav-container::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(var(--gem-impossible), 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(var(--gem-shift), 0.03) 0%, transparent 50%),
+                repeating-linear-gradient(
+                    0deg,
+                    transparent 0px,
+                    transparent 19px,
+                    rgba(255, 255, 255, 0.01) 20px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent 0px,
+                    transparent 19px,
+                    rgba(255, 255, 255, 0.01) 20px
+                );
+            opacity: 0.5;
+            transform: translateY(var(--scroll-offset));
+            pointer-events: none;
+            transition: transform 0.1s linear;
+        }
+
+        /* Enhanced Float on Scroll */
+        .header-container.scrolled .nav-container {
+            box-shadow:
+                0 16px 50px rgba(0, 0, 0, 0.5),
+                0 0 30px rgba(var(--gem-impossible), 0.12),
+                0 0 60px rgba(var(--gem-shift), 0.06),
+                0 2px 20px rgba(159, 88, 250, 0.15),
+                inset 0 -1px 1px rgba(255,255,255,0.04),
+                inset 0 1px 0 rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.12);
+            background: linear-gradient(to right,
+                rgba(26, 26, 26, 0.98) 0%,
+                rgba(32, 32, 32, 0.95) 10%,
+                rgba(30, 30, 30, 0.92) 50%,
+                rgba(32, 32, 32, 0.95) 90%,
+                rgba(26, 26, 26, 0.98) 100%
+            );
+            transform: translateX(-50%) scale(0.98) translateZ(30px);
+        }
+
+        /* Glass Refraction Overlay */
+        .nav-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0; 
+            right: 0; 
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at top left, rgba(255,255,255,0.06), transparent 70%),
+                radial-gradient(ellipse at bottom right, rgba(var(--gem-impossible), 0.03), transparent 60%);
+            pointer-events: none;
+            mix-blend-mode: screen;
+            opacity: 0.2;
+            animation: glassOscillate 8s ease-in-out infinite;
+            transition: background 0.5s ease;
+        }
+
+        @keyframes glassOscillate {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(1.02); }
+        }
+
+        /* Advanced Metallic Screws Container */
+        .nav-screws {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* Screw Wrapper with Bezel Inset */
+        .screw-wrapper {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, 
+                rgba(0,0,0,0.3) 0%, 
+                rgba(0,0,0,0.15) 40%, 
+                transparent 70%
+            );
+            box-shadow: 
+                inset 0 1px 2px rgba(0,0,0,0.5),
+                inset 0 -1px 1px rgba(255,255,255,0.1),
+                0 1px 1px rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Advanced Screw with Idle Rotation */
+        .screw {
+            position: relative;
+            width: 5px;
+            height: 5px;
+            background: 
+                radial-gradient(circle at 35% 35%, #e0e0e0 0%, #b8b8b8 15%, #888 40%, #555 70%, #222 100%),
+                linear-gradient(135deg, #ccc 0%, #666 100%);
+            background-size: 100%, 100%;
+            border-radius: 50%;
+            box-shadow:
+                inset 0 0.5px 1px rgba(255,255,255,0.4),
+                inset 0 -0.5px 1px rgba(0,0,0,0.5),
+                0 0.5px 2px rgba(0,0,0,0.8),
+                0 0 3px rgba(0,0,0,0.3);
+            transform: rotate(var(--angle, 10deg));
+            border: 0.5px solid rgba(0,0,0,0.2);
+            animation: screwWiggle 5s ease-in-out infinite;
+        }
+
+        /* Phillips Head Screw Groove */
+        .screw::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 70%;
+            height: 0.5px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(0,0,0,0.7) 20%, 
+                rgba(0,0,0,0.7) 80%, 
+                transparent
+            );
+            transform: translate(-50%, -50%) rotate(0deg);
+            box-shadow: 0 0 1px rgba(255,255,255,0.15);
+        }
+
+        /* Cross groove for Phillips head */
+        .screw::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0.5px;
+            height: 70%;
+            background: linear-gradient(180deg, 
+                transparent, 
+                rgba(0,0,0,0.7) 20%, 
+                rgba(0,0,0,0.7) 80%, 
+                transparent
+            );
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 1px rgba(255,255,255,0.15);
+        }
+
+        /* Jeweled Center Dot */
+        .screw-jewel {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 1.5px;
+            height: 1.5px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle at center, 
+                rgba(255,255,255,0.8), 
+                rgba(var(--gem-impossible), 0.6), 
+                rgba(var(--gem-deep), 0.4), 
+                transparent
+            );
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: jewelPulse 3s infinite;
+        }
+
+        @keyframes jewelPulse {
+            0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.2); }
+        }
+
+        /* Idle Rotation Animation */
+        @keyframes screwWiggle {
+            0%, 100% { transform: rotate(var(--angle, 10deg)); }
+            25% { transform: rotate(calc(var(--angle, 10deg) + 1.5deg)); }
+            50% { transform: rotate(calc(var(--angle, 10deg) - 1deg)); }
+            75% { transform: rotate(calc(var(--angle, 10deg) + 0.5deg)); }
+        }
+
+        /* 4-Point Luxury Bezel - Perfect Mechanical Symmetry */
+        .screw-wrapper-top-left { 
+            top: 10px; 
+            left: 10px; 
+            --angle: 10deg;
+            animation-delay: 0s; 
+        }
+        .screw-wrapper-top-right { 
+            top: 10px; 
+            right: 10px; 
+            --angle: 22deg;
+            animation-delay: 1.2s; 
+        }
+        .screw-wrapper-bot-left { 
+            bottom: 10px; 
+            left: 10px; 
+            --angle: -12deg;
+            animation-delay: 2.4s; 
+        }
+        .screw-wrapper-bot-right { 
+            bottom: 10px; 
+            right: 10px; 
+            --angle: 18deg;
+            animation-delay: 3.6s; 
+        }
+
+        /* Main nav inner - single row */
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+        }
+
+        /* Logo Section with 3D Tilt */
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            position: relative;
+            padding: 8px 16px;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .nav-logo-icon {
+            width: 36px;
+            height: 36px;
+            position: relative;
+        }
+
+        .nav-logo-icon svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 1px 2px rgba(255,255,255,0.1));
+            transition: transform 0.3s ease;
+        }
+
+        .nav-logo-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 20px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--purple-primary), var(--blue-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        /* Navigation Links */
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .nav-link {
+            position: relative;
+            padding: 8px 16px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid transparent;
+            overflow: hidden;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                transparent 0%,
+                rgba(var(--gem-impossible), 0.1) 50%,
+                transparent 100%
+            );
+            transform: translateX(-100%);
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-link:hover::before {
+            transform: translateX(100%);
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(var(--gem-impossible), 0.3);
+            transform: translateY(-1px);
+            box-shadow: 
+                0 4px 20px rgba(var(--gem-impossible), 0.2),
+                0 0 0 1px rgba(var(--gem-impossible), 0.1) inset;
+        }
+
+        /* Icon for nav links */
+        .nav-link-icon {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .nav-link-icon::before {
+            content: '';
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: currentColor;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.5); opacity: 0.3; }
+        }
+
+        /* Market Data Icon */
+        .icon-market::before {
+            background: var(--green-accent);
+            box-shadow: 0 0 10px var(--green-accent);
+        }
+
+        /* Canvas Icon */
+        .icon-canvas::before {
+            background: var(--purple-primary);
+            box-shadow: 0 0 10px var(--purple-primary);
+        }
+
+        /* Pipeline Icon */
+        .icon-pipeline::before {
+            background: var(--orange-accent);
+            box-shadow: 0 0 10px var(--orange-accent);
+        }
+
+        /* Sphere OS Icon */
+        .icon-sphere::before {
+            background: var(--blue-accent);
+            box-shadow: 0 0 10px var(--blue-accent);
+        }
+
+        /* Podcasts Icon */
+        .icon-podcasts::before {
+            background: var(--pink-accent);
+            box-shadow: 0 0 10px var(--pink-accent);
+        }
+
+        /* Right Actions */
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Premium CTA Button with Forcefield */
+        .nav-cta {
+            position: relative;
+            padding: 10px 24px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--purple-primary), var(--blue-accent));
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            box-shadow: 
+                0 4px 20px rgba(159, 88, 250, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+        }
+
+        .nav-cta::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            border: 2px solid;
+            border-color: transparent var(--gem-impossible) transparent var(--gem-shift);
+            border-radius: 12px;
+            transform: translate(-50%, -50%) scale(1.1);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-cta:hover::after {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.15) rotate(180deg);
+            animation: forcefieldRotate 2s linear infinite;
+        }
+
+        @keyframes forcefieldRotate {
+            0% { transform: translate(-50%, -50%) scale(1.15) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) scale(1.15) rotate(360deg); }
+        }
+
+        .nav-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            transition: left 0.5s;
+        }
+
+        .nav-cta:hover::before {
+            left: 100%;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 6px 30px rgba(159, 88, 250, 0.4),
+                0 0 0 2px rgba(255, 255, 255, 0.2) inset,
+                0 0 40px rgba(255, 0, 255, 0.3);
+            filter: brightness(1.1);
+        }
+
+        /* Login Button (secondary style) */
+        .nav-cta-secondary {
+            position: relative;
+            padding: 10px 24px;
+            border-radius: 12px;
+            background: transparent;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 2px 10px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+        }
+
+        .nav-cta-secondary::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            border: 2px solid;
+            border-color: transparent var(--gem-impossible) transparent var(--gem-shift);
+            border-radius: 12px;
+            transform: translate(-50%, -50%) scale(1.1);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-cta-secondary:hover::after {
+            opacity: 0.5;
+            transform: translate(-50%, -50%) scale(1.15) rotate(180deg);
+            animation: forcefieldRotate 2s linear infinite;
+        }
+
+        .nav-cta-secondary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(255, 255, 255, 0.1),
+                transparent
+            );
+            transition: left 0.5s;
+        }
+
+        .nav-cta-secondary:hover::before {
+            left: 100%;
+        }
+
+        .nav-cta-secondary:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 
+                0 4px 20px rgba(255, 255, 255, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+                0 0 20px rgba(var(--gem-shift), 0.2);
+        }
+
+        /* More Menu with Radar Animation */
+        .nav-more {
+            position: relative;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .nav-more:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(var(--gem-impossible), 0.3);
+            transform: translateY(-1px);
+        }
+
+        .nav-more-icon {
+            display: flex;
+            gap: 3px;
+            z-index: 1;
+        }
+
+        .nav-more-dot {
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: var(--text-secondary);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-more:hover .nav-more-dot {
+            background: var(--text-primary);
+        }
+
+        /* Hamburger Menu */
+        .nav-hamburger {
+            display: none;
+            position: relative;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            z-index: 1002;
+        }
+
+        .nav-hamburger:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(var(--gem-impossible), 0.3);
+        }
+
+        .hamburger-icon {
+            width: 20px;
+            height: 14px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .hamburger-line {
+            width: 100%;
+            height: 2px;
+            background: var(--text-secondary);
+            border-radius: 2px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
+        }
+
+        .nav-hamburger.active .hamburger-line:nth-child(1) {
+            transform: translateY(6px) rotate(45deg);
+        }
+
+        .nav-hamburger.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+
+        .nav-hamburger.active .hamburger-line:nth-child(3) {
+            transform: translateY(-6px) rotate(-45deg);
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 999;
+        }
+
+        .mobile-menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Mobile Menu Container */
+        .mobile-menu {
+            position: fixed;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            width: 90%;
+            max-width: 400px;
+            background: var(--panel-dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition-delay: 0.1s;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                0 0 40px rgba(var(--gem-impossible), 0.1);
+        }
+
+        .mobile-menu-overlay.active .mobile-menu {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .mobile-menu-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .mobile-menu-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 16px;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid transparent;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mobile-menu-link:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(var(--gem-impossible), 0.3);
+            transform: translateX(5px);
+        }
+
+        /* Power Nodes - Inline Design */
+        .telemetry-node {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: radial-gradient(circle, 
+                rgba(var(--gem-impossible), 1), 
+                rgba(var(--gem-deep), 0.8),
+                transparent
+            );
+            box-shadow: 
+                0 0 4px rgba(var(--gem-shift), 0.6),
+                inset 0 0 1px rgba(255,255,255,0.5);
+            animation: nodePulse 3s infinite ease-in-out;
+            position: relative;
+        }
+
+        @keyframes nodePulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.3); opacity: 1; }
+        }
+
+        @keyframes statusUpdate {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.6; color: var(--text-secondary); }
+        }
+
+        .telemetry-status-inline:hover {
+            opacity: 0.8;
+            color: var(--gem-impossible);
+            text-shadow: 0 0 3px rgba(var(--gem-impossible), 0.5);
+            cursor: pointer;
+        }
+
+        /* Sections with different themes */
+        .section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .hero {
+            background: radial-gradient(ellipse at center, rgba(159, 88, 250, 0.1) 0%, transparent 70%);
+        }
+
+        #market-data {
+            background: radial-gradient(ellipse at center, rgba(77, 212, 142, 0.1) 0%, transparent 70%);
+        }
+
+        #canvas {
+            background: radial-gradient(ellipse at center, rgba(255, 107, 53, 0.1) 0%, transparent 70%);
+        }
+
+        #pipeline {
+            background: radial-gradient(ellipse at center, rgba(255, 107, 53, 0.1) 0%, transparent 70%);
+        }
+
+        #sphere-os {
+            background: radial-gradient(ellipse at center, rgba(75, 150, 220, 0.1) 0%, transparent 70%);
+        }
+
+        #podcasts {
+            background: radial-gradient(ellipse at center, rgba(245, 57, 105, 0.1) 0%, transparent 70%);
+        }
+
+        h1 {
+            font-size: 5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, var(--gem-impossible) 50%, var(--gem-shift) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% 200%;
+            animation: gradientShift 4s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        p {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .nav-more {
+                display: none;
+            }
+            
+            .nav-hamburger {
+                display: flex;
+            }
+            
+            h1 {
+                font-size: 3rem;
+            }
+            
+            .nav-inner {
+                padding: 0 16px;
+            }
+            
+            .nav-cta,
+            .nav-cta-secondary {
+                padding: 8px 16px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Fixed Header Container -->
+    <div class="header-container">
+        <!-- Award-Winning Navigation Bar with Ultimate Features -->
+        <nav class="nav-container">
+            <!-- Edge Mount Indicators -->
+            <div class="nav-edge left-edge"></div>
+            <div class="nav-edge right-edge"></div>
+
+            <!-- Advanced Metallic Screws with Wrappers -->
+            <div class="nav-screws">
+                <div class="screw-wrapper screw-wrapper-top-left">
+                    <div class="screw">
+                        <div class="screw-jewel"></div>
+                    </div>
+                </div>
+                <div class="screw-wrapper screw-wrapper-top-right">
+                    <div class="screw">
+                        <div class="screw-jewel"></div>
+                    </div>
+                </div>
+                <div class="screw-wrapper screw-wrapper-bot-left">
+                    <div class="screw">
+                        <div class="screw-jewel"></div>
+                    </div>
+                </div>
+                <div class="screw-wrapper screw-wrapper-bot-right">
+                    <div class="screw">
+                        <div class="screw-jewel"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-inner">
+                <!-- Identity -->
+                <div class="nav-logo">
+                    <div class="nav-logo-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                            <defs>
+                                <linearGradient id="sphereGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#9f58fa" />
+                                    <stop offset="100%" stop-color="#4B96DC" />
+                                </linearGradient>
+                                <radialGradient id="jewelGradient" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" stop-color="#fff" stop-opacity="1" />
+                                    <stop offset="30%" stop-color="#ff00ff" stop-opacity="1" />
+                                    <stop offset="60%" stop-color="#00ffff" stop-opacity="1" />
+                                    <stop offset="100%" stop-color="#ff00aa" stop-opacity="0.9" />
+                                </radialGradient>
+                                <filter id="glowTrail">
+                                    <feGaussianBlur in="SourceGraphic" stdDeviation="0.6" result="blur" />
+                                    <feMerge>
+                                        <feMergeNode in="blur"/>
+                                        <feMergeNode in="SourceGraphic"/>
+                                    </feMerge>
+                                </filter>
+                            </defs>
+                            <circle cx="16" cy="16" r="12" fill="none" stroke="url(#sphereGradient)" stroke-width="2" opacity="0.8" />
+                            <circle cx="16" cy="16" r="8" fill="none" stroke="url(#sphereGradient)" stroke-width="1.5" opacity="0.5" />
+                            <circle cx="16" cy="16" r="3" fill="url(#jewelGradient)">
+                                <animate attributeName="r" values="3;4;3" dur="2s" repeatCount="indefinite"/>
+                                <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite"/>
+                            </circle>
+                            <circle cx="16" cy="4" r="1.5" fill="#9f58fa" filter="url(#glowTrail)">
+                                <animateTransform attributeName="transform" type="rotate" from="0 16 16" to="360 16 16" dur="6s" repeatCount="indefinite"/>
+                            </circle>
+                            <circle cx="28" cy="16" r="1.5" fill="#4B96DC" filter="url(#glowTrail)">
+                                <animateTransform attributeName="transform" type="rotate" from="0 16 16" to="360 16 16" dur="8s" repeatCount="indefinite"/>
+                            </circle>
+                            <circle cx="16" cy="28" r="1.5" fill="#4bd48e" filter="url(#glowTrail)">
+                                <animateTransform attributeName="transform" type="rotate" from="0 16 16" to="360 16 16" dur="10s" repeatCount="indefinite"/>
+                            </circle>
+                        </svg>
+                    </div>
+                    <span class="nav-logo-text">RepSpheres</span>
+                </div>
+
+                <!-- Navigation Links -->
+                <nav class="nav-links">
+                    <a href="#market-data" class="nav-link">
+                        <span class="nav-link-icon icon-market"></span>
+                        <span>Market Data</span>
+                    </a>
+                    <a href="#canvas" class="nav-link">
+                        <span class="nav-link-icon icon-canvas"></span>
+                        <span>Canvas</span>
+                    </a>
+                    <a href="#pipeline" class="nav-link">
+                        <span class="nav-link-icon icon-pipeline"></span>
+                        <span>Pipeline</span>
+                    </a>
+                    <a href="#sphere-os" class="nav-link">
+                        <span class="nav-link-icon icon-sphere"></span>
+                        <span>Sphere oS</span>
+                    </a>
+                    <a href="#podcasts" class="nav-link">
+                        <span class="nav-link-icon icon-podcasts"></span>
+                        <span>Podcasts</span>
+                    </a>
+                </nav>
+
+                <!-- Right Actions -->
+                <div class="nav-actions">
+                    <a href="#login" class="nav-cta-secondary">Login</a>
+                    <a href="#signup" class="nav-cta">Sign Up</a>
+                    <button class="nav-more" aria-label="More options">
+                        <div class="nav-more-icon">
+                            <span class="nav-more-dot"></span>
+                            <span class="nav-more-dot"></span>
+                            <span class="nav-more-dot"></span>
+                        </div>
+                    </button>
+                    <button class="nav-hamburger" id="hamburgerMenu" aria-label="Toggle menu">
+                        <div class="hamburger-icon">
+                            <span class="hamburger-line"></span>
+                            <span class="hamburger-line"></span>
+                            <span class="hamburger-line"></span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- PATCHED TELEMETRY SYSTEM -->
+        <div class="telemetry-container">
+            <div class="telemetry-rail-system">
+                <div class="telemetry-rail-wrapper unified">
+                    <div class="telemetry-node left"></div>
+                    <div class="telemetry-status-inline" id="telemetryStatus">⏱ AI SYNC 97%</div>
+                    <div class="telemetry-node right"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay">
+        <div class="mobile-menu">
+            <nav class="mobile-menu-links">
+                <a href="#market-data" class="mobile-menu-link">
+                    <span class="nav-link-icon icon-market"></span>
+                    <span>Market Data</span>
+                </a>
+                <a href="#canvas" class="mobile-menu-link">
+                    <span class="nav-link-icon icon-canvas"></span>
+                    <span>Canvas</span>
+                </a>
+                <a href="#pipeline" class="mobile-menu-link">
+                    <span class="nav-link-icon icon-pipeline"></span>
+                    <span>Pipeline</span>
+                </a>
+                <a href="#sphere-os" class="mobile-menu-link">
+                    <span class="nav-link-icon icon-sphere"></span>
+                    <span>Sphere oS</span>
+                </a>
+                <a href="#podcasts" class="mobile-menu-link">
+                    <span class="nav-link-icon icon-podcasts"></span>
+                    <span>Podcasts</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero section">
+        <div>
+            <h1>RepSpheres</h1>
+            <p>Inline Telemetry System</p>
+            <p style="color: var(--text-muted); font-size: 1rem;">
+                🔧 Status between nodes • 🌌 Responsive scaling • ✨ Unified telemetry
+            </p>
+        </div>
+    </section>
+
+    <!-- Market Data Section -->
+    <section id="market-data" class="section">
+        <div>
+            <h1>Market Data</h1>
+            <p>Real-time insights and analytics</p>
+        </div>
+    </section>
+
+    <!-- Canvas Section -->
+    <section id="canvas" class="section">
+        <div>
+            <h1>Canvas</h1>
+            <p>Creative workspace for your ideas</p>
+        </div>
+    </section>
+
+    <!-- Pipeline Section -->
+    <section id="pipeline" class="section">
+        <div>
+            <h1>Pipeline</h1>
+            <p>Streamlined workflow automation</p>
+        </div>
+    </section>
+
+    <!-- Sphere OS Section -->
+    <section id="sphere-os" class="section">
+        <div>
+            <h1>Sphere oS</h1>
+            <p>Advanced operating system for sales</p>
+        </div>
+    </section>
+
+    <!-- Podcasts Section -->
+    <section id="podcasts" class="section">
+        <div>
+            <h1>Podcasts</h1>
+            <p>Listen to industry insights and interviews</p>
+        </div>
+    </section>
+
+    <script>
+        // Parallax scroll effect
+        window.addEventListener('scroll', () => {
+            const offset = window.scrollY * 0.05;
+            document.documentElement.style.setProperty('--scroll-offset', `${offset}px`);
+            
+            // Floating bezel
+            const headerContainer = document.querySelector('.header-container');
+            headerContainer.classList.toggle('scrolled', window.scrollY > 50);
+            
+            // Update theme colors
+            updateThemeColors();
+        });
+
+        // Dynamic color theme based on scroll position
+        function updateThemeColors() {
+            const y = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const body = document.body;
+            const root = document.documentElement;
+            
+            // Calculate which section we're in
+            const section = Math.floor(y / windowHeight);
+            
+            // Define color themes for each section
+            const themes = [
+                { impossible: '255, 0, 255', shift: '0, 255, 255', deep: '255, 0, 170' }, // Hero - Magenta/Cyan
+                { impossible: '77, 212, 142', shift: '255, 170, 0', deep: '0, 255, 136' }, // Market - Green/Orange
+                { impossible: '255, 107, 53', shift: '255, 204, 224', deep: '245, 57, 105' }, // Canvas - Orange/Pink
+                { impossible: '255, 107, 53', shift: '255, 170, 0', deep: '255, 0, 170' }, // Pipeline - Orange/Yellow
+                { impossible: '75, 150, 220', shift: '159, 88, 250', deep: '0, 212, 255' }, // Sphere OS - Blue/Purple
+                { impossible: '245, 57, 105', shift: '255, 0, 255', deep: '159, 88, 250' }  // Podcasts - Pink/Magenta
+            ];
+            
+            const currentTheme = themes[Math.min(section, themes.length - 1)];
+            
+            // Update CSS variables
+            root.style.setProperty('--gem-impossible', `rgb(${currentTheme.impossible})`);
+            root.style.setProperty('--gem-shift', `rgb(${currentTheme.shift})`);
+            root.style.setProperty('--gem-deep', `rgb(${currentTheme.deep})`);
+            
+            // For rgba() usage in CSS
+            body.style.setProperty('--gem-impossible', currentTheme.impossible);
+            body.style.setProperty('--gem-shift', currentTheme.shift);
+            body.style.setProperty('--gem-deep', currentTheme.deep);
+        }
+
+        // Initial theme update
+        updateThemeColors();
+
+
+        // Lock-in click effect on nav links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Visual feedback for click
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 100);
+            });
+        });
+
+        // Smooth scroll and active nav update
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        // Hamburger Menu Toggle
+        const hamburgerMenu = document.getElementById('hamburgerMenu');
+        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+        const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
+        
+        if (hamburgerMenu && mobileMenuOverlay) {
+            hamburgerMenu.addEventListener('click', function() {
+                this.classList.toggle('active');
+                mobileMenuOverlay.classList.toggle('active');
+                document.body.style.overflow = mobileMenuOverlay.classList.contains('active') ? 'hidden' : '';
+            });
+            
+            // Close menu when clicking overlay
+            mobileMenuOverlay.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    hamburgerMenu.classList.remove('active');
+                    this.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+            
+            // Close menu when clicking a link
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    hamburgerMenu.classList.remove('active');
+                    mobileMenuOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
+        }
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId && targetId !== '#') {
+                    const target = document.querySelector(targetId);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        // Update active nav on scroll
+        function updateActiveNav() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveNav);
+        updateActiveNav(); // Initial call
+
+        // Dynamic Status Updates
+        const statusMessages = [
+            '⏱ AI SYNC 97%',
+            '🔗 NEURAL LINK ACTIVE',
+            '⚡ QUANTUM CORE 100%',
+            '📊 DATA STREAM LIVE',
+            '🛡️ SECURITY OPTIMAL',
+            '🌐 NETWORK STABLE',
+            '💎 GEMS ALIGNED',
+            '🔮 PREDICTION MODE'
+        ];
+
+        let statusIndex = 0;
+        const statusElement = document.getElementById('telemetryStatus');
+        
+        if (statusElement) {
+            setInterval(() => {
+                statusIndex = (statusIndex + 1) % statusMessages.length;
+                statusElement.style.opacity = '0';
+                
+                setTimeout(() => {
+                    statusElement.textContent = statusMessages[statusIndex];
+                    statusElement.style.opacity = '';
+                }, 300);
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

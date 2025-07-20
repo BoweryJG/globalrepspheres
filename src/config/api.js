@@ -34,6 +34,9 @@ export const API_ENDPOINTS = {
   EMAIL_STATS: `${BACKEND_URL}/api/emails/stats`,
   EMAIL_ALIASES: `${BACKEND_URL}/api/emails/aliases`,
   
+  // Pricing endpoints
+  PRICING_TIERS: `${BACKEND_URL}/api/pricing/tiers`,
+  
   // Contact form endpoints
   ENTERPRISE_INQUIRY: `${BACKEND_URL}/api/enterprise-inquiry`,
   ELITE_APPLICATION: `${BACKEND_URL}/api/elite-application`,

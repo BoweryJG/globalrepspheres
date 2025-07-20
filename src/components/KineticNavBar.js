@@ -184,19 +184,19 @@ const KineticNavBar = () => {
 
           {/* Navigation Links */}
           <nav className="nav-links">
-            <a href="#market-data" className="nav-link">
+            <a href="https://marketdata.repspheres.com/" className="nav-link">
               <span className="nav-link-icon icon-market"></span>
               <span>Market Data</span>
             </a>
-            <a href="#canvas" className="nav-link">
+            <a href="https://canvas.repspheres.com/" className="nav-link">
               <span className="nav-link-icon icon-canvas"></span>
               <span>Canvas</span>
             </a>
-            <a href="#repconnect" className="nav-link">
+            <a href="https://repconnect.repspheres.com/" className="nav-link">
               <span className="nav-link-icon icon-sphere"></span>
               <span>RepConnect</span>
             </a>
-            <a href="#crm" className="nav-link">
+            <a href="https://crm.repspheres.com/" className="nav-link">
               <span className="nav-link-icon icon-podcasts"></span>
               <span>CRM</span>
             </a>
@@ -204,11 +204,11 @@ const KineticNavBar = () => {
 
           {/* Right Actions */}
           <div className="nav-actions">
+            <button className="nav-login-button">
+              Login
+            </button>
             <button className="primary-button nav-primary-button">
-              <svg width="18" height="18" viewBox="0 0 48 48" fill="none">
-                <use href="#regulatory-window"/>
-              </svg>
-              SECURE MY TERRITORY
+              Sign Up
             </button>
             <button className="nav-more" aria-label="More options">
               <div className="nav-more-icon">

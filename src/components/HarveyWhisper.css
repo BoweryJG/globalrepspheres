@@ -1,0 +1,386 @@
+/* Harvey Whisper Binaural Helix Visualization */
+:root {
+  --whisper-gold: #FFD700;
+  --whisper-purple: #9333EA;
+  --whisper-blue: #3B82F6;
+  --whisper-white: #FFFFFF;
+  --whisper-shadow: rgba(255, 215, 0, 0.3);
+}
+
+.harvey-whisper-container {
+  position: relative;
+  width: 100%;
+  height: 700px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: 
+    radial-gradient(circle at center, 
+      rgba(0, 212, 255, 0.15) 0%, 
+      rgba(0, 255, 255, 0.08) 30%,
+      rgba(10, 10, 10, 0.95) 70%),
+    conic-gradient(
+      from 0deg at center,
+      transparent,
+      rgba(0, 212, 255, 0.1),
+      transparent,
+      rgba(0, 255, 255, 0.1),
+      transparent
+    );
+  animation: background-rotate 20s linear infinite;
+}
+
+@keyframes background-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* 3D Helix Structure */
+.binaural-helix {
+  position: relative;
+  width: 500px;
+  height: 600px;
+  transform-style: preserve-3d;
+  perspective: 1200px;
+  perspective-origin: center center;
+  filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.3));
+  animation: helix-float 6s ease-in-out infinite;
+}
+
+@keyframes helix-float {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-20px) scale(1.05); }
+}
+
+.helix-wrapper {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: rotate-helix 8s linear infinite;
+}
+
+.helix-strand {
+  position: absolute;
+  width: 4px;
+  height: 100%;
+  left: 50%;
+  top: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--whisper-gold) 15%,
+    rgba(255, 255, 255, 0.9) 25%,
+    var(--whisper-gold) 50%,
+    rgba(255, 255, 255, 0.9) 75%,
+    var(--whisper-gold) 85%,
+    transparent 100%
+  );
+  transform-origin: 50% 50%;
+  transform: 
+    rotateY(calc(var(--n) * 10deg))
+    translateZ(120px)
+    rotateX(calc(var(--n) * 3deg));
+  opacity: 0.9;
+  box-shadow: 
+    0 0 20px var(--whisper-gold),
+    0 0 40px rgba(255, 215, 0, 0.5),
+    inset 0 0 10px rgba(255, 255, 255, 0.5);
+  filter: brightness(1.2);
+}
+
+/* Create double helix effect */
+.helix-strand:nth-child(odd) {
+  transform: 
+    rotateY(calc(var(--n) * 10deg))
+    translateZ(80px)
+    rotateX(calc(var(--n) * 3deg))
+    rotateZ(180deg);
+}
+
+.helix-strand:nth-child(even) {
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--whisper-purple) 20%,
+    var(--whisper-blue) 50%,
+    var(--whisper-purple) 80%,
+    transparent 100%
+  );
+}
+
+@keyframes rotate-helix {
+  from {
+    transform: rotateY(0deg) rotateX(0deg);
+  }
+  to {
+    transform: rotateY(360deg) rotateX(360deg);
+  }
+}
+
+/* Particle System */
+.particle-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.whisper-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  left: 50%;
+  top: -20px;
+  background: radial-gradient(circle, var(--whisper-gold), transparent);
+  border-radius: 50%;
+  transform: translateX(-50%);
+  animation: 
+    flow-through-helix var(--particle-duration, 3s) ease-in-out infinite,
+    particle-glow 0.5s ease-in-out infinite alternate;
+  animation-delay: var(--particle-delay, 0s);
+  box-shadow: 0 0 6px var(--whisper-gold);
+}
+
+@keyframes flow-through-helix {
+  0% {
+    transform: 
+      translateX(calc(-50% + var(--particle-offset, 0px)))
+      translateY(-50px) 
+      scale(0)
+      rotateZ(var(--particle-rotation, 0deg));
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+    transform: 
+      translateX(calc(-50% + var(--particle-offset, 0px)))
+      translateY(-20px) 
+      scale(0.5)
+      rotateZ(calc(var(--particle-rotation, 0deg) + 36deg));
+  }
+  50% {
+    opacity: 1;
+    transform: 
+      translateX(calc(-50% + var(--particle-offset, 0px) * 2))
+      translateY(200px) 
+      scale(1.5)
+      rotateZ(calc(var(--particle-rotation, 0deg) + 180deg));
+  }
+  90% {
+    opacity: 1;
+    transform: 
+      translateX(calc(-50% + var(--particle-offset, 0px) * 0.5))
+      translateY(400px) 
+      scale(0.8)
+      rotateZ(calc(var(--particle-rotation, 0deg) + 324deg));
+  }
+  100% {
+    opacity: 0;
+    transform: 
+      translateX(calc(-50% + var(--particle-offset, 0px)))
+      translateY(450px) 
+      scale(0)
+      rotateZ(calc(var(--particle-rotation, 0deg) + 360deg));
+  }
+}
+
+@keyframes particle-glow {
+  0% {
+    box-shadow: 0 0 4px var(--whisper-gold);
+  }
+  100% {
+    box-shadow: 0 0 8px var(--whisper-gold), 0 0 12px var(--whisper-gold);
+  }
+}
+
+/* Whisper Text Materialization */
+.whisper-text-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.whisper-text {
+  position: absolute;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--whisper-white);
+  text-align: center;
+  text-shadow: 
+    0 0 20px var(--whisper-gold),
+    0 0 40px rgba(255, 215, 0, 0.5),
+    0 0 60px rgba(255, 255, 255, 0.3);
+  opacity: 0;
+  filter: blur(10px);
+  transform: translateZ(50px) rotateY(90deg) scale(0.8);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.whisper-text.active {
+  opacity: 1;
+  filter: blur(0) drop-shadow(0 0 20px var(--whisper-gold));
+  transform: translateZ(0) rotateY(0) scale(1);
+  animation: materialize-whisper 2s ease-out;
+}
+
+@keyframes materialize-whisper {
+  0% {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateZ(50px) rotateY(90deg);
+    letter-spacing: 10px;
+  }
+  50% {
+    opacity: 0.7;
+    filter: blur(2px);
+    transform: translateZ(25px) rotateY(45deg);
+    letter-spacing: 4px;
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateZ(0) rotateY(0);
+    letter-spacing: 2px;
+  }
+}
+
+/* Helix Glow Effect */
+.helix-glow {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, 
+    rgba(255, 215, 0, 0.1) 0%, 
+    rgba(147, 51, 234, 0.05) 50%, 
+    transparent 100%);
+  border-radius: 50%;
+  animation: pulse-glow 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .harvey-whisper-container {
+    height: 300px;
+  }
+  
+  .binaural-helix {
+    width: 200px;
+    height: 250px;
+    perspective: 600px;
+  }
+  
+  .helix-strand {
+    transform: 
+      rotateY(calc(var(--n) * 10deg))
+      translateZ(50px)
+      rotateX(calc(var(--n) * 3deg));
+  }
+  
+  .helix-strand:nth-child(odd) {
+    transform: 
+      rotateY(calc(var(--n) * 10deg))
+      translateZ(50px)
+      rotateX(calc(var(--n) * 3deg))
+      rotateZ(180deg);
+  }
+  
+  .whisper-text {
+    font-size: 14px;
+  }
+  
+  .helix-glow {
+    width: 150px;
+    height: 150px;
+  }
+  
+  /* Reduce particle count for mobile */
+  .whisper-particle:nth-child(n+15) {
+    display: none;
+  }
+}
+
+/* Performance optimizations for low-end devices */
+@media (max-width: 480px) and (max-resolution: 2dppx) {
+  .helix-wrapper {
+    animation-duration: 12s;
+  }
+  
+  .whisper-particle {
+    animation-duration: 4s;
+  }
+  
+  .helix-strand {
+    opacity: 0.5;
+    box-shadow: none;
+  }
+  
+  .whisper-particle:nth-child(n+10) {
+    display: none;
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .helix-wrapper {
+    animation: none;
+    transform: rotateY(45deg) rotateX(10deg);
+  }
+  
+  .whisper-particle {
+    animation: particle-glow 2s ease-in-out infinite alternate;
+  }
+  
+  .helix-glow {
+    animation: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .helix-strand {
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      #FFFFFF 20%,
+      #FFFF00 50%,
+      #FFFFFF 80%,
+      transparent 100%
+    );
+  }
+  
+  .whisper-text {
+    color: #FFFFFF;
+    text-shadow: 0 0 4px #000000;
+  }
+  
+  .whisper-particle {
+    background: radial-gradient(circle, #FFFF00, transparent);
+    box-shadow: 0 0 6px #FFFF00;
+  }
+}

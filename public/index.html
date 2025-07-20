@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="%PUBLIC_URL%/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="%PUBLIC_URL%/favicon-16x16.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/favicon-16x16.png" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
@@ -14,7 +14,12 @@
     />
     
     <!-- Apple Touch Icon -->
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/favicon.svg" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/favicon-16x16.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/favicon-16x16.svg" />
+    <link rel="apple-touch-icon-precomposed" href="%PUBLIC_URL%/favicon-16x16.svg" />
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -35,6 +40,7 @@
     
     <!-- iOS specific -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="RepSpheres" />
     <!--
@@ -69,6 +75,71 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    
+    <!-- Enhanced SVG Icon Definitions -->
+    <svg style="display: none;">
+      <defs>
+        <!-- Gradient Definitions -->
+        <linearGradient id="gradient-purple-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#9f58fa;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#4B96DC;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="gradient-green-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#4bd48e;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#00d4ff;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="gradient-orange-yellow" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#ff6b35;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#ffd93d;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="gradient-pink-purple" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#f53969;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#9f58fa;stop-opacity:1" />
+        </linearGradient>
+
+        <!-- Enhanced Social Intelligence Icon -->
+        <symbol id="social-intelligence" viewBox="0 0 48 48">
+          <circle cx="24" cy="12" r="8" stroke="url(#gradient-purple-blue)" stroke-width="1.5" fill="none"/>
+          <path d="M36 36c0-6.627-5.373-12-12-12s-12 5.373-12 12" stroke="url(#gradient-purple-blue)" stroke-width="1.5" fill="none"/>
+          <circle cx="40" cy="16" r="4" stroke="url(#gradient-purple-blue)" stroke-width="1.5" fill="none"/>
+          <circle cx="8" cy="16" r="4" stroke="url(#gradient-purple-blue)" stroke-width="1.5" fill="none"/>
+          <path d="M32 12l6 3M16 12l-6 3" stroke="url(#gradient-purple-blue)" stroke-width="1.5" opacity="0.7"/>
+          <path d="M24 20v-8M18 10l6-6 6 6" stroke="url(#gradient-purple-blue)" stroke-width="1.5" fill="none" opacity="0.5"/>
+          <circle cx="24" cy="12" r="2" fill="url(#gradient-purple-blue)"/>
+        </symbol>
+
+        <!-- Enhanced Practice Scanner Icon -->
+        <symbol id="practice-scanner" viewBox="0 0 48 48">
+          <rect x="8" y="8" width="32" height="32" rx="4" stroke="url(#gradient-green-cyan)" stroke-width="1.5" fill="none"/>
+          <path d="M8 16h32M16 8v8M32 8v8" stroke="url(#gradient-green-cyan)" stroke-width="1.5" opacity="0.7"/>
+          <path d="M16 24h16M16 32h8" stroke="url(#gradient-green-cyan)" stroke-width="1.5"/>
+          <circle cx="36" cy="36" r="8" fill="#4bd48e"/>
+          <path d="M36 32v8M32 36h8" stroke="white" stroke-width="2"/>
+          <rect x="12" y="20" width="24" height="16" rx="2" fill="url(#gradient-green-cyan)" opacity="0.1"/>
+        </symbol>
+
+        <!-- Enhanced Alexis Sterling AI Icon -->
+        <symbol id="alexis-sterling-ai" viewBox="0 0 48 48">
+          <circle cx="24" cy="20" r="12" stroke="url(#gradient-purple-blue)" stroke-width="1.5" fill="none"/>
+          <path d="M24 32v8M16 36h16" stroke="url(#gradient-purple-blue)" stroke-width="1.5"/>
+          <circle cx="19" cy="18" r="2" fill="#9f58fa"/>
+          <circle cx="29" cy="18" r="2" fill="#9f58fa"/>
+          <path d="M19 24c0 2.761 2.239 5 5 5s5-2.239 5-5" stroke="url(#gradient-purple-blue)" stroke-width="1.5"/>
+          <circle cx="24" cy="20" r="10" stroke="url(#gradient-purple-blue)" stroke-width="0.5" fill="none" opacity="0.3"/>
+          <path d="M12 8l4 4M36 8l-4 4M8 20h4M36 20h4" stroke="url(#gradient-purple-blue)" stroke-width="1.5" opacity="0.5"/>
+          <circle cx="24" cy="8" r="2" fill="#4B96DC"/>
+        </symbol>
+
+        <!-- Enhanced AI Deployment Icon -->
+        <symbol id="ai-deployment" viewBox="0 0 48 48">
+          <path d="M24 4l16 8v16l-16 8-16-8V12z" stroke="url(#gradient-orange-yellow)" stroke-width="1.5" fill="none"/>
+          <path d="M24 20v16M8 12l16 8 16-8M16 16v16l8 4 8-4V16" stroke="url(#gradient-orange-yellow)" stroke-width="1.5" opacity="0.7"/>
+          <circle cx="24" cy="20" r="4" fill="url(#gradient-orange-yellow)"/>
+          <circle cx="24" cy="20" r="6" stroke="url(#gradient-orange-yellow)" stroke-width="0.5" fill="none" opacity="0.5"/>
+          <path d="M20 40l4-4 4 4" stroke="url(#gradient-orange-yellow)" stroke-width="2"/>
+        </symbol>
+      </defs>
+    </svg>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

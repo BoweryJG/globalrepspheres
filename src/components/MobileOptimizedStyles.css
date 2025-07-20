@@ -1,0 +1,735 @@
+/* Mobile-First Responsive Design for Lightning Strike Homepage */
+
+/* Hide gutter shadow on mobile */
+@media (max-width: 768px) {
+  body::before {
+    display: none !important;
+  }
+}
+
+/* Base mobile styles */
+.lightning-section {
+  padding: clamp(40px, 8vh, 80px) 20px;
+  margin: 0;
+}
+
+.container {
+  max-width: 100%;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
+/* Interactive Multiplier Mobile Optimization */
+.multiplier-calculator-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.multiplier-vs-divider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+  font-size: 1.5rem;
+  order: 2;
+}
+
+.multiplier-traditional {
+  order: 1;
+}
+
+.multiplier-enhanced {
+  order: 3;
+}
+
+.multiplier-results-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Canvas Intelligence Mobile */
+.canvas-demo-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+}
+
+.canvas-demo-tab {
+  padding: 1rem 1.5rem !important;
+  font-size: 1rem !important;
+  text-align: center;
+}
+
+.canvas-npi-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: stretch;
+}
+
+.canvas-npi-arrow {
+  order: 2;
+  text-align: center;
+  padding: 1rem 0;
+  font-size: 1.5rem;
+  transform: rotate(90deg);
+}
+
+.canvas-npi-input {
+  order: 1;
+}
+
+.canvas-npi-output {
+  order: 3;
+}
+
+.canvas-tones-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.canvas-reports-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+/* CRM Integrations Mobile */
+.crm-integrations-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.crm-integration-card {
+  padding: 1.5rem !important;
+}
+
+/* Conspiracy Section Mobile */
+.conspiracy-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.conspiracy-corporate-logos {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+}
+
+/* Mathematical Proof Mobile */
+.math-proof-comparison {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.math-proof-vs {
+  order: 2;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.math-proof-traditional {
+  order: 1;
+}
+
+.math-proof-enhanced {
+  order: 3;
+}
+
+.math-proof-chart {
+  padding: 2rem 1rem;
+}
+
+.math-proof-bars {
+  gap: 2rem !important;
+}
+
+/* Mathematical Proof Section Mobile Fixes */
+.mathematical-proof-section > div > div:nth-child(3) {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  padding: 2rem 1rem;
+}
+
+.mathematical-proof-section > div > div:nth-child(3) > div:nth-child(1) {
+  order: 1;
+}
+
+.mathematical-proof-section > div > div:nth-child(3) > div:nth-child(2) {
+  order: 2;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.mathematical-proof-section > div > div:nth-child(3) > div:nth-child(3) {
+  order: 3;
+}
+
+/* Empire Opportunity Mobile */
+.empire-examples-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.empire-blueprint-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.empire-comparison {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* Urgency & Scarcity Mobile */
+.urgency-scarcity-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+/* Subscription Tiers Mobile */
+.subscription-tiers-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+/* Timeline Section Mobile */
+.timeline-section {
+  padding: clamp(40px, 8vh, 80px) 15px;
+}
+
+.timeline-step {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.timeline-step .premium-panel {
+  order: 1;
+}
+
+.timeline-step > div:last-child {
+  order: 2;
+  padding: 0 15px;
+}
+
+.digital-display {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+/* General Mobile Typography */
+@media (max-width: 768px) {
+  .lightning-section h1,
+  .lightning-section h2 {
+    font-size: clamp(1.8rem, 6vw, 2.5rem) !important;
+    line-height: 1.2 !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .lightning-section h3 {
+    font-size: clamp(1.3rem, 4vw, 1.8rem) !important;
+    line-height: 1.3 !important;
+  }
+
+  .lightning-section h4 {
+    font-size: clamp(1.1rem, 3vw, 1.4rem) !important;
+  }
+
+  .lightning-section p {
+    font-size: clamp(0.95rem, 2.5vw, 1.1rem) !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Reduce padding and margins on mobile */
+  .lightning-section {
+    padding: clamp(30px, 6vh, 60px) 15px !important;
+    margin-top: clamp(20px, 4vh, 40px) !important;
+  }
+
+  /* Mobile navigation adjustments */
+  .nav-links {
+    display: none;
+  }
+
+  .mobile-menu-button {
+    display: block;
+  }
+
+  /* Mobile multiplier display */
+  .multiplier-display {
+    font-size: clamp(2.5rem, 10vw, 4rem) !important;
+  }
+
+  /* Mobile sliders */
+  input[type="range"] {
+    height: 12px !important;
+    margin: 1rem 0 !important;
+  }
+
+  /* Mobile buttons */
+  button {
+    padding: 1rem 1.5rem !important;
+    font-size: 1rem !important;
+    min-height: 48px; /* Touch target size */
+  }
+
+  /* Mobile form elements */
+  input, select, textarea {
+    min-height: 48px;
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+
+  /* Mobile spacing */
+  .container {
+    padding: 0 10px;
+  }
+
+  /* Mobile-specific animations */
+  .mobile-fade-in {
+    animation: mobileFadeIn 0.6s ease-out;
+  }
+
+  @keyframes mobileFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Mobile Timeline Section */
+  .timeline-section {
+    padding: clamp(30px, 6vh, 60px) 10px !important;
+  }
+
+  .timeline-step {
+    gap: 1.5rem !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .timeline-step .premium-panel {
+    padding: 30px 20px !important;
+  }
+
+  .digital-display {
+    padding: 15px !important;
+    font-size: 0.75rem !important;
+  }
+
+  .digital-display > div {
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+  }
+
+  /* Mobile Timeline Navigation Button */
+  .timeline-section button {
+    padding: 14px 24px !important;
+    font-size: 1rem !important;
+    margin: 40px 0 !important;
+    min-height: 48px !important;
+    border-radius: 8px !important;
+  }
+
+  /* Mathematical Proof Mobile Responsive */
+  .mathematical-proof-section > div > div:nth-child(3) {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+    padding: 2rem 1rem !important;
+  }
+
+  .mathematical-proof-section > div > div:nth-child(3) > div:nth-child(1) {
+    order: 1 !important;
+  }
+
+  .mathematical-proof-section > div > div:nth-child(3) > div:nth-child(2) {
+    order: 2 !important;
+    text-align: center !important;
+    padding: 1rem 0 !important;
+  }
+
+  .mathematical-proof-section > div > div:nth-child(3) > div:nth-child(3) {
+    order: 3 !important;
+  }
+
+  /* Fix chart bars on mobile */
+  .mathematical-proof-section .chart-bar {
+    width: 60px !important;
+    margin: 0 auto !important;
+  }
+
+  /* Mobile mathematical proof chart */
+  .mathematical-proof-section > div > div:nth-child(4) > div:nth-child(2) {
+    flex-direction: column !important;
+    gap: 2rem !important;
+    height: auto !important;
+    padding: 1rem !important;
+  }
+
+  /* Great Divide Mobile Optimization */
+  .great-divide-section {
+    padding: clamp(40px, 8vh, 80px) 15px !important;
+  }
+
+  .great-divide-section .container {
+    padding: 0 10px !important;
+  }
+
+  .divide-container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2rem !important;
+  }
+
+  .divide-side {
+    width: 100% !important;
+    margin-bottom: 2rem !important;
+    padding: 2rem 1rem !important;
+    border-radius: 20px !important;
+  }
+
+  .divider-line {
+    width: 80% !important;
+    height: 4px !important;
+    margin: 2rem auto !important;
+    background: linear-gradient(90deg, transparent, var(--electric-blue), transparent) !important;
+  }
+
+  .stats-container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .stat-item {
+    text-align: center !important;
+    padding: 1rem !important;
+  }
+
+  .side-features {
+    font-size: 0.9rem !important;
+    line-height: 1.4 !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .side-features li {
+    margin-bottom: 0.8rem !important;
+  }
+
+  /* Dimensional Tear Mobile Fixes */
+  .dimensional-tear-container {
+    min-height: 100vh !important;
+    padding: 20px 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .hero-content {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    width: calc(100% - 2rem) !important;
+    max-width: 600px !important;
+    padding: 2rem 1.5rem !important;
+    margin: 1rem !important;
+    border-radius: 28px !important;
+    background: rgba(0, 0, 0, 0.9) !important;
+    backdrop-filter: blur(15px) !important;
+    border: 2px solid rgba(0, 212, 255, 0.4) !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8) !important;
+  }
+
+  .hero-title {
+    font-size: clamp(2rem, 8vw, 3rem) !important;
+    line-height: 1.1 !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1rem, 3vw, 1.2rem) !important;
+    line-height: 1.4 !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .supporting-point {
+    font-size: clamp(0.9rem, 2.5vw, 1rem) !important;
+    line-height: 1.5 !important;
+    margin-bottom: 1.5rem !important;
+    gap: 1rem !important;
+  }
+
+  .supporting-point strong {
+    font-size: clamp(1rem, 3vw, 1.1rem) !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .hero-cta {
+    margin-top: 2rem !important;
+  }
+
+  /* Corner screws mobile optimization */
+  .corner-screw {
+    width: 4px !important;
+    height: 4px !important;
+  }
+
+  .corner-screw.deep {
+    width: 5px !important;
+    height: 5px !important;
+  }
+
+  /* Interactive calculator mobile fixes */
+  .multiplier-calculator-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  .multiplier-enhanced,
+  .multiplier-traditional {
+    padding: 1.5rem 1rem !important;
+  }
+
+  .multiplier-vs-divider {
+    padding: 1rem 0 !important;
+    margin: 1rem 0 !important;
+  }
+
+  /* CRM integrations mobile */
+  .crm-integrations-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  .crm-integration-card {
+    padding: 1.5rem 1rem !important;
+  }
+
+  /* Timeline section mobile */
+  .timeline-section {
+    padding: clamp(30px, 6vh, 60px) 10px !important;
+  }
+
+  .timeline-step {
+    gap: 1.5rem !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .timeline-step .premium-panel {
+    padding: 1.5rem 1rem !important;
+  }
+
+  .digital-display {
+    padding: 1rem !important;
+    font-size: 0.8rem !important;
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .multiplier-calculator-grid {
+    grid-template-columns: 1fr auto 1fr;
+    gap: 2rem;
+  }
+
+  .canvas-npi-grid {
+    grid-template-columns: 1fr auto 1fr;
+    gap: 2rem;
+  }
+
+  .canvas-npi-arrow {
+    transform: none;
+    order: 2;
+  }
+
+  .canvas-tones-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .crm-integrations-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  .empire-examples-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* Desktop optimizations */
+@media (min-width: 1025px) {
+  .multiplier-calculator-grid {
+    grid-template-columns: 1fr auto 1fr;
+    gap: 3rem;
+  }
+
+  .canvas-npi-grid {
+    grid-template-columns: 1fr auto 2fr;
+    gap: 3rem;
+  }
+
+  .canvas-tones-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .crm-integrations-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .empire-examples-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* Extra Small Mobile Optimization (320px - 480px) */
+@media (max-width: 480px) {
+  .dimensional-tear-container {
+    padding: 15px 0 !important;
+    min-height: 100vh !important;
+  }
+
+  .hero-content {
+    padding: 1.5rem 1rem !important;
+    margin: 0.5rem !important;
+    border-radius: 20px !important;
+    width: calc(100% - 1rem) !important;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    border: 2px solid rgba(0, 212, 255, 0.5) !important;
+  }
+
+  .hero-title {
+    font-size: clamp(1.8rem, 7vw, 2.5rem) !important;
+    line-height: 1.2 !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(0.9rem, 2.8vw, 1.1rem) !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .supporting-point {
+    font-size: clamp(0.85rem, 2.2vw, 0.95rem) !important;
+    line-height: 1.4 !important;
+    margin-bottom: 1.2rem !important;
+  }
+
+  .supporting-point strong {
+    font-size: clamp(0.9rem, 2.5vw, 1rem) !important;
+  }
+
+  .great-divide-section {
+    padding: clamp(30px, 5vh, 50px) 10px !important;
+  }
+
+  .divide-side {
+    padding: 1.5rem 0.8rem !important;
+    border-radius: 15px !important;
+  }
+
+  .stats-container {
+    gap: 0.8rem !important;
+  }
+
+  .stat-item {
+    padding: 0.8rem !important;
+  }
+
+  .side-features {
+    font-size: 0.85rem !important;
+    line-height: 1.3 !important;
+  }
+
+  .timeline-section {
+    padding: clamp(20px, 4vh, 40px) 8px !important;
+  }
+
+  .timeline-step .premium-panel {
+    padding: 1.2rem 0.8rem !important;
+  }
+
+  .digital-display {
+    padding: 0.8rem !important;
+    font-size: 0.75rem !important;
+  }
+
+  /* Fix button spacing on very small screens */
+  .timeline-section button {
+    padding: 12px 20px !important;
+    font-size: 0.9rem !important;
+    margin: 30px 0 !important;
+  }
+
+  /* Ensure touch targets are large enough */
+  .corner-screw {
+    width: 3px !important;
+    height: 3px !important;
+  }
+
+  .corner-screw.deep {
+    width: 4px !important;
+    height: 4px !important;
+  }
+}
+
+/* Touch-friendly interactions */
+@media (pointer: coarse) {
+  button, .clickable {
+    min-height: 48px;
+    min-width: 48px;
+  }
+  
+  .slider-thumb {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .icon, .logo {
+    image-rendering: -webkit-optimize-contrast;
+  }
+}
+
+/* Landscape mobile adjustments */
+@media (max-width: 768px) and (orientation: landscape) {
+  .lightning-section {
+    padding: clamp(20px, 4vh, 40px) 15px !important;
+  }
+  
+  .multiplier-display {
+    font-size: clamp(2rem, 8vw, 3rem) !important;
+  }
+}

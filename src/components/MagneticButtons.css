@@ -1,0 +1,466 @@
+/* Magnetic Binary Buttons - Force Field Implementation */
+.magnetic-buttons-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: 60px 20px;
+  background: radial-gradient(circle at 50% 50%, rgba(16, 16, 16, 0.95), rgba(0, 0, 0, 1));
+  --cursor-x: 50%;
+  --cursor-y: 50%;
+  --device-tilt: 0;
+  overflow: hidden;
+}
+
+/* Force Field Visualization */
+.force-field-visualizer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.field-lines {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(ellipse at var(--cursor-x) var(--cursor-y), 
+      transparent 0%, 
+      transparent 40%, 
+      rgba(255, 255, 255, 0.02) 50%, 
+      transparent 60%);
+  animation: field-pulse 2s ease-in-out infinite;
+}
+
+.empire-field {
+  background: 
+    radial-gradient(ellipse at var(--cursor-x) var(--cursor-y), 
+      rgba(255, 215, 0, 0.1) 0%, 
+      rgba(255, 215, 0, 0.03) 30%, 
+      transparent 50%);
+}
+
+.falling-field {
+  background: 
+    radial-gradient(ellipse at var(--cursor-x) var(--cursor-y), 
+      transparent 0%, 
+      transparent 50%, 
+      rgba(255, 68, 68, 0.05) 70%, 
+      transparent 100%);
+}
+
+@keyframes field-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* Button Wrapper */
+.button-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  z-index: 2;
+}
+
+@media (min-width: 768px) {
+  .button-wrapper {
+    flex-direction: row;
+    gap: 80px;
+  }
+}
+
+/* Base Magnetic Button Styles */
+.magnetic-button {
+  position: relative;
+  min-width: 200px;
+  min-height: 60px;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+  overflow: hidden;
+  z-index: 3;
+}
+
+/* Empire Button - Irresistibly Attractive */
+.btn-empire {
+  background: linear-gradient(135deg, 
+    #FFD700 0%, 
+    #FFA500 50%, 
+    #FF8C00 100%
+  );
+  color: #000;
+  box-shadow: 
+    0 4px 15px rgba(255, 215, 0, 0.4),
+    0 0 20px rgba(255, 215, 0, 0.2);
+  
+  --distance: 0;
+  --pull-x: 0;
+  --pull-y: 0;
+  
+  transform: 
+    translateX(calc(var(--pull-x) * 0.2px * var(--distance)))
+    translateY(calc(var(--pull-y) * 0.2px * var(--distance)))
+    scale(calc(1 + var(--distance) * 0.1))
+    rotateX(calc(var(--device-tilt) * 10deg));
+    
+  filter: 
+    brightness(calc(1 + var(--distance) * 0.3))
+    saturate(calc(1 + var(--distance) * 0.5));
+}
+
+.btn-empire:hover,
+.btn-empire.hovering {
+  transform: 
+    translateX(calc(var(--pull-x) * 0.3px * var(--distance)))
+    translateY(calc(var(--pull-y) * 0.3px * var(--distance)))
+    scale(calc(1.05 + var(--distance) * 0.15))
+    rotateX(calc(var(--device-tilt) * 15deg));
+    
+  box-shadow: 
+    0 8px 30px rgba(255, 215, 0, 0.6),
+    0 0 40px rgba(255, 215, 0, 0.4),
+    inset 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+/* Falling Button - Repulsive */
+.btn-falling {
+  background: linear-gradient(135deg, 
+    #666 0%, 
+    #444 50%, 
+    #222 100%
+  );
+  color: #ccc;
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.5),
+    0 0 10px rgba(255, 68, 68, 0.2);
+  
+  --distance: 0;
+  --push-x: 0;
+  --push-y: 0;
+  
+  transform: 
+    translateX(calc(var(--push-x) * 0.3px * var(--distance)))
+    translateY(calc(var(--push-y) * 0.3px * var(--distance)))
+    scale(calc(1 - var(--distance) * 0.2))
+    rotateX(calc(var(--device-tilt) * -10deg));
+    
+  opacity: calc(1 - var(--distance) * 0.3);
+  filter: 
+    brightness(calc(1 - var(--distance) * 0.2))
+    blur(calc(var(--distance) * 2px));
+}
+
+.btn-falling:hover,
+.btn-falling.hovering {
+  transform: 
+    translateX(calc(var(--push-x) * 0.4px * var(--distance)))
+    translateY(calc(var(--push-y) * 0.4px * var(--distance)))
+    scale(calc(0.9 - var(--distance) * 0.3))
+    rotateX(calc(var(--device-tilt) * -15deg));
+    
+  box-shadow: 
+    0 2px 10px rgba(255, 68, 68, 0.3),
+    0 0 20px rgba(255, 68, 68, 0.1);
+}
+
+/* Button Text */
+.button-text {
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Empire Button Particles */
+.attraction-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.attraction-particles .particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle, #FFD700, transparent);
+  border-radius: 50%;
+  animation: 
+    attract-to-center 2s ease-in-out infinite,
+    particle-glow 0.5s ease-in-out infinite alternate;
+  animation-delay: calc(var(--particle-index) * 0.1s);
+}
+
+@keyframes attract-to-center {
+  0% {
+    transform: 
+      translateX(calc(cos(var(--particle-index) * 18deg) * 80px))
+      translateY(calc(sin(var(--particle-index) * 18deg) * 80px))
+      scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: 
+      translateX(calc(cos(var(--particle-index) * 18deg) * 40px))
+      translateY(calc(sin(var(--particle-index) * 18deg) * 40px))
+      scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: 
+      translateX(calc(cos(var(--particle-index) * 18deg) * 10px))
+      translateY(calc(sin(var(--particle-index) * 18deg) * 10px))
+      scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes particle-glow {
+  0% { filter: brightness(1); }
+  100% { filter: brightness(2); }
+}
+
+/* Magnetic Glow Effect */
+.magnetic-glow {
+  position: absolute;
+  inset: -10px;
+  background: radial-gradient(circle, 
+    rgba(255, 215, 0, 0.3) 0%, 
+    rgba(255, 215, 0, 0.1) 50%, 
+    transparent 70%);
+  border-radius: 50%;
+  animation: magnetic-pulse 1.5s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes magnetic-pulse {
+  0%, 100% { 
+    transform: scale(0.8);
+    opacity: 0.3;
+  }
+  50% { 
+    transform: scale(1.2);
+    opacity: 0.6;
+  }
+}
+
+/* Repulsion Field */
+.repulsion-field {
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(circle, 
+    transparent 0%, 
+    transparent 30%, 
+    rgba(255, 68, 68, 0.1) 50%, 
+    rgba(255, 68, 68, 0.05) 70%, 
+    transparent 100%);
+  animation: repulsion-wave 2s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes repulsion-wave {
+  0%, 100% { 
+    transform: scale(1);
+    opacity: 0.2;
+  }
+  50% { 
+    transform: scale(1.5);
+    opacity: 0.1;
+  }
+}
+
+/* Warning Pulse */
+.warning-pulse {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 68, 68, 0.1);
+  border-radius: 8px;
+  animation: warning-flash 3s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes warning-flash {
+  0%, 90%, 100% { opacity: 0; }
+  95% { opacity: 1; }
+}
+
+/* Choice Divider */
+.choice-divider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+}
+
+.or-text {
+  position: relative;
+  color: #666;
+  font-size: 24px;
+  font-weight: 300;
+  z-index: 2;
+}
+
+.choice-divider::before,
+.choice-divider::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 60px;
+  background: linear-gradient(to bottom, 
+    transparent, 
+    rgba(255, 255, 255, 0.2), 
+    transparent);
+  animation: divider-pulse 2s ease-in-out infinite;
+}
+
+.choice-divider::before {
+  transform: rotate(45deg);
+}
+
+.choice-divider::after {
+  transform: rotate(-45deg);
+  animation-delay: 1s;
+}
+
+@keyframes divider-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* Mobile Tilt Indicator */
+.mobile-tilt-indicator {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  text-align: center;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+/* Success Animation */
+.btn-empire.chosen {
+  animation: empire-chosen 0.6s ease-out forwards;
+}
+
+@keyframes empire-chosen {
+  0% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.2);
+    filter: brightness(2) saturate(2);
+    box-shadow: 
+      0 0 50px rgba(255, 215, 0, 0.8),
+      0 0 100px rgba(255, 215, 0, 0.6);
+  }
+  100% {
+    transform: scale(1.1);
+    filter: brightness(1.5) saturate(1.5);
+    box-shadow: 
+      0 0 30px rgba(255, 215, 0, 0.6),
+      0 0 60px rgba(255, 215, 0, 0.4);
+  }
+}
+
+/* Rejection Animation */
+.btn-falling.rejected {
+  animation: falling-rejected 0.6s ease-out forwards;
+}
+
+@keyframes falling-rejected {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0.8) translateY(20px);
+    opacity: 0.3;
+    filter: blur(5px);
+  }
+  100% {
+    transform: scale(0.7) translateY(40px);
+    opacity: 0.1;
+    filter: blur(10px);
+  }
+}
+
+/* Device Orientation Enhancements */
+@media (orientation: portrait) and (max-width: 768px) {
+  .btn-empire {
+    transform: 
+      translateX(calc(var(--pull-x) * 0.2px * var(--distance)))
+      translateY(calc(var(--pull-y) * 0.2px * var(--distance)))
+      scale(calc(1 + var(--distance) * 0.1))
+      rotateX(calc(var(--device-tilt) * 20deg))
+      rotateZ(calc(var(--device-tilt) * 5deg));
+  }
+  
+  .btn-falling {
+    transform: 
+      translateX(calc(var(--push-x) * 0.3px * var(--distance)))
+      translateY(calc(var(--push-y) * 0.3px * var(--distance)))
+      scale(calc(1 - var(--distance) * 0.2))
+      rotateX(calc(var(--device-tilt) * -20deg))
+      rotateZ(calc(var(--device-tilt) * -5deg));
+  }
+}
+
+/* Accessibility and Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .magnetic-button {
+    animation: none;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  
+  .attraction-particles .particle,
+  .magnetic-glow,
+  .repulsion-field,
+  .warning-pulse,
+  .field-lines {
+    animation: none;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .btn-empire {
+    background: #FFD700;
+    color: #000;
+    border: 2px solid #000;
+  }
+  
+  .btn-falling {
+    background: #333;
+    color: #fff;
+    border: 2px solid #fff;
+  }
+}
+
+/* Emergency brake for low-end devices */
+@media (max-width: 768px) and (max-resolution: 2dppx) {
+  .attraction-particles,
+  .magnetic-glow,
+  .repulsion-field,
+  .force-field-visualizer {
+    display: none;
+  }
+  
+  .magnetic-button {
+    transform: none !important;
+    filter: none !important;
+  }
+}
