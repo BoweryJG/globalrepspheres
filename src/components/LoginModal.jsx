@@ -86,8 +86,8 @@ const LoginModal = ({ isOpen, onClose, onGoogleAuth, onFacebookAuth, onEmailAuth
     });
 
     // Screw rotation on hover
-    const screws = modalRef.current.querySelectorAll('.screw');
-    screws.forEach((screw) => {
+    const hoverScrews = modalRef.current.querySelectorAll('.screw');
+    hoverScrews.forEach((screw) => {
       screw.addEventListener('mouseenter', () => {
         gsap.to(screw, {
           duration: 0.4,
