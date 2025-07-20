@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <!-- Revolutionary Neural Lightning Sphere Gradients for Social Media -->
+    <radialGradient id="socialSphereGradient" cx="30%" cy="30%">
+      <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#4B96DC;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2d1b69;stop-opacity:1" />
+    </radialGradient>
+    
+    <!-- Background Gradient -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a0a;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Glow Effects -->
+    <filter id="socialGlow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <filter id="textGlow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGradient)"/>
+  
+  <!-- Neural Lightning Sphere (Large for Social Media) -->
+  <g transform="translate(200, 315)">
+    <circle cx="0" cy="0" r="120" fill="url(#socialSphereGradient)" filter="url(#socialGlow)"/>
+    
+    <!-- AI Neural Lightning Network -->
+    <g stroke="#ffffff" stroke-width="3" fill="none" opacity="0.9">
+      <!-- Central Intelligence Hub -->
+      <circle cx="0" cy="0" r="8" fill="#ffffff" opacity="0.8"/>
+      
+      <!-- Primary Lightning Neural Branches -->
+      <path d="M0 0 L50 -40 L60 -30 L45 -25 L70 -15" stroke-width="4"/>
+      <path d="M0 0 L-40 -50 L-50 -35 L-35 -30 L-60 -20" stroke-width="4"/>
+      <path d="M0 0 L60 50 L50 65 L40 55 L75 70" stroke-width="4"/>
+      <path d="M0 0 L-50 60 L-35 70 L-30 55 L-65 80" stroke-width="4"/>
+      
+      <!-- Secondary Predictive Connections -->
+      <path d="M0 0 L90 0 L85 -8 L85 8" stroke-width="2.5"/>
+      <path d="M0 0 L-90 0 L-85 -8 L-85 8" stroke-width="2.5"/>
+      <path d="M0 0 L0 -90 L-8 -85 L8 -85" stroke-width="2.5"/>
+      <path d="M0 0 L0 90 L-8 85 L8 85" stroke-width="2.5"/>
+      
+      <!-- Neural Processing Nodes -->
+      <circle cx="50" cy="-40" r="4" fill="#ffffff" opacity="0.7"/>
+      <circle cx="-40" cy="-50" r="4" fill="#ffffff" opacity="0.7"/>
+      <circle cx="60" cy="50" r="4" fill="#ffffff" opacity="0.7"/>
+      <circle cx="-50" cy="60" r="4" fill="#ffffff" opacity="0.7"/>
+      <circle cx="90" cy="0" r="4" fill="#ffffff" opacity="0.7"/>
+      <circle cx="-90" cy="0" r="4" fill="#ffffff" opacity="0.7"/>
+      <circle cx="0" cy="-90" r="4" fill="#ffffff" opacity="0.7"/>
+      <circle cx="0" cy="90" r="4" fill="#ffffff" opacity="0.7"/>
+    </g>
+    
+    <!-- Sphere Highlight -->
+    <ellipse cx="-30" cy="-30" rx="25" ry="20" fill="#ffffff" opacity="0.4" transform="rotate(-20 -30 -30)"/>
+  </g>
+  
+  <!-- Text Content -->
+  <g font-family="'Inter', 'Orbitron', sans-serif">
+    <!-- Main Title -->
+    <text x="500" y="200" font-size="72" font-weight="800" fill="#ffffff" filter="url(#textGlow)">
+      RepSpheres
+    </text>
+    
+    <!-- Subtitle -->
+    <text x="500" y="260" font-size="32" font-weight="600" fill="#00d4ff">
+      AI-Powered B2B Sales Platform
+    </text>
+    
+    <!-- Tagline -->
+    <text x="500" y="320" font-size="28" font-weight="400" fill="#ffffff" opacity="0.9">
+      Transform your sales with predictive intelligence
+    </text>
+    
+    <!-- Lightning Accent -->
+    <text x="500" y="420" font-size="24" font-weight="500" fill="#ffd93d">
+      ⚡ While they react, we predict ⚡
+    </text>
+    
+    <!-- URL -->
+    <text x="500" y="480" font-size="20" font-weight="400" fill="#4B96DC" opacity="0.8">
+      repspheres.com
+    </text>
+  </g>
+  
+  <!-- Additional Lightning Accents -->
+  <g stroke="#ffd93d" stroke-width="2" fill="none" opacity="0.6">
+    <path d="M950 100 L980 130 L970 135 L990 150"/>
+    <path d="M1050 400 L1080 430 L1070 435 L1090 450"/>
+    <path d="M100 500 L130 530 L120 535 L140 550"/>
+  </g>
+</svg>
