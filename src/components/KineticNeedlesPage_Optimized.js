@@ -271,20 +271,21 @@ const KineticNeedlesPage_Optimized = () => {
       {/* Authentication Modal */}
       <LoginModal 
         isOpen={showLoginModal}
+        mode={isSignupMode ? 'signup' : 'login'}
         onClose={() => setShowLoginModal(false)}
         onGoogleAuth={async () => {
           // Handle Google auth
-          console.log('Google auth triggered');
+          console.log(`${isSignupMode ? 'Signup' : 'Login'} with Google triggered`);
           setShowLoginModal(false);
         }}
         onFacebookAuth={async () => {
           // Handle Facebook auth  
-          console.log('Facebook auth triggered');
+          console.log(`${isSignupMode ? 'Signup' : 'Login'} with Facebook triggered`);
           setShowLoginModal(false);
         }}
         onEmailAuth={async () => {
           // Handle email auth
-          console.log('Email auth triggered');
+          console.log(`${isSignupMode ? 'Signup' : 'Login'} with Email triggered`);
           setShowLoginModal(false);
         }}
       />
