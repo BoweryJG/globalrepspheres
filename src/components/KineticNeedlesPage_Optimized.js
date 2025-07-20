@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import RepSpheresNavbar from './RepSpheresNavbar';
-import LoginModal from './LoginModal';
+import GlobalAuthModal from './GlobalAuthModal';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import './RepSpheresNavbar.css';
 import DimensionalTear from './DimensionalTear';
@@ -28,9 +28,8 @@ import './MobileOptimizedStyles.css';
 gsap.registerPlugin(ScrollTrigger);
 
 const KineticNeedlesPageContent = () => {
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [isSignupMode, setIsSignupMode] = useState(false);
-  const { user, signInWithGoogle, signInWithFacebook, signOut } = useAuth();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     // Add mobile viewport meta tag if not present
@@ -92,14 +91,8 @@ const KineticNeedlesPageContent = () => {
 
       {/* Navigation Bar */}
       <RepSpheresNavbar 
-        onLogin={() => {
-          setIsSignupMode(false);
-          setShowLoginModal(true);
-        }}
-        onSignup={() => {
-          setIsSignupMode(true);
-          setShowLoginModal(true);
-        }}
+        onLogin={() => setShowAuthModal(true)}
+        onSignup={() => setShowAuthModal(true)}
         onLogout={async () => {
           try {
             await signOut();
@@ -278,32 +271,12 @@ const KineticNeedlesPageContent = () => {
       </section>
 
       {/* Authentication Modal */}
-      <LoginModal 
-        isOpen={showLoginModal}
-        mode={isSignupMode ? 'signup' : 'login'}
-        onClose={() => setShowLoginModal(false)}
-        onGoogleAuth={async () => {
-          try {
-            console.log(`${isSignupMode ? 'Signup' : 'Login'} with Google triggered`);
-            await signInWithGoogle();
-            setShowLoginModal(false);
-          } catch (error) {
-            console.error('Google auth error:', error);
-          }
-        }}
-        onFacebookAuth={async () => {
-          try {
-            console.log(`${isSignupMode ? 'Signup' : 'Login'} with Facebook triggered`);
-            await signInWithFacebook();
-            setShowLoginModal(false);
-          } catch (error) {
-            console.error('Facebook auth error:', error);
-          }
-        }}
-        onEmailAuth={async () => {
-          // Handle email auth (placeholder for now)
-          console.log(`${isSignupMode ? 'Signup' : 'Login'} with Email triggered`);
-          setShowLoginModal(false);
+      <GlobalAuthModal 
+        open={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onSuccess={() => {
+          console.log('Authentication successful');
+          setShowAuthModal(false);
         }}
       />
 
