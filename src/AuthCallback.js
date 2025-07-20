@@ -13,27 +13,35 @@ export default function AuthCallback() {
       try {
         console.log('🔄 Auth callback started, current URL:', window.location.href);
         
-        // Check if we have URL parameters indicating an OAuth callback
+        // Check if we have OAuth response in URL (either query params or hash)
         const urlParams = new URLSearchParams(window.location.search);
+        const hashParams = new URLSearchParams(window.location.hash.substring(1));
         const hasCode = urlParams.has('code');
-        const hasError = urlParams.has('error');
+        const hasAccessToken = hashParams.has('access_token');
+        const hasError = urlParams.has('error') || hashParams.has('error');
         
-        console.log('🔄 URL params check:', { hasCode, hasError, allParams: Object.fromEntries(urlParams) });
+        console.log('🔄 URL params check:', { 
+          hasCode, 
+          hasAccessToken,
+          hasError, 
+          queryParams: Object.fromEntries(urlParams),
+          hashParams: Object.fromEntries(hashParams)
+        });
         
         if (hasError) {
-          console.error('❌ OAuth error in URL:', urlParams.get('error'));
+          console.error('❌ OAuth error in URL:', urlParams.get('error') || hashParams.get('error'));
           navigate('/');
           return;
         }
         
-        if (!hasCode) {
-          console.log('⚠️ No OAuth code found in URL, redirecting home');
+        if (!hasCode && !hasAccessToken) {
+          console.log('⚠️ No OAuth code or access token found in URL, redirecting home');
           navigate('/');
           return;
         }
         
-        // Handle the OAuth callback
-        const { data, error } = await supabase.auth.exchangeCodeForSession(window.location.href);
+        // Handle the OAuth callback - use getSessionFromUrl for hash-based responses
+        const { data, error } = await supabase.auth.getSessionFromUrl({ storeSession: true });
         
         console.log('🔄 Exchange result:', { data, error });
         
