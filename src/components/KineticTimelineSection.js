@@ -42,7 +42,7 @@ const KineticTimelineSection = () => {
             <div className="icon-container" style={{ '--icon-primary': scenario.color, '--icon-secondary': 'var(--cyan-accent)', marginBottom: '30px' }}>
               <div className="custom-icon">
                 <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                  <use href="#ai-surveillance"/>
+                  <use href="#practice-scanner"/>
                 </svg>
               </div>
             </div>
