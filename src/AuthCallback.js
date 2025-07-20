@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { CircularProgress, Box, Typography } from '@mui/material';
 import supabase from './supabase';
 
+console.log('🚀 AuthCallback.js file loaded!');
+
 export default function AuthCallback() {
   const navigate = useNavigate();
 
