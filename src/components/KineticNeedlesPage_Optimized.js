@@ -5,7 +5,7 @@ import RepSpheresNavbar from './RepSpheresNavbar';
 import LoginModal from './LoginModal';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import './RepSpheresNavbar.css';
-import DimensionalTear from './DimensionalTear';
+import MicroHero from './MicroHero';
 import GreatDivide from './GreatDivide';
 import MathematicalProof from './MathematicalProof';
 import HarveyWhisper from './HarveyWhisper';
@@ -116,9 +116,18 @@ const KineticNeedlesPageContent = () => {
         ]}
       />
 
-      {/* 1. THE DIMENSIONAL TEAR - The Second Electricity Moment */}
-      <div id="dimensional-tear" className="lightning-section">
-        <DimensionalTear />
+      {/* 1. MICRO HERO - Psychological Activation Hook */}
+      <div id="micro-hero" className="lightning-section">
+        <MicroHero 
+          onLogin={() => {
+            setIsSignupMode(false);
+            setShowLoginModal(true);
+          }}
+          onSignup={() => {
+            setIsSignupMode(true);
+            setShowLoginModal(true);
+          }}
+        />
       </div>
 
       {/* 2. KINETIC TIMELINE - While They React, We Predict */}

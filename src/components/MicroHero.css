@@ -1,0 +1,321 @@
+/* Micro Hero - Psychological Activation Hook */
+
+.micro-hero {
+  position: relative;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+  padding: clamp(2rem, 8vh, 4rem) 1rem;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(0, 255, 198, 0.1);
+}
+
+/* Subtle Background Element */
+.hero-orb {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(123, 66, 246, 0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: pulse 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    transform: translate(-50%, -50%) scale(1); 
+    opacity: 0.5; 
+  }
+  50% { 
+    transform: translate(-50%, -50%) scale(1.1); 
+    opacity: 0.8; 
+  }
+}
+
+/* Main Content */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 800px;
+  width: 100%;
+}
+
+/* Shock Statistic - Immediate Hook */
+.shock-stat {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: slideUp 0.8s ease-out 0.3s forwards;
+}
+
+.stat-number {
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 900;
+  color: #00ffc6;
+  text-shadow: 0 0 20px rgba(0, 255, 198, 0.5);
+  line-height: 0.9;
+}
+
+.stat-context {
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  color: #fff;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+/* Primary Title - Psychological Hook */
+.hero-title {
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: slideUp 0.8s ease-out 0.6s forwards;
+}
+
+.rep-squared {
+  color: #00ffc6;
+  position: relative;
+  font-weight: 900;
+}
+
+.rep-squared::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #00ffc6, #7B42F6);
+  border-radius: 1px;
+}
+
+/* Secondary Hook */
+.hero-subtitle {
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.5;
+  margin-bottom: 3rem;
+  opacity: 0;
+  animation: slideUp 0.8s ease-out 0.9s forwards;
+}
+
+/* Clean CTAs */
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: slideUp 0.8s ease-out 1.2s forwards;
+}
+
+.cta-primary {
+  background: linear-gradient(135deg, #00ffc6 0%, #7B42F6 100%);
+  color: #fff;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.cta-primary:hover::before {
+  left: 100%;
+}
+
+.cta-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 255, 198, 0.3);
+}
+
+.cta-secondary {
+  background: transparent;
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cta-secondary:hover {
+  border-color: #00ffc6;
+  color: #00ffc6;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 255, 198, 0.1);
+}
+
+/* Urgency Indicator */
+.urgency-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  opacity: 0;
+  animation: slideUp 0.8s ease-out 1.5s forwards;
+}
+
+.urgency-dot {
+  width: 6px;
+  height: 6px;
+  background: #ff4444;
+  border-radius: 50%;
+  animation: glow 2s ease-in-out infinite;
+}
+
+.urgency-text {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+@keyframes glow {
+  0%, 100% { 
+    box-shadow: 0 0 5px #ff4444; 
+    opacity: 1; 
+  }
+  50% { 
+    box-shadow: 0 0 15px #ff4444, 0 0 25px #ff4444; 
+    opacity: 0.7; 
+  }
+}
+
+/* Slide Up Animation */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile Optimization - Prevent Layout Issues */
+@media (max-width: 768px) {
+  .micro-hero {
+    min-height: 70vh;
+    padding: 2rem 1rem;
+    /* Prevent horizontal scroll and layout breaks */
+    width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+  
+  .hero-content {
+    /* Prevent content overflow */
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .hero-actions {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    /* Prevent button overflow */
+    width: 100%;
+    padding: 0 1rem;
+    box-sizing: border-box;
+  }
+  
+  .cta-primary,
+  .cta-secondary {
+    width: 100%;
+    max-width: 280px;
+    /* Prevent button styling issues */
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+  
+  .shock-stat {
+    flex-direction: column;
+    gap: 0.5rem;
+    /* Prevent stat overflow */
+    width: 100%;
+    text-align: center;
+  }
+  
+  .hero-orb {
+    width: 200px;
+    height: 200px;
+  }
+  
+  /* Fix any potential text overflow */
+  .hero-title,
+  .hero-subtitle {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+}
+
+/* Small Mobile - Extra Safety */
+@media (max-width: 480px) {
+  .micro-hero {
+    min-height: 80vh;
+    padding: 1.5rem 0.75rem;
+  }
+  
+  .hero-content {
+    padding: 0 0.5rem;
+    max-width: calc(100vw - 1rem);
+  }
+  
+  .cta-primary,
+  .cta-secondary {
+    max-width: 260px;
+    font-size: 1rem;
+    padding: 0.875rem 1.5rem;
+  }
+}
+
+/* Prevent any modal overlay issues */
+.micro-hero * {
+  box-sizing: border-box;
+}
+
+/* Ensure no elements create horizontal scroll */
+.micro-hero,
+.hero-content,
+.hero-actions,
+.shock-stat {
+  max-width: 100%;
+  overflow-x: hidden;
+}
