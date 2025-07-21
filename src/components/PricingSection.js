@@ -4,123 +4,121 @@ import { Check, Star, Bolt, Phone, TrendingUp, Psychology, Speed, EmojiEvents, R
 import { createCheckoutSession } from '../stripeService';
 import { API_ENDPOINTS } from '../config/api';
 
-// Default tier configuration with icons, UI elements, and copy
+// RepX tier configuration with icons, UI elements, and copy
 const defaultTierConfig = {
-  explorer: {
-    icon: <TrendingUp sx={{ fontSize: 30 }} />,
+  repx1: {
+    icon: <Phone sx={{ fontSize: 30 }} />,
     gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
     popular: false,
-    tagline: 'Your RepX Intelligence Starts Here',
-    description: 'Essential market intelligence that pays for itself with your first qualified lead',
+    tagline: 'Professional Business Foundation',
+    description: 'Essential professional line with 100 calls monthly - perfect for getting started',
     features: [
-      'RepX Market Scanner: Monitor 100+ growth procedures',
-      '10 AI-Powered Conversation Starters monthly',
-      'Weekly Intelligence Briefings before competitors',
-      'Explorer Community Access',
-      'Basic trend insights & procedure tracking',
-      'Mobile RepX app access'
+      '100 professional calls per month',
+      'Basic RepSpheres line features',
+      'Call recording and transcription',
+      'Basic analytics dashboard',
+      'Email support',
+      'Mobile app access'
     ],
     testimonial: {
-      quote: "Three qualified leads in my first week with Explorer RepX. The intel is pure gold.",
-      author: "Jessica M., Zimmer Biomet Rep"
+      quote: "RepX1 gave me the foundation I needed. Professional line that just works.",
+      author: "Sarah M., Medical Device Rep"
     },
-    roi: "One qualified lead = 6 months paid",
-    cta: 'Start Your RepX Journey'
+    roi: "Professional presence from day one",
+    cta: 'Start Professional'
   },
-  professional: {
+  repx2: {
+    icon: <TrendingUp sx={{ fontSize: 30 }} />,
+    gradient: 'linear-gradient(135deg, #00d4ff 0%, #0099cc 100%)',
+    popular: false,
+    tagline: 'Market Intelligence Edge',
+    description: 'Advanced intelligence with 200 calls, 50 daily emails, and market insights',
+    features: [
+      '200 calls per month',
+      '50 emails per day',
+      '10 Canvas market scans daily',
+      'Market intelligence reports',
+      'Competitive analysis',
+      'Priority support'
+    ],
+    testimonial: {
+      quote: "RepX2 market intelligence helped me spot opportunities before my competition.",
+      author: "Mike T., Territory Manager"
+    },
+    roi: "Market insights = competitive advantage",
+    cta: 'Get Intelligence'
+  },
+  repx3: {
     icon: <Psychology sx={{ fontSize: 30 }} />,
     gradient: 'linear-gradient(135deg, #00ffc6 0%, #00d4a8 100%)',
     popular: true,
     savings: 'MOST POPULAR',
-    tagline: 'RepX Professional: Territory Domination',
-    description: 'Advanced RepX intelligence arsenal for crushing quotas and maximizing commission',
+    tagline: 'Territory Command Center',
+    description: 'Advanced command center with 400 calls, 100 daily emails, and territory analytics',
     features: [
-      'Complete RepX Intelligence: 500+ procedures with surgeon insights',
-      '75 AI Conversation Builders worth $15K+ each',
-      '25 RepX Call Analysis sessions revealing win patterns',
-      'Real-time expansion alerts & competitor intelligence',
-      'Executive-level RepX reports on demand',
-      'Priority RepX support & training',
-      'Professional RepX badge + community perks'
+      '400 calls per month',
+      '100 emails per day',
+      '25 Canvas scans daily',
+      'Advanced market analytics',
+      'Territory intelligence reports',
+      'Real-time competitor alerts',
+      'Advanced CRM integration',
+      'Priority phone support'
     ],
     testimonial: {
-      quote: "RepX Professional took me from #15 to #3 in my district. My manager wants to know my secret.",
-      author: "David K., Allergan Sales"
+      quote: "RepX3 Territory Command gave me complete control. I own my territory now.",
+      author: "Jennifer K., Regional Sales Manager"
     },
-    roi: "One mid-size deal = annual subscription covered",
-    cta: 'Claim Your RepX Territory'
+    roi: "Territory dominance through intelligence",
+    cta: 'Command Territory'
   },
-  growth: {
+  repx4: {
     icon: <Speed sx={{ fontSize: 30 }} />,
     gradient: 'linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%)',
     popular: false,
-    tagline: 'RepX Growth: Scale Beyond Limits',
-    description: 'RepX intelligence multiplication system for regional dominance',
+    tagline: 'Executive Operations Hub',
+    description: 'Executive-level operations with 800 calls, 200 daily emails, and workflow automation',
     features: [
-      'UNLIMITED RepX AI Brain Power for brilliant territory insights',
-      '100 Call Transformation sessions into RepX masterclasses',
-      '5 Custom Territory RepX Intelligence Reports monthly',
-      'Team RepX Mode: Share insights with 5 team members',
-      'RepX API Access: Automate your intelligence workflow',
-      'Quarterly RepX Strategy War Room with $10M+ producers',
-      'Growth RepX badge + exclusive mastermind access'
+      '800 calls per month',
+      '200 emails per day',
+      '50 Canvas scans daily',
+      'Workflow automation suite',
+      'Executive reporting dashboard',
+      'Advanced AI coaching',
+      'Team collaboration tools',
+      'Dedicated account manager'
     ],
     testimonial: {
-      quote: "My entire team's RepX-powered close rate went from 22% to 58%. We own our region now.",
-      author: "Marcus T., Regional Manager, Top 3 Device Company"
+      quote: "RepX4 automation freed up 20 hours per week. I focus on closing, AI handles the rest.",
+      author: "David R., VP of Sales"
     },
-    roi: "10% territory growth = 15x RepX ROI",
-    cta: 'Build Your RepX Empire'
+    roi: "Executive efficiency = exponential results",
+    cta: 'Go Executive'
   },
-  enterprise: {
-    icon: <EmojiEvents sx={{ fontSize: 30 }} />,
+  repx5: {
+    icon: <Rocket sx={{ fontSize: 30 }} />,
     gradient: 'linear-gradient(135deg, #7B42F6 0%, #5B32D6 100%)',
     popular: false,
-    savings: 'ENTERPRISE VALUE',
-    tagline: 'RepX Enterprise: Market Command Center',
-    description: 'Complete RepX intelligence platform for market domination at scale',
+    savings: 'ELITE TIER',
+    tagline: 'Elite Global Dominance',
+    description: 'Unlimited everything with dedicated success manager and custom integrations',
     features: [
-      'UNLIMITED RepX Everything: Every insight, every analysis, every opportunity',
-      '10 AI RepX Automation Workflows running 24/7',
-      'Custom RepX AI Training on your proprietary methods',
-      '20-User RepX Command Center access',
-      'White-Label RepX Reports that wow C-suite executives',
-      'Monthly RepX Strategy Summit with enterprise team',
-      'Priority RepX API & custom integrations',
-      'Enterprise RepX badge + dedicated success manager'
+      'UNLIMITED calls, emails, Canvas scans',
+      'Dedicated success manager',
+      'Priority support (response within 1 hour)',
+      'Custom integrations & API access',
+      'White-label reporting',
+      'Advanced team collaboration',
+      'Custom AI model training',
+      'Quarterly strategy sessions',
+      'Elite community access'
     ],
     testimonial: {
-      quote: "RepX Enterprise intelligence helped us capture 78% market share in 6 months. Competitors can't compete.",
-      author: "Sarah L., VP Sales, PE-Backed Medical Device Co."
+      quote: "RepX5 Elite transformed our entire organization. We dominate every market we enter.",
+      author: "Sarah C., Chief Revenue Officer"
     },
-    roi: "15% market share gain = 75x RepX investment",
-    cta: 'Command Your RepX Market'
-  },
-  elite: {
-    icon: <Rocket sx={{ fontSize: 30 }} />,
-    gradient: 'linear-gradient(135deg, #ff006e 0%, #8338ec 100%)',
-    popular: false,
-    highlight: true,
-    savings: 'ULTIMATE REPX',
-    tagline: 'RepX Elite: For Those Who Refuse To Lose',
-    description: 'Your personal RepX special forces unit for unprecedented market dominance',
-    features: [
-      'INFINITE RepX POWER: Every limitation removed permanently',
-      'Personal RepX AI Army trained exclusively on YOUR wins',
-      'Done-For-You RepX reports while you focus on closing',
-      'Dedicated RepX War General (personally closed $100M+)',
-      'Weekly RepX Battle Planning & strategy sessions',
-      'Unlimited team member RepX access',
-      'First access to breakthrough RepX features',
-      'Elite RepX Inner Circle quarterly summits',
-      'Custom RepX everything: AI, reports, strategies, training'
-    ],
-    testimonial: {
-      quote: "My RepX Elite-powered commission jumped from $500K to $1.8M annually. It pays for itself every 8 days.",
-      author: "Jennifer R., National Account Director"
-    },
-    roi: "RepX Elite ROI transcends traditional metrics",
-    cta: 'Join The RepX Elite'
+    roi: "Elite performance transcends metrics",
+    cta: 'Join Elite'
   }
 };
 
@@ -137,7 +135,7 @@ export default function PricingSection() {
     const fetchPricingTiers = async () => {
       try {
         setLoading(true);
-        const response = await fetch(API_ENDPOINTS.PRICING_TIERS);
+        const response = await fetch(API_ENDPOINTS.REPX_PLANS);
         
         if (!response.ok) {
           throw new Error('Failed to fetch pricing data');
@@ -146,17 +144,23 @@ export default function PricingSection() {
         const backendTiers = await response.json();
         
         // Merge backend data with UI configuration
-        const mergedTiers = backendTiers.map(tier => ({
-          ...tier,
-          ...defaultTierConfig[tier.id],
-          // Format prices for display
-          price: `$${tier.price.monthly}`,
-          period: '/month',
-          annualPrice: `$${tier.price.annual.toLocaleString()}`,
-          annualPeriod: '/year',
-          stripeMonthly: tier.stripeIds.monthly,
-          stripeAnnual: tier.stripeIds.annual
-        }));
+        const mergedTiers = backendTiers.map(tier => {
+          const tierKey = tier.id.toLowerCase(); // Ensure lowercase for matching
+          return {
+            ...tier,
+            ...defaultTierConfig[tierKey],
+            // Format prices for display
+            price: `$${tier.price.monthly}`,
+            period: '/month',
+            annualPrice: `$${tier.price.annual.toLocaleString()}`,
+            annualPeriod: '/year',
+            stripeMonthly: tier.stripeIds?.monthly,
+            stripeAnnual: tier.stripeIds?.annual,
+            // Use actual backend data for key fields
+            name: tier.name,
+            features: tier.features || defaultTierConfig[tierKey]?.features || []
+          };
+        });
         
         setPricingTiers(mergedTiers);
         setError(null);

@@ -36,6 +36,7 @@ export const API_ENDPOINTS = {
   
   // Pricing endpoints
   PRICING_TIERS: `${BACKEND_URL}/api/pricing/tiers`,
+  REPX_PLANS: `${BACKEND_URL}/api/stripe/repx/plans`,
   
   // Contact form endpoints
   ENTERPRISE_INQUIRY: `${BACKEND_URL}/api/enterprise-inquiry`,

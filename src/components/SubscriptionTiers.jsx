@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './SubscriptionTiers.css';
+import { API_ENDPOINTS } from '../config/api';
 
 const SubscriptionTiers = () => {
   console.log('💰 SubscriptionTiers rendering...');
@@ -7,130 +8,119 @@ const SubscriptionTiers = () => {
   const [animatedValues, setAnimatedValues] = useState({});
   const [currentIncome, setCurrentIncome] = useState(200000);
   const [isAnnual, setIsAnnual] = useState(false);
+  const [tiers, setTiers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const tiers = [
+  // RepX tier color mapping
+  const tierColorMap = {
+    'repx1': 'archive',
+    'repx2': 'intelligence', 
+    'repx3': 'professional',
+    'repx4': 'elite',
+    'repx5': 'empire'
+  };
+
+  // Fetch tiers from backend API
+  useEffect(() => {
+    const fetchTiers = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(API_ENDPOINTS.REPX_PLANS);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const backendTiers = await response.json();
+        
+        // Transform backend data to match frontend structure
+        const transformedTiers = backendTiers.map((tier, index) => ({
+          id: tier.id.toLowerCase(),
+          name: tier.name,
+          price: isAnnual ? tier.price.annual / 12 : tier.price.monthly,
+          monthlyPrice: tier.price.monthly,
+          annualPrice: tier.price.annual,
+          tagline: tier.tagline || getTierTagline(tier.id),
+          roi: calculateROI(tier.price.monthly, index),
+          features: tier.features || getDefaultFeatures(tier.id),
+          cta: getCTA(tier.id),
+          color: tierColorMap[tier.id.toLowerCase()] || 'professional',
+          popular: tier.id.toLowerCase() === 'repx3' // Mark RepX3 as popular
+        }));
+        
+        setTiers(transformedTiers);
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching RepX plans:', err);
+        setError('Failed to load subscription plans');
+        // Fallback to default tiers if API fails
+        setTiers(getDefaultTiers());
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTiers();
+  }, [isAnnual]);
+
+  // Helper functions for tier data
+  const getTierTagline = (tierId) => {
+    const taglines = {
+      'repx1': 'Professional Foundation',
+      'repx2': 'Market Intelligence Edge', 
+      'repx3': 'Territory Command Center',
+      'repx4': 'Executive Operations Hub',
+      'repx5': 'Elite Global Dominance'
+    };
+    return taglines[tierId.toLowerCase()] || 'RepX Enhancement';
+  };
+
+  const calculateROI = (monthlyPrice, index) => {
+    const roiMultipliers = [3, 12, 20, 15, 25]; // Different ROI for each tier
+    const baseCost = monthlyPrice * 12;
+    const potentialGain = baseCost * roiMultipliers[index];
+    
+    return {
+      gain: potentialGain,
+      cost: baseCost,
+      multiplier: roiMultipliers[index],
+      description: `${roiMultipliers[index]}x ROI potential`
+    };
+  };
+
+  const getDefaultFeatures = (tierId) => {
+    const defaultFeatures = {
+      'repx1': ['100 calls/month', 'Basic professional features', 'Email support'],
+      'repx2': ['200 calls/month', '50 emails/day', '10 Canvas scans/day', 'Market intelligence'],
+      'repx3': ['400 calls/month', '100 emails/day', '25 Canvas scans/day', 'Advanced analytics'],
+      'repx4': ['800 calls/month', '200 emails/day', '50 Canvas scans/day', 'Workflow automation'],
+      'repx5': ['Unlimited calls', 'Unlimited emails', 'Unlimited Canvas scans', 'Dedicated success manager']
+    };
+    return defaultFeatures[tierId.toLowerCase()] || ['Professional features'];
+  };
+
+  const getCTA = (tierId) => {
+    const ctas = {
+      'repx1': 'Start Professional',
+      'repx2': 'Get Intelligence',
+      'repx3': 'Command Territory', 
+      'repx4': 'Go Executive',
+      'repx5': 'Join Elite'
+    };
+    return ctas[tierId.toLowerCase()] || 'Get Started';
+  };
+
+  const getDefaultTiers = () => [
     {
-      id: 'archive',
-      name: 'Archive',
-      price: 19,
-      tagline: 'Your Professional Black Box',
-      roi: null,
-      features: [
-        'RepSpheres phone line',
-        'Full call transcription',
-        'Unlimited storage',
-        'Build your data empire',
-        'Own your career intelligence',
-        'Netflix-price entry point'
-      ],
-      cta: 'Start Your Empire',
+      id: 'repx1',
+      name: 'RepX1 Professional',
+      price: 39,
+      tagline: 'Professional Foundation',
+      roi: { gain: 4680, cost: 468, multiplier: 10, description: '10x ROI potential' },
+      features: ['100 calls/month', 'Basic professional features'],
+      cta: 'Start Professional',
       color: 'archive'
-    },
-    {
-      id: 'intelligence',
-      name: 'Intelligence',
-      price: 149,
-      tagline: '20% More Closes, Guaranteed',
-      roi: {
-        gain: 40000,
-        cost: 1800,
-        multiplier: 22,
-        description: 'Turn $200K into $240K'
-      },
-      features: [
-        'Basic Harvey whispers',
-        'Canvas scans',
-        'Call analytics',
-        'Performance insights',
-        'CRM integration'
-      ],
-      cta: 'Boost Performance',
-      color: 'intelligence'
-    },
-    {
-      id: 'professional',
-      name: 'Professional',
-      price: 399,
-      tagline: 'The $100K Multiplier',
-      roi: {
-        gain: 100000,
-        cost: 4800,
-        multiplier: 21,
-        description: 'Add $100K to your W2'
-      },
-      features: [
-        'Full Harvey AI coaching',
-        'Territory intelligence',
-        'Real-time whisper coaching',
-        'Advanced analytics',
-        'Priority support'
-      ],
-      cta: 'Go Professional',
-      color: 'professional',
-      popular: true
-    },
-    {
-      id: 'elite',
-      name: 'Elite',
-      price: 799,
-      tagline: 'Join The $400K Club',
-      roi: {
-        gain: 150000,
-        cost: 9600,
-        multiplier: 16,
-        description: 'Transform from rep to rainmaker'
-      },
-      features: [
-        'All 4 Harvey personalities',
-        'Unlimited scans',
-        'Custom AI training',
-        'White-glove onboarding',
-        'Executive insights'
-      ],
-      cta: 'Become Elite',
-      color: 'elite'
-    },
-    {
-      id: 'syndicate',
-      name: 'Syndicate',
-      price: 1499,
-      tagline: '5X Force Multiplier',
-      roi: {
-        gain: 400000,
-        cost: 18000,
-        multiplier: 22,
-        description: '5 reps × $80K gain'
-      },
-      features: [
-        '5 user seats',
-        'Shared intelligence',
-        'Team analytics',
-        'Collaborative workspace',
-        'Admin dashboard'
-      ],
-      cta: 'Build Your Team',
-      color: 'syndicate'
-    },
-    {
-      id: 'empire',
-      name: 'Empire',
-      price: 2999,
-      tagline: 'Market Domination Mode',
-      roi: {
-        gain: null,
-        cost: null,
-        multiplier: null,
-        description: 'Own your market, crush competition'
-      },
-      features: [
-        'Unlimited seats',
-        'White-label options',
-        'Custom integrations',
-        'Dedicated success manager',
-        'Market intelligence suite'
-      ],
-      cta: 'Dominate Markets',
-      color: 'empire'
     }
   ];
 
@@ -183,6 +173,36 @@ const SubscriptionTiers = () => {
       newIncome: currentIncome + adjustedGain
     };
   };
+
+  // Loading state
+  if (loading) {
+    return (
+      <section className="section-container subscription-tiers">
+        <div className="tiers-header">
+          <h2 className="section-title">Loading RepX Plans...</h2>
+          <div className="loading-spinner"></div>
+        </div>
+      </section>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <section className="section-container subscription-tiers">
+        <div className="tiers-header">
+          <h2 className="section-title">RepX Plans</h2>
+          <p className="error-message">{error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="retry-button"
+          >
+            Retry
+          </button>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="section-container subscription-tiers">
