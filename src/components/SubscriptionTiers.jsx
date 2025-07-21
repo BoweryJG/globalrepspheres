@@ -42,7 +42,12 @@ const SubscriptionTiers = () => {
           monthlyPrice: tier.price.monthly,
           annualPrice: tier.price.annual,
           tagline: tier.tagline || getTierTagline(tier.id),
-          roi: calculateROI(tier.price.monthly, index),
+          roi: {
+            gain: tier.price.monthly * 12 * (10 + index * 5), // Simple ROI calculation
+            cost: tier.price.monthly * 12,
+            multiplier: 10 + index * 5,
+            description: `${10 + index * 5}x ROI potential`
+          },
           features: tier.features || getDefaultFeatures(tier.id),
           cta: getCTA(tier.id),
           color: tierColorMap[tier.id.toLowerCase()] || 'professional',
@@ -76,18 +81,6 @@ const SubscriptionTiers = () => {
     return taglines[tierId.toLowerCase()] || 'RepX Enhancement';
   };
 
-  const calculateROI = (monthlyPrice, index) => {
-    const roiMultipliers = [3, 12, 20, 15, 25]; // Different ROI for each tier
-    const baseCost = monthlyPrice * 12;
-    const potentialGain = baseCost * roiMultipliers[index];
-    
-    return {
-      gain: potentialGain,
-      cost: baseCost,
-      multiplier: roiMultipliers[index],
-      description: `${roiMultipliers[index]}x ROI potential`
-    };
-  };
 
   const getDefaultFeatures = (tierId) => {
     const defaultFeatures = {
