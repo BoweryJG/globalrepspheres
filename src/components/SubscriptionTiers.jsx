@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './SubscriptionTiers.css';
 import { API_ENDPOINTS } from '../config/api';
+import CartierRepXTitle from './CartierRepXTitle';
 
 const SubscriptionTiers = () => {
   console.log('💰 SubscriptionTiers rendering...');
@@ -294,7 +295,15 @@ const SubscriptionTiers = () => {
             )}
 
             <div className="tier-header">
-              <h3 className="tier-name">{tier.name}</h3>
+              <h3 className="tier-name">
+                <CartierRepXTitle 
+                  tierName={tier.name}
+                  size="medium"
+                  variant={tier.popular ? "gold" : "default"}
+                  premium={tier.popular}
+                  animated={tier.popular}
+                />
+              </h3>
               <div className="tier-price">
                 <span className="currency">$</span>
                 <span className="amount">{tier.price}</span>

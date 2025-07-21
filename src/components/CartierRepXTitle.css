@@ -1,0 +1,164 @@
+/* Cartier-inspired RepX Title Styling */
+
+.cartier-repx-title {
+  display: inline-block;
+  position: relative;
+  font-family: 'Playfair Display', 'Georgia', 'Times New Roman', serif;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.cartier-repx-title:hover {
+  background: linear-gradient(135deg, #ffffff 0%, #FFD700 50%, #FFA500 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+  transform: translateY(-1px);
+}
+
+.cartier-repx-base {
+  position: relative;
+  font-size: inherit;
+  line-height: 1;
+}
+
+.cartier-repx-superscript {
+  position: absolute;
+  top: -0.4em;
+  right: -0.6em;
+  font-size: 0.65em;
+  font-weight: 600;
+  line-height: 1;
+  color: inherit;
+  text-shadow: inherit;
+  transition: inherit;
+}
+
+/* Size variants */
+.cartier-repx-title.size-small {
+  font-size: 18px;
+}
+
+.cartier-repx-title.size-medium {
+  font-size: 24px;
+}
+
+.cartier-repx-title.size-large {
+  font-size: 32px;
+}
+
+.cartier-repx-title.size-xlarge {
+  font-size: 42px;
+}
+
+/* Color variants */
+.cartier-repx-title.variant-gold {
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF8C00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cartier-repx-title.variant-platinum {
+  background: linear-gradient(135deg, #E5E4E2 0%, #C0C0C0 50%, #A8A8A8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cartier-repx-title.variant-rose-gold {
+  background: linear-gradient(135deg, #E8B4CB 0%, #D4AF37 50%, #CD7F32 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Premium hover effects */
+.cartier-repx-title.premium:hover {
+  text-shadow: 
+    0 0 10px rgba(255, 215, 0, 0.3),
+    0 0 20px rgba(255, 215, 0, 0.2),
+    0 0 30px rgba(255, 215, 0, 0.1);
+}
+
+/* Animation for premium tiers */
+.cartier-repx-title.animated {
+  animation: subtle-glow 3s ease-in-out infinite;
+}
+
+@keyframes subtle-glow {
+  0%, 100% {
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    text-shadow: 
+      0 1px 3px rgba(0, 0, 0, 0.3),
+      0 0 8px rgba(255, 215, 0, 0.2);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .cartier-repx-title {
+    letter-spacing: 0.3px;
+  }
+  
+  .cartier-repx-title.size-large {
+    font-size: 28px;
+  }
+  
+  .cartier-repx-title.size-xlarge {
+    font-size: 36px;
+  }
+  
+  .cartier-repx-superscript {
+    top: -0.35em;
+    right: -0.5em;
+    font-size: 0.7em;
+  }
+}
+
+@media (max-width: 480px) {
+  .cartier-repx-title {
+    letter-spacing: 0.2px;
+  }
+  
+  .cartier-repx-title.size-medium {
+    font-size: 20px;
+  }
+  
+  .cartier-repx-title.size-large {
+    font-size: 24px;
+  }
+  
+  .cartier-repx-title.size-xlarge {
+    font-size: 30px;
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .cartier-repx-title,
+  .cartier-repx-title * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .cartier-repx-title {
+    color: #ffffff !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+  }
+  
+  .cartier-repx-title:hover {
+    background: none !important;
+    -webkit-text-fill-color: #ffffff !important;
+  }
+}
