@@ -32,33 +32,46 @@ const SubscriptionTiers = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         
-        const backendTiers = await response.json();
+        const responseData = await response.json();
+        console.log('Raw API Response:', responseData);
         
-        // Transform backend data to match frontend structure
-        const transformedTiers = backendTiers.map((tier, index) => ({
-          id: tier.id.toLowerCase(),
-          name: tier.name,
-          price: isAnnual ? tier.price.annual / 12 : tier.price.monthly,
-          monthlyPrice: tier.price.monthly,
-          annualPrice: tier.price.annual,
-          tagline: tier.tagline || getTierTagline(tier.id),
-          roi: {
-            gain: tier.price.monthly * 12 * (10 + index * 5), // Simple ROI calculation
-            cost: tier.price.monthly * 12,
-            multiplier: 10 + index * 5,
-            description: `${10 + index * 5}x ROI potential`
-          },
-          features: tier.features || getDefaultFeatures(tier.id),
-          cta: getCTA(tier.id),
-          color: tierColorMap[tier.id.toLowerCase()] || 'professional',
-          popular: tier.id.toLowerCase() === 'repx3' // Mark RepX3 as popular
-        }));
+        // Extract the actual plans data from the API response
+        const backendTiers = responseData.message || responseData.data || responseData;
+        
+        // Transform backend data from object format to array format
+        const transformedTiers = Object.entries(backendTiers).map(([tierId, tierData], index) => {
+          const monthlyPrice = tierData.monthly.amount / 100; // Convert from cents
+          const annualPrice = tierData.annual.amount / 100; // Convert from cents
+          
+          return {
+            id: tierId.toLowerCase(),
+            name: tierData.name,
+            price: isAnnual ? annualPrice / 12 : monthlyPrice,
+            monthlyPrice: monthlyPrice,
+            annualPrice: annualPrice,
+            tagline: getTierTagline(tierId),
+            roi: {
+              gain: monthlyPrice * 12 * (10 + index * 5), // Simple ROI calculation
+              cost: monthlyPrice * 12,
+              multiplier: 10 + index * 5,
+              description: `${10 + index * 5}x ROI potential`
+            },
+            features: tierData.features ? [...tierData.features.basic, ...(tierData.features.premium || [])] : getDefaultFeatures(tierId),
+            cta: getCTA(tierId),
+            color: tierColorMap[tierId.toLowerCase()] || 'professional',
+            popular: tierId.toLowerCase() === 'repx3' // Mark RepX3 as popular
+          };
+        });
         
         setTiers(transformedTiers);
         setError(null);
       } catch (err) {
         console.error('Error fetching RepX plans:', err);
-        setError('Failed to load subscription plans');
+        console.error('Error details:', {
+          message: err.message,
+          stack: err.stack
+        });
+        setError(`Failed to load subscription plans: ${err.message}`);
         // Fallback to default tiers if API fails
         setTiers(getDefaultTiers());
       } finally {
@@ -109,11 +122,38 @@ const SubscriptionTiers = () => {
       id: 'repx1',
       name: 'RepX1 Professional',
       price: 39,
+      monthlyPrice: 39,
+      annualPrice: 390,
       tagline: 'Professional Foundation',
       roi: { gain: 4680, cost: 468, multiplier: 10, description: '10x ROI potential' },
-      features: ['100 calls/month', 'Basic professional features'],
+      features: ['100 calls/month', 'Basic professional features', 'AI transcription of every sales call'],
       cta: 'Start Professional',
       color: 'archive'
+    },
+    {
+      id: 'repx2',
+      name: 'RepX2 Market Intelligence',
+      price: 97,
+      monthlyPrice: 97,
+      annualPrice: 970,
+      tagline: 'Market Intelligence Edge',
+      roi: { gain: 11640, cost: 1164, multiplier: 10, description: '10x ROI potential' },
+      features: ['200 calls/month', '50 emails/day', '10 Canvas scans/day', 'Market intelligence'],
+      cta: 'Get Intelligence',
+      color: 'intelligence'
+    },
+    {
+      id: 'repx3',
+      name: 'RepX3 Territory Command',
+      price: 197,
+      monthlyPrice: 197,
+      annualPrice: 1970,
+      tagline: 'Territory Command Center',
+      roi: { gain: 23640, cost: 2364, multiplier: 10, description: '10x ROI potential' },
+      features: ['400 calls/month', '100 emails/day', '25 Canvas scans/day', 'Advanced analytics'],
+      cta: 'Command Territory',
+      color: 'professional',
+      popular: true
     }
   ];
 
