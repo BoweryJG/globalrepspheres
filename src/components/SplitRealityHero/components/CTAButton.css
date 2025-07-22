@@ -1,0 +1,351 @@
+/* CTA Button Component - Book-shaped design with transformations */
+
+.cta-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 32px;
+  background: linear-gradient(135deg, #9F58FA 0%, #FFD700 100%);
+  border: none;
+  border-radius: 8px;
+  font-size: clamp(14px, 3.5vw, 16px);
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  min-width: 180px;
+}
+
+/* Primary Button Style */
+.cta-button.primary {
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  box-shadow: 
+    0 4px 20px rgba(255, 215, 0, 0.3),
+    0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.cta-button.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 6px 30px rgba(255, 215, 0, 0.4),
+    0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Secondary Button Style */
+.cta-button.secondary {
+  background: transparent;
+  border: 2px solid #9F58FA;
+  color: #9F58FA;
+}
+
+.cta-button.secondary:hover {
+  background: rgba(159, 88, 250, 0.1);
+  border-color: #FFD700;
+  color: #FFD700;
+}
+
+/* Book Style Specific */
+.cta-button.book-style {
+  padding-left: 48px;
+  background: linear-gradient(
+    135deg,
+    #8B4513 0%,
+    #A0522D 50%,
+    #CD853F 100%
+  );
+  border: 1px solid rgba(139, 69, 19, 0.3);
+  position: relative;
+}
+
+/* Book Spine Effect */
+.book-spine {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 40px;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.2) 0%,
+    transparent 20%,
+    transparent 80%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.book-spine::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  bottom: 10%;
+  width: 2px;
+  background: rgba(255, 215, 0, 0.6);
+  transform: translateX(-50%);
+  box-shadow: 0 0 4px rgba(255, 215, 0, 0.4);
+}
+
+/* Button Content */
+.cta-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Icons */
+.cta-icon {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+.cta-button:hover .cta-icon {
+  transform: scale(1.1);
+}
+
+.cta-button:hover .book-icon {
+  animation: bookOpen 0.6s ease;
+}
+
+@keyframes bookOpen {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-15deg);
+  }
+}
+
+.cta-button:hover .play-icon {
+  animation: playPulse 0.6s ease;
+}
+
+@keyframes playPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+/* Page Flutter Animation */
+.page-flutter {
+  animation: pageFlutter 2s ease-in-out infinite;
+}
+
+@keyframes pageFlutter {
+  0%, 100% {
+    opacity: 0.6;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+
+/* Arrow Indicator */
+.cta-arrow {
+  position: absolute;
+  right: 20px;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s ease;
+  font-size: 18px;
+}
+
+.cta-button:hover .cta-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Glow Effect */
+.cta-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 215, 0, 0.3) 0%,
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.cta-button:hover .cta-glow {
+  opacity: 1;
+}
+
+/* Page Turn Effect for Book Button */
+.page-turn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  transform-style: preserve-3d;
+}
+
+.page {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  transform-origin: left center;
+  opacity: 0;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cta-button.book-style:hover .page-1 {
+  opacity: 0.3;
+  transform: rotateY(-25deg);
+  transition-delay: 0s;
+}
+
+.cta-button.book-style:hover .page-2 {
+  opacity: 0.2;
+  transform: rotateY(-20deg);
+  transition-delay: 0.1s;
+}
+
+.cta-button.book-style:hover .page-3 {
+  opacity: 0.1;
+  transform: rotateY(-15deg);
+  transition-delay: 0.2s;
+}
+
+/* Ripple Effect */
+.cta-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  transform: translate(-50%, -50%);
+  animation: rippleEffect 0.6s ease-out;
+  pointer-events: none;
+}
+
+@keyframes rippleEffect {
+  from {
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  to {
+    width: 200px;
+    height: 200px;
+    opacity: 0;
+  }
+}
+
+/* Clicked State */
+.cta-button.clicked {
+  transform: scale(0.98);
+}
+
+/* Disabled State */
+.cta-button.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cta-button.disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 767px) {
+  .cta-button {
+    padding: 14px 24px;
+    min-width: 160px;
+  }
+
+  .cta-button.book-style {
+    padding-left: 40px;
+  }
+
+  .book-spine {
+    width: 32px;
+  }
+
+  .cta-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .cta-arrow {
+    right: 16px;
+    font-size: 16px;
+  }
+}
+
+/* Tablet and Desktop */
+@media (min-width: 768px) {
+  .cta-button {
+    padding: 18px 40px;
+    font-size: 16px;
+    min-width: 200px;
+  }
+
+  .cta-button.book-style {
+    padding-left: 56px;
+  }
+
+  .book-spine {
+    width: 48px;
+  }
+
+  .cta-icon {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* Hover Effects for Touch Devices */
+@media (hover: none) {
+  .cta-button:active {
+    transform: scale(0.98);
+  }
+
+  .cta-button:active .cta-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .cta-button:active .cta-glow {
+    opacity: 1;
+  }
+}
+
+/* Performance Optimizations */
+@media (prefers-reduced-motion: reduce) {
+  .cta-button,
+  .cta-icon,
+  .cta-arrow,
+  .cta-glow,
+  .page {
+    animation: none !important;
+    transition: none !important;
+  }
+}

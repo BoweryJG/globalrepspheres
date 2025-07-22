@@ -1,0 +1,193 @@
+/* Performance Mode Styles */
+
+.split-reality-hero.performance-mode {
+  min-height: auto;
+  padding: 60px 20px;
+}
+
+.split-reality-hero.performance-mode .hero-container {
+  max-width: 800px;
+}
+
+.split-reality-hero.performance-mode .headline-section {
+  animation: none;
+  opacity: 1;
+}
+
+.split-reality-hero.performance-mode .subtitle-section,
+.split-reality-hero.performance-mode .cta-section {
+  animation: none;
+  opacity: 1;
+}
+
+.split-reality-hero.performance-mode .headline-emphasis {
+  animation: none;
+  text-shadow: none;
+  color: #FFD700;
+}
+
+/* Performance Notice */
+.performance-notice {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #FFD700;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+}
+
+/* Reduced Motion Styles */
+.split-reality-hero.reduced-motion * {
+  animation: none !important;
+  transition: none !important;
+}
+
+.split-reality-hero.reduced-motion .reality-container {
+  pointer-events: none;
+}
+
+.split-reality-hero.reduced-motion .swipe-indicator {
+  display: none;
+}
+
+/* Loading Optimizations */
+.split-reality-hero .reality-container:empty {
+  background: linear-gradient(
+    135deg,
+    rgba(10, 11, 30, 0.8) 0%,
+    rgba(26, 26, 46, 0.8) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.split-reality-hero .reality-container:empty::after {
+  content: '';
+  width: 60px;
+  height: 60px;
+  border: 3px solid rgba(159, 88, 250, 0.2);
+  border-top-color: #9F58FA;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* GPU Acceleration */
+.split-reality-hero .dark-reality-wrapper,
+.split-reality-hero .light-reality-wrapper,
+.split-reality-hero .reality-tear,
+.split-reality-hero .automation-flow {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Optimize Animations for Performance */
+@media (max-width: 768px) {
+  .split-reality-hero .golden-butterfly {
+    animation-duration: 2s;
+  }
+  
+  .split-reality-hero .crm-rain-particle {
+    animation-duration: 3s;
+  }
+  
+  .split-reality-hero .story-element {
+    animation-duration: 4s;
+  }
+}
+
+/* Low-end Device Optimizations */
+@media (max-device-memory: 4) {
+  .split-reality-hero .reality-container {
+    box-shadow: none;
+  }
+  
+  .split-reality-hero .cta-button {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .split-reality-hero .tear-particle,
+  .split-reality-hero .energy-wave {
+    display: none;
+  }
+}
+
+/* Network-aware Loading */
+@media (prefers-reduced-data: reduce) {
+  .split-reality-hero .reality-container {
+    height: 400px;
+  }
+  
+  .split-reality-hero .trust-section {
+    display: none;
+  }
+}
+
+/* Progressive Enhancement */
+.split-reality-hero.loaded .headline-section {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.split-reality-hero.loaded .subtitle-section {
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.split-reality-hero.loaded .cta-section {
+  animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+/* Intersection Observer Optimizations */
+.split-reality-hero [data-lazy] {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.split-reality-hero [data-lazy].loaded {
+  opacity: 1;
+}
+
+/* Memory Optimizations */
+.split-reality-hero.transformed .dark-reality-wrapper > * {
+  visibility: hidden;
+}
+
+.split-reality-hero:not(.transformed) .light-reality-wrapper > * {
+  visibility: hidden;
+}
+
+/* Fallback Styles */
+@supports not (backdrop-filter: blur(10px)) {
+  .split-reality-hero .trust-section {
+    background: rgba(0, 0, 0, 0.8);
+  }
+  
+  .split-reality-hero .label {
+    background: rgba(0, 0, 0, 0.9);
+  }
+}
+
+/* Print Styles */
+@media print {
+  .split-reality-hero {
+    min-height: auto;
+    background: white;
+    color: black;
+  }
+  
+  .split-reality-hero .reality-container,
+  .split-reality-hero .swipe-indicator,
+  .split-reality-hero .performance-notice {
+    display: none;
+  }
+  
+  .split-reality-hero .headline-emphasis {
+    color: black;
+    text-decoration: underline;
+  }
+}

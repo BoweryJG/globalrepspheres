@@ -1,0 +1,387 @@
+/* Reality Tear Component - The dramatic split effect */
+
+.reality-tear {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* Tear Path */
+.tear-path {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(0% 50%, 100% 50%, 100% 50%, 0% 50%);
+  transition: clip-path 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reality-tear.mobile .tear-path {
+  clip-path: polygon(0% 50%, 100% 50%, 100% 50%, 0% 50%);
+}
+
+.reality-tear.desktop .tear-path {
+  clip-path: polygon(50% 0%, 50% 0%, 50% 100%, 50% 100%);
+}
+
+/* Tear Edge Styling */
+.tear-edge {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #9F58FA 45%,
+    #FFD700 50%,
+    #9F58FA 55%,
+    transparent 100%
+  );
+  filter: blur(2px);
+  opacity: 0.8;
+}
+
+.reality-tear.mobile .tear-edge {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    #9F58FA 45%,
+    #FFD700 50%,
+    #9F58FA 55%,
+    transparent 100%
+  );
+}
+
+/* Tear Glow */
+.tear-glow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(159, 88, 250, 0.4) 0%,
+    transparent 50%
+  );
+  filter: blur(20px);
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+/* Lightning Effect */
+.lightning-effect {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.lightning-effect::before,
+.lightning-effect::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #FFFFFF 20%,
+    #9F58FA 50%,
+    #FFFFFF 80%,
+    transparent 100%
+  );
+  filter: blur(1px);
+  box-shadow: 0 0 10px #9F58FA, 0 0 20px #FFFFFF;
+}
+
+.reality-tear.mobile .lightning-effect::before,
+.reality-tear.mobile .lightning-effect::after {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    #FFFFFF 20%,
+    #9F58FA 50%,
+    #FFFFFF 80%,
+    transparent 100%
+  );
+}
+
+.lightning-effect::before {
+  left: 48%;
+  animation: lightning 0.2s linear infinite;
+}
+
+.lightning-effect::after {
+  left: 52%;
+  animation: lightning 0.2s linear infinite 0.1s;
+}
+
+/* Transformation Particles */
+.tear-particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.tear-particle {
+  position: absolute;
+  background: #9F58FA;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #9F58FA;
+  animation: particleFlow 3s ease-out infinite;
+}
+
+@keyframes particleFlow {
+  0% {
+    opacity: 0;
+    transform: scale(0) translate(0, 0);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.5) translate(100px, -100px);
+  }
+}
+
+.reality-tear.mobile .tear-particle {
+  animation: particleFlowMobile 3s ease-out infinite;
+}
+
+@keyframes particleFlowMobile {
+  0% {
+    opacity: 0;
+    transform: scale(0) translate(0, 0);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.5) translate(0, -100px);
+  }
+}
+
+/* Energy Waves */
+.energy-wave {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  border-radius: 50%;
+  border: 2px solid rgba(159, 88, 250, 0.3);
+  animation: waveExpand 2s ease-out infinite;
+}
+
+.wave-1 {
+  animation-delay: 0s;
+}
+
+.wave-2 {
+  animation-delay: 0.6s;
+}
+
+.wave-3 {
+  animation-delay: 1.2s;
+}
+
+@keyframes waveExpand {
+  0% {
+    transform: scale(0.5);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* RepSpheres Prism */
+.repspheres-prism {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.reality-tear.active .repspheres-prism {
+  opacity: 1;
+  animation: prismRotate 10s linear infinite;
+}
+
+.prism-core {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: prismFloat 3s ease-in-out infinite;
+}
+
+.prism-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(159, 88, 250, 0.2) 0%,
+    rgba(255, 215, 0, 0.2) 100%
+  );
+  border: 1px solid rgba(159, 88, 250, 0.5);
+  backdrop-filter: blur(5px);
+}
+
+.prism-face.front {
+  transform: translateZ(30px);
+}
+
+.prism-face.back {
+  transform: translateZ(-30px) rotateY(180deg);
+}
+
+.prism-face.left {
+  transform: rotateY(-90deg) translateZ(30px);
+}
+
+.prism-face.right {
+  transform: rotateY(90deg) translateZ(30px);
+}
+
+.prism-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(
+    circle at center,
+    rgba(159, 88, 250, 0.4) 0%,
+    transparent 60%
+  );
+  filter: blur(20px);
+}
+
+/* Tear Labels */
+.tear-labels {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.6s ease 0.3s;
+}
+
+.reality-tear.active .tear-labels {
+  opacity: 1;
+}
+
+.label {
+  position: absolute;
+  font-size: clamp(10px, 2.5vw, 12px);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  backdrop-filter: blur(5px);
+}
+
+.dark-label {
+  top: 20px;
+  left: 20px;
+  color: #FF4444;
+  background: rgba(10, 11, 30, 0.8);
+  border: 1px solid rgba(255, 68, 68, 0.3);
+}
+
+.light-label {
+  bottom: 20px;
+  right: 20px;
+  color: #FFD700;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.reality-tear.mobile .dark-label {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.reality-tear.mobile .light-label {
+  right: auto;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Animations */
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes lightning {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes prismRotate {
+  from {
+    transform: translate(-50%, -50%) rotateY(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotateY(360deg);
+  }
+}
+
+@keyframes prismFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Tablet and Desktop Adjustments */
+@media (min-width: 768px) {
+  .repspheres-prism {
+    width: 80px;
+    height: 80px;
+  }
+
+  .prism-glow {
+    width: 150px;
+    height: 150px;
+  }
+
+  .energy-wave {
+    border-width: 3px;
+  }
+}
+
+/* Performance Optimizations */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+  }
+}

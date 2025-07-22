@@ -1,0 +1,376 @@
+/* Dark Reality Component - 8:17PM Scene */
+
+.dark-reality {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #0A0B1E 0%, #141528 100%);
+  overflow: hidden;
+  transition: opacity 0.6s ease;
+}
+
+.dark-reality.active {
+  opacity: 1;
+}
+
+/* CRM Rain Canvas */
+.crm-rain-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* Main Scene Container */
+.dark-scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Dark Clock */
+.dark-clock {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  text-align: right;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.clock-time {
+  display: block;
+  font-size: clamp(36px, 8vw, 48px);
+  font-weight: 700;
+  color: #FF4444;
+  text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+  line-height: 1;
+}
+
+.clock-period {
+  display: block;
+  font-size: clamp(14px, 3vw, 18px);
+  color: #FF6666;
+  opacity: 0.8;
+}
+
+/* Parent Working Scene */
+.parent-working {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+/* Laptop */
+.laptop {
+  position: relative;
+  width: clamp(200px, 50vw, 280px);
+  margin: 0 auto;
+}
+
+.laptop-screen {
+  width: 100%;
+  height: clamp(120px, 30vw, 180px);
+  background: #1a1a2e;
+  border: 2px solid #2a2a3e;
+  border-radius: 8px 8px 0 0;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(74, 144, 226, 0.5);
+}
+
+.laptop-keyboard {
+  width: 110%;
+  height: 8px;
+  background: #2a2a3e;
+  margin: -2px auto 0;
+  border-radius: 0 0 4px 4px;
+}
+
+/* CRM Interface */
+.crm-interface {
+  padding: 12px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.crm-header {
+  font-size: clamp(10px, 2.5vw, 14px);
+  color: #4A90E2;
+  margin-bottom: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+}
+
+.crm-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-field label {
+  display: block;
+  font-size: clamp(8px, 2vw, 11px);
+  color: #718096;
+  margin-bottom: 2px;
+  font-family: 'Inter', sans-serif;
+}
+
+.field-input {
+  width: 100%;
+  height: 18px;
+  background: #0A0B1E;
+  border: 1px solid #2D3748;
+  border-radius: 3px;
+}
+
+.field-input.tall {
+  height: 36px;
+}
+
+/* Parent Silhouette */
+.parent-silhouette {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  filter: drop-shadow(0 0 20px rgba(74, 144, 226, 0.3));
+}
+
+.head {
+  width: 30px;
+  height: 30px;
+  background: #1a1a2e;
+  border-radius: 50%;
+  margin: 0 auto 5px;
+}
+
+.shoulders {
+  width: 60px;
+  height: 40px;
+  background: #1a1a2e;
+  border-radius: 20px 20px 0 0;
+  margin: 0 auto;
+}
+
+.screen-glow {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 60px;
+  background: radial-gradient(ellipse at center, rgba(74, 144, 226, 0.3) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Bedroom Door */
+.bedroom-door {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+}
+
+.door-frame {
+  width: clamp(60px, 15vw, 80px);
+  height: clamp(100px, 25vw, 140px);
+  background: #1a1a2e;
+  padding: 3px;
+  border-radius: 2px;
+}
+
+.door {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #2a2a3e;
+  border-radius: 2px;
+}
+
+.door-handle {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 12px;
+  background: #4A5568;
+  border-radius: 2px;
+}
+
+.light-under-door {
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0%, #FFD700 50%, transparent 100%);
+  animation: flicker 3s ease-in-out infinite;
+}
+
+.door-sign {
+  margin-top: 8px;
+  text-align: center;
+  font-size: clamp(10px, 2.5vw, 12px);
+  color: #718096;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Missed Moments Counter */
+.missed-moments {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.missed-label {
+  display: block;
+  font-size: clamp(10px, 2.5vw, 12px);
+  color: #718096;
+  margin-bottom: 4px;
+}
+
+.missed-count {
+  display: block;
+  font-size: clamp(24px, 6vw, 32px);
+  color: #FF4444;
+  font-weight: 700;
+  animation: countUp 0.6s ease-out;
+}
+
+/* Cold Coffee */
+.cold-coffee {
+  position: absolute;
+  bottom: 60px;
+  right: 30px;
+  opacity: 0.6;
+}
+
+.coffee-cup {
+  width: 30px;
+  height: 35px;
+  background: #2a2a3e;
+  border-radius: 0 0 15px 15px;
+  position: relative;
+}
+
+.coffee-liquid {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  right: 5px;
+  height: 15px;
+  background: #3a3a4e;
+  border-radius: 0 0 10px 10px;
+}
+
+/* Phone with Missed Calls */
+.phone {
+  position: absolute;
+  top: 80px;
+  left: 20px;
+}
+
+.phone-screen {
+  width: clamp(80px, 20vw, 100px);
+  height: clamp(40px, 10vw, 50px);
+  background: #1a1a2e;
+  border: 2px solid #FF4444;
+  border-radius: 8px;
+  padding: 8px;
+  animation: phonePulse 2s ease-in-out infinite;
+}
+
+.missed-call {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.caller {
+  font-size: clamp(10px, 2.5vw, 12px);
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+.call-count {
+  font-size: clamp(8px, 2vw, 10px);
+  color: #FF6666;
+}
+
+/* Overlay Effects */
+.dark-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(ellipse at center, transparent 0%, rgba(10, 11, 30, 0.4) 100%);
+  pointer-events: none;
+}
+
+.scan-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(74, 144, 226, 0.03) 2px,
+    rgba(74, 144, 226, 0.03) 4px
+  );
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* Animations */
+@keyframes flicker {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+@keyframes countUp {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes phonePulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 68, 68, 0.8);
+  }
+}
+
+/* Tablet and Desktop Adjustments */
+@media (min-width: 768px) {
+  .dark-scene {
+    padding: 40px;
+  }
+
+  .parent-working {
+    margin-bottom: 0;
+  }
+
+  .bedroom-door {
+    right: 40px;
+  }
+}

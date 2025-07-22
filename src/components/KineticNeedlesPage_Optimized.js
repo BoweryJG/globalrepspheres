@@ -5,7 +5,7 @@ import RepSpheresNavbar from './RepSpheresNavbar';
 import LoginModal from './LoginModal';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import './RepSpheresNavbar.css';
-import RealitySplitHero from './RealitySplitHero';
+import SplitRealityHero from './SplitRealityHero';
 import GreatDivide from './GreatDivide';
 import MathematicalProof from './MathematicalProof';
 import HarveyWhisper from './HarveyWhisper';
@@ -118,14 +118,13 @@ const KineticNeedlesPageContent = () => {
 
       {/* 1. REALITY SPLIT HERO - Iconic Crack-Based Design */}
       <div id="reality-split-hero" className="lightning-section">
-        <RealitySplitHero 
-          onLogin={() => {
+        <SplitRealityHero 
+          onGetStarted={() => {
             setIsSignupMode(false);
             setShowLoginModal(true);
           }}
-          onSignup={() => {
-            setIsSignupMode(true);
-            setShowLoginModal(true);
+          onLearnMore={() => {
+            window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
           }}
         />
       </div>
