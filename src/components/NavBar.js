@@ -85,7 +85,7 @@ const getNavLinks = (currentUrl, isAdmin) => {
     },
     { 
       key: 'canvas',
-      label: 'Canvas', 
+      label: 'CANVAS', 
       href: 'https://canvas.repspheres.com/',
       icon: <DashboardIcon fontSize="small" sx={{ 
         color: ACCENT_COLOR,
