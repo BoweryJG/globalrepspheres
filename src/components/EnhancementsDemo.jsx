@@ -1,4 +1,6 @@
 import React from 'react';
+import RepSpheresNavbar from './RepSpheresNavbar';
+import RealitySplitHero from './RealitySplitHero';
 import SynchronizationEngine from './SynchronizationEngine';
 import StrategicWhisperAudio from './StrategicWhisperAudio';
 import { 
@@ -24,20 +26,17 @@ const EnhancementsDemo = () => {
       minHeight: '100vh',
       color: 'white'
     }}>
-      {/* Typography Showcase */}
-      <section style={{ padding: '80px 20px', textAlign: 'center' }}>
-        <h1 className="type-hero">Category-Defining Typography</h1>
-        <h2 className="type-display">Mobile-First Design System</h2>
-        <h3 className="type-h1">Revolutionary Sales Platform</h3>
-        <h4 className="type-h2">Powered by AI Intelligence</h4>
-        <p className="type-body">
-          Experience the future of medical sales with our award-winning design system.
-          Every element is crafted for maximum impact and mobile performance.
-        </p>
-        <div style={{ marginTop: '40px' }}>
-          <span className="type-glitch" data-text="75x FASTER">75x FASTER</span>
-        </div>
-      </section>
+      {/* Navbar */}
+      <RepSpheresNavbar 
+        onLogin={() => console.log('Login')}
+        onSignup={() => console.log('Signup')}
+      />
+      
+      {/* Hero Section */}
+      <RealitySplitHero 
+        onLogin={() => console.log('Login from hero')}
+        onSignup={() => console.log('Signup from hero')}
+      />
 
       {/* Icon Showcase */}
       <section style={{ padding: '80px 20px', background: 'rgba(20, 20, 30, 0.6)' }}>
