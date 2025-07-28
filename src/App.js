@@ -12,7 +12,7 @@ import DecisionPointSection from './components/DecisionPointSection';
 import Footer from './components/Footer';
 import PerformanceMonitor from './components/PerformanceMonitor';
 import HarveyLauncher from './components/HarveyLauncher';
-import KineticNeedlesPage from './components/KineticNeedlesPage_Optimized';
+import EnhancementsDemo from './components/EnhancementsDemo';
 import { logBackendStatus } from './utils/backendHealth';
 function App() {
   const [useKineticDesign] = useState(true); // Set to true to use the new kinetic design
@@ -42,7 +42,7 @@ function App() {
 
   // If using kinetic design, return the new page
   if (useKineticDesign) {
-    return <KineticNeedlesPage />;
+    return <EnhancementsDemo />;
   }
 
   // Otherwise, return the original design
