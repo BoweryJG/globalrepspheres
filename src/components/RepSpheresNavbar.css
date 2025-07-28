@@ -352,17 +352,23 @@
 
 /* Link Icons */
 .nav-link-icon {
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
 }
 
-.nav-link-icon svg {
-    width: 100%;
-    height: 100%;
+.nav-link-icon::before {
+    content: '';
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: currentColor;
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: pulse 2s infinite;
 }
 
 .icon-market::before { background: #4bd48e; box-shadow: 0 0 10px #4bd48e; }
@@ -391,9 +397,6 @@
     text-decoration: none;
     border: none;
     cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
     box-shadow: 

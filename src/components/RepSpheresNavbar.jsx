@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './RepSpheresNavbar.css';
-import { 
-  MarketDataIcon, 
-  CanvasIcon, 
-  CRMIcon, 
-  RepConnectIcon,
-  LoginIcon,
-  StartTrialIcon
-} from './Icons/CustomIcons';
 
 const RepSpheresNavbar = ({ 
   onLogin, 
@@ -69,16 +61,6 @@ const RepSpheresNavbar = ({
       document.body.style.overflow = '';
     };
   }, [isMobileMenuOpen]);
-
-  const getIconComponent = (iconName) => {
-    switch(iconName) {
-      case 'market': return MarketDataIcon;
-      case 'canvas': return CanvasIcon;
-      case 'sphere': return CRMIcon;
-      case 'pipeline': return RepConnectIcon;
-      default: return null;
-    }
-  };
 
   const handleLinkClick = (e, href) => {
     // If it's a hash link, handle smooth scroll
@@ -174,22 +156,17 @@ const RepSpheresNavbar = ({
 
             {/* Desktop Navigation Links */}
             <nav className="nav-links">
-              {navLinks.map((link, index) => {
-                const IconComponent = getIconComponent(link.icon);
-                return (
-                  <a 
-                    key={index} 
-                    href={link.href} 
-                    className="nav-link"
-                    onClick={(e) => handleLinkClick(e, link.href)}
-                  >
-                    <span className="nav-link-icon">
-                      {IconComponent && <IconComponent size={20} animate={true} />}
-                    </span>
-                    <span>{link.label}</span>
-                  </a>
-                );
-              })}
+              {navLinks.map((link, index) => (
+                <a 
+                  key={index} 
+                  href={link.href} 
+                  className="nav-link"
+                  onClick={(e) => handleLinkClick(e, link.href)}
+                >
+                  <span className={`nav-link-icon icon-${link.icon}`}></span>
+                  <span>{link.label}</span>
+                </a>
+              ))}
             </nav>
 
             {/* Right Actions */}
@@ -212,15 +189,13 @@ const RepSpheresNavbar = ({
                     className="nav-cta-secondary"
                     onClick={onLogin}
                   >
-                    <LoginIcon size={16} animate={true} />
-                    <span>Login</span>
+                    Login
                   </button>
                   <button 
                     className="nav-cta"
                     onClick={onSignup}
                   >
-                    <StartTrialIcon size={18} animate={true} />
-                    <span>Sign Up</span>
+                    Sign Up
                   </button>
                 </>
               )}
@@ -262,22 +237,17 @@ const RepSpheresNavbar = ({
            }}>
         <div className="mobile-menu">
           <nav className="mobile-menu-links">
-            {navLinks.map((link, index) => {
-              const IconComponent = getIconComponent(link.icon);
-              return (
-                <a 
-                  key={index}
-                  href={link.href} 
-                  className="mobile-menu-link"
-                  onClick={(e) => handleLinkClick(e, link.href)}
-                >
-                  <span className="nav-link-icon">
-                    {IconComponent && <IconComponent size={20} animate={true} />}
-                  </span>
-                  <span>{link.label}</span>
-                </a>
-              );
-            })}
+            {navLinks.map((link, index) => (
+              <a 
+                key={index}
+                href={link.href} 
+                className="mobile-menu-link"
+                onClick={(e) => handleLinkClick(e, link.href)}
+              >
+                <span className={`nav-link-icon icon-${link.icon}`}></span>
+                <span>{link.label}</span>
+              </a>
+            ))}
           </nav>
         </div>
       </div>
