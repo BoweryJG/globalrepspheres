@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FollowThru Pro | Never Touch Your CRM Again - Updated</title>
+    <title>FollowThru Pro | Your Sales Intelligence System</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,6 +26,8 @@
             --glass-bg: rgba(255, 255, 255, 0.05);
             --glass-border: rgba(255, 255, 255, 0.1);
             --glass-shadow: rgba(0, 0, 0, 0.2);
+            --success-green: #4bd48e;
+            --warning-red: #ff5757;
         }
 
         body {
@@ -34,7 +36,6 @@
             color: var(--pure-white);
             overflow-x: hidden;
             position: relative;
-            min-height: 100vh;
         }
 
         /* Background gradient */
@@ -51,6 +52,19 @@
             z-index: 0;
         }
 
+        /* Section styling */
+        section {
+            position: relative;
+            padding: 80px 20px;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Hero Section */
         .hero-container {
             position: relative;
             min-height: 100vh;
@@ -63,7 +77,7 @@
         }
 
         .hero-title {
-            font-size: clamp(32px, 8vw, 48px);
+            font-size: clamp(32px, 8vw, 56px);
             font-weight: 900;
             text-align: center;
             margin-bottom: 16px;
@@ -75,12 +89,12 @@
         }
 
         .hero-subtitle {
-            font-size: clamp(16px, 4vw, 20px);
+            font-size: clamp(16px, 4vw, 22px);
             font-weight: 500;
             text-align: center;
             color: rgba(255, 255, 255, 0.8);
             margin-bottom: 48px;
-            max-width: 600px;
+            max-width: 700px;
             line-height: 1.4;
         }
 
@@ -233,6 +247,9 @@
             box-shadow: 
                 0 4px 20px var(--electric-purple-glow),
                 0 0 0 1px rgba(255, 255, 255, 0.1);
+            display: inline-block;
+            text-decoration: none;
+            text-align: center;
         }
 
         .cta-button:hover {
@@ -250,7 +267,392 @@
             margin-top: 4px;
         }
 
+        /* Section Headers */
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: clamp(28px, 6vw, 42px);
+            font-weight: 800;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--pure-white) 0%, var(--electric-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            font-size: clamp(16px, 3vw, 20px);
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* Transformation Section */
+        .transformation-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .before-after {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .transform-card {
+            padding: 30px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .transform-card.before {
+            border-color: rgba(255, 87, 87, 0.3);
+        }
+
+        .transform-card.after {
+            border-color: rgba(75, 212, 142, 0.3);
+        }
+
+        .transform-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .before .transform-label {
+            color: var(--warning-red);
+        }
+
+        .after .transform-label {
+            color: var(--success-green);
+        }
+
+        .transform-list {
+            list-style: none;
+        }
+
+        .transform-list li {
+            margin-bottom: 12px;
+            font-size: 14px;
+            line-height: 1.4;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .transform-list li::before {
+            content: '×';
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .before .transform-list li::before {
+            color: var(--warning-red);
+        }
+
+        .after .transform-list li::before {
+            content: '✓';
+            color: var(--success-green);
+        }
+
+        /* Intelligence Stack Section */
+        .stack-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 60px;
+        }
+
+        .stack-card {
+            padding: 32px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .stack-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--electric-purple);
+            box-shadow: 0 10px 40px var(--electric-purple-glow);
+        }
+
+        .stack-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--electric-purple) 0%, var(--electric-purple-dark) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .stack-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .stack-description {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.5;
+        }
+
+        /* Whisper Section */
+        .whisper-demo {
+            max-width: 800px;
+            margin: 60px auto;
+            position: relative;
+        }
+
+        .whisper-visual {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rep-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--electric-purple) 0%, var(--electric-purple-dark) 100%);
+            border-radius: 50%;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+        }
+
+        .whisper-bubble {
+            background: var(--electric-purple);
+            color: var(--pure-white);
+            padding: 16px 24px;
+            border-radius: 20px 20px 0 20px;
+            margin: 20px 0;
+            font-size: 16px;
+            font-weight: 500;
+            position: relative;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .whisper-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--electric-purple);
+            margin-bottom: 8px;
+        }
+
+        /* ROI Calculator */
+        .roi-calculator {
+            max-width: 600px;
+            margin: 60px auto;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+        }
+
+        .slider-container {
+            margin: 30px 0;
+        }
+
+        .slider-label {
+            font-size: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .slider-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--electric-purple);
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: var(--electric-purple);
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--electric-purple-glow);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            background: var(--electric-purple);
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--electric-purple-glow);
+        }
+
+        .roi-results {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .roi-metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .roi-metric-label {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .roi-metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--success-green);
+        }
+
+        /* Pricing Section */
+        .pricing-container {
+            max-width: 500px;
+            margin: 60px auto;
+            text-align: center;
+        }
+
+        .pricing-card {
+            background: linear-gradient(135deg, var(--electric-purple) 0%, var(--electric-purple-dark) 100%);
+            border-radius: 24px;
+            padding: 48px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px var(--electric-purple-glow);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--pure-white);
+            color: var(--electric-purple-dark);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .pricing-amount {
+            font-size: 64px;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+
+        .pricing-period {
+            font-size: 20px;
+            opacity: 0.8;
+            margin-bottom: 32px;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 40px;
+        }
+
+        .pricing-features li {
+            margin-bottom: 16px;
+            padding-left: 24px;
+            position: relative;
+            text-align: left;
+        }
+
+        .pricing-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .urgency-message {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 16px 24px;
+            border-radius: 12px;
+            margin-top: 30px;
+            font-size: 14px;
+        }
+
+        .seats-left {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--warning-red);
+            display: block;
+            margin-top: 8px;
+        }
+
         /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .before-after {
+                grid-template-columns: 1fr;
+            }
+            
+            .stack-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .pricing-amount {
+                font-size: 48px;
+            }
+        }
+
         @media (max-width: 480px) {
             .hero-container {
                 padding: 16px;
@@ -264,15 +666,20 @@
                 min-width: 200px;
                 padding: 12px;
             }
+            
+            section {
+                padding: 60px 16px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Hero Section -->
     <div class="hero-container">
-        <h1 class="hero-title">Never Touch Your CRM Again</h1>
+        <h1 class="hero-title">Your Phone Line Just Became Your Sales Intelligence Partner</h1>
         <p class="hero-subtitle">
-            Every doctor call automatically logged. Follow-ups created instantly. 
-            Get back 5 hours every week. $499/month.
+            Automatic CRM updates are just the beginning. Real-time coaching, market intelligence, 
+            and instant research reports make you the rep doctors actually want to see.
         </p>
 
         <div class="phone-visual" id="phoneVisual">
@@ -293,8 +700,8 @@
             </div>
             
             <div class="crm-card" id="card3" style="left: -100%; bottom: 40px;">
-                <div class="crm-card-title">Sample Request</div>
-                <div class="crm-card-content">Completed ✓</div>
+                <div class="crm-card-title">Market Intelligence</div>
+                <div class="crm-card-content">Botox up 23% in area</div>
             </div>
         </div>
 
@@ -309,8 +716,225 @@
         </button>
     </div>
 
+    <!-- Transformation Section -->
+    <section id="transformation">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">From Overwhelmed to Unstoppable</h2>
+                <p class="section-subtitle">
+                    See how FollowThru Pro transforms your daily sales routine
+                </p>
+            </div>
+
+            <div class="transformation-container">
+                <div class="before-after">
+                    <div class="transform-card before">
+                        <div class="transform-label">Before FollowThru Pro</div>
+                        <ul class="transform-list">
+                            <li>5+ hours weekly on CRM data entry</li>
+                            <li>Missed follow-ups cost you deals</li>
+                            <li>Generic pitches without market data</li>
+                            <li>Scrambling for product information</li>
+                            <li>Flying blind in doctor meetings</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="transform-card after">
+                        <div class="transform-label">After FollowThru Pro</div>
+                        <ul class="transform-list">
+                            <li>Zero time on CRM updates</li>
+                            <li>Perfect follow-up every time</li>
+                            <li>Data-driven conversations</li>
+                            <li>Instant research at fingertips</li>
+                            <li>Live coaching during calls</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Intelligence Stack Section -->
+    <section id="intelligence-stack">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Your Complete Sales Intelligence System</h2>
+                <p class="section-subtitle">
+                    Four powerful systems working together to make you unstoppable
+                </p>
+            </div>
+
+            <div class="stack-grid">
+                <div class="stack-card">
+                    <div class="stack-icon">📱</div>
+                    <h3 class="stack-title">Smart CRM Autopilot</h3>
+                    <p class="stack-description">
+                        Every call transcribed, logged, and followed up automatically. 
+                        Your CRM updates itself while you focus on selling.
+                    </p>
+                </div>
+
+                <div class="stack-card">
+                    <div class="stack-icon">📊</div>
+                    <h3 class="stack-title">Market Intelligence</h3>
+                    <p class="stack-description">
+                        Track 250+ cosmetic and dental procedures in real-time. 
+                        Know exactly what's trending in each doctor's area.
+                    </p>
+                </div>
+
+                <div class="stack-card">
+                    <div class="stack-icon">🔬</div>
+                    <h3 class="stack-title">Research Intelligence</h3>
+                    <p class="stack-description">
+                        Harvard-level research reports in 20 seconds. 
+                        Instantly access clinical data that matters to doctors.
+                    </p>
+                </div>
+
+                <div class="stack-card">
+                    <div class="stack-icon">🎯</div>
+                    <h3 class="stack-title">Elite Coaching System</h3>
+                    <p class="stack-description">
+                        29 specialized procedure coaches plus live Strategic Whisper 
+                        guidance during calls. Only you can hear it.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Strategic Whisper Section -->
+    <section id="whisper">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Strategic Whisper: Your Secret Weapon</h2>
+                <p class="section-subtitle">
+                    Real-time coaching that only you can hear during doctor calls
+                </p>
+            </div>
+
+            <div class="whisper-demo">
+                <div class="whisper-visual">
+                    <div class="rep-avatar">🎧</div>
+                    
+                    <div class="whisper-label">Live Strategic Guidance</div>
+                    
+                    <div class="whisper-bubble">
+                        "Ask about their patient volume for lip fillers - 
+                        it's up 40% in their zip code this quarter"
+                    </div>
+                    
+                    <div class="whisper-bubble">
+                        "Mention the new reimbursement codes for 92134 - 
+                        they just changed last week"
+                    </div>
+                    
+                    <div class="whisper-bubble">
+                        "Slow down - focus on clinical outcomes, 
+                        not product features"
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ROI Calculator Section -->
+    <section id="roi">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Calculate Your ROI</h2>
+                <p class="section-subtitle">
+                    See how much time and money you'll save with FollowThru Pro
+                </p>
+            </div>
+
+            <div class="roi-calculator">
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Calls per week:</span>
+                        <span class="slider-value" id="callsValue">50</span>
+                    </div>
+                    <input type="range" class="slider" id="callsSlider" 
+                           min="10" max="100" value="50" step="5">
+                </div>
+
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Average deal size:</span>
+                        <span class="slider-value" id="dealValue">$5,000</span>
+                    </div>
+                    <input type="range" class="slider" id="dealSlider" 
+                           min="1000" max="20000" value="5000" step="500">
+                </div>
+
+                <div class="roi-results">
+                    <div class="roi-metric">
+                        <span class="roi-metric-label">Hours saved per month:</span>
+                        <span class="roi-metric-value" id="hoursSaved">20</span>
+                    </div>
+                    
+                    <div class="roi-metric">
+                        <span class="roi-metric-label">Extra deals from better follow-up:</span>
+                        <span class="roi-metric-value" id="extraDeals">2</span>
+                    </div>
+                    
+                    <div class="roi-metric">
+                        <span class="roi-metric-label">Additional monthly revenue:</span>
+                        <span class="roi-metric-value" id="revenue">$10,000</span>
+                    </div>
+                    
+                    <div class="roi-metric">
+                        <span class="roi-metric-label">ROI on $499 investment:</span>
+                        <span class="roi-metric-value" id="roiPercent">2,000%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Join Elite Sales Performers</h2>
+                <p class="section-subtitle">
+                    One price. All systems. Unlimited potential.
+                </p>
+            </div>
+
+            <div class="pricing-container">
+                <div class="pricing-card">
+                    <div class="pricing-badge">Limited Seats</div>
+                    
+                    <div class="pricing-amount">$499</div>
+                    <div class="pricing-period">per month</div>
+                    
+                    <ul class="pricing-features">
+                        <li>Smart CRM with automatic logging</li>
+                        <li>Market Intelligence for 250+ procedures</li>
+                        <li>Instant Research Intelligence reports</li>
+                        <li>29 Elite Procedure Coaches</li>
+                        <li>Strategic Whisper live guidance</li>
+                        <li>Unlimited calls and follow-ups</li>
+                        <li>Priority support and training</li>
+                    </ul>
+
+                    <a href="#" class="cta-button" style="width: 100%; margin-top: 20px;">
+                        Claim Your Seat Now
+                    </a>
+
+                    <div class="urgency-message">
+                        <p>⚡ Strategic Whisper coaching seats are limited</p>
+                        <span class="seats-left">Only 47 seats remaining</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <script>
-        // Intersection Observer for scroll trigger
+        // Hero animations (existing code)
         const phoneVisual = document.getElementById('phoneVisual');
         const cards = document.querySelectorAll('.crm-card');
         const timeCounter = document.getElementById('timeCounter');
@@ -440,6 +1064,94 @@
                 }, 200);
             }
         });
+
+        // ROI Calculator
+        const callsSlider = document.getElementById('callsSlider');
+        const dealSlider = document.getElementById('dealSlider');
+        const callsValue = document.getElementById('callsValue');
+        const dealValue = document.getElementById('dealValue');
+        const hoursSaved = document.getElementById('hoursSaved');
+        const extraDeals = document.getElementById('extraDeals');
+        const revenue = document.getElementById('revenue');
+        const roiPercent = document.getElementById('roiPercent');
+
+        function calculateROI() {
+            const calls = parseInt(callsSlider.value);
+            const dealSize = parseInt(dealSlider.value);
+            
+            // Calculate metrics
+            const monthlyHoursSaved = Math.round(calls * 4 * 0.1); // 6 minutes per call
+            const monthlyExtraDeals = Math.round(calls * 0.01); // 1% better close rate
+            const additionalRevenue = monthlyExtraDeals * dealSize;
+            const roi = Math.round((additionalRevenue / 499) * 100);
+            
+            // Update display
+            callsValue.textContent = calls;
+            dealValue.textContent = `$${dealSize.toLocaleString()}`;
+            hoursSaved.textContent = monthlyHoursSaved;
+            extraDeals.textContent = monthlyExtraDeals;
+            revenue.textContent = `$${additionalRevenue.toLocaleString()}`;
+            roiPercent.textContent = `${roi.toLocaleString()}%`;
+        }
+
+        callsSlider.addEventListener('input', calculateROI);
+        dealSlider.addEventListener('input', calculateROI);
+        
+        // Initial calculation
+        calculateROI();
+
+        // Animate elements on scroll
+        const animateOnScroll = (entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        };
+
+        const scrollObserver = new IntersectionObserver(animateOnScroll, {
+            threshold: 0.1
+        });
+
+        // Observe all sections
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'all 0.6s ease';
+            scrollObserver.observe(section);
+        });
+
+        // Whisper animation
+        const whisperBubbles = document.querySelectorAll('.whisper-bubble');
+        let whisperIndex = 0;
+
+        function animateWhispers() {
+            whisperBubbles.forEach((bubble, index) => {
+                bubble.style.display = 'none';
+            });
+            
+            if (whisperIndex < whisperBubbles.length) {
+                whisperBubbles[whisperIndex].style.display = 'block';
+                whisperIndex++;
+            } else {
+                whisperIndex = 0;
+            }
+        }
+
+        // Start whisper animation when section is visible
+        const whisperSection = document.getElementById('whisper');
+        const whisperObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    setInterval(animateWhispers, 3000);
+                    animateWhispers(); // Show first one immediately
+                    whisperObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        whisperObserver.observe(whisperSection);
     </script>
 </body>
 </html>
