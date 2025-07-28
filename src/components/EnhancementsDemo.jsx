@@ -1,6 +1,6 @@
 import React from 'react';
 import RepSpheresNavbar from './RepSpheresNavbar';
-import RealitySplitHero from './RealitySplitHero';
+import MassSyncHero from './MassSyncHero';
 import SynchronizationEngine from './SynchronizationEngine';
 import StrategicWhisperAudio from './StrategicWhisperAudio';
 import { 
@@ -32,11 +32,8 @@ const EnhancementsDemo = () => {
         onSignup={() => console.log('Signup')}
       />
       
-      {/* Hero Section */}
-      <RealitySplitHero 
-        onLogin={() => console.log('Login from hero')}
-        onSignup={() => console.log('Signup from hero')}
-      />
+      {/* Hero Section - Never Spend Time in CRM */}
+      <MassSyncHero />
 
       {/* Icon Showcase */}
       <section style={{ padding: '80px 20px', background: 'rgba(20, 20, 30, 0.6)' }}>
