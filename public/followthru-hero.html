@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FollowThru Pro | Never Touch Your CRM Again</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --electric-purple: #9f58fa;
+            --electric-purple-dark: #7e22ce;
+            --electric-purple-glow: rgba(159, 88, 250, 0.5);
+            --charcoal: #0a0a0a;
+            --charcoal-light: #1a1a1a;
+            --pure-white: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: rgba(0, 0, 0, 0.2);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            background: var(--charcoal);
+            color: var(--pure-white);
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Background gradient */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, var(--electric-purple-glow) 0%, transparent 50%);
+            opacity: 0.2;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .hero-container {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: clamp(32px, 8vw, 48px);
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 16px;
+            line-height: 1.1;
+            background: linear-gradient(135deg, var(--pure-white) 0%, var(--electric-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(16px, 4vw, 20px);
+            font-weight: 500;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 48px;
+            max-width: 600px;
+            line-height: 1.4;
+        }
+
+        /* Phone Container */
+        .phone-visual {
+            position: relative;
+            width: 200px;
+            height: 400px;
+            margin: 0 auto 40px;
+        }
+
+        /* Phone Device */
+        .phone-device {
+            position: absolute;
+            width: 180px;
+            height: 360px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+            border-radius: 36px;
+            box-shadow: 
+                0 0 0 2px rgba(255, 255, 255, 0.1),
+                0 20px 40px rgba(0, 0, 0, 0.5),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .phone-device::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+        }
+
+        /* Phone Screen */
+        .phone-screen {
+            position: absolute;
+            top: 40px;
+            left: 10px;
+            right: 10px;
+            bottom: 40px;
+            background: #000;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        /* Electric Glow Effect */
+        .phone-glow {
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            background: radial-gradient(circle, var(--electric-purple-glow) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+
+        .phone-visual.active .phone-glow {
+            opacity: 1;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Data Particles */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--electric-purple);
+            border-radius: 50%;
+            opacity: 0;
+            box-shadow: 0 0 10px var(--electric-purple-glow);
+        }
+
+        /* CRM Cards */
+        .crm-card {
+            position: absolute;
+            padding: 16px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px var(--glass-shadow);
+            opacity: 0;
+            transform: translateY(20px);
+            min-width: 250px;
+        }
+
+        .crm-card-title {
+            font-size: 12px;
+            color: var(--electric-purple);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .crm-card-content {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--pure-white);
+        }
+
+        /* Time Counter */
+        .time-counter {
+            text-align: center;
+            margin-top: 32px;
+        }
+
+        .counter-label {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 8px;
+        }
+
+        .counter-value {
+            font-size: 36px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--electric-purple) 0%, var(--pure-white) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* CTA Button */
+        .cta-button {
+            margin-top: 40px;
+            padding: 20px 48px;
+            background: linear-gradient(135deg, var(--electric-purple) 0%, var(--electric-purple-dark) 100%);
+            border: none;
+            border-radius: 100px;
+            color: var(--pure-white);
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 4px 20px var(--electric-purple-glow),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 8px 30px var(--electric-purple-glow),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+        }
+
+        .price-tag {
+            display: block;
+            font-size: 14px;
+            font-weight: 400;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 480px) {
+            .hero-container {
+                padding: 16px;
+            }
+            
+            .phone-visual {
+                transform: scale(0.9);
+            }
+            
+            .crm-card {
+                min-width: 200px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-container">
+        <h1 class="hero-title">Never Touch Your CRM Again</h1>
+        <p class="hero-subtitle">
+            Every doctor call automatically logged. Follow-ups created instantly. 
+            Get back 5 hours every week. $499/month.
+        </p>
+
+        <div class="phone-visual" id="phoneVisual">
+            <div class="phone-glow"></div>
+            <div class="phone-device">
+                <div class="phone-screen"></div>
+            </div>
+            
+            <!-- CRM Cards will be dynamically positioned -->
+            <div class="crm-card" id="card1" style="left: -130%; top: -80px;">
+                <div class="crm-card-title">Contact Updated</div>
+                <div class="crm-card-content">Dr. Smith - Cardiology</div>
+            </div>
+            
+            <div class="crm-card" id="card2" style="right: -130%; top: -20px;">
+                <div class="crm-card-title">Follow-up Scheduled</div>
+                <div class="crm-card-content">Thursday 2pm</div>
+            </div>
+            
+            <div class="crm-card" id="card3" style="left: -100%; bottom: 40px;">
+                <div class="crm-card-title">Sample Request</div>
+                <div class="crm-card-content">Completed ✓</div>
+            </div>
+        </div>
+
+        <div class="time-counter">
+            <div class="counter-label">Time saved this week</div>
+            <div class="counter-value" id="timeCounter">0h 00m</div>
+        </div>
+
+        <button class="cta-button">
+            Start Your Free Trial
+            <span class="price-tag">Then $499/month</span>
+        </button>
+    </div>
+
+    <script>
+        // Intersection Observer for scroll trigger
+        const phoneVisual = document.getElementById('phoneVisual');
+        const cards = document.querySelectorAll('.crm-card');
+        const timeCounter = document.getElementById('timeCounter');
+        
+        let hasAnimated = false;
+        let particleInterval;
+        
+        // Time counter animation
+        function animateCounter() {
+            let hours = 0;
+            let minutes = 0;
+            const targetHours = 5;
+            const targetMinutes = 23;
+            
+            const counterInterval = setInterval(() => {
+                if (hours < targetHours || minutes < targetMinutes) {
+                    minutes += 7;
+                    if (minutes >= 60) {
+                        hours++;
+                        minutes = minutes - 60;
+                    }
+                    if (hours >= targetHours && minutes >= targetMinutes) {
+                        hours = targetHours;
+                        minutes = targetMinutes;
+                        clearInterval(counterInterval);
+                    }
+                    timeCounter.textContent = `${hours}h ${minutes.toString().padStart(2, '0')}m`;
+                }
+            }, 100);
+        }
+        
+        // Create particle effect
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            phoneVisual.appendChild(particle);
+            
+            // Start from phone center
+            const phoneRect = phoneVisual.querySelector('.phone-device').getBoundingClientRect();
+            const visualRect = phoneVisual.getBoundingClientRect();
+            const startX = phoneRect.left + phoneRect.width / 2 - visualRect.left;
+            const startY = phoneRect.top + phoneRect.height / 2 - visualRect.top;
+            
+            particle.style.left = startX + 'px';
+            particle.style.top = startY + 'px';
+            
+            // Random target position above phone
+            const targetX = startX + (Math.random() - 0.5) * 200;
+            const targetY = startY - 200 - Math.random() * 100;
+            
+            // Animate particle
+            particle.animate([
+                { 
+                    transform: 'translate(0, 0) scale(1)', 
+                    opacity: 0 
+                },
+                { 
+                    transform: 'translate(0, -20px) scale(1.5)', 
+                    opacity: 1,
+                    offset: 0.1
+                },
+                { 
+                    transform: `translate(${targetX - startX}px, ${targetY - startY}px) scale(0.5)`, 
+                    opacity: 0 
+                }
+            ], {
+                duration: 2000,
+                easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+            }).onfinish = () => particle.remove();
+        }
+        
+        // Animate CRM cards
+        function animateCards() {
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 800 + index * 200);
+            });
+        }
+        
+        // Main animation sequence
+        function startAnimation() {
+            if (hasAnimated) return;
+            hasAnimated = true;
+            
+            // Activate phone glow
+            phoneVisual.classList.add('active');
+            
+            // Start particle stream
+            particleInterval = setInterval(createParticle, 100);
+            
+            // Stop particles after 2 seconds
+            setTimeout(() => {
+                clearInterval(particleInterval);
+            }, 2000);
+            
+            // Animate cards
+            setTimeout(animateCards, 1000);
+            
+            // Start counter
+            setTimeout(animateCounter, 1500);
+        }
+        
+        // Intersection Observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+                    startAnimation();
+                }
+            });
+        }, {
+            threshold: 0.5
+        });
+        
+        observer.observe(phoneVisual);
+        
+        // Touch interaction
+        phoneVisual.addEventListener('click', () => {
+            if (!phoneVisual.classList.contains('active')) {
+                startAnimation();
+            } else {
+                // Pulse effect on tap
+                phoneVisual.querySelector('.phone-device').style.transform = 'translate(-50%, -50%) scale(0.95)';
+                setTimeout(() => {
+                    phoneVisual.querySelector('.phone-device').style.transform = 'translate(-50%, -50%) scale(1)';
+                }, 200);
+            }
+        });
+    </script>
+</body>
+</html>
