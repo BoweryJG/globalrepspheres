@@ -1,27 +1,29 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './StrategicWhisperAudio.css';
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://osbackend-zl1h.onrender.com';
+
 // Audio samples configuration
 const audioSamples = {
   openingHooks: [
     {
       id: 'hook1',
-      title: 'Cold Call Crusher',
-      text: "Listen kid, while they're still cold calling, you're already in their inbox with perfect timing.",
+      title: 'Revenue Discovery',
+      text: "Did you know 73% of medical practices are losing revenue they don't even know about?",
       duration: '0:04',
       category: 'opening'
     },
     {
       id: 'hook2',
-      title: 'The Speed Advantage',
-      text: "They're typing one email. You just sent 1,000. That's the difference between us and them.",
-      duration: '0:05',
+      title: '10x Efficiency',
+      text: "What if I told you there's a way to 10x your practice efficiency in just 30 days?",
+      duration: '0:04',
       category: 'opening'
     },
     {
       id: 'hook3',
-      title: 'Data Domination',
-      text: "See that spike in their prescribing data? That's your opening. Strike now.",
+      title: 'Not Average',
+      text: "The average medical device rep is using tools from 2015. You're not average.",
       duration: '0:04',
       category: 'opening'
     }
@@ -29,45 +31,45 @@ const audioSamples = {
   objectionHandlers: [
     {
       id: 'objection1',
-      title: 'Doctor Pushback',
-      text: "Doctor's pushing back? Here's your move: 'I understand your concerns. Let me show you the patient outcomes.'",
-      duration: '0:06',
+      title: 'Implementation Concerns',
+      text: "I understand your concern about implementation time. That's why we handle everything in 48 hours.",
+      duration: '0:05',
       category: 'objection'
     },
     {
       id: 'objection2',
-      title: 'Price Resistance',
-      text: "Price objection? Flip it. 'What's the cost of not having the best treatment option for your patients?'",
-      duration: '0:05',
+      title: 'ROI Response',
+      text: "ROI concerns are valid. Our average client sees 300% return in the first quarter.",
+      duration: '0:04',
       category: 'objection'
     },
     {
       id: 'objection3',
-      title: 'Time Constraint',
-      text: "No time? Perfect. 'I'll send you a 2-minute video summary. Watch it between patients.'",
-      duration: '0:05',
+      title: 'Integration Solution',
+      text: "Integration complexity? Our AI handles 95% automatically. Your team just benefits.",
+      duration: '0:04',
       category: 'objection'
     }
   ],
   closingLines: [
     {
       id: 'close1',
-      title: 'The Assumptive Close',
-      text: "Time to close. Say this exactly: 'I'll have the samples delivered Tuesday. Morning or afternoon?'",
+      title: 'Decision Maker',
+      text: "The decision you make today determines your competitive advantage tomorrow. Let's start.",
       duration: '0:05',
       category: 'closing'
     },
     {
       id: 'close2',
-      title: 'The Partnership Close',
-      text: "Look them in the eye: 'Let's start with your top 10 patients. We'll track the outcomes together.'",
-      duration: '0:05',
+      title: 'Revenue Recovery',
+      text: "Every minute without RepSpheres is revenue left on the table. Shall we fix that now?",
+      duration: '0:04',
       category: 'closing'
     },
     {
       id: 'close3',
-      title: 'The Urgency Close',
-      text: "Create urgency: 'The program pricing ends Friday. Let's lock in your savings now.'",
+      title: 'Leader or Follower',
+      text: "Your competitors are already using AI. The question is: leader or follower?",
       duration: '0:04',
       category: 'closing'
     }
@@ -75,46 +77,46 @@ const audioSamples = {
   motivational: [
     {
       id: 'motivate1',
-      title: 'Empire Builder',
-      text: "You're not a rep. You're an empire builder. Every call is a brick in your fortress.",
+      title: 'Champion\'s Choice',
+      text: "Champions don't wait for perfect conditions. They create them. Make the call.",
       duration: '0:04',
       category: 'motivational'
     },
     {
       id: 'motivate2',
-      title: 'Winner\'s Mindset',
-      text: "Winners don't wait for opportunities. They create them. Now get out there and dominate.",
+      title: 'Future Self',
+      text: "Your future self will thank you for the courage you show today. Trust the process.",
       duration: '0:04',
       category: 'motivational'
     },
     {
       id: 'motivate3',
-      title: 'The 75x Difference',
-      text: "While they're making one call, you're closing 75 deals. That's not unfair. That's evolution.",
-      duration: '0:05',
+      title: 'Excellence',
+      text: "Excellence isn't an accident. It's a choice you make every single day. Choose wisely.",
+      duration: '0:04',
       category: 'motivational'
     }
   ],
   dataInsights: [
     {
       id: 'data1',
-      title: 'Prescribing Pattern Alert',
-      text: "Their prescribing pattern shows vulnerability here. They switched formularies last month. Strike now.",
+      title: 'Market Growth',
+      text: "Market analysis shows 47% growth in AI-powered medical sales. Position yourself accordingly.",
       duration: '0:05',
       category: 'data'
     },
     {
       id: 'data2',
-      title: 'Timing Intelligence',
-      text: "Best contact window: Tuesdays, 2-4 PM. Their schedule shows a gap. That's your moment.",
-      duration: '0:05',
+      title: 'Performance Metrics',
+      text: "Top performers using RepSpheres close 3.7 times more deals. The data doesn't lie.",
+      duration: '0:04',
       category: 'data'
     },
     {
       id: 'data3',
-      title: 'Competitor Weakness',
-      text: "Your competitor just had a recall. Their customers are looking for alternatives. Move fast.",
-      duration: '0:05',
+      title: 'Neural Sync',
+      text: "Neural synchronization increases team performance by 85%. That's not theory, it's fact.",
+      duration: '0:04',
       category: 'data'
     }
   ]
@@ -128,6 +130,37 @@ const StrategicWhisperAudio = () => {
   const [showSubtitles, setShowSubtitles] = useState(true);
   const audioRef = useRef(null);
   const [audioProgress, setAudioProgress] = useState(0);
+  const [audioUrls, setAudioUrls] = useState({});
+  const [loading, setLoading] = useState(true);
+  const progressIntervalRef = useRef(null);
+
+  // Fetch audio URLs from backend on mount
+  useEffect(() => {
+    const fetchAudioUrls = async () => {
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/whisper-audio/samples`);
+        const data = await response.json();
+        
+        // Build URL map
+        const urlMap = {};
+        Object.entries(data).forEach(([category, samples]) => {
+          samples.forEach(sample => {
+            if (sample.url) {
+              urlMap[sample.id] = sample.url;
+            }
+          });
+        });
+        
+        setAudioUrls(urlMap);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching audio URLs:', error);
+        setLoading(false);
+      }
+    };
+    
+    fetchAudioUrls();
+  }, []);
 
   // Combine all samples for easy access
   const allSamples = [
@@ -149,7 +182,7 @@ const StrategicWhisperAudio = () => {
     }
   };
 
-  const handlePlaySample = (sampleId) => {
+  const handlePlaySample = async (sampleId) => {
     if (playingSample === sampleId) {
       // Stop playing
       setPlayingSample(null);
@@ -158,28 +191,90 @@ const StrategicWhisperAudio = () => {
         audioRef.current.pause();
         audioRef.current.currentTime = 0;
       }
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+      }
     } else {
-      // Start playing
+      // Stop any currently playing audio
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+      }
+      
+      // Start playing new sample
       setPlayingSample(sampleId);
       setAudioProgress(0);
       
-      // Simulate audio playback (in real implementation, use actual audio files)
-      const sample = allSamples.find(s => s.id === sampleId);
-      if (sample) {
-        const duration = parseInt(sample.duration.split(':')[1]) * 1000;
+      // Check if we have a URL for this sample
+      const audioUrl = audioUrls[sampleId];
+      
+      if (audioUrl && audioRef.current) {
+        // Play real audio
+        audioRef.current.src = audioUrl;
+        audioRef.current.volume = volume;
         
-        // Simulate progress
-        let progress = 0;
-        const interval = setInterval(() => {
-          progress += 10;
-          setAudioProgress((progress / duration) * 100);
+        try {
+          await audioRef.current.play();
           
-          if (progress >= duration) {
-            clearInterval(interval);
-            setPlayingSample(null);
-            setAudioProgress(0);
+          // Update progress
+          progressIntervalRef.current = setInterval(() => {
+            if (audioRef.current && audioRef.current.duration) {
+              const progress = (audioRef.current.currentTime / audioRef.current.duration) * 100;
+              setAudioProgress(progress);
+            }
+          }, 100);
+        } catch (error) {
+          console.error('Error playing audio:', error);
+          setPlayingSample(null);
+        }
+      } else if (!audioUrl) {
+        // If no URL, try to generate it
+        try {
+          const categoryMap = {
+            'hook1': 'openingHooks', 'hook2': 'openingHooks', 'hook3': 'openingHooks',
+            'objection1': 'objectionHandlers', 'objection2': 'objectionHandlers', 'objection3': 'objectionHandlers',
+            'close1': 'closingLines', 'close2': 'closingLines', 'close3': 'closingLines',
+            'motivate1': 'motivational', 'motivate2': 'motivational', 'motivate3': 'motivational',
+            'data1': 'dataInsights', 'data2': 'dataInsights', 'data3': 'dataInsights'
+          };
+          
+          const category = categoryMap[sampleId];
+          
+          const response = await fetch(`${BACKEND_URL}/api/whisper-audio/generate-single`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ category, sampleId })
+          });
+          
+          if (response.ok) {
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            
+            // Update URLs and play
+            setAudioUrls(prev => ({ ...prev, [sampleId]: url }));
+            
+            if (audioRef.current) {
+              audioRef.current.src = url;
+              audioRef.current.volume = volume;
+              await audioRef.current.play();
+              
+              // Update progress
+              progressIntervalRef.current = setInterval(() => {
+                if (audioRef.current && audioRef.current.duration) {
+                  const progress = (audioRef.current.currentTime / audioRef.current.duration) * 100;
+                  setAudioProgress(progress);
+                }
+              }, 100);
+            }
           }
-        }, 10);
+        } catch (error) {
+          console.error('Error generating audio:', error);
+          setPlayingSample(null);
+        }
       }
     }
   };
@@ -355,7 +450,24 @@ const StrategicWhisperAudio = () => {
       </div>
 
       {/* Hidden audio element for actual playback */}
-      <audio ref={audioRef} />
+      <audio 
+        ref={audioRef} 
+        onEnded={() => {
+          setPlayingSample(null);
+          setAudioProgress(0);
+          if (progressIntervalRef.current) {
+            clearInterval(progressIntervalRef.current);
+          }
+        }}
+      />
+      
+      {/* Loading overlay */}
+      {loading && (
+        <div className="loading-overlay">
+          <div className="loading-spinner" />
+          <p className="type-body">Loading audio samples...</p>
+        </div>
+      )}
     </div>
   );
 };
