@@ -21,6 +21,8 @@ import CanvasIntelligence from './CanvasIntelligence';
 import KineticStarfield from './KineticStarfield';
 import KineticDataGrid from './KineticDataGrid';
 import KineticTimelineSection from './KineticTimelineSection';
+import SynchronizationEngine from './SynchronizationEngine';
+import StrategicWhisperAudio from './StrategicWhisperAudio';
 import { kineticStyles } from './KineticStyles';
 import './LightningStrikeEnhancements.css';
 import './MobileOptimizedStyles.css';
@@ -158,6 +160,18 @@ const KineticNeedlesPageContent = () => {
         position: 'relative' 
       }}>
         <HarveyWhisper />
+        
+        {/* Strategic Whisper Audio Samples */}
+        <div style={{ marginTop: 'clamp(60px, 10vh, 100px)' }}>
+          <StrategicWhisperAudio />
+        </div>
+      </section>
+
+      {/* 6.5. SYNCHRONIZATION ENGINE - Mass Sync Visualization */}
+      <section id="synchronization-engine" className="lightning-section" style={{ 
+        marginTop: 'clamp(50px, 8vh, 80px)'
+      }}>
+        <SynchronizationEngine />
       </section>
 
       {/* 7. SPEED TUNNEL - Experience the 75x Differential */}

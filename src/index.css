@@ -15,6 +15,9 @@
 /* Import canvas effects */
 @import './styles/canvas-effects.css';
 
+/* Import category-defining typography */
+@import './styles/CategoryDefiningTypography.css';
+
 * {
   margin: 0;
   padding: 0;

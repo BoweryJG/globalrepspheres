@@ -56,7 +56,7 @@ const RealitySplitHero = ({ onLogin, onSignup }) => {
       <div className="reality-side reality-traditional">
         <div className="reality-content">
           <div className="reality-header">
-            <h3>Traditional Sales Rep</h3>
+            <h3 className="type-h3">Traditional Sales Rep</h3>
             <div className="deal-counter slow">
               <span className="counter-label">Deals Closed Today:</span>
               <span className="counter-value">{dealCounts.traditional.toFixed(1)}</span>

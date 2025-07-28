@@ -1,0 +1,289 @@
+/* CATEGORY-DEFINING TYPOGRAPHY SYSTEM - MOBILE FIRST */
+
+/* Import Premium Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
+/* Typography CSS Variables - Mobile First */
+:root {
+  /* Font Families */
+  --font-display: 'Orbitron', 'Bebas Neue', sans-serif;
+  --font-heading: 'Space Grotesk', 'Rajdhani', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+  --font-luxury: 'Rajdhani', 'Space Grotesk', sans-serif;
+  
+  /* Mobile Base Sizes (320px - 768px) */
+  --fs-hero: clamp(2.5rem, 12vw, 4rem);
+  --fs-display: clamp(2rem, 10vw, 3.5rem);
+  --fs-h1: clamp(1.75rem, 8vw, 3rem);
+  --fs-h2: clamp(1.5rem, 6vw, 2.5rem);
+  --fs-h3: clamp(1.25rem, 5vw, 2rem);
+  --fs-h4: clamp(1.125rem, 4vw, 1.5rem);
+  --fs-body: clamp(1rem, 2.5vw, 1.125rem);
+  --fs-small: clamp(0.875rem, 2vw, 1rem);
+  --fs-micro: clamp(0.75rem, 1.8vw, 0.875rem);
+  
+  /* Line Heights - Optimized for Mobile Reading */
+  --lh-tight: 1.1;
+  --lh-heading: 1.2;
+  --lh-normal: 1.5;
+  --lh-relaxed: 1.65;
+  
+  /* Letter Spacing */
+  --ls-tight: -0.03em;
+  --ls-normal: -0.01em;
+  --ls-wide: 0.02em;
+  --ls-ultra: 0.08em;
+  
+  /* Font Weights */
+  --fw-thin: 100;
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-bold: 700;
+  --fw-black: 900;
+}
+
+/* Tablet Adjustments (768px - 1024px) */
+@media (min-width: 768px) {
+  :root {
+    --fs-hero: clamp(4rem, 8vw, 6rem);
+    --fs-display: clamp(3.5rem, 6vw, 5rem);
+    --fs-h1: clamp(3rem, 5vw, 4rem);
+    --fs-h2: clamp(2.5rem, 4vw, 3.5rem);
+    --fs-h3: clamp(2rem, 3vw, 2.5rem);
+    --fs-h4: clamp(1.5rem, 2.5vw, 2rem);
+    --fs-body: clamp(1.125rem, 1.5vw, 1.25rem);
+  }
+}
+
+/* Desktop Sizes (1024px+) */
+@media (min-width: 1024px) {
+  :root {
+    --fs-hero: clamp(6rem, 10vw, 10rem);
+    --fs-display: clamp(5rem, 8vw, 8rem);
+    --fs-h1: clamp(4rem, 6vw, 6rem);
+    --fs-h2: clamp(3rem, 4vw, 4.5rem);
+    --fs-h3: clamp(2rem, 3vw, 3rem);
+    --fs-h4: clamp(1.5rem, 2vw, 2.25rem);
+    --fs-body: 1.25rem;
+  }
+}
+
+/* HERO TYPOGRAPHY - Mobile First */
+.type-hero {
+  font-family: var(--font-display);
+  font-size: var(--fs-hero);
+  font-weight: var(--fw-black);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  text-transform: uppercase;
+  
+  /* Mobile-specific adjustments */
+  word-break: break-word;
+  hyphens: auto;
+  
+  /* Advanced Typography Features */
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "ss01" 1, "ss02" 1;
+  
+  /* 3D Text Effect - Subtle on Mobile */
+  text-shadow: 
+    0 1px 0 rgba(255, 255, 255, 0.1),
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    0 4px 8px rgba(123, 66, 246, 0.2);
+}
+
+/* Desktop 3D Enhancement */
+@media (min-width: 1024px) {
+  .type-hero {
+    text-shadow: 
+      0 1px 0 rgba(255, 255, 255, 0.2),
+      0 2px 4px rgba(0, 0, 0, 0.3),
+      0 4px 8px rgba(123, 66, 246, 0.3),
+      0 8px 16px rgba(0, 255, 198, 0.2),
+      0 16px 32px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* DISPLAY HEADINGS */
+.type-display {
+  font-family: var(--font-luxury);
+  font-size: var(--fs-display);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--ls-normal);
+}
+
+/* SECTION HEADINGS */
+.type-h1, .type-h2, .type-h3, .type-h4 {
+  font-family: var(--font-heading);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--ls-normal);
+}
+
+.type-h1 { font-size: var(--fs-h1); font-weight: var(--fw-bold); }
+.type-h2 { font-size: var(--fs-h2); font-weight: var(--fw-bold); }
+.type-h3 { font-size: var(--fs-h3); font-weight: var(--fw-medium); }
+.type-h4 { font-size: var(--fs-h4); font-weight: var(--fw-medium); }
+
+/* BODY TEXT - Optimized for Mobile Reading */
+.type-body {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-relaxed);
+  letter-spacing: var(--ls-normal);
+  
+  /* Mobile readability */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* DATA/METRICS - Monospace for Numbers */
+.type-data {
+  font-family: var(--font-mono);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: var(--ls-wide);
+}
+
+/* ANIMATED NUMBER TRANSITIONS */
+.type-number {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  position: relative;
+  display: inline-block;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.type-number.updating {
+  animation: numberPulse 0.3s ease-out;
+}
+
+@keyframes numberPulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* KINETIC TEXT EFFECTS */
+.type-kinetic {
+  position: relative;
+  display: inline-block;
+}
+
+/* Glitch Effect for Key Words */
+.type-glitch {
+  position: relative;
+  display: inline-block;
+  animation: glitchText 2s infinite;
+}
+
+.type-glitch::before,
+.type-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.type-glitch::before {
+  animation: glitchClip1 0.5s infinite;
+  color: var(--gem-impossible);
+  z-index: -1;
+}
+
+.type-glitch::after {
+  animation: glitchClip2 0.5s infinite;
+  color: var(--gem-shift);
+  z-index: -2;
+}
+
+@keyframes glitchText {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+}
+
+@keyframes glitchClip1 {
+  0%, 100% { clip-path: inset(0 0 0 0); }
+  25% { clip-path: inset(0 100% 0 0); }
+  50% { clip-path: inset(0 0 100% 0); }
+  75% { clip-path: inset(100% 0 0 0); }
+}
+
+@keyframes glitchClip2 {
+  0%, 100% { clip-path: inset(0 0 0 0); }
+  25% { clip-path: inset(100% 0 0 0); }
+  50% { clip-path: inset(0 0 0 100%); }
+  75% { clip-path: inset(0 0 100% 0); }
+}
+
+/* SCROLL-TRIGGERED WEIGHT MORPHING */
+.type-morph {
+  font-family: var(--font-display);
+  font-weight: var(--fw-thin);
+  transition: font-weight 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.type-morph.in-view {
+  font-weight: var(--fw-black);
+}
+
+/* CUSTOM LIGATURES */
+.type-luxury {
+  font-family: var(--font-luxury);
+  font-feature-settings: "liga" 1, "calt" 1, "swsh" 1;
+}
+
+/* Mobile Touch Optimization */
+@media (hover: none) and (pointer: coarse) {
+  /* Larger tap targets for mobile */
+  .type-link {
+    padding: 0.5rem 0;
+    margin: -0.5rem 0;
+  }
+  
+  /* Disable hover effects on mobile */
+  .type-kinetic:hover {
+    animation: none;
+  }
+}
+
+/* Reduced Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+  .type-glitch,
+  .type-kinetic,
+  .type-number {
+    animation: none !important;
+  }
+  
+  .type-morph {
+    transition: none !important;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .type-hero,
+  .type-display {
+    font-size: 24pt;
+    text-shadow: none;
+  }
+  
+  .type-body {
+    font-size: 11pt;
+    line-height: 1.5;
+  }
+}
