@@ -26,6 +26,13 @@
       form-action 'self' https://accounts.google.com https://www.facebook.com;
     """
 
+# Serve followthru-hero.html at root
+[[redirects]]
+  from = "/"
+  to = "/followthru-hero.html"
+  status = 200
+  force = true
+
 # Handle SPA routing - all routes should be handled by React
 [[redirects]]
   from = "/*"
