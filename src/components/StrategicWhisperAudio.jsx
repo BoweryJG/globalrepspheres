@@ -139,6 +139,10 @@ const StrategicWhisperAudio = () => {
     const fetchAudioUrls = async () => {
       try {
         const response = await fetch(`${BACKEND_URL}/api/whisper-audio/samples`);
+        if (!response.ok) {
+          console.error('Failed to fetch audio samples:', response.status);
+          return;
+        }
         const data = await response.json();
         
         // Build URL map
@@ -270,6 +274,10 @@ const StrategicWhisperAudio = () => {
                 }
               }, 100);
             }
+          } else {
+            console.error('Failed to generate audio:', response.status);
+            alert('Audio generation is currently unavailable. Please try again later.');
+            setPlayingSample(null);
           }
         } catch (error) {
           console.error('Error generating audio:', error);
