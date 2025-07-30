@@ -6,6 +6,7 @@ import App from './App';
 import PodcastPage from './PodcastPage';
 import SimpleLogin from './components/SimpleLogin';
 import SignupPage from './SignupPage';
+import AuthPage from './components/AuthPage';
 import AdminAnalyticsPage from './AdminAnalyticsPage';
 import AuthCallback from './AuthCallback';
 import EliteApplicationPage from './pages/EliteApplicationPage';
@@ -29,8 +30,9 @@ root.render(
           <Route path="/" element={<App />} />
           <Route path="/podcast" element={<PodcastPage />} />
           <Route path="/podcast.html" element={<PodcastPage />} />
-          <Route path="/login" element={<SimpleLogin />} />
-          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/login" element={<AuthPage />} />
+          <Route path="/signup" element={<AuthPage />} />
+          <Route path="/simple-login" element={<SimpleLogin />} />
           <Route path="/admin-analytics" element={<AdminAnalyticsPage />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/elite-application" element={<EliteApplicationPage />} />
