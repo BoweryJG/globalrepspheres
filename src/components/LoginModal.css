@@ -109,7 +109,7 @@
 
 /* 4-Point Luxury Screws */
 .login-modal .screw {
-    position: absolute;
+    position: absolute !important;
     width: 8px;
     height: 8px;
     background: radial-gradient(circle at 30% 30%, var(--metal-light), var(--metal-dark));
@@ -134,10 +134,34 @@
     box-shadow: 0 2px 0 -1px var(--metal-shadow);
 }
 
-.login-modal .screw-tl { top: 8px; left: 8px; --angle: 15deg; }
-.login-modal .screw-tr { top: 8px; right: 8px; --angle: -22deg; }
-.login-modal .screw-bl { bottom: 8px; left: 8px; --angle: -8deg; }
-.login-modal .screw-br { bottom: 8px; right: 8px; --angle: 30deg; }
+.login-modal .screw-tl { 
+    top: 8px !important; 
+    left: 8px !important; 
+    right: auto !important;
+    bottom: auto !important;
+    --angle: 15deg; 
+}
+.login-modal .screw-tr { 
+    top: 8px !important; 
+    right: 8px !important; 
+    left: auto !important;
+    bottom: auto !important;
+    --angle: -22deg; 
+}
+.login-modal .screw-bl { 
+    bottom: 8px !important; 
+    left: 8px !important; 
+    top: auto !important;
+    right: auto !important;
+    --angle: -8deg; 
+}
+.login-modal .screw-br { 
+    bottom: 8px !important; 
+    right: 8px !important; 
+    top: auto !important;
+    left: auto !important;
+    --angle: 30deg; 
+}
 
 /* Screw idle animation */
 @keyframes screwIdle {

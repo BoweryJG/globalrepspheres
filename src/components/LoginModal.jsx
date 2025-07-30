@@ -12,7 +12,12 @@ const LoginModal = ({ isOpen, onClose, onGoogleAuth, onFacebookAuth, onEmailAuth
     if (!isOpen || !modalRef.current) return;
 
     // Set initial transform-style for 3D effects
-    gsap.set(modalRef.current, { transformStyle: "preserve-3d", perspective: 1000 });
+    gsap.set(modalRef.current, { 
+      transformStyle: "preserve-3d", 
+      perspective: 1000,
+      // Ensure no transform affecting child positioning
+      transform: "none"
+    });
 
     // Modal entrance animation with stagger
     gsap.fromTo(modalRef.current, 
@@ -35,20 +40,34 @@ const LoginModal = ({ isOpen, onClose, onGoogleAuth, onFacebookAuth, onEmailAuth
 
     // Animate screws from the modal container context
     const screws = modalRef.current.querySelectorAll(".screw");
-    gsap.fromTo(screws,
-      {
-        scale: 0,
-        rotation: -180,
-      },
-      {
-        duration: 0.6,
-        scale: 1,
-        rotation: 0,
-        stagger: 0.1,
-        ease: "back.out(1.7)",
-        delay: 0.5
-      }
-    );
+    // Ensure screws keep their positioning
+    screws.forEach((screw) => {
+      const computedStyle = window.getComputedStyle(screw);
+      const top = computedStyle.top;
+      const right = computedStyle.right;
+      const bottom = computedStyle.bottom;
+      const left = computedStyle.left;
+      
+      gsap.fromTo(screw,
+        {
+          scale: 0,
+          rotation: -180,
+        },
+        {
+          duration: 0.6,
+          scale: 1,
+          rotation: 0,
+          ease: "back.out(1.7)",
+          delay: 0.5,
+          // Maintain original positioning
+          top: top,
+          right: right,
+          bottom: bottom,
+          left: left,
+          position: 'absolute'
+        }
+      );
+    });
 
     // Animate power nodes
     const powerNodes = modalRef.current.querySelectorAll(".power-node");
