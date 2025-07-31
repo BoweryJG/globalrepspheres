@@ -1,6 +1,9 @@
 import { RepXTier } from './types';
 import type { FeatureAccess } from './types';
 
+// Re-export RepXTier so it can be imported from constants
+export { RepXTier } from './types';
+
 // Backend URL - must be provided by environment variable
 // Support both Vite (import.meta.env) and CRA (process.env)
 declare const process: any;

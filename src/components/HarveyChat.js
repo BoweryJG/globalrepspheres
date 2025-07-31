@@ -19,8 +19,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import TimerIcon from '@mui/icons-material/Timer';
-import { useAuth, useAgentTimeLimit, useRepXTier } from '../unified-auth';
-import { RepXTier, TIER_NAMES } from '../unified-auth/src/constants';
+import { useAuth, useAgentTimeLimit, useRepXTier, RepXTier, TIER_NAMES } from '../unified-auth';
 
 // Animations
 const pulse = keyframes`
