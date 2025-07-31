@@ -2,6 +2,26 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Unified Authentication Status (2025-07-31) ✅ 100% COMPLETE
+
+### Implementation Summary
+Global RepSpheres homepage now has unified authentication fully integrated:
+- **SSO Working**: Cross-domain cookies configured for `.repspheres.com`
+- **Environment Variables**: Uses same Supabase instance as all other RepSpheres apps
+- **Build Status**: Successful with 0 errors
+- **Login UI**: Same luxury modal with 4 micro screws as other apps
+
+### Key Configuration
+- **Supabase URL**: `https://cbopynuvhcymbumjnvay.supabase.co` (shared)
+- **Backend URL**: `https://osbackend-zl1h.onrender.com` (shared)
+- **Cookie Domain**: `.repspheres.com` with `sameSite: 'none'` for HTTPS
+- **Auth Pattern**: Uses existing AuthContext.js (JavaScript, not TypeScript)
+
+### Verification Tools
+- `verify-unified-auth.js` - Run to check auth configuration
+- `test-auth-endpoints.js` - Tests backend auth endpoints
+- `UNIFIED_AUTH_CHECKLIST.md` - Manual testing guide
+
 ## Development Commands
 
 ### Core Development
