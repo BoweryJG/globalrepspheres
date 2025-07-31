@@ -9,13 +9,18 @@ import {
   Fade,
   Grow,
   CircularProgress,
-  Chip
+  Chip,
+  Alert,
+  Button
 } from '@mui/material';
 import { styled, keyframes } from '@mui/material/styles';
 import SendIcon from '@mui/icons-material/Send';
 import CloseIcon from '@mui/icons-material/Close';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
+import TimerIcon from '@mui/icons-material/Timer';
+import { useAuth, useAgentTimeLimit, useRepXTier } from '../unified-auth';
+import { RepXTier, TIER_NAMES } from '../unified-auth/src/constants';
 
 // Animations
 const pulse = keyframes`
@@ -292,7 +297,16 @@ function HarveyChat({ open, onClose }) {
   const [messages, setMessages] = useState([HARVEY_INTRO]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [conversationStartTime, setConversationStartTime] = useState(null);
+  const [timeUsed, setTimeUsed] = useState(0);
+  const [sessionExpired, setSessionExpired] = useState(false);
   const messagesEndRef = useRef(null);
+  const timerRef = useRef(null);
+  
+  // Unified auth hooks
+  const { user } = useAuth();
+  const { tier } = useRepXTier();
+  const { timeLimit, isUnlimited } = useAgentTimeLimit();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -301,9 +315,61 @@ function HarveyChat({ open, onClose }) {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+  
+  // Start conversation timer when chat opens
+  useEffect(() => {
+    if (open && !conversationStartTime) {
+      setConversationStartTime(Date.now());
+      setTimeUsed(0);
+      setSessionExpired(false);
+    }
+    
+    // Reset when chat closes
+    if (!open) {
+      setConversationStartTime(null);
+      setTimeUsed(0);
+      setSessionExpired(false);
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    }
+  }, [open, conversationStartTime]);
+  
+  // Update timer every second
+  useEffect(() => {
+    if (conversationStartTime && !isUnlimited && !sessionExpired) {
+      timerRef.current = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - conversationStartTime) / 1000);
+        setTimeUsed(elapsed);
+        
+        if (elapsed >= timeLimit) {
+          setSessionExpired(true);
+          clearInterval(timerRef.current);
+        }
+      }, 1000);
+      
+      return () => {
+        if (timerRef.current) {
+          clearInterval(timerRef.current);
+        }
+      };
+    }
+  }, [conversationStartTime, timeLimit, isUnlimited, sessionExpired]);
+  
+  const formatTime = (seconds) => {
+    if (seconds < 0) return '0:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+  
+  const getRemainingTime = () => {
+    if (isUnlimited) return null;
+    return Math.max(0, timeLimit - timeUsed);
+  };
 
   const handleSend = async () => {
-    if (!input.trim() || loading) return;
+    if (!input.trim() || loading || sessionExpired) return;
 
     const userMessage = {
       text: input,
@@ -390,7 +456,24 @@ function HarveyChat({ open, onClose }) {
               HARVEY
             </Typography>
           </Box>
-          <PowerBadge label="CLOSER" size="small" />
+          
+          {!isUnlimited && conversationStartTime && (
+            <Box display="flex" alignItems="center" gap={0.5}>
+              <TimerIcon sx={{ 
+                fontSize: '0.9rem', 
+                color: sessionExpired ? '#ff6b6b' : getRemainingTime() < 60 ? '#ffd93d' : '#4ecdc4'
+              }} />
+              <Typography variant="caption" sx={{ 
+                color: sessionExpired ? '#ff6b6b' : getRemainingTime() < 60 ? '#ffd93d' : '#E0E0E0',
+                fontWeight: 600,
+                fontSize: '0.7rem'
+              }}>
+                {formatTime(getRemainingTime())}
+              </Typography>
+            </Box>
+          )}
+          
+          <PowerBadge label={tier === RepXTier.Rep5 ? "ELITE" : "CLOSER"} size="small" />
           <IconButton onClick={onClose} size="small" sx={{ 
             color: '#FFE4B5',
             padding: '4px',
@@ -415,6 +498,34 @@ function HarveyChat({ open, onClose }) {
               </Message>
             </MessageBubble>
           ))}
+          
+          {sessionExpired && (
+            <Fade in={sessionExpired}>
+              <Alert 
+                severity="warning" 
+                sx={{ 
+                  mt: 2,
+                  backgroundColor: 'rgba(255, 152, 0, 0.1)',
+                  border: '1px solid rgba(255, 152, 0, 0.3)',
+                  '& .MuiAlert-message': {
+                    color: '#FFB74D'
+                  }
+                }}
+                action={
+                  <Button 
+                    size="small" 
+                    sx={{ color: '#FFD700' }}
+                    onClick={() => window.location.href = '/account'}
+                  >
+                    Upgrade
+                  </Button>
+                }
+              >
+                Your {TIER_NAMES[tier]} session has ended. Upgrade for longer conversations.
+              </Alert>
+            </Fade>
+          )}
+          
           {loading && (
             <MessageBubble isUser={false}>
               <StyledAvatar isHarvey={true}>H</StyledAvatar>
@@ -437,10 +548,10 @@ function HarveyChat({ open, onClose }) {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}
-            disabled={loading}
+            disabled={loading || sessionExpired}
             size="small"
           />
-          <SendButton onClick={handleSend} disabled={!input.trim() || loading} size="small">
+          <SendButton onClick={handleSend} disabled={!input.trim() || loading || sessionExpired} size="small">
             <SendIcon fontSize="small" />
           </SendButton>
         </InputContainer>
