@@ -1,7 +1,6 @@
-import { initializeSupabase } from '../unified-auth';
-
 /**
  * Initialize unified auth with Global environment variables
+ * Currently a no-op since auth is handled by existing AuthContext
  */
 export const initializeUnifiedAuth = () => {
   const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
@@ -15,12 +14,6 @@ export const initializeUnifiedAuth = () => {
     return;
   }
   
-  try {
-    initializeSupabase({
-      supabaseUrl,
-      supabaseAnonKey
-    });
-  } catch (error) {
-    console.error('Failed to initialize unified auth:', error);
-  }
+  // Auth is initialized via supabase.js and AuthContext
+  console.log('Unified auth initialized via existing AuthContext');
 };

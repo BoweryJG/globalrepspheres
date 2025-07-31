@@ -1,8 +1,10 @@
 import React from 'react';
-import { UnifiedAuthProvider } from '../unified-auth/src/UnifiedAuthContext';
 
 /**
  * Wrapper component that provides unified auth context
+ * For now, this is a simple passthrough since the TypeScript
+ * unified-auth package has build issues. The actual auth
+ * is handled by AuthProvider in AppWrapper.
  */
 export const UnifiedAuthWrapper = ({ children }) => {
   const hasSupabaseConfig = !!(
@@ -11,12 +13,8 @@ export const UnifiedAuthWrapper = ({ children }) => {
   
   if (!hasSupabaseConfig) {
     console.warn('UnifiedAuthWrapper: Supabase not configured, rendering without auth');
-    return <>{children}</>;
   }
   
-  return (
-    <UnifiedAuthProvider>
-      {children}
-    </UnifiedAuthProvider>
-  );
+  // Pass through children - auth is handled by AuthProvider
+  return <>{children}</>;
 };

@@ -19,7 +19,30 @@ import CloseIcon from '@mui/icons-material/Close';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import TimerIcon from '@mui/icons-material/Timer';
-import { useAuth, useAgentTimeLimit, useRepXTier, RepXTier, TIER_NAMES } from '../unified-auth';
+import { useAuth } from '../contexts/AuthContext';
+
+// Define RepX tiers locally since unified-auth has build issues
+const RepXTier = {
+  Rep0: 'rep0',
+  Rep1: 'rep1',
+  Rep2: 'rep2',
+  Rep3: 'rep3',
+  Rep4: 'rep4',
+  Rep5: 'rep5'
+};
+
+const TIER_NAMES = {
+  rep0: 'Rep⁰',
+  rep1: 'Rep¹',
+  rep2: 'Rep²',
+  rep3: 'Rep³',
+  rep4: 'Rep⁴',
+  rep5: 'Rep⁵'
+};
+
+// Mock hooks for now
+const useAgentTimeLimit = () => ({ timeLimit: 30, isUnlimited: false });
+const useRepXTier = () => ({ tier: RepXTier.Rep0, loading: false });
 
 // Animations
 const pulse = keyframes`
